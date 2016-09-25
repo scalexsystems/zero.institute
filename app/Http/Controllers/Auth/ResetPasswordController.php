@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace Scalex\Zero\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
+use Scalex\Zero\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 
 class ResetPasswordController extends Controller

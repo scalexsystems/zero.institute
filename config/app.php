@@ -172,11 +172,11 @@ return [
         /*
          * Application Service Providers...
          */
-        App\Providers\AppServiceProvider::class,
-        App\Providers\AuthServiceProvider::class,
-        // App\Providers\BroadcastServiceProvider::class,
-        App\Providers\EventServiceProvider::class,
-        App\Providers\RouteServiceProvider::class,
+        Scalex\Zero\Providers\AppServiceProvider::class,
+        Scalex\Zero\Providers\AuthServiceProvider::class,
+        // Scalex\Zero\Providers\BroadcastServiceProvider::class,
+        Scalex\Zero\Providers\EventServiceProvider::class,
+        Scalex\Zero\Providers\RouteServiceProvider::class,
 
     ],
 

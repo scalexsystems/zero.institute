@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace Scalex\Zero\Http\Controllers\Auth;
 
-use App\User;
+use Scalex\Zero\User;
 use Validator;
-use App\Http\Controllers\Controller;
+use Scalex\Zero\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
 class RegisterController extends Controller

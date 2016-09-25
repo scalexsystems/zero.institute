@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Providers;
+namespace Scalex\Zero\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
