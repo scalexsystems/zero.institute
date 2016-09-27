@@ -168,6 +168,7 @@ return [
          */
 
         Laravel\Scout\ScoutServiceProvider::class,
+        Laravel\Passport\PassportServiceProvider::class,
 
         /*
          * Application Service Providers...
