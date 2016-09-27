@@ -12,7 +12,7 @@ return [
     | any other location as required by the application or its packages.
     */
 
-    'name' => 'Laravel',
+    'name' => 'Zero',
 
     /*
     |--------------------------------------------------------------------------
@@ -167,14 +167,14 @@ return [
          * Package Service Providers...
          */
 
-        //
+        Laravel\Scout\ScoutServiceProvider::class,
 
         /*
          * Application Service Providers...
          */
         Scalex\Zero\Providers\AppServiceProvider::class,
         Scalex\Zero\Providers\AuthServiceProvider::class,
-        // Scalex\Zero\Providers\BroadcastServiceProvider::class,
+        Scalex\Zero\Providers\BroadcastServiceProvider::class,
         Scalex\Zero\Providers\EventServiceProvider::class,
         Scalex\Zero\Providers\RouteServiceProvider::class,
 
