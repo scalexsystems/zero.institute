@@ -10,32 +10,38 @@ class CreateUsersTable extends Migration
      *
      * @return void
      */
-    public function up()
-    {
-        Schema::create('users', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->string('password');
-            $table->uuid('photo_id')->nullable();
+    public function up() {
+        Schema::create(
+            'users',
+            function (Blueprint $table) {
+                $table->uuid('id')->primary();
+                $table->string('name');
+                $table->string('email')->unique();
+                $table->string('password');
+                $table->uuid('photo_id')->nullable();
 
-            // Person - User link.
-            $table->uuid('person_id')->nullable();
-            $table->string('person_type')->nullable();
+                // Person - User link.
+                $table->uuid('person_id')->nullable();
+                $table->string('person_type')->nullable();
 
-            $table->uuid('school_id')->nullable();
-            $table->json('additional')->default('[]');
+                // Bind to school.
+                $table->uuid('school_id')->nullable();
 
-            $table->string('verification_token')->nullable();
+                // JSON extensible.
+                $table->json('additional')->default('[]');
 
-            $table->rememberToken();
-            $table->softDeletes();
-            $table->timestamps();
+                // Email verification token.
+                $table->string('verification_token')->nullable();
 
-            // Indices.
-            $table->index(['person_id', 'person_type']);
-            $table->foreign('school_id')->references('id')->on('schools');
-        });
+                $table->rememberToken();
+                $table->softDeletes();
+                $table->timestamps();
+
+                // Indices.
+                $table->index(['person_id', 'person_type']);
+                $table->foreign('school_id')->references('id')->on('schools');
+            }
+        );
     }
 
     /**
@@ -43,12 +49,14 @@ class CreateUsersTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropForeign(['school_id']);
-            $table->dropIndex(['person_id', 'person_type']);
-            $table->drop();
-        });
+    public function down() {
+        Schema::table(
+            'users',
+            function (Blueprint $table) {
+                $table->dropForeign(['school_id']);
+                $table->dropIndex(['person_id', 'person_type']);
+                $table->drop();
+            }
+        );
     }
 }

@@ -168,7 +168,9 @@ return [
          */
 
         Laravel\Scout\ScoutServiceProvider::class,
-        Laravel\Passport\PassportServiceProvider::class,
+        // Laravel\Passport\PassportServiceProvider::class, // TODO: next.
+        Znck\Repositories\RepositoryServiceProvider::class,
+        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
 
         /*
          * Application Service Providers...

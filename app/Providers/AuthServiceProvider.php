@@ -14,7 +14,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        'Scalex\Zero\Model' => 'Scalex\Zero\Policies\ModelPolicy',
+
     ];
 
     /**
@@ -25,7 +25,7 @@ class AuthServiceProvider extends ServiceProvider
     public function boot() {
         $this->registerPolicies();
 
-        Passport::routes();
-        Passport::pruneRevokedTokens();
+        // Passport::routes();
+        // Passport::pruneRevokedTokens();
     }
 }

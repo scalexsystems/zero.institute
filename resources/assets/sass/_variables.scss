@@ -1,26 +1,25 @@
-
 // Body
-$body-bg: #f5f8fa;
+$body-bg: #f7f7f7;
 
 // Borders
-$laravel-border-color: darken($body-bg, 10%);
-$list-group-border: $laravel-border-color;
-$navbar-default-border: $laravel-border-color;
-$panel-default-border: $laravel-border-color;
-$panel-inner-border: $laravel-border-color;
+$zero-border-color: #e7e7e7e7;
+$list-group-border: $zero-border-color;
+$navbar-default-border: $zero-border-color;
+$panel-default-border: $zero-border-color;
+$panel-inner-border: $zero-border-color;
 
 // Brands
-$brand-primary: #3097D1;
-$brand-info: #8eb4cb;
-$brand-success: #2ab27b;
-$brand-warning: #cbb956;
-$brand-danger:  #bf5329;
+$brand-primary: #007ee7;
+$brand-info: #5bc0de;
+$brand-success: #6bb719;
+$brand-warning: #f0ad4e;
+$brand-danger:  #d0021b;
 
 // Typography
 $font-family-sans-serif: "Raleway", sans-serif;
 $font-size-base: 14px;
 $line-height-base: 1.6;
-$text-color: #636b6f;
+$text-color: #000000;
 
 // Navbar
 $navbar-default-bg: #fff;
