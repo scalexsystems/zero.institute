@@ -9,11 +9,5 @@ use Znck\Plug\Eloquent\Traits\UuidKey;
 
 abstract class BaseModel extends Model
 {
-    use Searchable, UuidKey;
-
-    use FixBelongsTo, FixMorphTo; // Fix Issue #12051
-
-    use FixForeignKey; // Fix Issue #10724
-
-    public $incrementing = false;
+    use Searchable;
 }

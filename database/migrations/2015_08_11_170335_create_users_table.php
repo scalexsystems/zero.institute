@@ -14,18 +14,18 @@ class CreateUsersTable extends Migration
         Schema::create(
             'users',
             function (Blueprint $table) {
-                $table->uuid('id')->primary();
+                $table->increments('id');
                 $table->string('name');
                 $table->string('email')->unique();
                 $table->string('password');
-                $table->uuid('photo_id')->nullable();
+                $table->unsignedInteger('photo_id')->nullable();
 
                 // Person - User link.
-                $table->uuid('person_id')->nullable();
+                $table->unsignedInteger('person_id')->nullable();
                 $table->string('person_type')->nullable();
 
                 // Bind to school.
-                $table->uuid('school_id')->nullable();
+                $table->unsignedInteger('school_id')->nullable();
 
                 // JSON extensible.
                 $table->json('additional')->default('[]');

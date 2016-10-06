@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Scalex\Zero\Models\School;
 
 class DatabaseSeeder extends Seeder
 {
@@ -9,8 +10,7 @@ class DatabaseSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
-    {
-        // $this->call(UsersTableSeeder::class);
+    public function run() {
+        factory(School::class, 50)->create(['verified' => true]);
     }
 }

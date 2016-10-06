@@ -10,29 +10,32 @@ class CreateAddressesTable extends Migration
      *
      * @return void
      */
-    public function up()
-    {
-        Schema::create('addresses', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->string('address_line1')->nullable();
-            $table->string('address_line2')->nullable();
-            $table->string('landmark')->nullable();
-            $table->unsignedInteger('city_id')->nullable();
-            $table->string('pin_code')->nullable();
-            $table->string('phone')->nullable();
-            $table->string('email')->nullable();
-            $table->softDeletes();
-            $table->timestamps();
+    public function up() {
+        Schema::create(
+            'addresses',
+            function (Blueprint $table) {
+                $table->increments('id');
+                $table->string('address_line1')->nullable();
+                $table->string('address_line2')->nullable();
+                $table->string('landmark')->nullable();
+                $table->unsignedInteger('city_id')->nullable();
+                $table->string('pin_code')->nullable();
+                $table->string('phone')->nullable();
+                $table->string('email')->nullable();
+                $table->softDeletes();
+                $table->timestamps();
 
-            // Can be used with many types of users.
-            $table->string('addressee_type')->nullable();
-            $table->uuid('addressee_id')->nullable();
+                // Can be used with many types of users.
+                $table->string('addressee_type')->nullable();
+                $table->unsignedInteger('addressee_id')->nullable();
 
-            // JSON expendable schema.
-            $table->json('additional')->default('[]')->nullable();
+                // JSON expendable schema.
+                $table->json('additional')->default('[]')->nullable();
 
-            $table->foreign('city_id')->references('id')->on('cities');
-        });
+                $table->index(['addressee_id', 'addressee_type']);
+                $table->foreign('city_id')->references('id')->on('cities');
+            }
+        );
     }
 
     /**
@@ -40,11 +43,13 @@ class CreateAddressesTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
-        Schema::table('addresses', function (Blueprint $table) {
-            $table->dropForeign(['city_id']);
-            $table->drop();
-        });
+    public function down() {
+        Schema::table(
+            'addresses',
+            function (Blueprint $table) {
+                $table->dropForeign(['city_id']);
+                $table->drop();
+            }
+        );
     }
 }

@@ -1,0 +1,58 @@
+@import "variables";
+
+$body-bg: #fff;
+$text-light: #9b9b9b;
+
+@import '../../../node_modules/bootstrap/scss/bootstrap';
+@import '../../../node_modules/font-awesome/scss/font-awesome';
+
+.navbar-light .navbar-nav .nav-link.mail {
+  color: $brand-primary;
+}
+
+header {
+  padding: 42px 0 0;
+  .navbar-brand {
+    padding-top: .5375rem;
+    padding-bottom: .5375rem;
+  }
+  img {
+    height: 1.3rem;
+  }
+}
+footer {
+  .container > .row {
+    padding-top: 3rem;
+    padding-bottom: 2rem;
+  }
+  .col-xs-12 {
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+  }
+  .nav-link {
+    font-size: .9rem;
+    color: $text-light;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .social {
+    font-size: 1.625rem;
+    margin: 0;
+    a {
+      color: #000000;
+      padding-right: .5rem;
+    }
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  img {
+    width: inherit;
+  }
+}
+
+@import 'pages/auth';
+@import 'pages/home';
+@import 'pages/share';

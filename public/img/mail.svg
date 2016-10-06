@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="113" height="101" viewBox="0 0 113 101">
+  <g fill="none" fill-rule="evenodd" transform="translate(-12)">
+    <rect width="112" height="81" x="12.5" y="20" fill="#007EE7" rx="10"/>
+    <rect width="51.5" height="81" x="17" fill="#FFFFFF" transform="rotate(-180 42.75 40.5)" rx="10"/>
+    <rect width="51.5" height="81" x="68.5" fill="#FAFAFA" rx="10"/>
+    <g transform="translate(36.5 20)">
+      <rect width="32" height="5" x=".164" fill="#EEEEEE"/>
+      <rect width="32" height="5" x=".164" y="13" fill="#EEEEEE"/>
+      <rect width="32" height="5" x=".164" y="26" fill="#EEEEEE"/>
+      <rect width="32" height="5" x="32" fill="#E0E0E0"/>
+      <rect width="32" height="5" x="32" y="13" fill="#E0E0E0"/>
+      <rect width="32" height="5" x="32" y="26" fill="#E0E0E0"/>
+    </g>
+    <path fill="#0057A0" d="M12.6103422,28.5027204 C12.5376632,28.988901 12.5,29.4865716 12.5,29.9930957 L12.5,91.0069043 C12.5,96.5259387 16.9770023,101 22.5008091,101 L114.499191,101 C119.623884,101 123.848294,97.1516453 124.431332,92.1848714 L12.6103422,28.5027204 Z"/>
+    <path fill="#007EE7" d="M21.1103422,28.5027204 C21.0376632,28.988901 21,29.4865716 21,29.9930957 L21,91.0069043 C21,96.5259387 25.4770023,101 31.0008091,101 L122.999191,101 C128.123884,101 132.348294,97.1516453 132.931332,92.1848714 L21.1103422,28.5027204 Z" transform="matrix(-1 0 0 1 145.5 0)"/>
+  </g>
+</svg>

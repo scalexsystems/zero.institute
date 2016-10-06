@@ -23,6 +23,8 @@ class User extends BaseModel implements
 
     use HasApiTokens, Notifiable;
 
+    use SoftDeletes;
+
     /**
      * The attributes that are mass assignable.
      *

@@ -120,7 +120,7 @@ return [
     |
     */
 
-    'log' => env('APP_LOG', 'single'),
+    'log' => env('APP_LOG', 'daily'),
 
     'log_level' => env('APP_LOG_LEVEL', 'debug'),
 
@@ -168,8 +168,11 @@ return [
          */
 
         Laravel\Scout\ScoutServiceProvider::class,
-        // Laravel\Passport\PassportServiceProvider::class, // TODO: next.
+        Laravel\Passport\PassportServiceProvider::class,
+        Znck\Attach\AttachServiceProvider::class,
         Znck\Repositories\RepositoryServiceProvider::class,
+        Znck\Transformers\TransformerServiceProvider::class,
+        Znck\Trust\TrustServiceProvider::class,
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
 
         /*

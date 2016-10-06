@@ -1,68 +1,66 @@
-@extends('layouts.app')
+@extends('layouts.web')
 
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Login</div>
-                <div class="panel-body">
+    <div class="container p-y-1 v-full flex flex-content-md-middle flex-items-md-center">
+        <div class="wrapper-auth">
+            <div class="card card-auth">
+                <div class="card-block card-block-auth">
+                    <h3 class="p-b-1">{{ trans('app::login.heading') }}</h3>
                     <form class="form-horizontal" role="form" method="POST" action="{{ url('/login') }}">
                         {{ csrf_field() }}
 
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label">E-Mail Address</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus>
-
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
+                        <div class="form-group{{ $errors->has('email') ? ' has-danger' : '' }}">
+                            <div class="input-has-addon">
+                                <i class="fa fa-fw fa-envelope input-group-addon-icon input-group-addon-icon-auth"></i>
+                                <input id="email" type="email" class="form-control form-control-auth" name="email" value="{{ old('email') }}"
+                                       placeholder="{{ trans('app::login.p.email') }}" required autofocus>
                             </div>
+
+                            @if ($errors->has('email'))
+                                <small class="text-danger">{{ $errors->first('email') }}</small>
+                            @endif
                         </div>
 
-                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label for="password" class="col-md-4 control-label">Password</label>
+                        <div class="form-group{{ $errors->has('password') ? ' has-danger' : '' }}">
 
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control" name="password" required>
-
-                                @if ($errors->has('password'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
+                            <div class="input-has-addon">
+                                <i class="fa fa-fw fa-key input-group-addon-icon input-group-addon-icon-auth"></i>
+                                <input id="password" type="password" class="form-control form-control-auth" name="password"
+                                       placeholder="{{ trans('app::login.p.password') }}" required>
                             </div>
+
+                            @if ($errors->has('password'))
+                                <small class="text-danger">{{ $errors->first('password') }}</small>
+                            @endif
                         </div>
 
                         <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="remember"> Remember Me
-                                    </label>
-                                </div>
-                            </div>
+                            <label class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" name="remember">
+                                <span class="custom-control-indicator"></span>
+                                <span class="custom-control-description">{{ trans('app::login.l.remember') }}</span>
+                            </label>
                         </div>
 
                         <div class="form-group">
-                            <div class="col-md-8 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    Login
-                                </button>
+                            <button type="submit" class="btn btn-primary btn-block text-uppercase btn-auth">
+                                {{ trans('app::login.btn.login') }}
+                            </button>
+                        </div>
 
-                                <a class="btn btn-link" href="{{ url('/password/reset') }}">
-                                    Forgot Your Password?
-                                </a>
-                            </div>
+                        <div class="text-xs-center">
+                            <a class="text-muted" href="{{ url('/password/reset') }}">
+                                {{ trans('app::login.btn.forgot') }}
+                            </a>
                         </div>
                     </form>
                 </div>
             </div>
+            <div class="text-xs-center">
+                <a href="{{ url('/register') }}" class="text-muted">
+                    <small>{{ trans('app::login.btn.register') }}</small>
+                </a>
+            </div>
         </div>
     </div>
-</div>
 @endsection

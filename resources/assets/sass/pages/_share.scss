@@ -1,0 +1,17 @@
+.social-invites {
+  a.btn {
+    border: none;
+    letter-spacing: 0.125rem;
+    margin: .5rem 0;
+    padding: .6rem 1.5rem;
+    i {
+      vertical-align: middle;
+      font-size: 2rem;
+      display: inline;
+      padding-right: .5rem;
+    }
+    span {
+      vertical-align: middle;
+    }
+  }
+}

@@ -4,6 +4,8 @@ namespace Scalex\Zero\Providers;
 
 use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Scalex\Zero\Events;
+use Scalex\Zero\Listeners;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -13,8 +15,9 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'Scalex\Zero\Events\SomeEvent' => [
-            'Scalex\Zero\Listeners\EventListener',
+        Events\InvitationRequest::class => [
+            Listeners\Invitation\SendInvitationVerification::class,
+            Listeners\Invitation\ReportNewInvitationRequest::class,
         ],
     ];
 
@@ -23,8 +26,7 @@ class EventServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
-    {
+    public function boot() {
         parent::boot();
 
         //

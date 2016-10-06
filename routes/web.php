@@ -11,10 +11,9 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'HomeController@home');
+Route::get('/share', 'HomeController@share');
+Route::get('/request', 'HomeController@request');
+Route::post('/request', 'HomeController@request');
 
 Auth::routes();
-
-Route::get('/home', 'HomeController@index');

@@ -14,13 +14,12 @@ class CreateSchoolsTable extends Migration
         Schema::create(
             'schools',
             function(Blueprint $table) {
-                // UUID
-                $table->uuid('id')->primary();
+                $table->increments('id');
 
                 // School Information
                 $table->string('name');
                 $table->string('slug')->unique();
-                $table->uuid('address_id')->nullable();
+                $table->unsignedInteger('address_id')->nullable();
                 $table->string('website')->nullable();
                 $table->string('email')->nullable();
                 $table->string('phone')->nullable();
@@ -31,7 +30,7 @@ class CreateSchoolsTable extends Migration
                 $table->string('university')->nullable();
                 $table->string('institute_type')->nullable();
                 $table->string('timezone')->nullable();
-                $table->uuid('logo_id')->nullable();
+                $table->unsignedInteger('logo_id')->nullable();
 
                 $table->boolean('verified')->default(false);
 

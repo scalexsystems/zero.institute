@@ -11,9 +11,8 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
-    {
-        //
+    public function boot() {
+        $this->loadTranslationsFrom(resource_path('lang-web'), 'app');
     }
 
     /**
@@ -21,8 +20,7 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
-    {
+    public function register() {
         //
     }
 }

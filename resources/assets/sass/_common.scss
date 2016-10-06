@@ -1,0 +1,73 @@
+// Bootstrap toggles.
+$enable-flex: true;
+$enable-rounded: true;
+$enable-shadows: false;
+$enable-gradients: false;
+$enable-transitions: true;
+$enable-hover-media-query: false;
+$enable-grid-classes: true;
+$enable-print-styles: true;
+
+// Font-Awesome Path
+$fa-font-path: '/fonts/font-awesome';
+
+// Body
+$body-bg: #f7f7f7;
+
+// Borders
+$zero-border-color: #e7e7e7e7;
+$list-group-border: $zero-border-color;
+$navbar-default-border: $zero-border-color;
+$panel-default-border: $zero-border-color;
+$panel-inner-border: $zero-border-color;
+
+// Brands
+$brand-primary: #007ee7;
+$brand-info: #5bc0de;
+$brand-success: #6bb719;
+$brand-warning: #f0ad4e;
+$brand-danger:  #d0021b;
+
+// Typography
+$font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !default;
+$font-family-serif: Georgia, "Times New Roman", Times, serif !default;
+$font-family-monospace: Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !default;
+$font-size-root: 14px;
+$line-height-base: 1.6;
+$text-color: #000000;
+$text-muted: #b3b3b3;
+
+// Navbar
+$navbar-default-bg: #fff;
+
+// Buttons
+$btn-default-color: $text-color;
+
+// Inputs
+$input-border: $zero-border-color;
+$input-border-focus: lighten($brand-primary, 25%);
+$input-color-placeholder: #b3b3b3;
+
+// Panels
+$panel-default-heading-bg: #fff;
+
+// Border Radius - All
+$border-radius: .125rem !default;
+$border-radius-lg: .25rem !default;
+$border-radius-sm: .1rem !default;
+
+@function strip-unit($number) {
+  @if type-of($number) == 'number' and not unitless($number) {
+    @return $number / ($number * 0 + 1);
+  }
+
+  @return $number;
+}
+
+@function rem($value) {
+  @if (unit($value) == 'px') {
+    $base: strip-unit($font-size-root);
+    $value: strip-unit($value);
+    @return $value/$base + 0rem;
+  }
+}

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="346px" height="337px" viewBox="0 0 346 337" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 3.8.3 (29802) - http://www.bohemiancoding.com/sketch -->
+    <title>Group 16</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <rect id="path-1" x="0" y="-9.9475983e-13" width="338" height="328.280874" rx="9.90000039"></rect>
+        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-2">
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+        <polygon id="path-3" points="140.904 19.7759563 222.864644 66.9685792 222.864644 161.353825 140.904 208.546448 58.9433558 161.353825 58.9433558 66.9685792"></polygon>
+        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-4">
+            <feMorphology radius="0.25" operator="dilate" in="SourceAlpha" result="shadowSpreadOuter1"></feMorphology>
+            <feOffset dx="0" dy="2" in="shadowSpreadOuter1" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="12.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feComposite in="shadowBlurOuter1" in2="SourceAlpha" operator="out" result="shadowBlurOuter1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-5">
+            <stop stop-color="#F66C2E" offset="0%"></stop>
+            <stop stop-color="#E9723C" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-6">
+            <stop stop-color="#41E9F8" offset="0%"></stop>
+            <stop stop-color="#49D5DF" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-7">
+            <stop stop-color="#FAB84A" offset="0%"></stop>
+            <stop stop-color="#FAB94A" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="0%" y1="0%" x2="100%" y2="100%" id="linearGradient-8">
+            <stop stop-color="#BBE289" offset="0%"></stop>
+            <stop stop-color="#BCE289" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="0%" y1="0%" x2="100%" y2="100%" id="linearGradient-9">
+            <stop stop-color="#B45D95" offset="0%"></stop>
+            <stop stop-color="#B45E96" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="0%" y1="0%" x2="100%" y2="100%" id="linearGradient-10">
+            <stop stop-color="#F43651" offset="0%"></stop>
+            <stop stop-color="#F43651" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+        <polygon id="path-11" points="163.436982 79.8229514 237.073403 122.262718 228.785868 202.703646 163.436982 230.487208 106.357333 197.728644 111.639972 135.232123"></polygon>
+        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-12">
+            <feMorphology radius="0.450000018" operator="dilate" in="SourceAlpha" result="shadowSpreadOuter1"></feMorphology>
+            <feOffset dx="0" dy="4" in="shadowSpreadOuter1" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="4" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feComposite in="shadowBlurOuter1" in2="SourceAlpha" operator="out" result="shadowBlurOuter1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+        <polygon id="path-13" points="163.567402 110.385793 237.203823 122.339422 211.395922 192.557949 163.567402 230.563911 116.503575 192.36885 116.272 138.02549"></polygon>
+        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-14">
+            <feMorphology radius="0.450000018" operator="dilate" in="SourceAlpha" result="shadowSpreadOuter1"></feMorphology>
+            <feOffset dx="0" dy="4" in="shadowSpreadOuter1" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="4" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feComposite in="shadowBlurOuter1" in2="SourceAlpha" operator="out" result="shadowBlurOuter1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.2 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Artboard-1" transform="translate(-201.000000, -4322.000000)">
+            <g id="Group-16" transform="translate(205.000000, 4324.000000)">
+                <g id="Group-15">
+                    <g id="background">
+                        <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                        <use fill="#242536" fill-rule="evenodd" xlink:href="#path-1"></use>
+                    </g>
+                    <g id="Cobweb" transform="translate(22.237333, 50.159017)">
+                        <g id="Polygon-1">
+                            <use fill="black" fill-opacity="1" filter="url(#filter-4)" xlink:href="#path-3"></use>
+                            <use stroke="" stroke-width="0.5" fill="#242536" fill-rule="evenodd" xlink:href="#path-3"></use>
+                        </g>
+                        <path d="M140.904,19.7684947 L140.904,84.3926493" id="Path-33" stroke="url(#linearGradient-5)" stroke-width="0.5"></path>
+                        <path d="M140.904,143.817675 L140.904,208.44183" id="Path-33-Copy-3" stroke="url(#linearGradient-6)" stroke-width="0.5" transform="translate(140.904000, 176.129752) scale(1, -1) translate(-140.904000, -176.129752) "></path>
+                        <path d="M59.0081592,67.0209988 L114.420293,99.7455805" id="Path-33-Copy" stroke="url(#linearGradient-7)" stroke-width="0.5"></path>
+                        <path d="M59.1267273,130.242657 L114.511702,161.18324" id="Path-33-Copy-4" stroke="url(#linearGradient-8)" stroke-width="0.5" transform="translate(86.819214, 145.712949) scale(1, -1) translate(-86.819214, -145.712949) "></path>
+                        <path d="M167.286727,130.242657 L222.671702,161.18324" id="Path-33-Copy-5" stroke="url(#linearGradient-9)" stroke-width="0.5" transform="translate(194.979214, 145.712949) scale(-1, -1) translate(-194.979214, -145.712949) "></path>
+                        <path d="M167.168159,67.0209988 L222.580293,99.7455805" id="Path-33-Copy-2" stroke="url(#linearGradient-10)" stroke-width="0.5" transform="translate(194.874226, 83.383290) scale(-1, 1) translate(-194.874226, -83.383290) "></path>
+                        <ellipse id="Oval-34" fill="#F56C2E" cx="140.904" cy="15.2814208" rx="0.901333333" ry="0.898907104"></ellipse>
+                        <ellipse id="Oval-34-Copy-3" fill="#41E9F8" cx="140.904" cy="213.827811" rx="0.901333333" ry="0.898907104"></ellipse>
+                        <ellipse id="Oval-34-Copy" fill="#FAB84A" cx="54.376" cy="64.7213115" rx="0.901333333" ry="0.898907104"></ellipse>
+                        <ellipse id="Oval-34-Copy-4" fill="#BBE28A" cx="54.376" cy="163.601093" rx="0.901333333" ry="0.898907104"></ellipse>
+                        <ellipse id="Oval-34-Copy-2" fill="#F43651" cx="227.432" cy="64.7213115" rx="0.901333333" ry="0.898907104"></ellipse>
+                        <ellipse id="Oval-34-Copy-5" fill="#B45D95" cx="227.432" cy="163.601093" rx="0.901333333" ry="0.898907104"></ellipse>
+                        <text id="Security" font-family="Zero, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="9" font-weight="normal" fill="#FFFFFF">
+                            <tspan x="126.017085" y="7">Security</tspan>
+                        </text>
+                        <text id="User-Interface" font-family="Zero, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="9" font-weight="normal" fill="#FFFFFF">
+                            <tspan x="115.162593" y="227.12016">User Interface</tspan>
+                        </text>
+                        <text id="Updates" font-family="Zero, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="9" font-weight="normal" fill="#FFFFFF">
+                            <tspan x="233.741333" y="166.106557">Updates</tspan>
+                        </text>
+                        <text id="Features" font-family="Zero, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="9" font-weight="normal" fill="#FFFFFF">
+                            <tspan x="233.741333" y="66.3278689">Features</tspan>
+                        </text>
+                        <text id="Multifaceted" font-family="Zero, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="9" font-weight="normal" fill="#FFFFFF">
+                            <tspan x="-2.729295076" y="166.106557">Multifaceted</tspan>
+                        </text>
+                        <text id="API" font-family="Zero, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="9" font-weight="normal" fill="#FFFFFF">
+                            <tspan x="33.9730464" y="66.3278689">API</tspan>
+                        </text>
+                    </g>
+                    <g id="Superman">
+                        <use fill="black" fill-opacity="1" filter="url(#filter-12)" xlink:href="#path-11"></use>
+                        <use stroke-opacity="0.5" stroke="#50E3C2" stroke-width="0.900000036" fill-opacity="0.2" fill="#50E3C2" fill-rule="evenodd" xlink:href="#path-11"></use>
+                    </g>
+                    <g id="batman">
+                        <use fill="black" fill-opacity="1" filter="url(#filter-14)" xlink:href="#path-13"></use>
+                        <use stroke-opacity="0.5" stroke="#17D1F7" stroke-width="0.900000036" fill-opacity="0.209999993" fill="#32A2FF" fill-rule="evenodd" xlink:href="#path-13"></use>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

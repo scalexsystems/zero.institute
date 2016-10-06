@@ -10,8 +10,13 @@
         "laravel/passport": "^1.0",
         "laravel/scout": "^1.1",
         "laravel/socialite": "^2.0",
-        "znck/repository": "^0.3.0",
-        "znck/plug": "^0.1.8"
+        "league/fractal": "^0.14.0",
+        "barryvdh/laravel-ide-helper": "^2.2",
+        "znck/attach": "dev-master",
+        "znck/cities": "dev-master",
+        "znck/repository": "dev-master",
+        "znck/transformer": "dev-master",
+        "znck/trust": "dev-master"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
@@ -19,7 +24,7 @@
         "phpunit/phpunit": "~5.0",
         "symfony/css-selector": "3.1.*",
         "symfony/dom-crawler": "3.1.*",
-        "barryvdh/laravel-ide-helper": "^2.2"
+        "doctrine/dbal": "^2.5"
     },
     "autoload": {
         "classmap": [

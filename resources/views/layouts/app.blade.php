@@ -8,10 +8,9 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'Zero') }}</title>
 
     <!-- Styles -->
-    <link href="/css/app.css" rel="stylesheet">
 
     <!-- Scripts -->
     <script>
@@ -78,8 +77,5 @@
     </nav>
 
     @yield('content')
-
-    <!-- Scripts -->
-    <script src="/js/app.js"></script>
 </body>
 </html>

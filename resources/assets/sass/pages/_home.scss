@@ -1,0 +1,157 @@
+
+#intro {
+  background-size: contain;
+  background-image: url("/img/web/bg.svg"), linear-gradient(to bottom, #ffffff, #f7f7f7);
+  background-repeat: no-repeat no-repeat;
+  background-position: bottom center;
+
+  padding: 10rem 0 0;
+  h1 {
+    font-size: 2.625rem;
+  }
+
+  p {
+    color: #4a4a4a;
+    margin: 1rem 0 2rem;
+  }
+
+  a.learn-more {
+    color: $text-light;
+    margin-bottom: 3rem;
+    display: inline-block;
+    text-decoration: none;
+    &:hover, &:focus, &:visited, &:active {
+      color: $text-light;
+      text-decoration: none;
+    }
+  }
+
+  .fa-check-square-o {
+    color: $brand-primary;
+  }
+}
+#video {
+  padding: 4.5rem 0 7.5rem;
+  text-align: center;
+  a.btn-video {
+    border-radius: 1000px;
+    color: #000000;
+    background: #ffffff;
+    font-size: .875rem;
+    padding: 1.25rem 2.5rem;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .1);
+    &:focus, &:active {
+      outline: 0;
+    }
+    i {
+      color: $brand-primary;
+    }
+  }
+}
+#pricing, #invite {
+  background-color: #b3cfe6;
+  padding: 3rem 0;
+  h2 {
+    color: #ffffff;
+    margin-bottom: 2rem;
+    font-weight: normal;
+  }
+  p {
+    color: #ffffff;
+    margin: 1rem 0 .75rem;
+  }
+  input {
+    border-color: transparent;
+  }
+}
+#features {
+  padding: 3rem 0;
+  .row {
+    &:not(:last-child):after {
+      display: block;
+      content: '';
+      height: 1px;
+      background-color: #f7f7f7;
+      width: 60%;
+      margin: 3rem auto;
+    }
+
+    @include media-breakpoint-up(md) {
+      align-items: center;
+      justify-content: center;
+    }
+
+    img {
+      margin: 2rem 0;
+    }
+
+    > div:first-child {
+      text-align: center;
+    }
+
+    p {
+      color: $text-light;
+      max-width: 300px;
+    }
+  }
+}
+#security {
+  background: #f7f7f7;
+  padding: 1rem 0 3rem;
+  .row {
+    @include media-breakpoint-up(md) {
+      align-items: center;
+      justify-content: center;
+    }
+
+    > div:first-child {
+      text-align: center;
+    }
+  }
+
+  img {
+    margin: 2rem 0;
+  }
+
+  p {
+    color: $text-light;
+    max-width: 300px;
+  }
+}
+#clients {
+  padding: 3rem 0;
+  h2 {
+    margin-bottom: 3rem;
+  }
+  .client {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    text-align: center;
+    @include media-breakpoint-up(md) {
+      text-align: left;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+    p {
+      color: $text-light;
+    }
+    img {
+      margin: 2rem auto;
+      height: 106px;
+      width: 106px;
+      @include media-breakpoint-up(md) {
+        margin: 2rem;
+      }
+    }
+    div {
+      flex: 1;
+    }
+  }
+}
+.invite-form {
+  input, .btn {
+    padding: 1rem 1.5rem;
+    font-size: .875rem;
+  }
+}
