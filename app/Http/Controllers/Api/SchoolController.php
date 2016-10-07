@@ -14,11 +14,19 @@ class SchoolController extends Controller
     public function index(Request $request) {
         $schools = repository(School::class)
             ->with(['address', 'logo'])
-            ->search($request->query('q', ''))
-            ->where('verified', true)
-            ->paginate();
+            ->pushCriteria(
+                criteria(
+                    function ($query) {
+                        $query->where('verified', true);
+                    }
+                )
+            );
 
-        return $schools;
+        if ($request->has('q')) {
+            $schools->search($request->query('q'));
+        }
+
+        return $schools->paginate();
     }
 
     /*
@@ -28,8 +36,10 @@ class SchoolController extends Controller
      *
      * Requires: auth
      */
-    public function show() {
-        return $this->user()->school;
+    public function show(Request $request) {
+        $request->query->add(['with' => 'address']);
+
+        return $request->user()->school;
     }
 
     /*
@@ -40,9 +50,11 @@ class SchoolController extends Controller
      * Requires: auth
      */
     public function update(Request $request) {
-        $school = $this->user()->school;
+        $school = $request->user()->school;
 
-        repository(School::class)->update($request->input(), $school);
+        $this->authorize($school);
+
+        repository(School::class)->update($school, $request->all());
 
         return $this->accepted();
     }

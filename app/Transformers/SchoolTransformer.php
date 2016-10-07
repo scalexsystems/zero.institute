@@ -6,9 +6,20 @@ use Znck\Transformers\Transformer;
 
 class SchoolTransformer extends Transformer
 {
-    public function show(School $model) {
+    protected $availableIncludes = ['address'];
+
+    public function show(School $school) {
         return [
-            'name' => $model->name,
+            'name' => $school->name,
+            'logo' => $this->logo($school),
+            'logo_id' => (string)$school->logo_id,
+            'email' => (string)$school->email,
+            'fax' => (string)$school->fax,
+            'medium' => (string)$school->medium,
+            'website' => (string)$school->website,
+            'university' => (string)$school->university,
+            'institute_type' => (string)$school->institute_type,
+            'verified' => (boolean)$school->verified,
         ];
     }
 
@@ -16,17 +27,17 @@ class SchoolTransformer extends Transformer
         return [
             'name' => $school->name,
             'logo' => $this->logo($school),
-            'extra' => ($school->relationLoaded('address') and $school->address)
-                ? [
-                    'city' => $school->address->city->name,
-                    'state' => $school->address->city->state->name,
-                ]
-                : [
-                    'city' => '',
-                    'state' => '',
-                ],
+            'extra' => [
+                'city' => $school->address->city->name ?? '',
+                'state' => $school->address->city->state->name ?? '',
+            ],
         ];
     }
+
+    public function includeAddress(School $school) {
+        return $this->item($school->address, transformer($school->address));
+    }
+
 
     /**
      * @param \Scalex\Zero\Models\School $school

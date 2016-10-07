@@ -166,7 +166,6 @@ return [
         /*
          * Package Service Providers...
          */
-
         Laravel\Scout\ScoutServiceProvider::class,
         Laravel\Passport\PassportServiceProvider::class,
         Znck\Attach\AttachServiceProvider::class,

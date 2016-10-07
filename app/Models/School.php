@@ -20,6 +20,12 @@ class School extends BaseModel
         'verified',
     ];
 
+    protected $searchable = [
+        'name',
+        'slug',
+        'verified',
+    ];
+
     protected $casts = [
         'verified' => 'bool',
     ];

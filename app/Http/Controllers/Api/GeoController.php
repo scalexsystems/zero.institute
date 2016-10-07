@@ -11,13 +11,18 @@ use Scalex\Zero\Models\Geo\City;
 class GeoController extends Controller
 {
     public function cities(Request $request) {
-        $q = $request->query('q', '');
+        $cities = repository(City::class);
 
-        $cites = repository(City::class)
-            ->pushCriteria(new ExactMatch($q))
-            ->search($q)
-            ->paginate();
+        if ($request->has('q')) {
+            $q = $request->query('q');
 
-        return $cites;
+            if (is_numeric($q)) {
+                $cities->pushCriteria(new ExactMatch($q));
+            } else {
+                $cities->search($q);
+            }
+        }
+
+        return $cities->paginate();
     }
 }

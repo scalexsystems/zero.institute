@@ -4,9 +4,20 @@ namespace Scalex\Zero\Exceptions;
 
 use Exception;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Illuminate\Support\Str;
+use Illuminate\Http\Exception\HttpResponseException;
 use Illuminate\Validation\ValidationException;
+use Log;
+use Symfony\Component\Debug\Exception\FlattenException;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Znck\Repositories\Exceptions\DeleteResourceException;
+use Znck\Repositories\Exceptions\NotFoundResourceException;
+use Znck\Repositories\Exceptions\ResourceException;
+use Znck\Repositories\Exceptions\StoreResourceException;
+use Znck\Repositories\Exceptions\UpdateResourceException;
 
 class Handler extends ExceptionHandler
 {
@@ -22,32 +33,8 @@ class Handler extends ExceptionHandler
         \Illuminate\Database\Eloquent\ModelNotFoundException::class,
         \Illuminate\Session\TokenMismatchException::class,
         \Illuminate\Validation\ValidationException::class,
+        \Znck\Repositories\Exceptions\ResourceException::class,
     ];
-
-    /**
-     * Report or log an exception.
-     *
-     * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
-     *
-     * @param  \Exception $exception
-     *
-     * @return void
-     */
-    public function report(Exception $exception) {
-        parent::report($exception);
-    }
-
-    /**
-     * Render an exception into an HTTP response.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \Exception $exception
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function render($request, Exception $exception) {
-        return parent::render($request, $exception);
-    }
 
     /**
      * Convert an authentication exception into an unauthenticated response.
@@ -58,42 +45,92 @@ class Handler extends ExceptionHandler
      * @return \Illuminate\Http\Response
      */
     protected function unauthenticated($request, AuthenticationException $exception) {
-        if ($request->expectsJson()) {
-            return response()->json(['message' => 'Unauthenticated.'], 401);
+        if ($request->acceptsJson()) {
+            return response()->json(['message' => 'Unauthenticated.'], Response::HTTP_FORBIDDEN);
         }
 
         return redirect()->guest('login');
     }
 
     /**
-     * Render an exception into an HTTP response.
+     * Render an exception into a response.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \Exception $exception
+     * @param \Illuminate\Http\Request $request
+     * @param \Exception $e
      *
-     * @return \Illuminate\Http\Response
+     * @return \Symfony\Component\HttpFoundation\Response|void
      */
-    protected function prepareResponseForApi($request, Exception $exception) {
-        if ($exception instanceof ValidationException) {
-            return response()->json(
-                [
-                    'message' => $exception->getMessage(),
-                    'errors' => $exception->validator->getMessageBag(),
-                ],
-                422
-            );
+    public function render($request, Exception $e) {
+        if ($request->acceptsJson()) {
+            return $this->renderForApi($request, $e);
         }
 
-        return response()->json(['message' => $exception->getMessage()], $exception->getCode());
+        return parent::render($request, $e);
     }
 
-    protected function prepareResponse($request, Exception $exception) {
-        if ($request->expectsJson()) {
-            return $this->prepareResponseForApi($request, $exception);
+    /**
+     * Render an exception into a response for JSON API.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \Exception $e
+     *
+     * @return \Symfony\Component\HttpFoundation\Response|void
+     */
+    public function renderForApi($request, $e) {
+        if (
+            $e instanceof UpdateResourceException or
+            $e instanceof StoreResourceException or
+            $e instanceof DeleteResourceException
+        ) {
+            return $this->convertValidationExceptionToJson($e, $request);
+        } elseif ($e instanceof AuthenticationException) {
+            return $this->unauthenticated($request, $e);
+        } elseif ($e instanceof ValidationException) {
+            return $this->convertValidationExceptionToJson($e, $request);
+        } elseif (
+            $e instanceof NotFoundHttpException or
+            $e instanceof ModelNotFoundException or
+            $e instanceof NotFoundResourceException
+        ) {
+            return response()->json(['message' => $e->getMessage()], Response::HTTP_NOT_FOUND);
+        } elseif ($e instanceof HttpException and $e->getCode() >= 400) {
+            return response()->json(['message' => $e->getMessage()], $e->getCode());
         }
 
-        return parent::prepareResponse($request, $exception);
+        $context = [
+            'error' => get_class($e),
+            'message' => $e->getMessage(),
+            'code' => $e->getCode(),
+            'file' => $e->getFile(),
+            'line' => $e->getLine(),
+            'trace' => FlattenException::create($e)->toArray(),
+        ];
+
+        Log::error('UNKNOWN EXCEPTION: '.get_class($e), $context);
+
+
+        $response = ['message' => 'Woops! something very bad just happened!'];
+
+        if (config('app.debug')) {
+            $response += ['debug' => $context];
+        }
+
+        return response()->json($response, 500);
     }
 
-
+    /**
+     * @param \Illuminate\Http\Request $request
+     * @param ValidationException|ResourceException $e
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function convertValidationExceptionToJson($e, $request) {
+        return response()->json(
+            [
+                'message' => $e->getMessage(),
+                'errors' => $e->validator->getMessageBag() ?? $e->getErrors(),
+            ],
+            422
+        );
+    }
 }

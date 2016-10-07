@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'driver' => env('SCOUT_DRIVER', 'null'),
+    'driver' => env('SCOUT_DRIVER', 'elasticsearch'),
 
     /*
     |--------------------------------------------------------------------------
@@ -41,7 +41,7 @@ return [
     |
     */
 
-    'queue' => false,
+    'queue' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -71,7 +71,7 @@ return [
     */
 
     'elasticsearch' => [
-        'index' => env('ELASTICSEARCH_INDEX', 'laravel'),
+        'index' => env('ELASTICSEARCH_INDEX', 'zero'),
 
         'config' => [
             'hosts' => [

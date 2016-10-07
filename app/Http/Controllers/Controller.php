@@ -14,14 +14,6 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, TransformResponse, ValidatesRequests;
 
-    /**
-     * Get Auth user.
-     * @return \Scalex\Zero\User
-     */
-    protected function user() {
-        return Auth::user();
-    }
-
     protected function created($location = null) {
         $response = $this->response(Response::HTTP_CREATED);
 

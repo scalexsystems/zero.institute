@@ -1,8 +1,10 @@
 <?php
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Scalex\Zero\Contracts\Database\BelongsToSchool;
+use Scalex\Zero\Models\School;
 use Znck\Repositories\Exceptions\NotFoundResourceException;
 
 if (!function_exists('find')) {
@@ -36,9 +38,13 @@ if (!function_exists('find')) {
 }
 
 if (!function_exists('verify_school')) {
-    function verify_school(Model $model) {
+    function verify_school(Model $model, School $school = null) {
         if ($model instanceof BelongsToSchool) {
-            return Auth::check() and hash_equals(Auth::user()->school_id, $model->school_id);
+            if (!is_null($school)) {
+                return $school->getKey() === $model->school_id;
+            }
+
+            return current_user()->school_id === $model->school_id;
         }
 
         return true;
@@ -55,5 +61,14 @@ if (!function_exists('morph_model')) {
 
             return $inverted[$model];
         }
+    }
+}
+
+if (!function_exists('current_user')) {
+    /**
+     * @return \Illuminate\Contracts\Auth\Authenticatable|\Scalex\Zero\User
+     */
+    function current_user() {
+        return auth()->user() ?? auth('api')->user();
     }
 }

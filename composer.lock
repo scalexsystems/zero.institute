@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "1ebfc03c0c5eb9338598324a57463753",
-    "content-hash": "32d0e8429fa3ff2e5503d5cefab0d4b4",
+    "hash": "63bbae0a0056cdffcf8522fc9d493abf",
+    "content-hash": "594e2f66ac68ac4b4019435e58d402ab",
     "packages": [
         {
             "name": "barryvdh/laravel-ide-helper",
@@ -277,6 +277,60 @@
             "time": "2015-11-06 14:35:42"
         },
         {
+            "name": "elasticsearch/elasticsearch",
+            "version": "v2.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/elastic/elasticsearch-php.git",
+                "reference": "7b34186a58730d0a8963741bd62fa5ab45658ada"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/elastic/elasticsearch-php/zipball/7b34186a58730d0a8963741bd62fa5ab45658ada",
+                "reference": "7b34186a58730d0a8963741bd62fa5ab45658ada",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/ringphp": "~1.0",
+                "php": ">=5.4",
+                "psr/log": "~1.0"
+            },
+            "require-dev": {
+                "cpliakas/git-wrapper": "~1.0",
+                "mockery/mockery": "0.9.4",
+                "phpunit/phpunit": "~4.7",
+                "sami/sami": "~3.2",
+                "symfony/yaml": "2.4.3 as 2.4.2",
+                "twig/twig": "1.*"
+            },
+            "suggest": {
+                "ext-curl": "*",
+                "monolog/monolog": "Allows for client-level logging and tracing"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Elasticsearch\\": "src/Elasticsearch/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Zachary Tong"
+                }
+            ],
+            "description": "PHP Client for Elasticsearch",
+            "keywords": [
+                "client",
+                "elasticsearch",
+                "search"
+            ],
+            "time": "2016-07-14 14:13:40"
+        },
+        {
             "name": "firebase/php-jwt",
             "version": "v4.0.0",
             "source": {
@@ -491,6 +545,107 @@
             "time": "2016-06-24 23:00:38"
         },
         {
+            "name": "guzzlehttp/ringphp",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/guzzle/RingPHP.git",
+                "reference": "dbbb91d7f6c191e5e405e900e3102ac7f261bc0b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/guzzle/RingPHP/zipball/dbbb91d7f6c191e5e405e900e3102ac7f261bc0b",
+                "reference": "dbbb91d7f6c191e5e405e900e3102ac7f261bc0b",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/streams": "~3.0",
+                "php": ">=5.4.0",
+                "react/promise": "~2.0"
+            },
+            "require-dev": {
+                "ext-curl": "*",
+                "phpunit/phpunit": "~4.0"
+            },
+            "suggest": {
+                "ext-curl": "Guzzle will use specific adapters if cURL is present"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "GuzzleHttp\\Ring\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Dowling",
+                    "email": "mtdowling@gmail.com",
+                    "homepage": "https://github.com/mtdowling"
+                }
+            ],
+            "description": "Provides a simple API and specification that abstracts away the details of HTTP into a single PHP function.",
+            "time": "2015-05-20 03:37:09"
+        },
+        {
+            "name": "guzzlehttp/streams",
+            "version": "3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/guzzle/streams.git",
+                "reference": "47aaa48e27dae43d39fc1cea0ccf0d84ac1a2ba5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/guzzle/streams/zipball/47aaa48e27dae43d39fc1cea0ccf0d84ac1a2ba5",
+                "reference": "47aaa48e27dae43d39fc1cea0ccf0d84ac1a2ba5",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "GuzzleHttp\\Stream\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Dowling",
+                    "email": "mtdowling@gmail.com",
+                    "homepage": "https://github.com/mtdowling"
+                }
+            ],
+            "description": "Provides a simple abstraction over streams of data",
+            "homepage": "http://guzzlephp.org/",
+            "keywords": [
+                "Guzzle",
+                "stream"
+            ],
+            "time": "2014-10-12 19:18:40"
+        },
+        {
             "name": "intervention/image",
             "version": "2.3.8",
             "source": {
@@ -699,16 +854,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v5.3.15",
+            "version": "v5.3.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "f034a02f38db77d4b0b3e89942394cae456a627f"
+                "reference": "67fb3e638eb4d862279f50642101910163d14e61"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/f034a02f38db77d4b0b3e89942394cae456a627f",
-                "reference": "f034a02f38db77d4b0b3e89942394cae456a627f",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/67fb3e638eb4d862279f50642101910163d14e61",
+                "reference": "67fb3e638eb4d862279f50642101910163d14e61",
                 "shasum": ""
             },
             "require": {
@@ -823,20 +978,20 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2016-09-29 22:13:17"
+            "time": "2016-10-06 18:06:32"
         },
         {
             "name": "laravel/passport",
-            "version": "v1.0.3",
+            "version": "v1.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/passport.git",
-                "reference": "79108ea5ee99a06f6e8503d248161b01e5fa3e86"
+                "reference": "b95791d42f42d405ffacdf21007f80ef7798b164"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/passport/zipball/79108ea5ee99a06f6e8503d248161b01e5fa3e86",
-                "reference": "79108ea5ee99a06f6e8503d248161b01e5fa3e86",
+                "url": "https://api.github.com/repos/laravel/passport/zipball/b95791d42f42d405ffacdf21007f80ef7798b164",
+                "reference": "b95791d42f42d405ffacdf21007f80ef7798b164",
                 "shasum": ""
             },
             "require": {
@@ -887,20 +1042,20 @@
                 "oauth",
                 "passport"
             ],
-            "time": "2016-10-03 13:00:41"
+            "time": "2016-10-06 13:50:39"
         },
         {
             "name": "laravel/scout",
-            "version": "v1.1.5",
+            "version": "v1.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/scout.git",
-                "reference": "e8209540a39ab19c3e5849ab7b7bf57b4a1454a6"
+                "reference": "e0eff31c5443a83c8e5ae3778cb67297970c0ae8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/scout/zipball/e8209540a39ab19c3e5849ab7b7bf57b4a1454a6",
-                "reference": "e8209540a39ab19c3e5849ab7b7bf57b4a1454a6",
+                "url": "https://api.github.com/repos/laravel/scout/zipball/e0eff31c5443a83c8e5ae3778cb67297970c0ae8",
+                "reference": "e0eff31c5443a83c8e5ae3778cb67297970c0ae8",
                 "shasum": ""
             },
             "require": {
@@ -950,7 +1105,7 @@
                 "laravel",
                 "search"
             ],
-            "time": "2016-09-27 13:41:14"
+            "time": "2016-10-05 15:30:00"
         },
         {
             "name": "laravel/socialite",
@@ -2009,6 +2164,50 @@
             "time": "2016-10-02 15:51:17"
         },
         {
+            "name": "react/promise",
+            "version": "v2.4.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/reactphp/promise.git",
+                "reference": "8025426794f1944de806618671d4fa476dc7626f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/reactphp/promise/zipball/8025426794f1944de806618671d4fa476dc7626f",
+                "reference": "8025426794f1944de806618671d4fa476dc7626f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "React\\Promise\\": "src/"
+                },
+                "files": [
+                    "src/functions_include.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jan Sorgalla",
+                    "email": "jsorgalla@gmail.com"
+                }
+            ],
+            "description": "A lightweight implementation of CommonJS Promises/A for PHP",
+            "time": "2016-05-03 17:50:52"
+        },
+        {
             "name": "swiftmailer/swiftmailer",
             "version": "v5.4.3",
             "source": {
@@ -2953,6 +3152,48 @@
             "time": "2016-09-29 14:13:09"
         },
         {
+            "name": "tamayo/laravel-scout-elastic",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ErickTamayo/laravel-scout-elastic.git",
+                "reference": "26b3ecccdd07a853a57a072557c882190c261ca9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ErickTamayo/laravel-scout-elastic/zipball/26b3ecccdd07a853a57a072557c882190c261ca9",
+                "reference": "26b3ecccdd07a853a57a072557c882190c261ca9",
+                "shasum": ""
+            },
+            "require": {
+                "elasticsearch/elasticsearch": "^2.2",
+                "illuminate/database": "^5.3",
+                "illuminate/support": "^5.3",
+                "laravel/scout": "^1.0",
+                "php": ">=5.6.4"
+            },
+            "require-dev": {
+                "fzaninotto/faker": "~1.4",
+                "mockery/mockery": "0.9.*",
+                "phpunit/phpunit": "~5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "ScoutEngines\\Elasticsearch\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "Elastic Driver for Laravel Scout",
+            "keywords": [
+                "elastic",
+                "elasticsearch",
+                "laravel",
+                "scout"
+            ],
+            "time": "2016-09-20 16:15:08"
+        },
+        {
             "name": "vlucas/phpdotenv",
             "version": "v2.4.0",
             "source": {
@@ -3168,12 +3409,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/znck/repository.git",
-                "reference": "6aa1d8102117d615055363137704824b3293dbb6"
+                "reference": "b91c15e737fb770d75ec2df9b9e2917ea52cf6e0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/znck/repository/zipball/6aa1d8102117d615055363137704824b3293dbb6",
-                "reference": "6aa1d8102117d615055363137704824b3293dbb6",
+                "url": "https://api.github.com/repos/znck/repository/zipball/b91c15e737fb770d75ec2df9b9e2917ea52cf6e0",
+                "reference": "b91c15e737fb770d75ec2df9b9e2917ea52cf6e0",
                 "shasum": ""
             },
             "require": {
@@ -3217,7 +3458,7 @@
                 "repositories",
                 "repository"
             ],
-            "time": "2016-10-03 16:13:50"
+            "time": "2016-10-07 07:22:21"
         },
         {
             "name": "znck/transformer",
@@ -3225,12 +3466,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/znck/transformer.git",
-                "reference": "80623eb3ccdccd4c61c0a6bf356f9595e6cd5821"
+                "reference": "a90a6f3be02a7616415eed7f2d0b2b29d4c1eba1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/znck/transformer/zipball/80623eb3ccdccd4c61c0a6bf356f9595e6cd5821",
-                "reference": "80623eb3ccdccd4c61c0a6bf356f9595e6cd5821",
+                "url": "https://api.github.com/repos/znck/transformer/zipball/a90a6f3be02a7616415eed7f2d0b2b29d4c1eba1",
+                "reference": "a90a6f3be02a7616415eed7f2d0b2b29d4c1eba1",
                 "shasum": ""
             },
             "require": {
@@ -3274,7 +3515,7 @@
                 "repositories",
                 "transformer"
             ],
-            "time": "2016-10-05 11:53:36"
+            "time": "2016-10-06 16:36:06"
         },
         {
             "name": "znck/trust",
@@ -3282,12 +3523,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/znck/trust.git",
-                "reference": "013026ebdc0fd7d4570643ce6bad9484a99ab8b4"
+                "reference": "f4b5337307a88bfe586ebb6f552cfa5ad0ae46a9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/znck/trust/zipball/013026ebdc0fd7d4570643ce6bad9484a99ab8b4",
-                "reference": "013026ebdc0fd7d4570643ce6bad9484a99ab8b4",
+                "url": "https://api.github.com/repos/znck/trust/zipball/f4b5337307a88bfe586ebb6f552cfa5ad0ae46a9",
+                "reference": "f4b5337307a88bfe586ebb6f552cfa5ad0ae46a9",
                 "shasum": ""
             },
             "require": {
@@ -3333,7 +3574,7 @@
                 "roles",
                 "trust"
             ],
-            "time": "2016-10-06 09:35:50"
+            "time": "2016-10-07 09:23:01"
         }
     ],
     "packages-dev": [
@@ -4447,16 +4688,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "5.5.6",
+            "version": "5.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "146e0fe0bb7f44d1cefade0c93e86fe0b206dd79"
+                "reference": "a7f2db56518e50ab92f28f739810dfad2f223b6b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/146e0fe0bb7f44d1cefade0c93e86fe0b206dd79",
-                "reference": "146e0fe0bb7f44d1cefade0c93e86fe0b206dd79",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/a7f2db56518e50ab92f28f739810dfad2f223b6b",
+                "reference": "a7f2db56518e50ab92f28f739810dfad2f223b6b",
                 "shasum": ""
             },
             "require": {
@@ -4490,7 +4731,6 @@
                 "ext-pdo": "*"
             },
             "suggest": {
-                "ext-tidy": "*",
                 "ext-xdebug": "*",
                 "phpunit/php-invoker": "~1.1"
             },
@@ -4500,7 +4740,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "5.5.x-dev"
+                    "dev-master": "5.6.x-dev"
                 }
             },
             "autoload": {
@@ -4526,7 +4766,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2016-10-03 07:48:45"
+            "time": "2016-10-06 15:20:39"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -5307,58 +5547,6 @@
                 "validate"
             ],
             "time": "2016-08-09 15:02:57"
-        },
-        {
-            "name": "znck/belongs-to-through",
-            "version": "v2.2.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/znck/belongs-to-through.git",
-                "reference": "c4c9171fb1520f86223e44535199d90ebe06ec52"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/znck/belongs-to-through/zipball/c4c9171fb1520f86223e44535199d90ebe06ec52",
-                "reference": "c4c9171fb1520f86223e44535199d90ebe06ec52",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/database": "~5.0"
-            },
-            "require-dev": {
-                "fabpot/php-cs-fixer": "^1.11",
-                "orchestra/testbench": "~3.0",
-                "phpunit/php-code-coverage": "^3.3",
-                "phpunit/phpunit": "~5.0",
-                "satooshi/php-coveralls": "^1.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Znck\\Eloquent\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Rahul Kadyan",
-                    "email": "hi@znck.me"
-                }
-            ],
-            "description": "Adds belongsToThrough relation to laravel models",
-            "homepage": "https://github.com/znck/belongs-to-through",
-            "keywords": [
-                "belongsToThrough",
-                "eloquent",
-                "laravel",
-                "model",
-                "models",
-                "znck"
-            ],
-            "time": "2016-05-29 07:46:22"
         }
     ],
     "aliases": [],

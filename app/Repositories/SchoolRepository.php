@@ -1,6 +1,7 @@
 <?php namespace Scalex\Zero\Repositories;
 
 use Illuminate\Database\Eloquent\Model;
+use Log;
 use Scalex\Zero\Models\Attachment;
 use Scalex\Zero\Models\Geo\Address;
 use Scalex\Zero\Models\School;
@@ -43,13 +44,6 @@ class SchoolRepository extends Repository
         'verified' => 'nullable|boolean',
     ];
 
-    public function search(string $q) {
-        $this->applyCriteria();
-
-        // TODO: Remove this override after indexing is enabled.
-        return $this->getQuery()->where('name', 'like', $q.'%');
-    }
-
     /**
      * @param array $rules
      * @param array $attributes
@@ -58,18 +52,24 @@ class SchoolRepository extends Repository
      * @return array
      */
     public function getUpdateRules(array $rules, array $attributes, $school) {
-        $all = $rules + [
+        $all = $rules + array_dot([
                 'address' => repository(Address::class)->getRules($attributes, $school->address),
-            ];
+            ]);
+
+        Log::debug('VALIDATE SCHOOL', $all);
 
         return array_only($all, array_keys($attributes));
     }
 
     public function updating(School $school, array $attr) {
+        Log::debug('UPDATING SCHOOL: '.$school->getKey(), ['attr' => $attr]);
+
         $school->fill($attr);
 
         if (!$school->address) {
-            repository(Address::class)->create(['school_id' => $school->getKey()] + array_get($attr, 'address'));
+            repository(Address::class)->create(
+                ['school_id' => $school->getKey()] + array_get($attr, 'address')
+            );
         } elseif (array_has($attr, 'address')) {
             repository(Address::class)->update($school->address, $attr['address']);
         }
@@ -78,6 +78,6 @@ class SchoolRepository extends Repository
             $school->logo()->associate(find($attr, 'logo_id', Attachment::class));
         }
 
-        return $school->touch(); // Makes sure it is updated.
+        return $school->update();
     }
 }

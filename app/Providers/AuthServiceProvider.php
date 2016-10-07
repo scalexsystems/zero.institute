@@ -5,6 +5,8 @@ namespace Scalex\Zero\Providers;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Laravel\Passport\Passport;
+use Scalex\Zero\Models\School;
+use Scalex\Zero\Policies\SchoolPolicy;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -14,7 +16,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-
+        School::class => SchoolPolicy::class,
     ];
 
     /**
@@ -25,7 +27,7 @@ class AuthServiceProvider extends ServiceProvider
     public function boot() {
         $this->registerPolicies();
 
-        // Passport::routes();
-        // Passport::pruneRevokedTokens();
+        Passport::routes();
+        Passport::pruneRevokedTokens();
     }
 }

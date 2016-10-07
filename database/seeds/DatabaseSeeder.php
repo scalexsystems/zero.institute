@@ -1,16 +1,11 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use Scalex\Zero\Models\School;
+use Scalex\Zero\User;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run() {
-        factory(School::class, 50)->create(['verified' => true]);
+        factory(User::class, 50)->create();
     }
 }

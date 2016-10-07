@@ -6,6 +6,8 @@ class City extends BaseModel
 {
     protected $fillable = ['name', 'state_id'];
 
+    protected $searchable = ['name'];
+
     protected $with = ['state'];
 
     public function state() {

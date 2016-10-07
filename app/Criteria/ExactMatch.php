@@ -19,18 +19,10 @@ class ExactMatch implements Criteria
 
 
     public function apply($model, Repository $repository) {
-        if ($repository->getModel()->getIncrementing()) {
-            $id = intval($this->id);
+        $id = $this->id;
 
-            if (is_int($id) and $id > 0) {
-                $model->where($repository->getModel()->getKeyName(), $id);
-            }
-        } else {
-            $id = (string)$this->id;
-
-            if (Uuid::isValid($id)) {
-                $model->where($repository->getModel()->getKeyName(), $id);
-            }
+        if (is_numeric($id) and $id > 0) {
+            $model->where($repository->getModel()->getKeyName(), intval($id));
         }
     }
 }

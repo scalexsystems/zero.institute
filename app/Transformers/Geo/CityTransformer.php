@@ -16,6 +16,10 @@ class CityTransformer extends Transformer
         ];
     }
 
+    public function show(City $city) {
+        return $this->index($city);
+    }
+
     public function includeState(City $city) {
         return $this->item($city->state, transformer($city->state));
     }
