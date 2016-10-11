@@ -50,6 +50,7 @@ class Student extends BaseModel implements Person, BelongsToSchool
         'uid',
         'department_id',
         'discipline_id',
+        'school_id',
     ];
 
     protected $casts = [

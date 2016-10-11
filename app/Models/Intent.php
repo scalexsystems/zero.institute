@@ -1,11 +1,11 @@
 <?php namespace Scalex\Zero\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Scalex\Zero\Contracts\Database\BelongsToSchool;
+use Scalex\Zero\Database\BaseModel;
 use Scalex\Zero\User;
 
-class Intent extends Model implements BelongsToSchool
+class Intent extends BaseModel  implements BelongsToSchool
 {
     use SoftDeletes;
 

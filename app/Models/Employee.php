@@ -63,8 +63,10 @@ class Employee extends BaseModel implements BelongsToSchool, Person
 
     protected $searchable = [
         'name',
+        'first_name', 'middle_name', 'last_name',
         'uid',
         'department_id',
+        'school_id',
     ];
 
     protected $casts = [

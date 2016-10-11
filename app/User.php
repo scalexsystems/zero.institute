@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
+use Scalex\Zero\Contracts\Communication\ReceivesMessage;
+use Scalex\Zero\Contracts\Communication\SendsMessage;
 use Scalex\Zero\Contracts\Database\BelongsToSchool;
 use Scalex\Zero\Models\Attachment;
 use Scalex\Zero\Database\BaseModel;
@@ -21,7 +23,9 @@ class User extends BaseModel implements
     AuthorizableContract,
     CanResetPasswordContract,
     BelongsToSchool,
-    PermissibleContract
+    PermissibleContract,
+    ReceivesMessage,
+    SendsMessage
 {
     use Authenticatable, Authorizable, CanResetPassword;
 

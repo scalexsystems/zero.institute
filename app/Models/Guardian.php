@@ -39,7 +39,11 @@ class Guardian extends ExtendibleModel implements Person
         'remarks',
     ];
 
-    protected $searchable = ['name'];
+    protected $searchable = [
+        'name',
+        'first_name', 'middle_name', 'last_name',
+        'school_id',
+    ];
 
     protected $dates = ['date_of_birth'];
 

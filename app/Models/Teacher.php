@@ -70,6 +70,14 @@ class Teacher extends BaseModel implements BelongsToSchool, Person
         'experience' => 'json',
     ];
 
+    protected $searchable = [
+        'name',
+        'first_name', 'middle_name', 'last_name',
+        'uid',
+        'department_id',
+        'school_id',
+    ];
+
     protected $dates = ['date_of_birth', 'date_of_joining'];
 
     protected $appends = ['name'];
