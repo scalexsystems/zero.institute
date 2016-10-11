@@ -4,6 +4,7 @@ namespace Scalex\Zero\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Scalex\Zero\Console\Commands\MakeResourceCommand;
 
 class Kernel extends ConsoleKernel
 {
@@ -13,17 +14,17 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        MakeResourceCommand::class,
     ];
 
     /**
      * Define the application's command schedule.
      *
-     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
+     * @param  \Illuminate\Console\Scheduling\Schedule $schedule
+     *
      * @return void
      */
-    protected function schedule(Schedule $schedule)
-    {
+    protected function schedule(Schedule $schedule) {
         // $schedule->command('inspire')
         //          ->hourly();
     }
@@ -33,8 +34,7 @@ class Kernel extends ConsoleKernel
      *
      * @return void
      */
-    protected function commands()
-    {
+    protected function commands() {
         require base_path('routes/console.php');
     }
 }
