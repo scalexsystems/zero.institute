@@ -5,10 +5,8 @@ use Scalex\Zero\User;
 use Scalex\Zero\Models\School;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class SchoolPolicy
+class SchoolPolicy extends AbstractPolicy
 {
-    use HandlesAuthorization;
-
     /**
      * Determine whether the user can view the school.
      *
@@ -18,7 +16,7 @@ class SchoolPolicy
      * @return bool
      */
     public function view(User $user, School $school) {
-        return verify_school($user, $school) and trust($user)->to(Action::READ_SCHOOL_PRIVATE_INFO);
+        return trust($user)->to(Action::VIEW_PRIVATE_SCHOOL_INFO);
     }
 
     /**
@@ -30,8 +28,6 @@ class SchoolPolicy
      * @return bool
      */
     public function update(User $user, School $school) {
-        \Log::debug('VERIFY USER CAN UPDATE');
-        
-        return verify_school($user, $school) and trust($user)->to(Action::UPDATE_SCHOOL);
+        return trust($user)->to(Action::UPDATE_SCHOOL);
     }
 }

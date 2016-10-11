@@ -1,9 +1,12 @@
 <?php namespace Scalex\Zero\Models\Geo;
 
-use Scalex\Zero\Models\BaseModel;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Scalex\Zero\Database\ExtendibleModel;
 
-class Address extends BaseModel
+class Address extends ExtendibleModel
 {
+    use SoftDeletes;
+
     protected $fillable = [
         'address_line1',
         'address_line2',

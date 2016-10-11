@@ -3,10 +3,12 @@
 namespace Scalex\Zero\Exceptions;
 
 use Exception;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Exception\HttpResponseException;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Log;
 use Symfony\Component\Debug\Exception\FlattenException;
@@ -61,7 +63,7 @@ class Handler extends ExceptionHandler
      * @return \Symfony\Component\HttpFoundation\Response|void
      */
     public function render($request, Exception $e) {
-        if ($request->acceptsJson()) {
+        if ($request->acceptsJson() and Str::startsWith($request->getPathInfo(), '/api')) {
             return $this->renderForApi($request, $e);
         }
 
@@ -85,7 +87,9 @@ class Handler extends ExceptionHandler
             return $this->convertValidationExceptionToJson($e, $request);
         } elseif ($e instanceof AuthenticationException) {
             return $this->unauthenticated($request, $e);
-        } elseif ($e instanceof ValidationException) {
+        } elseif ($e instanceof AuthorizationException) {
+            return response()->json(['message' => 'Unauthorized.'], Response::HTTP_UNAUTHORIZED);
+        }  elseif ($e instanceof ValidationException) {
             return $this->convertValidationExceptionToJson($e, $request);
         } elseif (
             $e instanceof NotFoundHttpException or
@@ -93,9 +97,11 @@ class Handler extends ExceptionHandler
             $e instanceof NotFoundResourceException
         ) {
             return response()->json(['message' => $e->getMessage()], Response::HTTP_NOT_FOUND);
-        } elseif ($e instanceof HttpException and $e->getCode() >= 400) {
-            return response()->json(['message' => $e->getMessage()], $e->getCode());
+        } elseif ($e instanceof HttpException and $e->getStatusCode() >= 400 and $e->getStatusCode() < 500) {
+            return response()->json(['message' => $e->getMessage()], $e->getStatusCode());
         }
+
+        $response = ['message' => 'Whoops! something very bad just happened!'];
 
         $context = [
             'error' => get_class($e),
@@ -107,9 +113,6 @@ class Handler extends ExceptionHandler
         ];
 
         Log::error('UNKNOWN EXCEPTION: '.get_class($e), $context);
-
-
-        $response = ['message' => 'Woops! something very bad just happened!'];
 
         if (config('app.debug')) {
             $response += ['debug' => $context];
@@ -128,7 +131,7 @@ class Handler extends ExceptionHandler
         return response()->json(
             [
                 'message' => $e->getMessage(),
-                'errors' => $e->validator->getMessageBag() ?? $e->getErrors(),
+                'errors' => $e instanceof ValidationException ? $e->validator->getMessageBag() : $e->getErrors(),
             ],
             422
         );

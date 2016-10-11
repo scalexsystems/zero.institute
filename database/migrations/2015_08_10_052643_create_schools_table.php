@@ -11,37 +11,38 @@ class CreateSchoolsTable extends Migration
      * @return void
      */
     public function up() {
-        Schema::create(
-            'schools',
-            function(Blueprint $table) {
-                $table->increments('id');
+        Schema::create('schools', function (Blueprint $table) {
+            $table->increments('id');
 
-                // School Information
-                $table->string('name');
-                $table->string('slug')->unique();
-                $table->unsignedInteger('address_id')->nullable();
-                $table->string('website')->nullable();
-                $table->string('email')->nullable();
-                $table->string('phone')->nullable();
-                $table->string('fax')->nullable();
+            // School Information
+            $table->string('name');
+            $table->string('slug')->unique()->index();
+            $table->unsignedInteger('address_id')->nullable();
+            $table->string('website')->nullable();
+            $table->string('email')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('fax')->nullable();
 
-                // Institute Info
-                $table->string('medium')->nullable();
-                $table->string('university')->nullable();
-                $table->string('institute_type')->nullable();
-                $table->string('timezone')->nullable();
-                $table->unsignedInteger('logo_id')->nullable();
+            // Institute Info
+            $table->string('medium')->nullable();
+            $table->string('university')->nullable();
+            $table->string('institute_type')->nullable();
+            $table->string('timezone')->nullable();
+            $table->unsignedInteger('logo_id')->nullable();
 
-                $table->boolean('verified')->default(false);
+            $table->boolean('verified')->default(false);
 
-                $table->softDeletes();
-                $table->timestamps();
+            $table->json('additional')->default('[]');
+            $table->softDeletes();
+            $table->timestamps();
 
-                // Constraints
-                $table->json('additional')->nullable();
-                $table->foreign('address_id')->references('id')->on('addresses');
-            }
-        );
+            // Constraints
+            $table->foreign('address_id')->references('id')->on('addresses');
+        });
+
+        Schema::table('attachments', function (Blueprint $table) {
+            $table->foreign('school_id')->references('id')->on('schools');
+        });
     }
 
     /**
@@ -50,12 +51,12 @@ class CreateSchoolsTable extends Migration
      * @return void
      */
     public function down() {
-        Schema::table(
-            'schools',
-            function(Blueprint $table) {
-                $table->dropForeign(['address_id']);
-                $table->drop();
-            }
-        );
+        Schema::table('attachments', function (Blueprint $table) {
+            $table->dropForeign(['school_id']);
+        });
+        Schema::table('schools', function (Blueprint $table) {
+            $table->dropForeign(['address_id']);
+            $table->drop();
+        });
     }
 }

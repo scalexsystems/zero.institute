@@ -7,14 +7,19 @@ use Znck\Repositories\Contracts\Repository;
 class ExactMatch implements Criteria
 {
     protected $id;
+    /**
+     * @var null
+     */
+    private $key;
 
     /**
      * ExactMatch constructor.
      *
      * @param string|int $id
      */
-    public function __construct($id) {
+    public function __construct($id, $key = null) {
         $this->id = $id;
+        $this->key = $key;
     }
 
 
@@ -22,7 +27,7 @@ class ExactMatch implements Criteria
         $id = $this->id;
 
         if (is_numeric($id) and $id > 0) {
-            $model->where($repository->getModel()->getKeyName(), intval($id));
+            $model->where($this->key ?? $repository->getModel()->getKeyName(), intval($id));
         }
     }
 }

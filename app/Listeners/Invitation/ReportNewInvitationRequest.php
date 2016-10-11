@@ -5,7 +5,7 @@ namespace Scalex\Zero\Listeners\Invitation;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Message;
 use Mail;
-use Scalex\Zero\Events\InvitationRequest;
+use Scalex\Zero\Events\School\InvitationRequest;
 
 class ReportNewInvitationRequest implements ShouldQueue
 {

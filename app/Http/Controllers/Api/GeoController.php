@@ -23,6 +23,6 @@ class GeoController extends Controller
             }
         }
 
-        return $cities->paginate();
+        return $cities->simplePaginate();
     }
 }

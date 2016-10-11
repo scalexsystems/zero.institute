@@ -9,6 +9,15 @@
                     <form class="form-horizontal" role="form" method="POST" action="{{ url('/login') }}">
                         {{ csrf_field() }}
 
+                        @if (session('message'))
+                            <div class="alert alert-success">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+
+                                {{ session('message') }}
+                            </div>
+                        @endif
                         <div class="form-group{{ $errors->has('email') ? ' has-danger' : '' }}">
                             <div class="input-has-addon">
                                 <i class="fa fa-fw fa-envelope input-group-addon-icon input-group-addon-icon-auth"></i>

@@ -11,7 +11,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 use Scalex\Zero\Contracts\Database\BelongsToSchool;
 use Scalex\Zero\Models\Attachment;
-use Scalex\Zero\Models\BaseModel;
+use Scalex\Zero\Database\BaseModel;
 use Scalex\Zero\Models\School;
 use Znck\Trust\Contracts\Permissible as PermissibleContract;
 use Znck\Trust\Traits\Permissible;
@@ -34,21 +34,16 @@ class User extends BaseModel implements
      *
      * @var array
      */
-    protected $fillable = [
-        'name',
-        'email',
-    ];
+    protected $fillable = ['name', 'email'];
 
     /**
      * The attributes that should be hidden for arrays.
      *
      * @var array
      */
-    protected $hidden = [
-        'password',
-        'remember_token',
-        'verification_token',
-    ];
+    protected $hidden = ['password', 'remember_token', 'verification_token'];
+
+    protected $extends = ['other_email', 'other_verification_token'];
 
     public function school() {
         return $this->belongsTo(School::class);

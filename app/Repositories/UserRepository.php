@@ -39,12 +39,12 @@ class UserRepository extends Repository
         $user->fill(array_only($attributes, ['name', 'email']));
         $user->verification_token = str_random(32);
 
-        if (array_has($attributes, 'password')) {
-            $user->password = bcrypt($attributes['password']);
+        if ($password = array_get($attributes, 'password')) {
+            $user->password = bcrypt($password);
         }
 
         if ($photo = find($attributes, 'photo_id', Attachment::class)) {
-            $user->profilePhoto()->associate($photo);
+            attach_attachment($user, 'profilePhoto', $photo);
         }
 
         if ($school = find($attributes, 'school_id')) {
@@ -59,7 +59,14 @@ class UserRepository extends Repository
     }
 
     public function updating(User $user, array $attributes, array $options = []) {
-        $user->fill(array_only($attributes, ['name', 'email']));
+        if (array_has($attributes, 'email')) {
+            $user->other_email = $attributes['email'];
+            $user->other_verification_token = str_random(32);
+
+            unset($attributes['email']);
+        }
+
+        $user->fill(array_only($attributes, ['name']));
 
         if ($password = array_get($attributes, 'password')) {
             $user->password = bcrypt($password);

@@ -1,13 +1,9 @@
-<?php
-
-namespace Scalex\Zero\Events;
+<?php namespace Scalex\Zero\Events\School;
 
 use Illuminate\Broadcasting\Channel;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Queue\SerializesModels;
 
 class InvitationRequest
 {
@@ -34,6 +30,6 @@ class InvitationRequest
      * @return Channel|array
      */
     public function broadcastOn() {
-        return new PrivateChannel('zero:invitation-requests');
+        return new PrivateChannel('zero:invitations');
     }
 }

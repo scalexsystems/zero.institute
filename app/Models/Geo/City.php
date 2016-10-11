@@ -1,12 +1,12 @@
 <?php namespace Scalex\Zero\Models\Geo;
 
-use Scalex\Zero\Models\BaseModel;
+use Scalex\Zero\Database\BaseModel;
 
 class City extends BaseModel
 {
     protected $fillable = ['name', 'state_id'];
 
-    protected $searchable = ['name'];
+    protected $searchable = ['name', 'state'];
 
     protected $with = ['state'];
 

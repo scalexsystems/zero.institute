@@ -1,8 +1,8 @@
 <?php namespace Scalex\Zero\Models\Geo;
 
-use Scalex\Zero\Models\BaseModel;
+use Scalex\Zero\Database\ExtendibleModel;
 
-class State extends BaseModel
+class State extends ExtendibleModel
 {
     protected $fillable = ['name', 'code', 'country_id'];
 

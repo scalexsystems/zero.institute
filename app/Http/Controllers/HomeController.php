@@ -6,7 +6,7 @@ use Cache;
 use Carbon\Carbon;
 use DB;
 use Illuminate\Http\Request;
-use Scalex\Zero\Events\InvitationRequest;
+use Scalex\Zero\Events\School\InvitationRequest;
 
 class HomeController extends Controller
 {

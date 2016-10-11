@@ -7,11 +7,54 @@ Route::group(['middleware' => 'auth:api,web'],
     function () {
         Route::get('/geo/cities', 'GeoController@cities');
 
+        /**
+         * Current School
+         */
         Route::get('/school', 'SchoolController@show');
         Route::put('/school', 'SchoolController@update');
 
-        Route::get('/me', 'UserController@show');
-        Route::put('/me', 'UserController@update');
+        /**
+         * Current User
+         */
+        Route::get('/me', 'UserController@showCurrent');
+        Route::put('/me', 'UserController@updateCurrent');
         Route::get('/me/dashboard', 'UserController@dashboard');
+
+        Route::get('/me/request', 'AccountIntentController@show');
+        Route::post('/me/request', 'AccountIntentController@update');
+        Route::post('/me/request/submit', 'AccountIntentController@submit');
+
+        /*
+         |
+         | Following endpoints are specific to current school.
+         |
+         */
+        Route::get('/disciplines', 'DisciplineController@index');
+        Route::post('/disciplines', 'DisciplineController@store');
+        Route::put('/disciplines/{discipline}', 'DisciplineController@update');
+
+        Route::get('/departments', 'DepartmentController@index');
+        Route::post('/departments', 'DepartmentController@store');
+        Route::put('/departments/{department}', 'DepartmentController@update');
+
+        /**
+         * People
+         */
+        Route::get('/people/stats', 'PeopleController@stats');
+        Route::get('/people/students', 'StudentController@index');
+        Route::get('/people/students/{student}', 'StudentController@show');
+        Route::get('/people/teachers', 'TeacherController@index');
+        Route::get('/people/teachers/{teacher}', 'TeacherController@show');
+        Route::get('/people/employees', 'EmployeeController@index');
+        Route::get('/people/employees/{employee}', 'EmployeeController@show');
+
+        /**
+         * Intents
+         */
+        Route::get('/intents', 'IntentController@index');
+        Route::get('/intents/{intent}', 'IntentController@show');
+        Route::put('/intents/{intent}', 'IntentController@update');
+        Route::post('/intents/{intent}/accept', 'IntentController@accept');
+        Route::post('/intents/{intent}/reject', 'IntentController@reject');
     }
 );

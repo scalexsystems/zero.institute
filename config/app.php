@@ -172,7 +172,12 @@ return [
         Znck\Repositories\RepositoryServiceProvider::class,
         Znck\Transformers\TransformerServiceProvider::class,
         Znck\Trust\TrustServiceProvider::class,
+
+        /*
+         * Development Service Providers...
+         */
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
+        Themsaid\MailPreview\MailPreviewServiceProvider::class,
 
         /*
          * Application Service Providers...

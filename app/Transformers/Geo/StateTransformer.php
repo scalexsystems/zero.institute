@@ -6,7 +6,7 @@ use Znck\Transformers\Transformer;
 
 class StateTransformer extends Transformer
 {
-    public $availableIncludes = ['country'];
+    public $defaultIncludes = ['country'];
 
     public function show(State $state) {
         return [

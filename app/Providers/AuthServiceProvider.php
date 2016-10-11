@@ -2,11 +2,11 @@
 
 namespace Scalex\Zero\Providers;
 
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Laravel\Passport\Passport;
-use Scalex\Zero\Models\School;
-use Scalex\Zero\Policies\SchoolPolicy;
+use Scalex\Zero\Models;
+use Scalex\Zero\Policies;
+use Scalex\Zero\User;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -16,7 +16,17 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        School::class => SchoolPolicy::class,
+        User::class => Policies\UserPolicy::class,
+        /** School */
+        Models\School::class => Policies\SchoolPolicy::class,
+        Models\Discipline::class => Policies\DisciplinePolicy::class,
+        Models\Department::class => Policies\DepartmentPolicy::class,
+        /** People */
+        Models\Student::class => Policies\StudentPolicy::class,
+        Models\Teacher::class => Policies\TeacherPolicy::class,
+        Models\Employee::class => Policies\EmployeePolicy::class,
+        /** Others */
+        Models\Intent::class => Policies\IntentPolicy::class,
     ];
 
     /**

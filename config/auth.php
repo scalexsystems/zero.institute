@@ -69,11 +69,6 @@ return [
             'driver' => 'eloquent',
             'model' => Scalex\Zero\User::class,
         ],
-
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
     ],
 
     /*

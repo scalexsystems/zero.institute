@@ -1,0 +1,15 @@
+<?php namespace Scalex\Zero\Policies;
+
+use Scalex\Zero\Action;
+use Scalex\Zero\User;
+
+class DisciplinePolicy extends AbstractPolicy
+{
+    public function store(User $user) {
+        return trust($user)->to(Action::UPDATE_DISCIPLINE);
+    }
+
+    public function update(User $user) {
+        return trust($user)->to(Action::UPDATE_DISCIPLINE);
+    }
+}

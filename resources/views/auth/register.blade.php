@@ -10,7 +10,7 @@
                         {{ csrf_field() }}
 
                         <div class="form-institute-selector">
-                            <div is="select-institute" :large="true"
+                            <div is="select-institute" :large="true" value="{{ old('institute') }}"
                                  placeholder="{{ trans('app::register.p.institute') }}"></div>
                             @if ($errors->has('institute'))
                                 <small class="text-danger">{{ $errors->first('email') }}</small>
@@ -48,8 +48,8 @@
 
                             <div class="input-has-addon">
                                 <i class="fa fa-fw fa-key input-group-addon-icon input-group-addon-icon-auth"></i>
-                                <input id="password" type="password" class="form-control form-control-auth"
-                                       name="password"
+                                <input id="password_confirmation" type="password" class="form-control form-control-auth"
+                                       name="password_confirmation"
                                        placeholder="{{ trans('app::register.p.password_confirmation') }}" required>
                             </div>
 

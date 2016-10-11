@@ -52,30 +52,27 @@ class SchoolRepository extends Repository
      * @return array
      */
     public function getUpdateRules(array $rules, array $attributes, $school) {
-        $all = $rules + array_dot([
-                'address' => repository(Address::class)->getRules($attributes, $school->address),
-            ]);
-
-        Log::debug('VALIDATE SCHOOL', $all);
+        $all = $rules +
+               array_dot(
+                   [
+                       'address' => repository(Address::class)
+                           ->getRules($attributes, $school->address),
+                   ]);
 
         return array_only($all, array_keys($attributes));
     }
 
     public function updating(School $school, array $attr) {
-        Log::debug('UPDATING SCHOOL: '.$school->getKey(), ['attr' => $attr]);
-
         $school->fill($attr);
 
         if (!$school->address) {
-            repository(Address::class)->create(
-                ['school_id' => $school->getKey()] + array_get($attr, 'address')
-            );
+            $school->address()->associate(repository(Address::class)->create(array_get($attr, 'address', [])));
         } elseif (array_has($attr, 'address')) {
             repository(Address::class)->update($school->address, $attr['address']);
         }
 
-        if (array_has($attr, 'logo_id')) {
-            $school->logo()->associate(find($attr, 'logo_id', Attachment::class));
+        if ($logo = find($attr, 'logo_id', Attachment::class)) {
+            attach_attachment($school, 'logo', $logo);
         }
 
         return $school->update();

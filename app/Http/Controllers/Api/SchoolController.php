@@ -15,12 +15,10 @@ class SchoolController extends Controller
         $schools = repository(School::class)
             ->with(['address', 'logo'])
             ->pushCriteria(
-                criteria(
-                    function ($query) {
-                        $query->where('verified', true);
-                    }
-                )
-            );
+                criteria(function ($query) {
+                    /** @var \Illuminate\Database\Query\Builder $query */
+                    $query->where('verified', true);
+                }));
 
         if ($request->has('q')) {
             $schools->search($request->query('q'));
