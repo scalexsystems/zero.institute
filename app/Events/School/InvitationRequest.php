@@ -3,9 +3,10 @@
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Queue\SerializesModels;
 
-class InvitationRequest
+class InvitationRequest implements ShouldBroadcast
 {
     use InteractsWithSockets, SerializesModels;
 

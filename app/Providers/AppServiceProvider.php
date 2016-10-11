@@ -20,7 +20,6 @@ class AppServiceProvider extends ServiceProvider
 
     public function __construct($app) {
         parent::__construct($app);
-
         AttachServiceProvider::$runMigrations = false;
     }
 
@@ -114,6 +113,10 @@ class AppServiceProvider extends ServiceProvider
                 'state' => Models\Geo\State::class,
                 'city' => Models\Geo\City::class,
                 'intent' => Models\Intent::class,
+                /**
+                 * Communication
+                 */
+                'group' => Models\Group::class,
             ]
         );
     }

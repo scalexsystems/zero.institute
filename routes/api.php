@@ -25,9 +25,7 @@ Route::group(['middleware' => 'auth:api,web'],
         Route::post('/me/request/submit', 'AccountIntentController@submit');
 
         /*
-         |
-         | Following endpoints are specific to current school.
-         |
+         * Departments and Disciplines.
          */
         Route::get('/disciplines', 'DisciplineController@index');
         Route::post('/disciplines', 'DisciplineController@store');
@@ -38,7 +36,7 @@ Route::group(['middleware' => 'auth:api,web'],
         Route::put('/departments/{department}', 'DepartmentController@update');
 
         /**
-         * People
+         * People.
          */
         Route::get('/people/stats', 'PeopleController@stats');
         Route::get('/people/students', 'StudentController@index');
@@ -49,12 +47,24 @@ Route::group(['middleware' => 'auth:api,web'],
         Route::get('/people/employees/{employee}', 'EmployeeController@show');
 
         /**
-         * Intents
+         * Intents.
          */
         Route::get('/intents', 'IntentController@index');
         Route::get('/intents/{intent}', 'IntentController@show');
         Route::put('/intents/{intent}', 'IntentController@update');
         Route::post('/intents/{intent}/accept', 'IntentController@accept');
         Route::post('/intents/{intent}/reject', 'IntentController@reject');
+
+
+        /**
+         * Groups.
+         */
+        Route::get('/groups', 'GroupController@index');
+        Route::post('/groups', 'GroupController@store');
+        Route::get('/groups/{group}', 'GroupController@show');
+        Route::put('/groups/{group}', 'GroupController@update');
+        Route::get('/groups/{group}/members', 'GroupController@members');
+        Route::put('/groups/{group}/add', 'GroupController@addMember');
+        Route::delete('/groups/{group}/remove', 'GroupController@addMember');
     }
 );

@@ -7,6 +7,7 @@ use Scalex\Zero\Models\Geo\Address;
 use Scalex\Zero\Models\Geo\City;
 use Scalex\Zero\Models\Geo\Country;
 use Scalex\Zero\Models\Geo\State;
+use Scalex\Zero\Models\Group;
 use Scalex\Zero\Models\Guardian;
 use Scalex\Zero\Models\School;
 use Scalex\Zero\Models\Student;
@@ -245,5 +246,19 @@ $factory->define(Address::class, function (Faker\Generator $f) {
         'city_id' => $city_id ?? function () {
                 return factory(City::class)->create()->id;
             },
+    ];
+});
+
+$factory->define(Group::class, function (Faker\Generator $f) {
+    return [
+        'name' => $f->word,
+        'description' => $f->paragraph,
+        'private' => false,
+        'school_id' => function () {
+            return factory(School::class)->create()->id;
+        },
+        'owner_id' => function () {
+            return factory(User::class)->create()->id;
+        },
     ];
 });

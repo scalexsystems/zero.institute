@@ -4,21 +4,23 @@ use Illuminate\Mail\Message;
 use Mail;
 use Scalex\Zero\Events\User\AccountIntentSubmitted;
 use Scalex\Zero\Events\User\UserEmailUpdated;
+use Scalex\Zero\Notifications\VerificationEmailSent;
 
 class UserEventSubscriber
 {
     public function onEmailUpdate(UserEmailUpdated $event) {
-        $token = $event->user->other_verification_token;
-        $email = $event->user->email;
-        $name = $event->user->email;
+        $token = $event->getUser()->other_verification_token;
+        $email = $event->getUser()->email;
+        $name = $event->getUser()->email;
         Mail::queue('emails.user.verify', [
-            'name' => $event->user->name,
+            'name' => $event->getUser()->name,
             'token' => $token,
             'url' => url('/account/update/email/verify/'.$token),
         ], function (Message $message) use ($name, $email) {
             $message->to($email, $name);
             $message->subject('Verify Your Email');
         });
+        $event->getUser()->notify(new VerificationEmailSent($email));
     }
 
     public function onNewAccountRequest(AccountIntentSubmitted $event) {

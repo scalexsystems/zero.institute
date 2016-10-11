@@ -9,7 +9,14 @@ class UserEmailUpdated
     /**
      * @var \Scalex\Zero\User
      */
-    public $user;
+    protected $user;
+
+    /**
+     * @return \Scalex\Zero\User
+     */
+    public function getUser() {
+        return $this->user;
+    }
 
     /**
      * Create a new event instance.
