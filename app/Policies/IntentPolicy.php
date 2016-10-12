@@ -3,13 +3,13 @@
 namespace Scalex\Zero\Policies;
 
 use Scalex\Zero\Action;
-use Scalex\Zero\User;
 use Scalex\Zero\Models\Intent;
-use Illuminate\Auth\Access\HandlesAuthorization;
+use Scalex\Zero\Policies\Traits\VerifiesSchool;
+use Scalex\Zero\User;
 
-class IntentPolicy
+class IntentPolicy extends AbstractPolicy
 {
-    use HandlesAuthorization;
+    use VerifiesSchool;
 
     public function index(User $user) {
         return $this->canManagePeople($user);

@@ -36,6 +36,10 @@ class Group extends BaseModel implements ReceivesMessage
     |
     */
 
+    public function isAdmin(User $member) {
+        return false;
+    }
+
     public function isMember(User $member) {
         $id = $member->getKey();
 
@@ -44,9 +48,9 @@ class Group extends BaseModel implements ReceivesMessage
         }
 
         return $this->isMemberCache[$id] = !is_null(
-            DB::table($this->getTable())
-              ->where($this->getForeignKey(), $this->getKey())
-              ->where($member->getForeignKey(), $id)
+            DB::table('group_user')
+              ->where('group_id', $this->getKey())
+              ->where('user_id', $id)
               ->first()
         );
     }
@@ -63,8 +67,8 @@ class Group extends BaseModel implements ReceivesMessage
             $members = $members->modelKeys();
         }
 
-        return DB::table($this->getTable())
-                 ->where($this->getForeignKey(), $this->getKey())
+        return DB::table('group_user')
+                 ->where('group_id', $this->getKey())
                  ->whereIn('user_id', $members)
                  ->get()->pluck('user_id')->toArray();
     }
@@ -104,7 +108,49 @@ class Group extends BaseModel implements ReceivesMessage
         return User::findMany($this->filterNonMemberIds($members));
     }
 
+    public function addMembers(array $ids) {
+        $prepared = $this->prepareMemberIds($ids);
+        $ids = $prepared['ids'];
+
+        if (count($ids)) {
+            $this->members()->attach($ids);
+        }
+
+        return $prepared;
+    }
+
+    public function removeMembers(array $ids) {
+        $prepared = $this->prepareMemberIds($ids, false);
+        $ids = $prepared['ids'];
+
+        if (count($ids)) {
+            $this->members()->detach($ids);
+        }
+
+        return $prepared;
+    }
+
     public function getChannelName() {
         return 'group-'.$this->getKey();
+    }
+
+    /**
+     * @param array $ids
+     *
+     * @return array
+     */
+    protected function prepareMemberIds(array $ids, bool $add = true):array {
+        $method = $add ? 'filterNonMemberIds' : 'filterMemberIds';
+        $ids = $original = array_map(function ($v) {
+            return (int)$v;
+        }, array_unique($ids));
+
+        if (!is_null($this->school_id)) {
+            $ids = $school = DB::table('users')->select('id')->whereIn('id', $ids)->pluck('id')->toArray();
+        }
+
+        $ids = $filtered = array_diff($this->$method($ids), [(int)$this->owner_id]);
+
+        return compact('ids', 'original', 'filtered', 'school');
     }
 }

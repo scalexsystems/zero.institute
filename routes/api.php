@@ -65,6 +65,11 @@ Route::group(['middleware' => 'auth:api,web'],
         Route::put('/groups/{group}', 'GroupController@update');
         Route::get('/groups/{group}/members', 'GroupController@members');
         Route::put('/groups/{group}/add', 'GroupController@addMember');
-        Route::delete('/groups/{group}/remove', 'GroupController@addMember');
+        Route::delete('/groups/{group}/remove', 'GroupController@removeMember');
+
+        Route::put('/groups/{group}/join', 'UserGroupController@join');
+        Route::delete('/groups/{group}/leave', 'UserGroupController@leave');
+
+        Route::get('/me/groups', 'UserGroupController@index');
     }
 );

@@ -1,14 +1,9 @@
-<?php
-
-namespace Scalex\Zero\Policies;
+<?php namespace Scalex\Zero\Policies;
 
 use Scalex\Zero\User;
-use Illuminate\Auth\Access\HandlesAuthorization;
 
-class UserPolicy
+class UserPolicy extends AbstractPolicy
 {
-    use HandlesAuthorization;
-
     public function readEmail(User $user, User $resource) {
         return $user->getKey() === $resource->getKey();
     }

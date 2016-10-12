@@ -1142,16 +1142,16 @@
         },
         {
             "name": "laravel/scout",
-            "version": "v1.1.6",
+            "version": "v1.1.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/scout.git",
-                "reference": "e0eff31c5443a83c8e5ae3778cb67297970c0ae8"
+                "reference": "08241b3638c60bc858f4ee01e7c8eb01644098d7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/scout/zipball/e0eff31c5443a83c8e5ae3778cb67297970c0ae8",
-                "reference": "e0eff31c5443a83c8e5ae3778cb67297970c0ae8",
+                "url": "https://api.github.com/repos/laravel/scout/zipball/08241b3638c60bc858f4ee01e7c8eb01644098d7",
+                "reference": "08241b3638c60bc858f4ee01e7c8eb01644098d7",
                 "shasum": ""
             },
             "require": {
@@ -1201,7 +1201,7 @@
                 "laravel",
                 "search"
             ],
-            "time": "2016-10-05 15:30:00"
+            "time": "2016-10-10 21:08:11"
         },
         {
             "name": "laravel/socialite",
@@ -3458,16 +3458,16 @@
         },
         {
             "name": "zendframework/zend-diactoros",
-            "version": "1.3.6",
+            "version": "1.3.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-diactoros.git",
-                "reference": "a60da179c37f2c4e44ef734d0b92824a58943f7f"
+                "reference": "969ff423d3f201da3ff718a5831bb999bb0669b0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-diactoros/zipball/a60da179c37f2c4e44ef734d0b92824a58943f7f",
-                "reference": "a60da179c37f2c4e44ef734d0b92824a58943f7f",
+                "url": "https://api.github.com/repos/zendframework/zend-diactoros/zipball/969ff423d3f201da3ff718a5831bb999bb0669b0",
+                "reference": "969ff423d3f201da3ff718a5831bb999bb0669b0",
                 "shasum": ""
             },
             "require": {
@@ -3504,7 +3504,7 @@
                 "psr",
                 "psr-7"
             ],
-            "time": "2016-09-07 17:57:29"
+            "time": "2016-10-11 13:25:21"
         },
         {
             "name": "znck/attach",
@@ -3672,12 +3672,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/znck/repository.git",
-                "reference": "e89043194421b4dbb6a78a73236407cc0a0e2326"
+                "reference": "f09ddc65c78825ed9e6e49a6ec18774612c4f4ba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/znck/repository/zipball/e89043194421b4dbb6a78a73236407cc0a0e2326",
-                "reference": "e89043194421b4dbb6a78a73236407cc0a0e2326",
+                "url": "https://api.github.com/repos/znck/repository/zipball/f09ddc65c78825ed9e6e49a6ec18774612c4f4ba",
+                "reference": "f09ddc65c78825ed9e6e49a6ec18774612c4f4ba",
                 "shasum": ""
             },
             "require": {
@@ -3721,7 +3721,7 @@
                 "repositories",
                 "repository"
             ],
-            "time": "2016-10-10 17:43:50"
+            "time": "2016-10-12 06:25:33"
         },
         {
             "name": "znck/transformer",
@@ -3729,12 +3729,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/znck/transformer.git",
-                "reference": "f5aa92c022bbc9e2c1e768c230e33f1046e6820c"
+                "reference": "6e863d72fc0a5780298ed472db5bc6c4a4300451"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/znck/transformer/zipball/f5aa92c022bbc9e2c1e768c230e33f1046e6820c",
-                "reference": "f5aa92c022bbc9e2c1e768c230e33f1046e6820c",
+                "url": "https://api.github.com/repos/znck/transformer/zipball/6e863d72fc0a5780298ed472db5bc6c4a4300451",
+                "reference": "6e863d72fc0a5780298ed472db5bc6c4a4300451",
                 "shasum": ""
             },
             "require": {
@@ -3778,7 +3778,7 @@
                 "repositories",
                 "transformer"
             ],
-            "time": "2016-10-10 17:45:16"
+            "time": "2016-10-12 12:29:03"
         },
         {
             "name": "znck/trust",

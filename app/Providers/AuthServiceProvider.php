@@ -27,6 +27,7 @@ class AuthServiceProvider extends ServiceProvider
         Models\Employee::class => Policies\EmployeePolicy::class,
         /** Others */
         Models\Intent::class => Policies\IntentPolicy::class,
+        Models\Group::class => Policies\GroupPolicy::class,
     ];
 
     /**

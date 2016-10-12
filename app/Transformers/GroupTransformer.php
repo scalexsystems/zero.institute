@@ -10,6 +10,7 @@ class GroupTransformer extends Transformer
             'name' => (string)$group->name,
             'photo' => attach_url($group->profilePhoto) ?? asset('img/placeholder-64.jpg'),
             'owner' => transform($group->owner),
+            'member_count' => $group->members()->count(),
         ];
     }
 

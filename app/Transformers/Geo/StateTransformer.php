@@ -8,6 +8,8 @@ class StateTransformer extends Transformer
 {
     public $defaultIncludes = ['country'];
 
+    protected $timestamps = false;
+
     public function show(State $state) {
         return [
             'name' => $state->name,
@@ -15,6 +17,6 @@ class StateTransformer extends Transformer
     }
 
     public function includeCountry(State $state) {
-        return $this->item($state->country, transformer($state->country));
+        return $this->item($state->country);
     }
 }

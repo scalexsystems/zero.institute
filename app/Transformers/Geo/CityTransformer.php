@@ -10,6 +10,8 @@ class CityTransformer extends Transformer
 
     public $defaultIncludes = ['state'];
 
+    protected $timestamps = false;
+
     public function index(City $city) {
         return [
             'name' => $city->name,
@@ -21,6 +23,6 @@ class CityTransformer extends Transformer
     }
 
     public function includeState(City $city) {
-        return $this->item($city->state, transformer($city->state));
+        return $this->item($city->state);
     }
 }

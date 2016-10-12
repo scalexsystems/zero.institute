@@ -14,6 +14,7 @@ use Scalex\Zero\Contracts\Communication\SendsMessage;
 use Scalex\Zero\Contracts\Database\BelongsToSchool;
 use Scalex\Zero\Models\Attachment;
 use Scalex\Zero\Database\BaseModel;
+use Scalex\Zero\Models\Group;
 use Scalex\Zero\Models\School;
 use Znck\Trust\Contracts\Permissible as PermissibleContract;
 use Znck\Trust\Traits\Permissible;
@@ -59,5 +60,9 @@ class User extends BaseModel implements
 
     public function person() {
         return $this->morphTo();
+    }
+
+    public function groups() {
+        return $this->belongsToMany(Group::class)->withTimestamps();
     }
 }

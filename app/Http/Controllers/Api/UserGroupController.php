@@ -7,15 +7,27 @@ use Scalex\Zero\Models\Group;
 
 class UserGroupController extends Controller
 {
+    public function index() {
+        $user = current_user();
+
+        return $user->groups()->orderBy('name')->paginate();
+    }
+
     public function join(Group $group) {
         $this->authorize($group);
 
         $user = current_user();
+
         if ($group->isMember($user)) {
             abort(400, 'You are already member of this group.');
         }
-        $group->members()->attach($user);
-        event(new MemberJoined($user, $group));
+
+        $result = $group->addMembers([$user->getKey()]);
+        if (count($result['ids'])) {
+            event(new MemberJoined($user, $group));
+        } else {
+            abort(400, 'You are not allowed to join this group.');
+        }
 
         return $this->accepted();
     }
@@ -24,11 +36,13 @@ class UserGroupController extends Controller
         $this->authorize($group);
 
         $user = current_user();
-        if (!$group->isMember($user)) {
-            abort(400, 'You are not a member of this group.');
+
+        $result = $group->removeMembers([$user->getKey()]);
+        if (count($result['ids'])) {
+            event(new MemberLeft($user, $group));
+        } else {
+            abort(400, 'You cannot leave this group.');
         }
-        $group->members()->detach($user);
-        event(new MemberLeft($user, $group));
 
         return $this->accepted();
     }

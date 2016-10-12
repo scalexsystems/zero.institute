@@ -11,10 +11,12 @@ abstract class AbstractPolicy
     use HandlesAuthorization;
 
     public function before(User $user, $policy, $other = null) {
-        if ($other instanceof BelongsToSchool) {
-            Log::debug(class_basename(static::class).': ('.$policy.') Verify '.Str::lower(class_basename(get_class($other))).' belongs to school. ('.json_encode(verify_school($other)).')');
-            if (!verify_school($other)) {
-                return false;
+        $class = self::class;
+        foreach (class_uses_recursive($class) as $trait) {
+            if (method_exists($class, $method = 'before'.class_basename($trait))) {
+                if (false === call_user_func_array([$class, $method], func_get_args())) {
+                    return false;
+                }
             }
         }
     }

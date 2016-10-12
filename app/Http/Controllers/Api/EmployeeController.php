@@ -1,6 +1,7 @@
 <?php namespace Scalex\Zero\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
+use Scalex\Zero\Criteria\OrderBy;
 use Scalex\Zero\Http\Controllers\Controller;
 use Scalex\Zero\Models\Employee;
 
@@ -11,6 +12,8 @@ class EmployeeController extends Controller
 
         if ($request->has('q')) {
             $employees->search($request->input('q'));
+        } else {
+            $employees->pushCriteria(new OrderBy(['first_name', 'last_name']));
         }
 
         return $employees->simplePaginate();

@@ -68,7 +68,7 @@ class EmployeeTransformer extends Transformer
     public function includeAddress(Employee $employee) {
         return allow(
             'read-address', $employee,
-            $this->item($employee->address, transformer($employee->address)),
+            $this->item($employee->address),
             $this->null()
         );
     }

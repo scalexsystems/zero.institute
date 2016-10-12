@@ -4,6 +4,7 @@ namespace Scalex\Zero\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use Scalex\Zero\Criteria\ExactMatch;
+use Scalex\Zero\Criteria\OrderBy;
 use Scalex\Zero\Http\Controllers\Controller;
 use Scalex\Zero\Http\Requests;
 use Scalex\Zero\Models\Geo\City;
@@ -21,6 +22,8 @@ class GeoController extends Controller
             } else {
                 $cities->search($q);
             }
+        } else {
+            $cities->pushCriteria(new OrderBy('name'));
         }
 
         return $cities->simplePaginate();

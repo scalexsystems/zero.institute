@@ -8,16 +8,24 @@ class UserTransformer extends Transformer
 {
     protected $availableIncludes = ['person'];
 
+    public function index(User $user) {
+        return [
+            'name' => (string)$user->name,
+            'photo' => attach_url($user->profilePhoto) ?? asset('img/placeholder-64.jpg'),
+            'type' => morph_model($user->person),
+        ];
+    }
+
     public function show(User $user) {
         return [
-            'name' => (string) $user->name,
-            'photo' => attach_url($user->profilePhoto) ?? asset('img/placeholder-64.jpg'),
+           'name' => (string)$user->name,
+           'photo' => attach_url($user->profilePhoto) ?? asset('img/placeholder-64.jpg'),
+           'type' => morph_model($user->person),
         ] + allow('read-email', $user, [
             'email' => $user->email,
         ], []) + allow('read-account', $user, [
             'registered' => !is_null($user->person),
             'verified' => is_null($user->verification_token),
-            'type' => morph_model($user->person),
         ], []);
     }
 

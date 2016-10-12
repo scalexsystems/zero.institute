@@ -23,7 +23,7 @@ class DepartmentTransformer extends Transformer
 
     public function includeHead(Department $department) {
         return $department->head
-            ? $this->item($department->head, transformer($department->head))
+            ? $this->item($department->head)
             : $this->null();
     }
 }

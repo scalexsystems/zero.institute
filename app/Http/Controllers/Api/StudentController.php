@@ -1,6 +1,7 @@
 <?php namespace Scalex\Zero\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
+use Scalex\Zero\Criteria\OrderBy;
 use Scalex\Zero\Http\Controllers\Controller;
 use Scalex\Zero\Http\Requests;
 use Scalex\Zero\Models\Student;
@@ -12,6 +13,8 @@ class StudentController extends Controller
 
         if ($request->has('q')) {
             $students->search($request->input('q'));
+        } else {
+            $students->pushCriteria(new OrderBy(['first_name', 'last_name']));
         }
 
         return $students->simplePaginate();

@@ -2,13 +2,13 @@
 
 use Scalex\Zero\Action;
 use Scalex\Zero\Models\Teacher;
+use Scalex\Zero\Policies\Traits\IsHimself;
+use Scalex\Zero\Policies\Traits\VerifiesSchool;
 use Scalex\Zero\User;
 
 class TeacherPolicy extends AbstractPolicy
 {
-    protected function isHimself(User $user, Teacher $teacher) {
-        return !is_null($user->person) and $teacher->getKey() === $user->person->getKey();
-    }
+    use VerifiesSchool, IsHimself;
 
     public function index(User $user) {
         return true;

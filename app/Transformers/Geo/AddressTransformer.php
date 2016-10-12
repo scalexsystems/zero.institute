@@ -3,7 +3,6 @@
 use Scalex\Zero\Models\Geo\Address;
 use Znck\Transformers\Transformer;
 
-
 class AddressTransformer extends Transformer
 {
     public $availableIncludes = ['city'];
@@ -23,6 +22,6 @@ class AddressTransformer extends Transformer
     }
 
     public function includeCity(Address $address) {
-        return $this->item($address->city, transformer($address->city));
+        return $this->item($address->city);
     }
 }

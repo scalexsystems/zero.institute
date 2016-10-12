@@ -29,6 +29,6 @@ class IntentTransformer extends Transformer
     }
 
     public function includeUser(Intent $intent) {
-        return $this->item($intent->user, transformer($intent->user));
+        return $this->item($intent->user);
     }
 }
