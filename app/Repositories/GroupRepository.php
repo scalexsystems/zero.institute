@@ -38,10 +38,6 @@ class GroupRepository extends Repository
     ];
 
     public function boot() {
-        $this->pushCriteria(criteria(function ($query) {
-            /** @var \Illuminate\Database\Query\Builder $query */
-            $query->where($this->getModel()->getTable().'.private', false);
-        }));
         $this->pushCriteria(new OfSchool(current_user()->school));
     }
 

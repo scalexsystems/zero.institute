@@ -107,9 +107,9 @@ class TeacherRepository extends Repository
      */
     public function getUpdateRules(array $rules, array $attributes, $teacher) {
         $rules += array_dot(
-                [
-                    'address' => repository(Address::class)->getRules($attributes, $teacher->address),
-                ]);
+            [
+                'address' => repository(Address::class)->getRules($attributes, $teacher->address),
+            ]);
 
         return array_only($rules, array_keys($attributes));
     }
@@ -136,6 +136,8 @@ class TeacherRepository extends Repository
             $teacher->address->addressee()->associate($teacher)->save();
         }));
 
+        $teacher->bio = $this->getBio($teacher);
+
         return $teacher->save();
     }
 
@@ -159,6 +161,13 @@ class TeacherRepository extends Repository
             attach_attachment($teacher, 'profilePhoto', find($attributes, 'photo_id', Attachment::class));
         }
 
+        $teacher->bio = $this->getBio($teacher);
+
         return $teacher->update();
+    }
+
+    public function getBio(Teacher $teacher) {
+        return $teacher->job_title.' ・ '
+               .($teacher->department->short_name ?? $teacher->department->name);
     }
 }

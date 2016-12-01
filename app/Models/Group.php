@@ -1,9 +1,11 @@
 <?php namespace Scalex\Zero\Models;
 
 use DB;
+use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Database\Eloquent\Collection;
 use Scalex\Zero\Contracts\Communication\ReceivesMessage;
 use Scalex\Zero\Database\BaseModel;
+use Scalex\Zero\Others\LastMessageAt;
 use Scalex\Zero\User;
 
 class Group extends BaseModel implements ReceivesMessage
@@ -11,6 +13,8 @@ class Group extends BaseModel implements ReceivesMessage
     protected $fillable = ['name', 'description', 'private'];
 
     protected $casts = ['private' => 'bool'];
+
+    protected $extends = ['count_members'];
 
     protected $isMemberCache = [];
 
@@ -28,6 +32,10 @@ class Group extends BaseModel implements ReceivesMessage
 
     public function profilePhoto() {
         return $this->belongsTo(Attachment::class, 'photo_id');
+    }
+
+    public function lastMessageAt() {
+        return new LastMessageAt((new Message())->newQuery(), $this);
     }
 
     /*
@@ -114,6 +122,8 @@ class Group extends BaseModel implements ReceivesMessage
 
         if (count($ids)) {
             $this->members()->attach($ids);
+            $this->count_members = $this->members()->count();
+            $this->save();
         }
 
         return $prepared;
@@ -125,13 +135,19 @@ class Group extends BaseModel implements ReceivesMessage
 
         if (count($ids)) {
             $this->members()->detach($ids);
+            $this->count_members = $this->members()->count();
+            $this->save();
         }
 
         return $prepared;
     }
 
-    public function getChannelName() {
-        return 'group-'.$this->getKey();
+    public function getChannelName() : string {
+        return $this->getMorphClass().'-'.$this->getKey();
+    }
+
+    public function getChannel() {
+        return new PresenceChannel($this->getChannelName());
     }
 
     /**

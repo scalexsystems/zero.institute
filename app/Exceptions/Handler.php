@@ -47,10 +47,6 @@ class Handler extends ExceptionHandler
      * @return \Illuminate\Http\Response
      */
     protected function unauthenticated($request, AuthenticationException $exception) {
-        if ($request->acceptsJson()) {
-            return response()->json(['message' => 'Unauthenticated.'], Response::HTTP_FORBIDDEN);
-        }
-
         return redirect()->guest('login');
     }
 
@@ -63,7 +59,7 @@ class Handler extends ExceptionHandler
      * @return \Symfony\Component\HttpFoundation\Response|void
      */
     public function render($request, Exception $e) {
-        if ($request->acceptsJson() and Str::startsWith($request->getPathInfo(), '/api')) {
+        if (Str::startsWith($request->getPathInfo(), ['/api', '/broadcasting'])) {
             return $this->renderForApi($request, $e);
         }
 

@@ -12,8 +12,6 @@ trait VerifiesSchool
     public function beforeVerifiesSchool(User $user, $policy, $other = null) {
         if (isset($this->skipSchoolVerification) and $this->skipSchoolVerification === true) return;
 
-        \Log::debug('VERIFY SCHOOL');
-
         return $this->verifySchool($other);
     }
 

@@ -63,7 +63,9 @@ class Employee extends BaseModel implements BelongsToSchool, Person
 
     protected $searchable = [
         'name',
-        'first_name', 'middle_name', 'last_name',
+        'first_name',
+        'middle_name',
+        'last_name',
         'uid',
         'department_id',
         'school_id',
@@ -77,6 +79,8 @@ class Employee extends BaseModel implements BelongsToSchool, Person
         // Past Working Experience
         'experience' => 'json',
     ];
+
+    protected $extends = ['bio'];
 
     protected $dates = ['date_of_birth', 'date_of_joining'];
 

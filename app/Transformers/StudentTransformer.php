@@ -6,16 +6,17 @@ use Znck\Transformers\Transformer;
 
 class StudentTransformer extends Transformer
 {
-    protected $availableIncludes = ['father', 'mother', 'address'];
+    protected $availableIncludes = ['father', 'mother', 'address', 'user'];
 
     public function show(Student $student) {
         return [
             'name' => (string)$student->name,
+            'bio' => (string)$student->bio,
             'photo' => attach_url($student->profilePhoto) ?? asset('img/placeholder-64.jpg'),
             'has_account' => !is_null($student->user),
 
             // Basic Information.
-            'email' => (string) ($student->user->email ?? $student->address->email),
+            'email' => (string)($student->user->email ?? $student->address->email),
             'first_name' => (string)$student->first_name,
             'middle_name' => (string)$student->middle_name,
             'last_name' => (string)$student->last_name,
@@ -53,10 +54,15 @@ class StudentTransformer extends Transformer
         ];
     }
 
+    public function includeUser(Student $student) {
+        return $this->item($student->user);
+    }
+
     public function index(Student $student) {
         return [
             'uid' => (string)$student->uid,
             'name' => (string)$student->name,
+            'bio' => (string)$student->bio,
             'photo' => attach_url($student->profilePhoto) ?? asset('img/placeholder-64.jpg'),
             'department_id' => $student->department_id,
             'discipline_id' => $student->discipline_id,

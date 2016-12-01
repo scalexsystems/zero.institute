@@ -137,6 +137,8 @@ class StudentRepository extends Repository
             $student->address->addressee()->associate($student)->save();
         }));
 
+        $student->bio = $this->getBio($student);
+
         return $student->save();
     }
 
@@ -147,11 +149,8 @@ class StudentRepository extends Repository
         $this->startTransaction();
 
         if (array_has($attributes, 'address')) {
-            $student->address()
-                    ->associate(
-                        repository(Address::class)
-                            ->update($student->address, array_get($attributes, 'address'))
-                    );
+            repository(Address::class)
+                ->update($student->address, $attributes['address']);
         }
         if (array_has($attributes, 'department_id')) {
             $student->department()->associate(find($attributes, 'department_id'));
@@ -169,6 +168,14 @@ class StudentRepository extends Repository
             $student->mother()->associate(find($attributes, 'mother_id', Guardian::class));
         }
 
+        $student->bio = $this->getBio($student);
+
         return $student->update();
+    }
+
+    public function getBio(Student $student) {
+        return 'Student ・ '
+               .($student->department->short_name ?? $student->department->name).' '
+               .$student->date_of_admission->year;
     }
 }

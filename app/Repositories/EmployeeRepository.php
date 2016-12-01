@@ -133,6 +133,7 @@ class EmployeeRepository extends Repository
         $employee->created(once(function (Employee $employee) {
             $employee->address->addressee()->associate($employee)->save();
         }));
+        $employee->bio = $this->getBio($employee);
 
         return $employee->save();
     }
@@ -156,7 +157,13 @@ class EmployeeRepository extends Repository
         if (array_has($attributes, 'photo_id')) {
             attach_attachment($employee, 'profilePhoto', find($attributes, 'photo_id', Attachment::class));
         }
+        $employee->bio = $this->getBio($employee);
 
         return $employee->update();
+    }
+
+    public function getBio(Employee $employee) {
+        return $employee->job_title.' ・ '
+               .($employee->department->short_name ?? $employee->department->name);
     }
 }

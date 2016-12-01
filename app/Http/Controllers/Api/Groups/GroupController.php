@@ -1,0 +1,80 @@
+<?php namespace Scalex\Zero\Http\Controllers\Api\Groups;
+
+use Illuminate\Http\Request;
+use Scalex\Zero\Criteria\OrderBy;
+use Scalex\Zero\Http\Controllers\Controller;
+use Scalex\Zero\Http\Requests;
+use Scalex\Zero\Models\Group;
+
+class GroupController extends Controller
+{
+    public function __construct() {
+        $this->middleware('auth:api,web');
+    }
+
+    /**
+     * List all groups.
+     * GET /groups
+     * Requires: auth
+     */
+    public function index(Request $request) {
+        $groups = repository(Group::class)
+            ->with('profilePhoto')
+            ->pushCriteria(criteria(function ($query) {
+                /** @var \Illuminate\Database\Query\Builder $query */
+                $query->where('private', false);
+            }));
+
+        if ($request->has('q')) {
+            $groups->search($request->query('q'));
+        } else {
+            $groups->pushCriteria(new OrderBy('name'));
+        }
+
+        return $groups->paginate();
+    }
+
+    /**
+     * Create new group.
+     * POST /groups
+     * Requires: auth
+     */
+    public function store(Request $request) {
+        $this->authorize('store', Group::class);
+
+        $group = repository(Group::class)->create(
+            [
+                'owner' => $request->user(),
+                'school' => $request->user()->school,
+                'owner_id' => $request->user()->getKey(),
+                'school_id' => $request->user()->school->getKey(),
+            ] + $request->all());
+        $group->members()->attach($request->user());
+
+        return $group;
+    }
+
+    /**
+     * Get group details.
+     * GET /groups/{group}
+     * Requires: auth
+     */
+    public function show(Group $group) {
+        $this->authorize($group);
+
+        return $group;
+    }
+
+    /**
+     * Update group details.
+     * PUT /groups/{group}
+     * Requires: auth
+     */
+    public function update(Request $request, Group $group) {
+        $this->authorize($group);
+
+        repository($group)->update($group, $request->all());
+
+        return $this->accepted();
+    }
+}

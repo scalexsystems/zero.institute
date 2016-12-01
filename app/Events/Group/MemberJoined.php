@@ -40,4 +40,11 @@ class MemberJoined implements ShouldBroadcast
     public function broadcastOn() {
         return new PresenceChannel($this->group->getChannelName());
     }
+
+    /**
+     * @return \Scalex\Zero\Models\Group
+     */
+    public function getGroup(): \Scalex\Zero\Models\Group {
+        return $this->group;
+    }
 }

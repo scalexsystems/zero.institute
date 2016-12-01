@@ -2,6 +2,7 @@
 
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
@@ -15,7 +16,9 @@ use Scalex\Zero\Contracts\Database\BelongsToSchool;
 use Scalex\Zero\Models\Attachment;
 use Scalex\Zero\Database\BaseModel;
 use Scalex\Zero\Models\Group;
+use Scalex\Zero\Models\Message;
 use Scalex\Zero\Models\School;
+use Scalex\Zero\Others\LastMessageAt;
 use Znck\Trust\Contracts\Permissible as PermissibleContract;
 use Znck\Trust\Traits\Permissible;
 
@@ -25,8 +28,7 @@ class User extends BaseModel implements
     CanResetPasswordContract,
     BelongsToSchool,
     PermissibleContract,
-    ReceivesMessage,
-    SendsMessage
+    ReceivesMessage
 {
     use Authenticatable, Authorizable, CanResetPassword;
 
@@ -64,5 +66,17 @@ class User extends BaseModel implements
 
     public function groups() {
         return $this->belongsToMany(Group::class)->withTimestamps();
+    }
+
+    public function getChannelName() : string {
+        return $this->getMorphClass().'-'.$this->getKey();
+    }
+
+    public function getChannel() {
+        return new PrivateChannel($this->getChannelName());
+    }
+
+    public function lastMessageAt() {
+        return new LastMessageAt((new Message())->newQuery(), $this);
     }
 }

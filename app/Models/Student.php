@@ -46,7 +46,9 @@ class Student extends BaseModel implements Person, BelongsToSchool
 
     protected $searchable = [
         'name',
-        'first_name', 'middle_name', 'last_name',
+        'first_name',
+        'middle_name',
+        'last_name',
         'uid',
         'department_id',
         'discipline_id',
@@ -57,6 +59,8 @@ class Student extends BaseModel implements Person, BelongsToSchool
         'is_disabled' => 'boolean',
         'archived' => 'boolean',
     ];
+
+    protected $extends = ['bio'];
 
     protected $dates = ['date_of_birth', 'date_of_admission'];
 

@@ -56,10 +56,10 @@ if (!function_exists('verify_school')) {
     function verify_school($model, School $school = null) {
         if ($model instanceof BelongsToSchool) {
             if (!is_null($school)) {
-                return $school->getKey() === $model->school_id;
+                return (int)$school->getKey() === (int)$model->school_id;
             }
 
-            return current_user()->school_id === $model->school_id;
+            return (int)current_user()->school_id === (int)$model->school_id;
         }
 
         return true;
@@ -97,7 +97,6 @@ if (!function_exists('current_user')) {
 
 if (!function_exists('allow')) {
     function allow(string $what, $who, $resource, $default = null) {
-
         return Gate::allows($what, $who) ? $resource : $default;
     }
 }
@@ -105,16 +104,17 @@ if (!function_exists('allow')) {
 if (!function_exists('once')) {
     function once(\Closure $fn) {
         $once = false;
+        $result = null;
 
-        return function () use ($fn, $once) {
+        return function () use ($fn, $once, $result) {
             if ($once) {
-                return true;
+                return $result;
             }
 
             /** @noinspection PhpUnusedLocalVariableInspection */
             $once = true;
 
-            return call_user_func_array($fn, func_get_args());
+            return $result = call_user_func_array($fn, func_get_args());
         };
     }
 }
@@ -132,7 +132,7 @@ if (!function_exists('attach_attachment')) {
     }
 }
 
-if (!function_exists('school_cache')) {
+if (!function_exists('schoolify')) {
     function schoolify(string $key) {
         return current_user()->school_id.'.'.$key;
     }
@@ -144,6 +144,6 @@ if (!function_exists('iso_date')) {
             return $date->toIso8601String();
         }
 
-        return '';
+        return (string) $date;
     }
 }

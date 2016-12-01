@@ -1,5 +1,6 @@
 <?php namespace Scalex\Zero\Criteria;
 
+use Laravel\Scout\Builder;
 use Znck\Repositories\Contracts\Criteria;
 use Znck\Repositories\Contracts\Repository;
 
@@ -12,8 +13,10 @@ class OrderBy implements Criteria
     }
 
     public function apply($model, Repository $repository) {
-        foreach ($this->columns as $column) {
-            call_user_func_array([$model, 'orderBy'], (array)$column);
+        if (!$model instanceof Builder) {
+            foreach ($this->columns as $column) {
+                call_user_func_array([$model, 'orderBy'], (array)$column);
+            }
         }
     }
 }

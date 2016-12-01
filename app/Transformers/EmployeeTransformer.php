@@ -6,11 +6,12 @@ use Znck\Transformers\Transformer;
 
 class EmployeeTransformer extends Transformer
 {
-    protected $availableIncludes = ['address'];
+    protected $availableIncludes = ['address', 'user'];
 
     public function show(Employee $employee) {
         return [
             'name' => (string)$employee->name,
+            'bio' => (string)$employee->bio,
 
             // Basic Information.
             'email' => (string) ($employee->user->email ?? $employee->address->email),
@@ -59,11 +60,15 @@ class EmployeeTransformer extends Transformer
         return [
             'uid' => (string)$employee->uid,
             'name' => (string)$employee->name,
+            'bio' => (string)$employee->bio,
             'photo' => attach_url($employee->profilePhoto) ?? asset('img/placeholder-64.jpg'),
             'department_id' => $employee->department_id,
         ];
     }
 
+    public function includeUser(Employee $employee) {
+        return $this->item($employee->user);
+    }
 
     public function includeAddress(Employee $employee) {
         return allow(

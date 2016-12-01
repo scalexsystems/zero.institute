@@ -7,6 +7,10 @@ use Scalex\Zero\Models\Teacher;
 
 class TeacherController extends Controller
 {
+    public function __construct() {
+        $this->middleware('auth:api,web');
+    }
+
     public function index(Request $request) {
         $teachers = repository(Teacher::class)->with('profilePhoto');
 

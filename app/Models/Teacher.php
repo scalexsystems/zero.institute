@@ -72,11 +72,15 @@ class Teacher extends BaseModel implements BelongsToSchool, Person
 
     protected $searchable = [
         'name',
-        'first_name', 'middle_name', 'last_name',
+        'first_name',
+        'middle_name',
+        'last_name',
         'uid',
         'department_id',
         'school_id',
     ];
+
+    protected $extends = ['bio'];
 
     protected $dates = ['date_of_birth', 'date_of_joining'];
 

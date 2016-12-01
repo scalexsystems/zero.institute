@@ -8,6 +8,10 @@ use Scalex\Zero\Models\Student;
 
 class StudentController extends Controller
 {
+    public function __construct() {
+        $this->middleware('auth:api,web');
+    }
+
     public function index(Request $request) {
         $students = repository(Student::class)->with('profilePhoto');
 

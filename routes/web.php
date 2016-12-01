@@ -12,11 +12,16 @@
 */
 
 Route::get('/', 'HomeController@home');
+
 Route::get('/share', 'HomeController@share');
 Route::get('/request', 'HomeController@request');
 Route::post('/request', 'HomeController@request');
 
-Auth::routes();
-
 Route::get('/account/update/email/verify/{token}', 'Auth\VerificationController@updateEmail');
 Route::get('/account/email/verify/{token}', 'Auth\VerificationController@verifyEmail');
+
+Auth::routes();
+
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('/{anything}', 'HomeController@app')->where('anything', '(.*)');
+});

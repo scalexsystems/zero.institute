@@ -13,7 +13,7 @@ use Symfony\Component\Console\Helper\ProgressBar;
 
 class DatabaseSeeder extends Seeder
 {
-    const SCHOOLS = 11;
+    const SCHOOLS = 3;
     const DEPARTMENTS = 5;
     const DISCIPLINES = 2;
 
@@ -80,6 +80,10 @@ class DatabaseSeeder extends Seeder
             $bar->advance();
         }
         $bar->finish();
+
+        $this->call(GroupsSeeder::class);
+
+        $this->command->line('');
         $this->command->line('<info>Database ready!</info>');
     }
 }

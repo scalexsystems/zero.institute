@@ -7,6 +7,10 @@ use Scalex\Zero\Models\Employee;
 
 class EmployeeController extends Controller
 {
+    public function __construct() {
+        $this->middleware('auth:api,web');
+    }
+
     public function index(Request $request) {
         $employees = repository(Employee::class)->with('profilePhoto');
 

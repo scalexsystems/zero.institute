@@ -13,25 +13,28 @@ class UserTransformer extends Transformer
             'name' => (string)$user->name,
             'photo' => attach_url($user->profilePhoto) ?? asset('img/placeholder-64.jpg'),
             'type' => morph_model($user->person),
+            'bio' => $user->person->bio,
+            'active_at' => $user->relationLoaded('lastMessageAt') and $user->lastMessageAt ? iso_date($user->lastMessageAt->created_at) : null,
         ];
     }
 
     public function show(User $user) {
-        return [
-           'name' => (string)$user->name,
-           'photo' => attach_url($user->profilePhoto) ?? asset('img/placeholder-64.jpg'),
-           'type' => morph_model($user->person),
-        ] + allow('read-email', $user, [
-            'email' => $user->email,
-        ], []) + allow('read-account', $user, [
-            'registered' => !is_null($user->person),
-            'verified' => is_null($user->verification_token),
-        ], []);
+        return
+            [
+                'name' => (string)$user->name,
+                'photo' => attach_url($user->profilePhoto) ?? asset('img/placeholder-64.jpg'),
+                'type' => morph_model($user->person),
+                'bio' => $user->person->bio,
+                'channel' => $user->getChannelName(),
+            ] + allow('read-email', $user, [
+                'email' => $user->email,
+            ], []) + allow('read-account', $user, [
+                'registered' => !is_null($user->person),
+                'verified' => is_null($user->verification_token),
+            ], []);
     }
 
     public function includePerson(User $user) {
-        return $user->person
-            ? $this->item($user->person, transformer($user->person))
-            : $this->null();
+        return $user->person ? $this->item($user->person) : $this->null();
     }
 }

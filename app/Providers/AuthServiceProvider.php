@@ -28,6 +28,7 @@ class AuthServiceProvider extends ServiceProvider
         /** Others */
         Models\Intent::class => Policies\IntentPolicy::class,
         Models\Group::class => Policies\GroupPolicy::class,
+        Models\Message::class => Policies\MessagePolicy::class,
     ];
 
     /**
