@@ -31,12 +31,7 @@ class HomeController extends Controller
             return $this->app();
         }
 
-        $count = Cache::rememberForever(
-            'requests.count',
-            function () {
-                return DB::connection('sqlite')->table('requests')->count();
-            }
-        );
+        $count = 0;
 
         return view('web.home', compact('count'));
     }

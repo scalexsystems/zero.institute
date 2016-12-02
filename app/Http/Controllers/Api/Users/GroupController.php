@@ -37,7 +37,7 @@ class GroupController extends Controller
      * Join group.
      */
     public function store(Group $group) {
-        $this->authorize($group);
+        $this->authorize('join', $group);
 
         $user = current_user();
 
@@ -51,8 +51,7 @@ class GroupController extends Controller
         } else {
             abort(400, 'You are not allowed to join this group.');
         }
-
-        return $this->accepted();
+        return $group;
     }
 
     /**
