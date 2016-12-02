@@ -14,5 +14,9 @@ require('laravel-elixir-vue');
  */
 
 elixir((mix) => {
-  mix.sass('web.scss').version(['public/css/web.css']);
+  mix
+    .copy('./node_modules/@scalex/zero.front/dist/vue.blade.php', 'resources/views/app/')
+    .copy('./node_modules/@scalex/zero.front/dist/static', 'public/static')
+    .sass('web.scss')
+    .version(['public/css/web.css']);
 });
