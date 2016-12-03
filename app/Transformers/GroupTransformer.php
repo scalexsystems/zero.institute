@@ -12,18 +12,20 @@ class GroupTransformer extends Transformer
     }
 
     public function index(Group $group) {
+        $user = current_user();
         return [
             'name' => (string)$group->name,
-            'bio' => trans_choice('groups.count_members', $group->count_members + 1 ?? 0).
-                     ' ・ '.trans_choice('groups.private', $group->private ? 1 : 0),
+            'description' => (string)$group->description,
             'photo' => attach_url($group->profilePhoto) ?? asset('img/placeholder-64.jpg'),
             'type' => is_null($group->school_id) ? 'open' : 'closed',
+            'type_text' => trans_choice('groups.private', $group->private ? 1 : 0),
             'private' => (bool)$group->private,
-            'member_count' => $group->count_members ?? 0,
-            'channel' => $group->getChannelName(),
+            'member_count' => (int)($group->count_members ?? 0),
+            'member_count_text' => trans_choice('groups.count_members', $group->count_members ?? 0),
+            'channel' => (string)$group->getChannelName(),
             'active_at' => $group->lastMessageAt ? iso_date($group->lastMessageAt->created_at) : null,
-            'is_member' => $group->isMember(current_user()),
-            'is_admin' => (int)$group->owner_id === (int)current_user()->id,
+            'is_member' =>  $user and $group->isMember($user),
+            'is_admin' => $user and (int)$group->owner_id === (int)$user->id,
         ];
     }
 }
