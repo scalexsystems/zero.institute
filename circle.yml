@@ -1,0 +1,14 @@
+machine:
+  php:
+    version: 7.0.4
+
+dependencies:
+  override:
+    - composer install --no-progress
+    - cp .env.example .env
+    - php artisan key:generate
+    - php artisan passport:keys
+
+test:
+  override:
+    - composer test
