@@ -4,8 +4,8 @@ machine:
 
 dependencies:
   override:
-    - composer install
-    - copy .env.example .env
+    - composer install --no-progress
+    - cp .env.example .env
     - php artisan key:generate
     - php artisan passport:keys
 
