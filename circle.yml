@@ -4,7 +4,7 @@ machine:
 
 dependencies:
   pre:
-    - - echo "memory_limit = 1024M" > ~/.phpenv/versions/7.0.4/etc/conf.d/memory.ini
+    - echo "memory_limit = 1024M" > ~/.phpenv/versions/7.0.4/etc/conf.d/memory.ini
   override:
     - composer install
 
