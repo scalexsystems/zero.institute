@@ -5,6 +5,9 @@ machine:
 dependencies:
   override:
     - composer install
+    - copy .env.example .env
+    - php artisan key:generate
+    - php artisan passport:keys
 
 test:
   override:
