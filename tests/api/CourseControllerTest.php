@@ -9,12 +9,12 @@ class CourseControllerTest extends TestCase
 {
     public function test_it_lists_courses() {
         $user = factory(User::class)->create();
-        factory(Course::class, 10)->create(['school_id' => $user->school_id]);
+        factory(Course::class, 2)->create(['school_id' => $user->school_id]);
 
         $this->actingAs($user)
             ->json('GET', '/api/courses')
             ->seeJson()
-            ->seeJsonContains(transform(Course::paginate()));
+            ->seeJsonContains(transform(Course::all()));
     }
 
     public function test_it_shows_course() {
