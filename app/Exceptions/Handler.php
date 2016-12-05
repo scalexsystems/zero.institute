@@ -50,6 +50,10 @@ class Handler extends ExceptionHandler
         return redirect()->guest('login');
     }
 
+    protected function unauthenticatedApi($request, AuthenticationException $exception) {
+        return response()->json(['error' => 'unauthenticated'], 403);
+    }
+
     /**
      * Render an exception into a response.
      *
@@ -82,7 +86,7 @@ class Handler extends ExceptionHandler
         ) {
             return $this->convertValidationExceptionToJson($e, $request);
         } elseif ($e instanceof AuthenticationException) {
-            return $this->unauthenticated($request, $e);
+            return $this->unauthenticatedApi($request, $e);
         } elseif ($e instanceof AuthorizationException) {
             return response()->json(['message' => 'Unauthorized.'], Response::HTTP_UNAUTHORIZED);
         }  elseif ($e instanceof ValidationException) {
