@@ -18,14 +18,14 @@ class CoursePolicy extends AbstractPolicy
         return verify_school($course);
     }
 
-    public function create(User $user)
+    public function store(User $user)
     {
         return $user->hasPermissionTo(Action::CREATE_COURSE);
     }
 
     public function update(User $user, Course $course)
     {
-        return (int) $user->getKey() === (int) $course->instructor_id
+        return ($user->id === $course->instructor_id)
             or ($user->hasPermissionTo(Action::UPDATE_COURSE) and verify_school($course));
     }
 
