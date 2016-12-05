@@ -57,10 +57,5 @@ $factory->define(Course::class, function (Generator $f, array $attributes) {
                     ->create(array_only($attributes, ['school_id']))
                     ->id;
         },
-        'photo_id' => function () use ($attributes) {
-            return factory(Attachment::class)
-                    ->create(array_only($attributes, ['school_id']))
-                    ->id;
-        },
     ];
 });
