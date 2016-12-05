@@ -10,6 +10,7 @@ class CourseTransformer extends Transformer
         'school',
         'department',
         'discipline',
+        'instructor',
         'group',
     ];
 
@@ -25,6 +26,7 @@ class CourseTransformer extends Transformer
             'description' => (string) $course->description,
             'department_id' => (int) $course->department_id,
             'discipline_id' => (int) $course->discipline_id,
+            'instructor_id' => (int) $course->instructor_id,
             'group_id' => (int) $course->group_id,
         ];
     }
@@ -43,5 +45,9 @@ class CourseTransformer extends Transformer
 
     public function includeGroup(Course $course) {
         return $this->item($course->group);
+    }
+
+    public function includeInstructor(Course $course) {
+        return $this->item($course->instructor);
     }
 }

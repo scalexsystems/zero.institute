@@ -4,6 +4,7 @@ use Scalex\Zero\Database\BaseModel;
 use Scalex\Zero\Contracts\Database\BelongsToSchool;
 use Scalex\Zero\Models\Group;
 use Scalex\Zero\Models\School;
+use Scalex\Zero\Models\Teacher;
 use Scalex\Zero\Models\Department;
 use Scalex\Zero\Models\Discipline;
 use Scalex\Zero\Models\Attachment;
@@ -26,6 +27,10 @@ class Course extends BaseModel implements BelongsToSchool
 
     public function group() {
         return $this->belongsTo(Group::class);
+    }
+
+    public function intructor() {
+        return $this->belongsTo(Teacher::class);
     }
 
     public function photo() {

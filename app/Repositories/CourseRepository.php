@@ -39,6 +39,7 @@ class CourseRepository extends Repository
         'group_id' => 'nullable|exists:groups,id',
         'discipline_id' => 'nullable|exists:disciplines,id',
         'department_id' => 'required|exists:departments,id',
+        'instructor_id' => 'nullable|exists:teachers,id',
         'photo_id' => 'nullable|exists:attachments,id',
     ];
 
@@ -48,6 +49,7 @@ class CourseRepository extends Repository
 
         $course->department()->associate(find($attributes, 'discipline_id'));
         $course->discipline()->associate(find($attributes, 'discipline_id'));
+        $course->instructor()->associate(find($attributes, 'instructor_id'));
         $course->group()->associate(find($attributes, 'group_id'));
         $course->school()->associate(find($attributes, 'school_id'));
 
@@ -66,10 +68,12 @@ class CourseRepository extends Repository
         if (array_has($attributes, 'discipline_id')) {
             $course->discipline()->associate(find($attributes, 'discipline_id'));
         }
+        if (array_has($attributes, 'instructor_id')) {
+            $course->instructor()->associate(find($attributes, 'instructor_id'));
+        }
         if (array_has($attributes, 'group_id')) {
             $course->group()->associate(find($attributes, 'group_id'));
         }
-
         if (array_has($attributes, 'deparment_id')) {
             attach_attachment($course, 'photo', find($attributes, 'photo_id', Attachment::class));
         }

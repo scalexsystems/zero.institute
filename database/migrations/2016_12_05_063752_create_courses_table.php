@@ -23,6 +23,7 @@ class CreateCoursesTable extends Migration
             $table->unsignedInteger('school_id')->index();
             $table->unsignedInteger('deparment_id')->nullable();
             $table->unsignedInteger('discipline_id')->nullable();
+            $table->unsignedInteger('instructor_id')->nullable();
             $table->unsignedInteger('group_id')->nullable();
             $table->unsignedBigInteger('photo_id')->nullable();
 
@@ -33,6 +34,7 @@ class CreateCoursesTable extends Migration
             $table->foreign('school_id')->references('id')->on('schools');
             $table->foreign('deparment_id')->references('id')->on('deparments');
             $table->foreign('discipline_id')->references('id')->on('disciplines');
+            $table->foreign('instructor_id')->references('id')->on('teachers');
             $table->foreign('group_id')->references('id')->on('groups');
             $table->foreign('photo_id')->references('id')->on('attachments');
         });
@@ -48,6 +50,7 @@ class CreateCoursesTable extends Migration
         Schema::table('courses', function (Blueprint $table) {
             $table->dropForeign(['photo_id']);
             $table->dropForeign(['group_id']);
+            $table->dropForeign(['instructor_id']);
             $table->dropForeign(['discipline_id']);
             $table->dropForeign(['deparment_id']);
             $table->dropForeign(['school_id']);
