@@ -1,5 +1,6 @@
 <?php
 
+$config = ['except' => ['edit', 'create']];
 // Schools
 Route::get('/schools', 'Schools\SchoolController@index');
 
@@ -67,6 +68,9 @@ Route::put('/me/messages/{message}/read', 'Messages\MessageController@update');
 
 // User & Messaged Users.
 Route::get('/me/messages/users', 'Messages\UserController@index');
+
+// Courses
+Route::resource('courses', 'CourseController', $config);
 
 // -- Authenticated routes.
 Route::group(['middleware' => 'auth:api,web'],
