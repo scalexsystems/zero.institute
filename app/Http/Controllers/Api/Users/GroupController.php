@@ -58,7 +58,7 @@ class GroupController extends Controller
      * Leave group.
      */
     public function delete(Group $group) {
-        $this->authorize($group);
+        $this->authorize('leave', $group);
 
         $user = current_user();
 
@@ -69,6 +69,6 @@ class GroupController extends Controller
             abort(400, 'You cannot leave this group.');
         }
 
-        return $this->accepted();
+        return $group;
     }
 }
