@@ -39,7 +39,7 @@ class UserTransformer extends Transformer
         return $this->item($user->person);
     }
 
-    public fuction getBio(User $user) {
+    public function getBio(User $user) {
         return $user->person ? $user->person->bio : '';
     }
 }
