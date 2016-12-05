@@ -64,7 +64,7 @@ class CourseController extends Controller
      * Requires: auth
      */
     public function update(Request $request, Course $course) {
-        $this->authorize($course);
+        $this->authorize('update', $course);
 
         repository($course)->update($course, $request->all());
 
@@ -77,7 +77,7 @@ class CourseController extends Controller
      * Requried: auth
      */
     public function destroy(Request $request, Course $course) {
-        $this->authorize($course);
+        $this->authorize('delete', $course);
 
         repository($course)->delete($course);
 
