@@ -24,9 +24,9 @@ class CourseController extends Controller
         $courses = repository(Course::class)->with('photo');
 
         if ($request->has('q')) {
-            $students->search($request->input('q'));
+            $courses->search($request->input('q'));
         } else {
-            $students->pushCriteria(new OrderBy('name'));
+            $courses->pushCriteria(new OrderBy('name'));
         }
 
         return $courses->simplePaginate();

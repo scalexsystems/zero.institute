@@ -22,7 +22,7 @@ class CourseTransformer extends Transformer
         return [
             'name' => (string) $course->name,
             'code' => (string) $course->code,
-            'photo' => (string) attach_url($group->photo) ?? asset('img/placeholder-64.jpg'),
+            'photo' => (string) attach_url($course->photo) ?? asset('img/placeholder-64.jpg'),
             'description' => (string) $course->description,
             'department_id' => (int) $course->department_id,
             'discipline_id' => (int) $course->discipline_id,
