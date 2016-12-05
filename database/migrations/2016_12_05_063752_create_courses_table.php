@@ -21,7 +21,7 @@ class CreateCoursesTable extends Migration
             $table->text('description')->nullable();
 
             $table->unsignedInteger('school_id')->index();
-            $table->unsignedInteger('deparment_id')->nullable();
+            $table->unsignedInteger('department_id')->nullable();
             $table->unsignedInteger('discipline_id')->nullable();
             $table->unsignedInteger('instructor_id')->nullable();
             $table->unsignedInteger('group_id')->nullable();
@@ -32,7 +32,7 @@ class CreateCoursesTable extends Migration
             $table->timestamps();
 
             $table->foreign('school_id')->references('id')->on('schools');
-            $table->foreign('deparment_id')->references('id')->on('deparments');
+            $table->foreign('department_id')->references('id')->on('deparments');
             $table->foreign('discipline_id')->references('id')->on('disciplines');
             $table->foreign('instructor_id')->references('id')->on('teachers');
             $table->foreign('group_id')->references('id')->on('groups');
@@ -52,7 +52,7 @@ class CreateCoursesTable extends Migration
             $table->dropForeign(['group_id']);
             $table->dropForeign(['instructor_id']);
             $table->dropForeign(['discipline_id']);
-            $table->dropForeign(['deparment_id']);
+            $table->dropForeign(['department_id']);
             $table->dropForeign(['school_id']);
             $table->drop();
         });
