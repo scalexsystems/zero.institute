@@ -3,7 +3,9 @@
 namespace Scalex\Zero\Repositories;
 
 use Scalex\Zero\Models\Course;
+use Scalex\Zero\Models\Teacher;
 use Scalex\Zero\Models\Attachment;
+use Scalex\Zero\Criteria\OfSchool;
 use Znck\Repositories\Repository;
 
 /**
@@ -43,17 +45,25 @@ class CourseRepository extends Repository
         'photo_id' => 'nullable|exists:attachments,id',
     ];
 
+    public function boot() {
+        if (current_user()) {
+            $this->pushCriteria(new OfSchool(current_user()->school));
+        }
+    }
+
     public function creating(Course $course, array $attributes)
     {
         $course->fill($attributes);
 
-        $course->department()->associate(find($attributes, 'discipline_id'));
+        $course->department()->associate(find($attributes, 'department_id'));
         $course->discipline()->associate(find($attributes, 'discipline_id'));
-        $course->instructor()->associate(find($attributes, 'instructor_id'));
+        $course->instructor()->associate(find($attributes, 'instructor_id', Teacher::class));
         $course->group()->associate(find($attributes, 'group_id'));
         $course->school()->associate(find($attributes, 'school_id'));
 
-        attach_attachment($course, 'photo', find($attributes, 'photo_id', Attachment::class));
+        if (array_has($attributes, 'photo_id')) {
+            attach_attachment($course, 'photo', find($attributes, 'photo_id', Attachment::class));
+        }
 
         return $course->save();
     }
@@ -62,8 +72,8 @@ class CourseRepository extends Repository
     {
         $course->fill($attributes);
 
-        if (array_has($attributes, 'deparment_id')) {
-            $course->department()->associate(find($attributes, 'discipline_id'));
+        if (array_has($attributes, 'department_id')) {
+            $course->department()->associate(find($attributes, 'department_id'));
         }
         if (array_has($attributes, 'discipline_id')) {
             $course->discipline()->associate(find($attributes, 'discipline_id'));
@@ -74,7 +84,7 @@ class CourseRepository extends Repository
         if (array_has($attributes, 'group_id')) {
             $course->group()->associate(find($attributes, 'group_id'));
         }
-        if (array_has($attributes, 'deparment_id')) {
+        if (array_has($attributes, 'photo_id')) {
             attach_attachment($course, 'photo', find($attributes, 'photo_id', Attachment::class));
         }
 
