@@ -1,4 +1,6 @@
-<?php namespace Scalex\Zero;
+<?php
+
+namespace Scalex\Zero;
 
 class Action
 {
@@ -11,7 +13,16 @@ class Action
     const PEOPLE = 'people';
     const MANAGE_PEOPLE = 'people.manage';
 
-    const VIEW_STUDENT = 'people.student_read';
-    const VIEW_TEACHER = 'people.teacher_read';
-    const VIEW_EMPLOYEE = 'people.employee_read';
+    const VIEW_STUDENT = 'people.student.read';
+    const VIEW_TEACHER = 'people.teacher.read';
+    const VIEW_EMPLOYEE = 'people.employee.read';
+
+    // -- @next --
+
+    /*
+     * @model \Scalex\Zero\Models\Course
+     */
+    const CREATE_COURSE = 'course.create';
+    const UPDATE_COURSE = 'course.update';
+    const DELETE_COURSE = 'course.delete';
 }
