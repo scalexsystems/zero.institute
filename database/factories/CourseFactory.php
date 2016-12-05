@@ -3,6 +3,7 @@
 use Scalex\Zero\Models\Course;
 use Scalex\Zero\Models\Group;
 use Scalex\Zero\Models\School;
+use Scalex\Zero\Models\Teacher;
 use Scalex\Zero\Models\Department;
 use Scalex\Zero\Models\Discipline;
 use Scalex\Zero\Models\Attachment;
@@ -44,6 +45,11 @@ $factory->define(Course::class, function (Generator $f, array $attributes) {
         'discipline_id' => function () use ($attributes) {
             return factory(Discipline::class)
                     ->create(array_only($attributes, ['school_id']))
+                    ->id;
+        },
+        'instructor_id' => function () use ($attributes) {
+            return factory(Teacher::class)
+                    ->create(array_only($attributes, ['instructor_id']))
                     ->id;
         },
         'group_id' => function () use ($attributes) {
