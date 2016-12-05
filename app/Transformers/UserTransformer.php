@@ -10,21 +10,22 @@ class UserTransformer extends Transformer
 
     public function index(User $user) {
         return [
-            'name' => (string)$user->name,
+            'name' => (string) $user->name,
             'photo' => attach_url($user->profilePhoto) ?? asset('img/placeholder-64.jpg'),
             'type' => morph_model($user->person),
-            'bio' => $user->person->bio,
-            'active_at' => $user->relationLoaded('lastMessageAt') and $user->lastMessageAt ? iso_date($user->lastMessageAt->created_at) : null,
+            'bio' => $this->getBio($user),
+            'active_at' => $user->relationLoaded('lastMessageAt') and $user->lastMessageAt
+                ? iso_date($user->lastMessageAt->created_at) : null,
         ];
     }
 
     public function show(User $user) {
         return
             [
-                'name' => (string)$user->name,
+                'name' => (string) $user->name,
                 'photo' => attach_url($user->profilePhoto) ?? asset('img/placeholder-64.jpg'),
                 'type' => morph_model($user->person),
-                'bio' => $user->person->bio,
+                'bio' => $this->getBio($user),
                 'channel' => $user->getChannelName(),
             ] + allow('read-email', $user, [
                 'email' => $user->email,
@@ -35,6 +36,10 @@ class UserTransformer extends Transformer
     }
 
     public function includePerson(User $user) {
-        return $user->person ? $this->item($user->person) : $this->null();
+        return $this->item($user->person);
+    }
+
+    public fuction getBio(User $user) {
+        return $user->person ? $user->person->bio : '';
     }
 }
