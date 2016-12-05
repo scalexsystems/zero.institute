@@ -11,6 +11,8 @@ use Scalex\Zero\Models\Attachment;
 
 class Course extends BaseModel implements BelongsToSchool
 {
+    use \Illuminate\Database\Eloquent\SoftDeletes;
+
     protected $fillable = ['name', 'code', 'description'];
 
     public function school() {
@@ -29,7 +31,7 @@ class Course extends BaseModel implements BelongsToSchool
         return $this->belongsTo(Group::class);
     }
 
-    public function intructor() {
+    public function instructor() {
         return $this->belongsTo(Teacher::class);
     }
 
