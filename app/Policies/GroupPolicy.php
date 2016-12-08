@@ -52,6 +52,10 @@ class GroupPolicy extends AbstractPolicy
     }
 
     public function leave(User $user, Group $group) {
+        if ($this->isOwner($user, $group)) {
+            return false;
+        }
+
         return $group->isMember($user);
     }
 
