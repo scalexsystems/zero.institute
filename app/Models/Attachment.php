@@ -15,20 +15,19 @@ class Attachment extends ExtendibleModel implements AttachmentContract
     protected $fillable = [
         'title',
         'filename',
-        'collection',
-        'disk',
+        'extension',
+        'slug',
+
         'path',
+        'disk',
+
         'mime',
         'visibility',
         'size',
-        'order',
-        'manipulations',
-        'properties',
     ];
 
     protected $casts = [
-        'manipulations' => 'array',
-        'properties' => 'array',
+        'variations' => 'array',
     ];
 
     public function owner() : BelongsTo {
@@ -40,6 +39,6 @@ class Attachment extends ExtendibleModel implements AttachmentContract
     }
 
     public function getAttachmentKeyName() : string {
-        return 'uuid';
+        return 'slug';
     }
 }

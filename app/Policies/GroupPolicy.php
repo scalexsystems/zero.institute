@@ -55,7 +55,15 @@ class GroupPolicy extends AbstractPolicy
         return $group->isMember($user);
     }
 
-    protected function isOwner(User $user, Group $group):bool {
+    public function updateGroupPhoto(User $user, Group $group) {
+        return $this->isOwner($user, $group);
+    }
+
+    public function removeGroupPhoto(User $user, Group $group) {
+        return $this->isOwner($user, $group);
+    }
+
+    protected function isOwner(User $user, Group $group): bool {
         return $group->owner_id === $user->getKey();
     }
 }

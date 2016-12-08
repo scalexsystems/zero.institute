@@ -1,6 +1,7 @@
 <?php
 
-$config = ['except' => ['edit', 'create']];
+$resource = ['except' => ['edit', 'create']];
+$extra = ['only' => ['store', 'destroy']];
 // Schools
 Route::get('/schools', 'Schools\SchoolController@index');
 
@@ -58,6 +59,9 @@ Route::put('/groups/{group}/messages/{message}', 'Groups\MessageController@updat
 Route::put('/groups/{group}/join', 'Users\GroupController@store');
 Route::delete('/groups/{group}/leave', 'Users\GroupController@delete');
 
+Route::post('/groups/{group}/photo', 'Groups\PhotoController@store');
+Route::delete('/groups/{group}/photo', 'Groups\PhotoController@destroy');
+
 // User & Groups
 Route::get('/me/groups', 'Users\GroupController@index');
 
@@ -70,7 +74,7 @@ Route::put('/me/messages/{message}/read', 'Messages\MessageController@update');
 Route::get('/me/messages/users', 'Messages\UserController@index');
 
 // Courses
-Route::resource('courses', 'CourseController', $config);
+Route::resource('courses', 'CourseController', $resource);
 
 // -- Authenticated routes.
 Route::group(['middleware' => 'auth:api,web'],

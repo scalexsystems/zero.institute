@@ -38,6 +38,10 @@ if (!function_exists('find')) {
 
         $id = array_get($attributes, $key.'_id');
 
+        if (is_null($id)) {
+            return null;
+        }
+
         try {
             return repository($class)->find($id);
         } catch (NotFoundResourceException $e) {
@@ -101,34 +105,12 @@ if (!function_exists('allow')) {
     }
 }
 
-if (!function_exists('once')) {
-    function once(\Closure $fn) {
-        $once = false;
-        $result = null;
-
-        return function () use ($fn, $once, $result) {
-            if ($once) {
-                return $result;
-            }
-
-            /** @noinspection PhpUnusedLocalVariableInspection */
-            $once = true;
-
-            return $result = call_user_func_array($fn, func_get_args());
-        };
-    }
-}
-
 if (!function_exists('attach_attachment')) {
     function attach_attachment(Model $related, string $relation, Attachment $attachment) {
         $related->$relation()->associate($attachment);
-        $related->saved(
-            once(
-                function ($related) use ($attachment) {
-                    $attachment->related()->associate($related)->save();
-                }
-            )
-        );
+        $related->saved(function ($related) use ($attachment) {
+            $attachment->related()->associate($related)->save();
+        });
     }
 }
 
