@@ -55,7 +55,7 @@ class GroupRepository extends Repository
         $group->fill($attributes);
 
         if (array_has($attributes, 'photo_id')) {
-            $group->profilePhoto()->associate(find($attributes, 'photo_id', Attachment::class));
+            attach_attachment($group, 'profilePhoto', find($attributes, 'photo_id', Attachment::class));
         }
 
         return $group->update();
