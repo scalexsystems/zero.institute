@@ -59,8 +59,20 @@ class GroupController extends Controller
                 'school' => $request->user()->school,
                 'owner_id' => $request->user()->getKey(),
                 'school_id' => $request->user()->school->getKey(),
-            ] + $request->all());
-        $group->members()->attach($request->user());
+                'name' => $request->input('name'),
+                'description' => $request->input('description'),
+                'private' => $request->input('private', false),
+            ]);
+
+        $members = $request->input('members', []);
+
+        if (count($members)) {
+            array_push($members, $request->user()->id);
+            $group->addMembers($members);
+        } else {
+            $group->addMembers([$request->user()->id]);
+        }
+
 
         return $group;
     }
