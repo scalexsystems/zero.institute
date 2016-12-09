@@ -8,7 +8,8 @@ class SchoolControllerTest extends TestCase
 {
     use DatabaseMigrations, DatabaseTransactions;
 
-    public function test_it_lists_schools() {
+    public function test_it_lists_schools()
+    {
         factory(School::class, 10)->create();
 
         $this->json('GET', '/api/schools')

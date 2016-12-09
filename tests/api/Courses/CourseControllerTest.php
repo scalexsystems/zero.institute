@@ -2,11 +2,11 @@
 
 use Scalex\Zero\Models\Course;
 use Scalex\Zero\Models\Department;
-use Scalex\Zero\User;
 
 class CourseControllerTest extends TestCase
 {
-    public function test_it_lists_courses() {
+    public function test_it_lists_courses()
+    {
         $user = $this->createAnUser();
         factory(Course::class, 2)->create(['school_id' => $user->school_id]);
 
@@ -16,7 +16,8 @@ class CourseControllerTest extends TestCase
             ->seeJsonContains(transform(Course::all()));
     }
 
-    public function test_it_shows_course() {
+    public function test_it_shows_course()
+    {
         $user = $this->createAnUser();
         $course = factory(Course::class)->create(['school_id' => $user->school_id]);
 
@@ -26,7 +27,8 @@ class CourseControllerTest extends TestCase
             ->seeJsonContains(transform($course));
     }
 
-    public function test_it_can_create_a_course() {
+    public function test_it_can_create_a_course()
+    {
         $user = $this->createAnUser();
         $data = [
             'name' => 'Linear Algebra',
@@ -43,7 +45,8 @@ class CourseControllerTest extends TestCase
             ->seeInDatabase('courses', $data);
     }
 
-    public function test_it_can_update_a_course() {
+    public function test_it_can_update_a_course()
+    {
         $user = $this->createAnUser();
         $course = factory(Course::class)->create(['school_id' => $user->school_id]);
         $data = [
@@ -59,7 +62,8 @@ class CourseControllerTest extends TestCase
             ->seeInDatabase('courses', $data);
     }
 
-    public function test_it_can_delete_a_course() {
+    public function test_it_can_delete_a_course()
+    {
         $user = $this->createAnUser();
         $course = factory(Course::class)->create(['school_id' => $user->school_id]);
 

@@ -3,8 +3,10 @@
 use Scalex\Zero\Models\Group;
 use Scalex\Zero\Models\Student;
 
-class GroupControllerTest extends TestCase {
-    public function test_it_can_list_groups() {
+class GroupControllerTest extends TestCase
+{
+    public function test_it_can_list_groups()
+    {
         $user = $this->createAnUser();
         factory(Group::class, 2)->create(['school_id' => $user->school_id, 'private' => false]);
         factory(Group::class)->create(['school_id' => $user->school_id, 'private' => true]);
@@ -14,7 +16,8 @@ class GroupControllerTest extends TestCase {
             ->seeJson()
             ->seeJsonContains(transform(Group::where('private', false)->paginate()));
     }
-    public function test_it_shows_group() {
+    public function test_it_shows_group()
+    {
         $user = $this->createAnUser();
         $group = factory(Group::class)->create(['school_id' => $user->school_id]);
 
@@ -24,7 +27,8 @@ class GroupControllerTest extends TestCase {
             ->seeJsonContains(transform($group));
     }
 
-    public function test_it_can_create_a_group() {
+    public function test_it_can_create_a_group()
+    {
         $user = $this->createAnUser();
         $data = [
             'name' => 'Test Group',
@@ -39,7 +43,8 @@ class GroupControllerTest extends TestCase {
             ->seeInDatabase('groups', $data);
     }
 
-    public function test_it_can_update_a_group() {
+    public function test_it_can_update_a_group()
+    {
         $user = $this->createAnUser();
         $group = factory(Group::class)->create(['school_id' => $user->school_id, 'owner_id' => $user->id]);
         $data = ['name' => 'Test Group'];
@@ -54,7 +59,8 @@ class GroupControllerTest extends TestCase {
             ->seeInDatabase('groups', $data);
     }
 
-    public function test_it_can_delete_a_group() {
+    public function test_it_can_delete_a_group()
+    {
         $user = $this->createAnUser();
         $group = factory(Group::class)->create(['school_id' => $user->school_id, 'owner_id' => $user->id]);
 
