@@ -1,9 +1,9 @@
 <?php /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
 
-$factory->define(Scalex\Zero\Models\Address::class, function (Faker\Generator $f) {
+$factory->define(Scalex\Zero\Models\Geo\Address::class, function (Faker\Generator $f) {
     if (Scalex\Zero\Models\Geo\City::count() > 200) {
-        $city_id = City::find(rand(1, 200))->id;
+        $city_id = Scalex\Zero\Models\Geo\City::find(rand(1, 200))->id;
     }
 
     return [
@@ -14,7 +14,7 @@ $factory->define(Scalex\Zero\Models\Address::class, function (Faker\Generator $f
         'phone' => $f->numerify('+918473######'),
         'email' => $f->email,
         'city_id' => $city_id ?? function () {
-            return factory(City::class)->create()->id;
+            return factory(Scalex\Zero\Models\Geo\City::class)->create()->id;
         },
     ];
 });

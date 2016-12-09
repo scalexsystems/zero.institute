@@ -14,7 +14,7 @@ $factory->define(Scalex\Zero\Models\School::class, function (Faker\Generator $f)
         'verified' => true,
         'university' => 'o',
         'address_id' => function () {
-            return factory(Address::class)->create()->id;
+            return factory(Scalex\Zero\Models\Geo\Address::class)->create()->id;
         },
     ];
 });
