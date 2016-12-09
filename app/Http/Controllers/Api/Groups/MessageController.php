@@ -67,16 +67,16 @@ class MessageController extends Controller
             $message = $group;
         }
         if (!$message->receiver instanceof Group) {
-            abort(404, 'Message not found in the group.');
+            abort(404);
         }
 
         $this->authorize('read', $message->receiver);
 
-        if ($message->intended_for and (int)$message->intended_for !== (int)$request->user()->getKey()) {
+        if ($message->intended_for and (int)$message->intended_for !== $request->user()->getKey()) {
             abort(401);
         }
 
-        if ((int)$message->sender->getKey() === (int)$request->user()->getKey()) {
+        if ((int)$message->sender_id === $request->user()->getKey()) {
             return $this->accepted();
         }
 
