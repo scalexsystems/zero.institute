@@ -4,7 +4,7 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
 {
     use Illuminate\Foundation\Testing\DatabaseMigrations;
     use Illuminate\Foundation\Testing\DatabaseTransactions;
-    
+
     /**
      * The base URL to use while testing the application.
      *
@@ -24,5 +24,9 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
         $app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();
 
         return $app;
+    }
+
+    public function createAnUser($attributes = []) {
+        return factory(Scalex\Zero\User::class)->create($attributes);
     }
 }
