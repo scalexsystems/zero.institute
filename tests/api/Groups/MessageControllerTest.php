@@ -1,7 +1,6 @@
 <?php
 use Scalex\Zero\Models\Group;
 use Scalex\Zero\Models\Message;
-use Scalex\Zero\Events\NewMessage;
 
 class MessageControllerTest extends TestCase
 {
@@ -19,7 +18,6 @@ class MessageControllerTest extends TestCase
             'receiver_type' => 'group',
         ]);
 
-        $this->expectsEvent(NewMessage::class);
         $this->actingAs($user)
             ->json('GET', "/api/groups/{$group->id}/messages")
             ->seeStatusCode(200)
