@@ -17,7 +17,7 @@ class MessageController extends Controller
 
     /**
      * Get messages from the user.
-     * GET /me/messages/users/{user}
+     * GET /messages/users/{user}
      * Required: auth
      */
     public function index(Request $request, User $user) {
@@ -34,7 +34,7 @@ class MessageController extends Controller
 
     /**
      * Send message to user.
-     * POST /me/messages/users/{user}
+     * POST /messages/users/{user}
      * Required: auth
      */
     public function store(Request $request, User $user) {
@@ -54,10 +54,10 @@ class MessageController extends Controller
 
     /**
      * Mark message as read.
-     * POST /me/messages/{message}/read
+     * POST /messages/{message}/read
      * Required: auth
      */
-    public function update(Message $message) {
+    public function read(Message $message) {
         $this->authorize('read', $message);
 
         if (is_null($message->read_at)) {

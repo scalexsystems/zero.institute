@@ -62,7 +62,7 @@ class MessageController extends Controller
      * PUT /groups/{group}/messages/{message}/read
      * Requires: auth
      */
-    public function update(Request $request, $group, Message $message = null) {
+    public function read(Request $request, $group, Message $message = null) {
         if (is_null($message)) {
             $message = $group;
         }

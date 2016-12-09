@@ -1,4 +1,4 @@
-<?php namespace Scalex\Zero\Http\Controllers\Api;
+<?php namespace Scalex\Zero\Http\Controllers\Api\Schools;
 
 use DB;
 use Illuminate\Http\Request;
@@ -27,7 +27,7 @@ class DepartmentController extends Controller
             [
                 'school' => current_user()->school,
                 'school_id' => current_user()->school_id,
-            ] + $request->all()
+            ] + $request->all() // FIXME: This is too blunt.
         );
 
         return $this->created($department->getKey());
