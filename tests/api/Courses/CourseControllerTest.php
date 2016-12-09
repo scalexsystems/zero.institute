@@ -2,13 +2,12 @@
 
 use Scalex\Zero\Models\Course;
 use Scalex\Zero\Models\Department;
-use Znck\Trust\Models\Permission;
 use Scalex\Zero\User;
 
 class CourseControllerTest extends TestCase
 {
     public function test_it_lists_courses() {
-        $user = factory(User::class)->create();
+        $user = $this->createAnUser();
         factory(Course::class, 2)->create(['school_id' => $user->school_id]);
 
         $this->actingAs($user)
@@ -18,7 +17,7 @@ class CourseControllerTest extends TestCase
     }
 
     public function test_it_shows_course() {
-        $user = factory(User::class)->create();
+        $user = $this->createAnUser();
         $course = factory(Course::class)->create(['school_id' => $user->school_id]);
 
         $this->actingAs($user)
@@ -28,15 +27,14 @@ class CourseControllerTest extends TestCase
     }
 
     public function test_it_can_create_a_course() {
-        $user = factory(User::class)->create();
+        $user = $this->createAnUser();
         $data = [
             'name' => 'Linear Algebra',
             'code' => 'MA205',
             'department_id' => factory(Department::class)->create(['school_id' => $user->school_id])->id,
         ];
 
-        Permission::create(['slug' => 'course.create', 'name' => 'Create']);
-        $user->givePermission('course.create');
+        $this->givePermissionTo($user, 'course.create');
 
         $this->actingAs($user)
             ->json('POST', '/api/courses', $data)
@@ -46,14 +44,13 @@ class CourseControllerTest extends TestCase
     }
 
     public function test_it_can_update_a_course() {
-        $user = factory(User::class)->create();
+        $user = $this->createAnUser();
         $course = factory(Course::class)->create(['school_id' => $user->school_id]);
         $data = [
             'department_id' => factory(Department::class)->create(['school_id' => $user->school_id])->id,
         ];
 
-        Permission::create(['slug' => 'course.update', 'name' => 'Update']);
-        $user->givePermission('course.update');
+        $this->givePermissionTo($user, 'course.update');
 
         $this->actingAs($user)
             ->json('PUT', "/api/courses/{$course->id}", $data)
@@ -63,11 +60,10 @@ class CourseControllerTest extends TestCase
     }
 
     public function test_it_can_delete_a_course() {
-        $user = factory(User::class)->create();
+        $user = $this->createAnUser();
         $course = factory(Course::class)->create(['school_id' => $user->school_id]);
 
-        Permission::create(['slug' => 'course.delete', 'name' => 'Delete']);
-        $user->givePermission('course.delete');
+        $this->givePermissionTo($user, 'course.delete');
 
         $this->actingAs($user)
             ->json('DELETE', "/api/courses/{$course->id}")
