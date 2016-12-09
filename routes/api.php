@@ -39,7 +39,7 @@ Route::post('/groups/{group}/members/add', 'Groups\MemberController@store');
 Route::delete('/groups/{group}/members/remove', 'Groups\MemberController@destroy');
 
 Route::put('/groups/{group}/messages/{message}/read', 'Groups\MessageController@read');
-Route::resource('/groups/{group}/messages', 'Groups\MessageController', ['except' => ['edit', 'create', 'update']]);
+Route::resource('/groups/{group}/messages', 'Groups\MessageController', ['only' => ['index', 'create']]);
 
 Route::put('/groups/{group}/photo', 'Groups\PhotoController@store');
 Route::delete('/groups/{group}/photo', 'Groups\PhotoController@destroy');
