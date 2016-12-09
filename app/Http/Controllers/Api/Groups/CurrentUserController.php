@@ -17,7 +17,7 @@ class CurrentUserController extends Controller
      * List joined groups.
      */
     public function index(Request $request) {
-        $user = current_user();
+        $user = $request->user();
 
         if ($request->has('q') and is_numeric($q = $request->query('q'))) {
             $groups = Group::with('profilePhoto', 'lastMessageAt')->where('id', $q)->get();
