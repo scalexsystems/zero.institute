@@ -40,7 +40,7 @@ class MemberControllerTest extends TestCase
             ->seeStatusCode(200)
             ->seeJsonContains($data['members'])
             ->seeInDatabase('group_user', [
-                'user_id' => $user->id,
+                'user_id' => $other->id,
                 'group_id' => $group->id,
             ]);
     }
