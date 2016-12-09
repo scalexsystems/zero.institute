@@ -21,7 +21,7 @@ $factory->define(Scalex\Zero\Models\Student::class, function (Faker\Generator $f
         'additional' => ['aadhar_number' => $f->optional()->numerify('############')],
         'passport' => $f->optional()->numerify('######'),
         'address_id' => function () {
-            return factory(Scalex\Zero\Models\Address::class)->create()->id;
+            return factory(Scalex\Zero\Models\Geo\Address::class)->create()->id;
         },
         'father_id' => function () use ($attributes) {
             return factory(Scalex\Zero\Models\Guardian::class)->create(array_only($attributes, 'school_id'))->id;

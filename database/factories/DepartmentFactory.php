@@ -29,9 +29,6 @@ $factory->define(Scalex\Zero\Models\Department::class, function (Faker\Generator
         'name' => $name,
         'short_name' => $code,
         'academic' => $academic,
-        'head_id' => function () {
-            return factory(Scalex\Zero\Models\Teacher::class)->create()->id;
-        },
         'school_id' => function () {
             return factory(Scalex\Zero\Models\School::class)->create()->id;
         },

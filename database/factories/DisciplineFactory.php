@@ -1,7 +1,7 @@
 <?php /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
 
-$factory->define(Scalex\Zereo\Models\Discipline::class, function (Faker\Generator $f, array $attributes) {
+$factory->define(Scalex\Zero\Models\Discipline::class, function (Faker\Generator $f, array $attributes) {
     $disciplines = [
         'B.Tech.' => 'Bachelors of Technology',
         'M.Tech.' => 'Masters of Technology',
