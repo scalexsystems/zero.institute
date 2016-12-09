@@ -30,10 +30,12 @@ class MakeResourceCommand extends Command
         $class = str_replace('Models/', '', $model);
         $controller = str_replace('Models/', 'Api/', $model).'Controller';
         $policy = str_replace('Models/', '', $model).'Policy';
+        $seeder = $class.'Seeder';
         $this->call('make:model', ['--migration' => true, 'name' => $model]);
         $this->call('make:transformer', ['name' => $model]);
         $this->call('make:repository', ['name' => $model]);
         $this->call('make:controller', ['name' => $controller]);
         $this->call('make:policy', ['name' => $policy, '--model' => '\Scalex\Zero\Models\\'.$class]);
+        $this->call('make:seeder', ['name' => $seeder]);
     }
 }
