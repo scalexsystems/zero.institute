@@ -21,20 +21,15 @@ class MemberController extends Controller
     public function index(Group $group, Request $request) {
         $this->authorize('members', $group);
 
-        /** @var \Illuminate\Database\Query\Builder $members */
         $members = $group->members();
 
-        if ($request->has('q')) {
-            $q = $request->get('q');
-            $members->where('name', 'ilike', "%${q}%");
-        }
+        // TODO: Add support to search here.
 
         $members->orderBy('name');
 
-        /** @var \Illuminate\Pagination\LengthAwarePaginator $paginator */
         $paginator = $members->paginate();
-        /** @var \Illuminate\Database\Eloquent\Collection $collection */
         $collection = $paginator->getCollection();
+
         $collection->load(['person', 'profilePhoto']);
 
         return $paginator;
@@ -42,7 +37,7 @@ class MemberController extends Controller
 
     /**
      * Add members to the group.
-     * PUT /groups/{group}/add
+     * POST /groups/{group}/add
      * Requires: auth
      */
     public function store(Group $group, Request $request) {
@@ -54,7 +49,9 @@ class MemberController extends Controller
             event(new MemberJoined($result['ids'], $group));
         }
 
-        return response()->json($result, 202);
+        return [
+            'data' => $result['ids'],
+        ];
     }
 
     /**
@@ -62,7 +59,7 @@ class MemberController extends Controller
      * DELETE /groups/{group}/remove
      * Requires: auth
      */
-    public function delete(Group $group, Request $request) {
+    public function destroy(Group $group, Request $request) {
         $this->authorize($group);
 
         $result = $group->removeMembers((array)$request->get('members', []));
@@ -71,6 +68,8 @@ class MemberController extends Controller
             event(new MemberLeft($result['ids'], $group));
         }
 
-        return response()->json($result, 202);
+        return [
+            'data' => $result['ids'],
+        ];
     }
 }
