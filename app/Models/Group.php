@@ -10,6 +10,8 @@ use Scalex\Zero\User;
 
 class Group extends BaseModel implements ReceivesMessage
 {
+    use \Illuminate\Database\Eloquent\SoftDeletes;
+
     protected $fillable = ['name', 'description', 'private'];
 
     protected $casts = ['private' => 'bool'];

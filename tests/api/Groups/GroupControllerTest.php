@@ -1,6 +1,5 @@
 <?php
 
-use Znck\Trust\Models\Permission;
 use Scalex\Zero\Models\Group;
 use Scalex\Zero\Models\Student;
 

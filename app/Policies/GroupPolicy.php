@@ -5,7 +5,7 @@ use Scalex\Zero\User;
 
 class GroupPolicy extends AbstractPolicy
 {
-    public function view(User $user, Group $group) {
+    public function show(User $user, Group $group) {
         return !$group->private or $group->isMember($user);
     }
 
@@ -13,10 +13,22 @@ class GroupPolicy extends AbstractPolicy
         return !is_null($user->person_id);
     }
 
+    /**
+     * Allow group owner to update the group.
+     * @param  User   $user
+     * @param  Group  $group
+     * @return bool
+     */
     public function update(User $user, Group $group) {
         return $this->isOwner($user, $group);
     }
 
+    /**
+     * Allow group owner to delete the group.
+     * @param  User   $user
+     * @param  Group  $group
+     * @return bool
+     */
     public function delete(User $user, Group $group) {
         return $this->isOwner($user, $group);
     }
@@ -68,6 +80,6 @@ class GroupPolicy extends AbstractPolicy
     }
 
     protected function isOwner(User $user, Group $group): bool {
-        return $group->owner_id === $user->getKey();
+        return (int) $group->owner_id === $user->getKey();
     }
 }

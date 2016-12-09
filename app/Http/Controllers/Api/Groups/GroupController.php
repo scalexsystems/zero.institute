@@ -35,6 +35,17 @@ class GroupController extends Controller
     }
 
     /**
+     * Get group details.
+     * GET /groups/{group}
+     * Requires: auth
+     */
+    public function show(Group $group) {
+        $this->authorize('show', $group);
+
+        return $group;
+    }
+
+    /**
      * Create new group.
      * POST /groups
      * Requires: auth
@@ -55,25 +66,22 @@ class GroupController extends Controller
     }
 
     /**
-     * Get group details.
-     * GET /groups/{group}
-     * Requires: auth
-     */
-    public function show(Group $group) {
-        $this->authorize($group);
-
-        return $group;
-    }
-
-    /**
      * Update group details.
      * PUT /groups/{group}
      * Requires: auth
      */
     public function update(Request $request, Group $group) {
-        $this->authorize($group);
+        $this->authorize('update', $group);
 
-        repository($group)->update($group, $request->all());
+        repository(Group::class)->update($group, $request->all()); // FIXME: This is blunt.
+
+        return $group;
+    }
+
+    public function destroy(Group $group) {
+        $this->authorize('delete', $group);
+
+        repository(Group::class)->delete($group);
 
         return $this->accepted();
     }
