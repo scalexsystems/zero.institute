@@ -1,16 +1,5 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| This file is where you may define all of the routes that are handled
-| by your application. Just tell Laravel the URIs it should respond
-| to using a Closure or controller method. Build something great!
-|
-*/
-
 Route::get('/', 'HomeController@home');
 
 Route::get('/share', 'HomeController@share');
@@ -22,6 +11,7 @@ Route::get('/account/email/verify/{token}', 'Auth\VerificationController@verifyE
 
 Auth::routes();
 
+// NOTE: **This should be last in list. It captures everything.**
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/{anything}', 'HomeController@app')->where('anything', '(.*)');
 });
