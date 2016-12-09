@@ -32,7 +32,7 @@ class CreateCoursesTable extends Migration
             $table->timestamps();
 
             $table->foreign('school_id')->references('id')->on('schools');
-            $table->foreign('department_id')->references('id')->on('deparments');
+            $table->foreign('department_id')->references('id')->on('departments');
             $table->foreign('discipline_id')->references('id')->on('disciplines');
             $table->foreign('instructor_id')->references('id')->on('teachers');
             $table->foreign('group_id')->references('id')->on('groups');
