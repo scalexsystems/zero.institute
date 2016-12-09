@@ -49,7 +49,7 @@ $factory->define(Course::class, function (Generator $f, array $attributes) {
         },
         'instructor_id' => function () use ($attributes) {
             return factory(Teacher::class)
-                    ->create(array_only($attributes, ['instructor_id']))
+                    ->create(array_only($attributes, ['school_id']))
                     ->id;
         },
         'group_id' => function () use ($attributes) {

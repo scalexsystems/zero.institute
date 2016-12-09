@@ -178,6 +178,7 @@ return [
          */
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         Themsaid\MailPreview\MailPreviewServiceProvider::class,
+        ScoutEngines\Postgres\PostgresEngineServiceProvider::class,
 
         /*
          * Application Service Providers...
