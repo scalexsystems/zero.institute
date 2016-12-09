@@ -2,6 +2,8 @@
 
 use Scalex\Zero\Models\Group;
 use Scalex\Zero\User;
+use Scalex\Zero\Events\Group\MemberLeft;
+use Scalex\Zero\Events\Group\MemberJoined;
 
 class MemberControllerTest extends TestCase
 {
@@ -19,6 +21,8 @@ class MemberControllerTest extends TestCase
         $group->addMembers([$user->id]);
         $group->addMembers(collect($users)->keys()->toArray());
 
+        $this->expectsEvent(MemberJoined::class);
+
         $this->actingAs($user)
             ->json('GET', "/api/groups/{$group->id}/members")
             ->seeStatusCode(200)
@@ -34,6 +38,8 @@ class MemberControllerTest extends TestCase
         $data = [
             'members' => [(string)$other->id],
         ];
+
+        $this->expectsEvent(MemberLeft::class);
 
         $this->actingAs($user)
             ->json('POST', "/api/groups/{$group->id}/members/add", $data)
