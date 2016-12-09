@@ -176,9 +176,9 @@ return [
         /*
          * Development Service Providers...
          */
-        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
-        Themsaid\MailPreview\MailPreviewServiceProvider::class,
-        ScoutEngines\Postgres\PostgresEngineServiceProvider::class,
+        // Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
+        // Themsaid\MailPreview\MailPreviewServiceProvider::class,
+        // ScoutEngines\Postgres\PostgresEngineServiceProvider::class,
 
         /*
          * Application Service Providers...
