@@ -29,4 +29,10 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
     public function createAnUser($attributes = []) {
         return factory(Scalex\Zero\User::class)->create($attributes);
     }
+
+    public function givePermissionTo(Scalex\Zero\User $user, string $permission) {
+        Znck\Trust\Models\Permission::create(['slug' => $permission, 'name' => $permission]);
+
+        $user->givePermission($permission);
+    }
 }
