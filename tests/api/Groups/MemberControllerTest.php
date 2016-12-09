@@ -21,7 +21,7 @@ class MemberControllerTest extends TestCase
 
         $this->actingAs($user)
             ->json('GET', "/api/groups/{$group->id}/members")
-            ->seeJson()
+            ->seeStatusCode(200)
             ->seeJsonContains(transform($group->members));
     }
 
@@ -37,7 +37,7 @@ class MemberControllerTest extends TestCase
 
         $this->actingAs($user)
             ->json('POST', "/api/groups/{$group->id}/members/add", $data)
-            ->seeJson()
+            ->seeStatusCode(200)
             ->seeJsonContains($data['members'])
             ->seeInDatabase('group_user', [
                 'user_id' => $user->id,
@@ -57,7 +57,7 @@ class MemberControllerTest extends TestCase
 
         $this->actingAs($user)
             ->json('DELETE', "/api/groups/{$group->id}/members/remove", $data)
-            ->seeJson()
+            ->seeStatusCode(200)
             ->seeJsonContains($data['members'])
             ->dontSeeInDatabase('group_user', [
                 'user_id' => $other->id,

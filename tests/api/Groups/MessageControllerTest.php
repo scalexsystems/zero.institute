@@ -20,7 +20,7 @@ class MessageControllerTest extends TestCase
 
         $this->actingAs($user)
             ->json('GET', "/api/groups/{$group->id}/messages")
-            ->seeJson()
+            ->seeStatusCode(200)
             ->seeJsonContains(transform($messages));
     }
 
@@ -34,7 +34,7 @@ class MessageControllerTest extends TestCase
 
         $this->actingAs($user)
             ->json('POST', "/api/groups/{$group->id}/messages", $data)
-            ->seeJson()
+            ->seeStatusCode(200)
             ->seeJsonContains($data)
             ->seeInDatabase('messages', [
                 'sender_id' => $user->id,
