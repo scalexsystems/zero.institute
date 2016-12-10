@@ -58,6 +58,14 @@ class GroupRepository extends Repository
             attach_attachment($group, 'profilePhoto', find($attributes, 'photo_id', Attachment::class));
         }
 
+        if (array_has($attributes, ['addedMembers'])) {
+            $group->addMembers(data_get($attributes, 'addedMembers'));
+        }
+
+        if (array_has($attributes, ['addedMembers'])) {
+            $group->removeMembers(data_get($attributes, 'removedMembers'));
+        }
+
         return $group->update();
     }
 
