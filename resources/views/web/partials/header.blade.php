@@ -5,7 +5,7 @@
         <img src="{{ asset('img/web/logo-zero-institute.svg') }}" alt="Logo: Scalex Zero">
       </a>
 
-      <ul class="nav navbar-nav pull-xs-right">
+      <ul class="nav navbar-nav float-xs-right">
         <li class="nav-item hidden-sm-down">
           <a class="nav-link"
              href="http://scalex.xyz/"

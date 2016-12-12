@@ -55,4 +55,18 @@ return [
 
     ],
 
+    'front' => [
+        'pusher' => [
+           'broadcaster' => 'pusher',
+           'key' => '4227a2c3d458f6e17162',
+           'cluster' => 'ap1',
+           'encrypted' => true,
+           'namespace' => 'Scalex.Zero.Events',
+        ],
+        'redis' => [
+            'broadcaster' => 'socket.io',
+            'host' => env('BROADCAST_HOST', 'http://io.zero.institute/'),
+            'namespace' => 'Scalex.Zero.Events',
+        ]
+    ],
 ];
