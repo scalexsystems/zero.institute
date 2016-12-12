@@ -13,8 +13,8 @@ use Symfony\Component\Console\Helper\ProgressBar;
 
 class DatabaseSeeder extends Seeder
 {
-    const SCHOOLS = 3;
-    const DEPARTMENTS = 5;
+    const SCHOOLS = 2;
+    const DEPARTMENTS = 3;
     const DISCIPLINES = 2;
 
     const STUDENTS = 20;
@@ -52,14 +52,14 @@ class DatabaseSeeder extends Seeder
                 }
                 $bar->setMessage("#${s} Creating teachers (${d}/".$departments->count().")...");
                 $bar->advance();
-                $people->merge(factory(Teacher::class, self::TEACHERS)
+                $people = $people->merge(factory(Teacher::class, self::TEACHERS)
                                    ->create([
                                                 'school_id' => $school->id,
                                                 'department_id' => $department->id,
                                             ]));
                 $bar->setMessage("#${s} Creating employees (${d}/".$departments->count().")...");
                 $bar->advance();
-                $people->merge(factory(Employee::class, self::EMPLOYEES)
+                $people = $people->merge(factory(Employee::class, self::EMPLOYEES)
                                    ->create([
                                                 'school_id' => $school->id,
                                                 'department_id' => $department->id,
@@ -80,8 +80,6 @@ class DatabaseSeeder extends Seeder
             $bar->advance();
         }
         $bar->finish();
-
-        $this->call(GroupsSeeder::class);
 
         $this->command->line('');
         $this->command->line('<info>Database ready!</info>');
