@@ -169,7 +169,10 @@ return [
         Laravel\Scout\ScoutServiceProvider::class,
         Laravel\Passport\PassportServiceProvider::class,
         Znck\Attach\AttachServiceProvider::class,
+        Znck\Countries\CountriesServiceProvider::class,
+        Znck\Cities\CitiesServiceProvider::class,
         Znck\Repositories\RepositoryServiceProvider::class,
+        Znck\States\StatesServiceProvider::class,
         Znck\Transformers\TransformerServiceProvider::class,
         Znck\Trust\TrustServiceProvider::class,
 

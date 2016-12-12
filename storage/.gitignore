@@ -2,3 +2,4 @@ oauth-private.key
 oauth-public.key
 worker.log
 email-previews/
+vendor/
