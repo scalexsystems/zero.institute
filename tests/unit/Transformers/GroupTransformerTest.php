@@ -5,10 +5,10 @@ use Scalex\Zero\Transformers\GroupTransformer;
 
 class GroupTransformerTest extends TestCase
 {
-
-    public function test_it_has_correct_output_format() {
+    public function test_it_has_correct_output_format()
+    {
         $group = factory(Group::class)->create();
-        $transformer = new GroupTransformer;
+        $transformer = new GroupTransformer();
 
         $transfored = $transformer->index($group);
 

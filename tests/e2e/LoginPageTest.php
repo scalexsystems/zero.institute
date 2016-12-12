@@ -8,7 +8,8 @@ class LoginPageTest extends TestCase
 {
     use DatabaseMigrations, DatabaseTransactions;
 
-    public function test_it_can_login_with_password() {
+    public function test_it_can_login_with_password()
+    {
         $user = factory(User::class)->create();
 
         $this->visit('/login')

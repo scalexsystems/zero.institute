@@ -5,10 +5,10 @@ use Scalex\Zero\Transformers\CourseTransformer;
 
 class CourseTransformerTest extends TestCase
 {
-
-    public function test_it_has_correct_output_format() {
+    public function test_it_has_correct_output_format()
+    {
         $group = factory(Course::class)->create();
-        $transformer = new CourseTransformer;
+        $transformer = new CourseTransformer();
 
         $transfored = $transformer->index($group);
 

@@ -1,4 +1,4 @@
-<?php namespace Scalex\Zero\Http\Controllers\Api\Users;
+<?php namespace Scalex\Zero\Http\Controllers\Api\Groups;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -7,7 +7,7 @@ use Scalex\Zero\Events\Group\MemberLeft;
 use Scalex\Zero\Http\Controllers\Controller;
 use Scalex\Zero\Models\Group;
 
-class GroupController extends Controller
+class CurrentUserController extends Controller
 {
     public function __construct() {
         $this->middleware('auth:api,web');
@@ -17,7 +17,7 @@ class GroupController extends Controller
      * List joined groups.
      */
     public function index(Request $request) {
-        $user = current_user();
+        $user = $request->user();
 
         if ($request->has('q') and is_numeric($q = $request->query('q'))) {
             $groups = Group::with('profilePhoto', 'lastMessageAt')->where('id', $q)->get();

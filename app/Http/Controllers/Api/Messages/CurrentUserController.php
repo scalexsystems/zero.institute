@@ -6,7 +6,7 @@ use Scalex\Zero\Http\Controllers\Controller;
 use Scalex\Zero\Http\Requests;
 use Scalex\Zero\User;
 
-class UserController extends Controller
+class CurrentUserController extends Controller
 {
     public function __construct() {
         $this->middleware('auth:api,web');

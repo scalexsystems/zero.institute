@@ -1,4 +1,4 @@
-<?php namespace Scalex\Zero\Http\Controllers\Api;
+<?php namespace Scalex\Zero\Http\Controllers\Api\Employees;
 
 use Illuminate\Http\Request;
 use Scalex\Zero\Criteria\OrderBy;

@@ -62,21 +62,21 @@ class MessageController extends Controller
      * PUT /groups/{group}/messages/{message}/read
      * Requires: auth
      */
-    public function update(Request $request, $group, Message $message = null) {
+    public function read(Request $request, $group, Message $message = null) {
         if (is_null($message)) {
             $message = $group;
         }
         if (!$message->receiver instanceof Group) {
-            abort(404, 'Message not found in the group.');
+            abort(404);
         }
 
         $this->authorize('read', $message->receiver);
 
-        if ($message->intended_for and (int)$message->intended_for !== (int)$request->user()->getKey()) {
+        if ($message->intended_for and (int)$message->intended_for !== $request->user()->getKey()) {
             abort(401);
         }
 
-        if ((int)$message->sender->getKey() === (int)$request->user()->getKey()) {
+        if ((int)$message->sender_id === $request->user()->getKey()) {
             return $this->accepted();
         }
 

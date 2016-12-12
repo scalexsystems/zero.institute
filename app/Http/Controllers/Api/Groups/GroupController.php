@@ -35,6 +35,17 @@ class GroupController extends Controller
     }
 
     /**
+     * Get group details.
+     * GET /groups/{group}
+     * Requires: auth
+     */
+    public function show(Group $group) {
+        $this->authorize('show', $group);
+
+        return $group;
+    }
+
+    /**
      * Create new group.
      * POST /groups
      * Requires: auth
@@ -48,19 +59,20 @@ class GroupController extends Controller
                 'school' => $request->user()->school,
                 'owner_id' => $request->user()->getKey(),
                 'school_id' => $request->user()->school->getKey(),
-            ] + $request->all());
-        $group->members()->attach($request->user());
+                'name' => $request->input('name'),
+                'description' => $request->input('description'),
+                'private' => $request->input('private', false),
+            ]);
 
-        return $group;
-    }
+        $members = $request->input('members', []);
 
-    /**
-     * Get group details.
-     * GET /groups/{group}
-     * Requires: auth
-     */
-    public function show(Group $group) {
-        $this->authorize($group);
+        if (count($members)) {
+            array_push($members, $request->user()->id);
+            $group->addMembers($members);
+        } else {
+            $group->addMembers([$request->user()->id]);
+        }
+
 
         return $group;
     }
@@ -71,9 +83,17 @@ class GroupController extends Controller
      * Requires: auth
      */
     public function update(Request $request, Group $group) {
-        $this->authorize($group);
+        $this->authorize('update', $group);
 
-        repository($group)->update($group, $request->all());
+        repository(Group::class)->update($group, $request->all()); // FIXME: This is blunt.
+
+        return $group;
+    }
+
+    public function destroy(Group $group) {
+        $this->authorize('delete', $group);
+
+        repository(Group::class)->delete($group);
 
         return $this->accepted();
     }

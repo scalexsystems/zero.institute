@@ -1,4 +1,4 @@
-<?php namespace Scalex\Zero\Http\Controllers\Api;
+<?php namespace Scalex\Zero\Http\Controllers\Api\Schools;
 
 use DB;
 use Illuminate\Http\Request;

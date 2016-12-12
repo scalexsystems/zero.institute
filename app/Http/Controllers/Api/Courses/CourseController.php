@@ -1,6 +1,6 @@
 <?php
 
-namespace Scalex\Zero\Http\Controllers\Api;
+namespace Scalex\Zero\Http\Controllers\Api\Courses;
 
 use Illuminate\Http\Request;
 use Scalex\Zero\Http\Controllers\Controller;

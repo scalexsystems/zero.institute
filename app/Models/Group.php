@@ -10,6 +10,8 @@ use Scalex\Zero\User;
 
 class Group extends BaseModel implements ReceivesMessage
 {
+    use \Illuminate\Database\Eloquent\SoftDeletes;
+
     protected $fillable = ['name', 'description', 'private'];
 
     protected $casts = ['private' => 'bool'];
@@ -165,7 +167,7 @@ class Group extends BaseModel implements ReceivesMessage
             $ids = $school = DB::table('users')->select('id')->whereIn('id', $ids)->pluck('id')->toArray();
         }
 
-        $ids = $filtered = array_diff($this->$method($ids), [(int)$this->owner_id]);
+        $ids = $filtered = $this->$method($ids);
 
         return compact('ids', 'original', 'filtered', 'school');
     }
