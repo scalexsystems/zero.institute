@@ -16,8 +16,6 @@ class BroadcastController extends LaravelBroadcastController
     }
 
     public function authenticate(Request $request) {
-        \Log::debug('HEADERS', $request->header());
-
         $guards = ['web', 'api'];
 
         foreach ($guards as $guard) {
