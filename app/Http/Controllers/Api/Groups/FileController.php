@@ -10,6 +10,9 @@ use Scalex\Zero\Http\Controllers\Controller;
 
 class FileController extends Controller
 {
+    public function __construct() {
+        $this->middleware('auth:api,web');
+    }
     /**
      * Create new file.
      * POST /groups/{group}/file
@@ -32,5 +35,7 @@ class FileController extends Controller
         if (!$file->exists) {
             abort(500, 'Your file just broke our servers.');
         }
+
+        return $this->accepted(attach_url($file));
     }
 }
