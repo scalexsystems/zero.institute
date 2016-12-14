@@ -36,6 +36,7 @@ class FileController extends Controller
             abort(500, 'Your file just broke our servers.');
         }
 
-        return $this->accepted(attach_url($file));
+        return $file;
+
     }
 }
