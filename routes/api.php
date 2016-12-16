@@ -60,3 +60,9 @@ Route::get('/me/messages/users', 'Messages\CurrentUserController@index');
 
 // Courses
 Route::resource('courses', 'Courses\CourseController', $resource);
+
+// Intents
+Route::post('/intents/{intent}/accept', 'Users\IntentController@accept');
+Route::post('/intents/{intent}/reject', 'Users\IntentController@reject');
+Route::post('/intents/{intent}/lock', 'Users\IntentController@lock');
+Route::resource('intents', 'Users\IntentController', $resource);

@@ -1,4 +1,4 @@
-<?php namespace Scalex\Zero\Http\Controllers\Api;
+<?php namespace Scalex\Zero\Http\Controllers\Api\Users;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -33,11 +33,33 @@ class IntentController extends Controller
         return $intent;
     }
 
+    public function store(Request $request) {
+        $this->authorize('store', Intent::class);
+
+        $type = $request->input('tag');
+
+        if (!$this->canHandleIntent($type)) {
+            abort(422, ['errors' => ['tag' => 'Unknown intent type.']]);
+        }
+
+        $intent = repository(Intent::class)->create($request->all());
+
+        return $intent;
+    }
+
     public function update(Request $request, Intent $intent) {
         $this->authorize($intent);
 
         $this->validateIntent($request, $intent);
-        repository($intent)->update($intent, ['body' => $intent->all()]);
+        repository(Intent::class)->update($intent, ['body' => $request->all()]);
+
+        return $this->accepted();
+    }
+
+    public function lock(Intent $intent) {
+        $this->authorize($intent);
+
+        repository(Intent::class)->update($intent, ['locked' => true]);
 
         return $this->accepted();
     }
@@ -75,5 +97,12 @@ class IntentController extends Controller
             abort(400, 'Cannot handle unknown intent.');
         }
         $service->$method($request, $intent, $accept);
+    }
+
+    protected function canHandleIntent(string $type): bool {
+        $method = 'handle'.Str::studly($intent->tag).'Intent';
+        $service = app(IntentService::class);
+
+        return method_exists($service, $method);
     }
 }

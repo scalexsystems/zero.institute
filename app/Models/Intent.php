@@ -13,14 +13,14 @@ class Intent extends BaseModel  implements BelongsToSchool
         'tag',
         'body',
         'remarks',
-        'locked',
-        'retry',
+        'locked',]
+        'status',
     ];
 
     protected $casts = [
         'body' => 'json',
         'locked' => 'bool',
-        'retry' => 'bool',
+        'closed' => 'bool',
     ];
 
     public function school() {

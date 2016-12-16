@@ -132,13 +132,15 @@ class TeacherRepository extends Repository
         $teacher->school()->associate(find($attributes, 'school_id'));
         attach_attachment($teacher, 'profilePhoto', find($attributes, 'photo_id', Attachment::class));
 
-        $teacher->created(once(function (Teacher $teacher) {
-            $teacher->address->addressee()->associate($teacher)->save();
-        }));
-
         $teacher->bio = $this->getBio($teacher);
 
-        return $teacher->save();
+        $status = $teacher->save();
+
+        if ($status and $teacher->address) {
+            $teacher->address->addressee()->associate($teacher)->save();
+        }
+
+        return $status;
     }
 
     public function updating(Teacher $teacher, array $attributes) {

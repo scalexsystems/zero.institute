@@ -18,9 +18,12 @@ class CreateIntentsTable extends Migration
             $table->string('tag'); // Request Type.
             $table->json('body'); // Request Body.
             $table->boolean('locked')->default(false); // Request Completed.
-            $table->boolean('retry')->default(false); // Request Rejected.
+            $table->boolean('closed')->default(false);
+            $table->string('status')->nullable();
             $table->text('remarks')->nullable();
             $table->unsignedInteger('school_id');
+
+            $table->json('additional')->default('[]');
             $table->softDeletes();
             $table->timestamps();
 

@@ -133,13 +133,15 @@ class StudentRepository extends Repository
         $student->school()->associate(find($attributes, 'school_id'));
         attach_attachment($student, 'profilePhoto', find($attributes, 'photo_id', Attachment::class));
 
-        $student->created(once(function (Student $student) {
-            $student->address->addressee()->associate($student)->save();
-        }));
-
         $student->bio = $this->getBio($student);
 
-        return $student->save();
+        $status = $student->save();
+
+        if ($status and $student->address) {
+            $student->address->addressee()->associate($student)->save();
+        }
+
+        return $status;
     }
 
     public function updating(Student $student, array $attributes) {
