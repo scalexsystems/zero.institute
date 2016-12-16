@@ -88,7 +88,7 @@ class Handler extends ExceptionHandler
         } elseif ($e instanceof AuthenticationException) {
             return $this->unauthenticatedApi($request, $e);
         } elseif ($e instanceof AuthorizationException) {
-            return response()->json(['message' => 'Unauthorized.'], Response::HTTP_UNAUTHORIZED);
+            return response()->json(['message' => 'You are not authorised to access this content.'], Response::HTTP_UNAUTHORIZED);
         }  elseif ($e instanceof ValidationException) {
             return $this->convertValidationExceptionToJson($e, $request);
         } elseif (

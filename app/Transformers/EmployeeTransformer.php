@@ -12,6 +12,9 @@ class EmployeeTransformer extends Transformer
         return [
             'name' => (string)$employee->name,
             'bio' => (string)$employee->bio,
+            'photo' => attach_url($employee->profilePhoto) ?? asset('img/placeholder.jpg'),
+            'has_account' => !is_null($employee->user),
+            'user_id' => $employee->user->getKey(),
 
             // Basic Information.
             'email' => (string) ($employee->user->email ?? $employee->address->email),
