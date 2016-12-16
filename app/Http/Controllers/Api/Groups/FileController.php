@@ -28,11 +28,10 @@ class FileController extends Controller
         $path = "schools/${schoolId}/groups/${groupId}";
 
         $file = Builder::make($request, 'file')
-            ->resize(300, null, 300)
             ->upload(compact('slug', 'path'))
             ->getAttachment();
 
-        if (!$file->exists) {
+        if (!$file->save()) {
             abort(500, 'Your file just broke our servers.');
         }
 

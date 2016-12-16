@@ -32,7 +32,7 @@ class MessageRepository extends Repository
     protected $rules = [
         'sender_id' => 'required|exists:users,id',
         'receiver' => 'required',
-        'content' => 'required',
+        'content' => 'required_without:attachment_id',
         'intended_for' => 'nullable|exists:users,id',
     ];
 
@@ -43,8 +43,13 @@ class MessageRepository extends Repository
         $message->receiver()->associate($attributes['receiver']);
 
         $status = $message->save();
-        if ($status) {
-            $message->attachments()->save(find($attributes, 'attachment_id', Attachment::class));
+        if ($status && array_has($attributes, 'attachment_id')) {
+            $attachment = find($attributes, 'attachment_id', Attachment::class);
+            $name = data_get($attributes, 'name');
+            if ($name !== data_get($attachment, 'name')) {
+                data_set($attachment, 'filename', $name);
+            }
+            $message->attachments()->save($attachment);
         }
         return $status;
     }
