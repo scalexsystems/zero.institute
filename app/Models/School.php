@@ -27,8 +27,15 @@ class School extends BaseModel
         'verified',
     ];
 
+    protected $extends = [
+        'tokens',
+        'email_domains',
+    ];
+
     protected $casts = [
         'verified' => 'bool',
+        'tokens' => 'array',
+        'email_domains' => 'array',
     ];
 
     public function address() {

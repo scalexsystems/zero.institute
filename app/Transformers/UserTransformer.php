@@ -14,8 +14,7 @@ class UserTransformer extends Transformer
             'photo' => attach_url($user->profilePhoto) ?? asset('img/placeholder-64.jpg'),
             'type' => morph_model($user->person),
             'bio' => $this->getBio($user),
-            'active_at' => ($user->relationLoaded('lastMessageAt') and $user->lastMessageAt)
-                ? iso_date($user->lastMessageAt->created_at) : null,
+            'active_at' => ($user->relationLoaded('lastMessageAt') and $user->lastMessageAt) ? iso_date($user->lastMessageAt->created_at) : null,
         ];
     }
 
@@ -32,6 +31,7 @@ class UserTransformer extends Transformer
             ], []) + allow('read-account', $user, [
                 'registered' => !is_null($user->person),
                 'verified' => is_null($user->verification_token),
+                'approved' => (bool) $user->approved,
             ], []);
     }
 

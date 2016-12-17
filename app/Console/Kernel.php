@@ -4,7 +4,6 @@ namespace Scalex\Zero\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
-use Scalex\Zero\Console\Commands\MakeResourceCommand;
 
 class Kernel extends ConsoleKernel
 {
@@ -14,7 +13,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        MakeResourceCommand::class,
+        Commands\MakeResourceCommand::class,
+        Commands\CreateSchoolCommand::class,
     ];
 
     /**

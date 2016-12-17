@@ -17,11 +17,6 @@ Route::get('/me', 'Users\CurrentUserController@index');
 Route::put('/me', 'Users\CurrentUserController@update');
 Route::get('/me/dashboard', 'Users\DashboardController@index');
 
-// People
-Route::get('/people', 'PeopleController@index');
-Route::get('/people/{person}', 'PeopleController@show');
-Route::get('/people/stats', 'PeopleController@stats');
-
 // Students
 Route::resource('/people/students', 'Students\StudentController', ['only' => ['index', 'show']]);
 
@@ -30,6 +25,12 @@ Route::resource('/people/teachers', 'Teachers\TeacherController', ['only' => ['i
 
 // Employees
 Route::resource('/people/employees', 'Employees\EmployeeController', ['only' => ['index', 'show']]);
+
+
+// People
+Route::get('/people', 'PeopleController@index');
+Route::get('/people/stats', 'PeopleController@stats');
+Route::get('/people/{person}', 'PeopleController@show');
 
 // Groups
 Route::resource('/groups', 'Groups\GroupController', $resource);
@@ -41,7 +42,7 @@ Route::delete('/groups/{group}/members/remove', 'Groups\MemberController@destroy
 Route::put('/groups/{group}/messages/{message}/read', 'Groups\MessageController@read');
 Route::resource('/groups/{group}/messages', 'Groups\MessageController', ['only' => ['index', 'store']]);
 
-Route::put('/groups/{group}/photo', 'Groups\PhotoController@store');
+Route::post('/groups/{group}/photo', 'Groups\PhotoController@store');
 Route::delete('/groups/{group}/photo', 'Groups\PhotoController@destroy');
 
 Route::get('/me/groups', 'Groups\CurrentUserController@index'); // NOTE: Lists groups current user is member of.
@@ -61,3 +62,9 @@ Route::get('/me/messages/users', 'Messages\CurrentUserController@index');
 
 // Courses
 Route::resource('courses', 'Courses\CourseController', $resource);
+
+// Intents
+Route::post('/intents/{intent}/accept', 'Users\IntentController@accept');
+Route::post('/intents/{intent}/reject', 'Users\IntentController@reject');
+Route::post('/intents/{intent}/lock', 'Users\IntentController@lock');
+Route::resource('intents', 'Users\IntentController', $resource);

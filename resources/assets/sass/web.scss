@@ -1,6 +1,6 @@
 @import "variables";
 
-$body-bg: #fff;
+$body-bg: #f7f7f7;
 $text-light: #9b9b9b;
 
 @import '../../../node_modules/bootstrap/scss/bootstrap';
@@ -10,8 +10,11 @@ $text-light: #9b9b9b;
   color: $brand-primary;
 }
 
+.navbar-light {
+  background: white;
+}
+
 header {
-  padding: 42px 0 0;
   .navbar-brand {
     padding-top: .5375rem;
     padding-bottom: .5375rem;

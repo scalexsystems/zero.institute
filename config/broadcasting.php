@@ -32,11 +32,12 @@ return [
 
         'pusher' => [
             'driver' => 'pusher',
-            'key' => env('PUSHER_KEY'),
-            'secret' => env('PUSHER_SECRET'),
-            'app_id' => env('PUSHER_APP_ID'),
+            'key' => env('PUSHER_KEY', ''),
+            'secret' => env('PUSHER_SECRET', ''),
+            'app_id' => env('PUSHER_APP_ID', ''),
             'options' => [
-                //
+                'cluster' => env('PUSHER_CLUSTER', 'ap1'),
+                'encrypted' => env('PUSHER_ENCRYPTED', true),
             ],
         ],
 
@@ -58,14 +59,14 @@ return [
     'front' => [
         'pusher' => [
            'broadcaster' => 'pusher',
-           'key' => '4227a2c3d458f6e17162',
-           'cluster' => 'ap1',
-           'encrypted' => true,
+           'key' => env('PUSHER_KEY', ''),
+           'cluster' => env('PUSHER_CLUSTER', 'ap1'),
+           'encrypted' => env('PUSHER_ENCRYPTED', true),
            'namespace' => 'Scalex.Zero.Events',
         ],
         'redis' => [
             'broadcaster' => 'socket.io',
-            'host' => env('BROADCAST_HOST', 'http://io.zero.institute/'),
+            'host' => env('BROADCAST_HOST'),
             'namespace' => 'Scalex.Zero.Events',
         ]
     ],

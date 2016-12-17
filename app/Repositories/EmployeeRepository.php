@@ -130,12 +130,15 @@ class EmployeeRepository extends Repository
         $employee->school()->associate(find($attributes, 'school_id'));
         attach_attachment($employee, 'profilePhoto', find($attributes, 'photo_id', Attachment::class));
 
-        $employee->created(once(function (Employee $employee) {
-            $employee->address->addressee()->associate($employee)->save();
-        }));
         $employee->bio = $this->getBio($employee);
 
-        return $employee->save();
+        $status = $employee->save();
+
+        if ($status and $employee->address) {
+            $employee->address->addressee()->associate($employee)->save();
+        }
+
+        return $status;
     }
 
     public function updating(Employee $employee, array $attributes) {

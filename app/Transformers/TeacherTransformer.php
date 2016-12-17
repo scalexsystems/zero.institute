@@ -14,6 +14,8 @@ class TeacherTransformer extends Transformer
             'bio' => (string)$teacher->bio,
             'photo' => attach_url($teacher->profilePhoto) ?? asset('img/placeholder-64.jpg'),
             'has_account' => !is_null($teacher->user),
+            'user_id' => $teacher->user->getKey(),
+            'department_id' => (int)$teacher->department_id,
 
             // Basic Information.
             'email' => (string)($teacher->user->email ?? $teacher->address->email),

@@ -27,7 +27,12 @@ class FilterIntents implements Criteria
             $query->where('locked', $this->request->get('locked'));
         }
 
-        $query->where('retry', $this->request->has('rejected'));
+        $closed = $this->request->has('rejected');
+        $query->where('closed', $closed);
+
+        if ($closed) {
+            $query->where('status', 'rejected');
+        }
 
         if ($this->request->has('type')) {
             $query->where('body->type', $this->request->get('type'));

@@ -30,7 +30,9 @@ class PeopleController extends Controller
             ->with(['person', 'profilePhoto', 'person.profilePhoto'])
             ->pushCriteria(new OfSchool($request->user()->school)); // Limiting user search to school only!
 
-        if ($request->has('q')) {
+        if ($request->has('id')) {
+            return $users->findMany([$request->input('id')]);
+        } elseif ($request->has('q')) {
             $users->search($request->input('q'));
         } else {
             $users->pushCriteria(new OrderBy('name'));
@@ -40,6 +42,7 @@ class PeopleController extends Controller
     }
 
     public function show(Request $request, $person) {
+        $request->query->set('with', 'person');
         $user = repository(User::class)
             ->with(['person', 'profilePhoto', 'person.profilePhoto'])
             ->pushCriteria(new OfSchool($request->user()->school))

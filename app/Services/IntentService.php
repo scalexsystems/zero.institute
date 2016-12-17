@@ -6,12 +6,25 @@ use Validator;
 
 class IntentService
 {
+    protected function transformAccountIntent(Intent $intent) {
+        return [
+            'type' => $intent->body['type'] ?? '',
+            'uid' => $intent->body['uid'] ?? '',
+            'department_id' => $intent->body['department_id'] ?? '',
+            'discipline_id' => $intent->body['discipline_id'] ?? '',
+            'date_of_admission' => $intent->body['date_of_admission'] ?? '',
+            'email' => $intent->user->email,
+            'name' => $intent->body['first_name'].' '.$intent->body['last_name'],
+        ];
+    }
+
     protected function handleAccountIntent(Request $request, Intent $intent, bool $accept) {
         if ($accept === false) {
             repository($intent)->update($intent, [
-                'retry' => true,
+                'closed' => true,
                 'locked' => true,
                 'remarks' => $request->input('reason'),
+                'status' => 'rejected',
             ]);
 
             return;
@@ -24,7 +37,8 @@ class IntentService
 
         $person = repository(morph_model($type))->create($intent->body);
         $intent->user->person()->associate($person)->saveOrFail();
-        repository($intent)->delete($intent);
+
+        repository(Intent::class)->update($intent, ['closed' => true, 'locked' => true, 'status' => 'accepted']);
     }
 
     protected function validateAccountIntent(Request $request, Intent $intent) {
