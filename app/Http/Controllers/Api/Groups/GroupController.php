@@ -61,7 +61,7 @@ class GroupController extends Controller
                 'school_id' => $request->user()->school->getKey(),
                 'name' => $request->input('name'),
                 'description' => $request->input('description'),
-                'private' => $request->input('private', false),
+                'type' => $request->input('type', 'public'),
             ]);
 
         $members = $request->input('members', []);

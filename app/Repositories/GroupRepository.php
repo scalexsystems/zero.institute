@@ -32,7 +32,7 @@ class GroupRepository extends Repository
      */
     protected $rules = [
         'name' => 'required|max:60',
-        'private' => 'nullable|boolean',
+        'type' => 'required|in:public,private',
         'school_id' => 'required|exists:schools,id',
         'owner_id' => 'required|exists:users,id',
     ];
@@ -44,6 +44,8 @@ class GroupRepository extends Repository
     public function creating(Group $group, array $attributes) {
         $group->fill($attributes);
 
+        $group->private = hash_equals('private', $attributes['type']);
+
         $group->owner()->associate(find($attributes, 'owner_id', User::class));
         $group->school()->associate(find($attributes, 'school_id'));
         $group->profilePhoto()->associate(find($attributes, 'photo_id', Attachment::class));
@@ -53,6 +55,10 @@ class GroupRepository extends Repository
 
     public function updating(Group $group, array $attributes) {
         $group->fill($attributes);
+
+        if (array_has($attributes, 'type')) {
+            $group->private = hash_equals('private', $attributes['type']);
+        }
 
         if (array_has($attributes, 'photo_id')) {
             attach_attachment($group, 'profilePhoto', find($attributes, 'photo_id', Attachment::class));

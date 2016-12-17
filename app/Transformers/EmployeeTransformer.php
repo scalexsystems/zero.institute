@@ -15,6 +15,7 @@ class EmployeeTransformer extends Transformer
             'photo' => attach_url($employee->profilePhoto) ?? asset('img/placeholder.jpg'),
             'has_account' => !is_null($employee->user),
             'user_id' => $employee->user->getKey(),
+            'department_id' => (int)$employee->department_id,
 
             // Basic Information.
             'email' => (string) ($employee->user->email ?? $employee->address->email),
@@ -65,7 +66,7 @@ class EmployeeTransformer extends Transformer
             'name' => (string)$employee->name,
             'bio' => (string)$employee->bio,
             'photo' => attach_url($employee->profilePhoto) ?? asset('img/placeholder-64.jpg'),
-            'department_id' => $employee->department_id,
+            'department_id' => (int)$employee->department_id,
         ];
     }
 

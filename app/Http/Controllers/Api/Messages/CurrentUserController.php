@@ -18,6 +18,7 @@ class CurrentUserController extends Controller
      * Required: auth
      */
     public function index(Request $request) {
+        $request->query->set('with', 'person');
         $users = repository(User::class)->with(['person', 'profilePhoto', 'lastMessageAt']);
 
         if ($request->has('id')) {
