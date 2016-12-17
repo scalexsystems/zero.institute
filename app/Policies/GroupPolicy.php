@@ -79,6 +79,10 @@ class GroupPolicy extends AbstractPolicy
         return $this->isOwner($user, $group);
     }
 
+    public function uploadFile(User $user, Group $group){
+        return $group->isMember($user);
+    }
+
     protected function isOwner(User $user, Group $group): bool {
         return (int) $group->owner_id === $user->getKey();
     }

@@ -106,8 +106,11 @@ if (!function_exists('allow')) {
 }
 
 if (!function_exists('attach_attachment')) {
-    function attach_attachment(Model $related, string $relation, Attachment $attachment) {
-        $related->$relation()->associate($attachment);
+    function attach_attachment(Model $related, string $relation = null, Attachment $attachment) {
+        if (is_string($relation)) {
+            $related->$relation()->associate($attachment);
+        }
+
         $related->saved(function ($related) use ($attachment) {
             $attachment->related()->associate($related)->save();
         });

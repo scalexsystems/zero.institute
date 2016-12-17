@@ -1,5 +1,6 @@
 <?php namespace Scalex\Zero\Transformers;
 
+use Illuminate\Support\Str;
 use Scalex\Zero\Models\Intent;
 use Znck\Transformers\Transformer;
 
@@ -8,24 +9,29 @@ class IntentTransformer extends Transformer
     protected $availableIncludes = ['user'];
 
     public function index(Intent $intent) {
-        return [
-            'type' => $intent->body['type'] ?? '',
-            'uid' => $intent->body['uid'] ?? '',
-            'department_id' => $intent->body['department_id'] ?? '',
-            'discipline_id' => $intent->body['discipline_id'] ?? '',
-            'date_of_admission' => $intent->body['date_of_admission'] ?? '',
-            'email' => $intent->user->email,
-            'name' => $intent->body['first_name'].' '.$intent->body['last_name'],
-        ];
+        $service = app(IntentService::class);
+        $method = 'transform'.Str::studly($intent->tag).'Intent';
+
+        return call_user_func([$service, $method] $intent);
     }
 
     public function show(Intent $intent) {
         return [
             'tag' => (string)$intent->tag,
             'body' => (string)$intent->body,
-            'locked' => (boolean)$intent->locked,
-            'rejected' => (boolean)$intent->retry,
+            'locked' => $intent->locked,
+            'status' => $this->getStatus($intent),
         ];
+    }
+
+    public function getStatus(Intent $intent): string {
+        if ($intent->status) return $intent->status;
+
+        if ($intent->closed) return 'closed';
+
+        if ($intent->locked) return 'pending review';
+
+        return 'open';
     }
 
     public function includeUser(Intent $intent) {

@@ -50,9 +50,13 @@ class User extends BaseModel implements
      */
     protected $hidden = ['password', 'remember_token', 'verification_token'];
 
-    protected $extends = ['other_email', 'other_verification_token'];
+    protected $extends = ['other_email', 'other_verification_token', 'approved'];
 
     protected $searchable = ['name', 'email', 'school_id'];
+
+    protected $casts = [
+        'approved' => 'bool',
+    ];
 
     public function school() {
         return $this->belongsTo(School::class);

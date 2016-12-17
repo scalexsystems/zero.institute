@@ -2,6 +2,7 @@
     'title' => '', // Page Title.
     'heading' => 'Register', // Content Heading.
     'p' => [ // Input Placeholders.
+        'name' => 'Full Name',
         'institute' => 'Institute',
         'email' => 'Email address',
         'password' => 'Password',

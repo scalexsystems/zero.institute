@@ -2,24 +2,17 @@
 
 namespace Scalex\Zero\Http\Controllers\Auth;
 
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\Request;
 use Scalex\Zero\User;
 use Validator;
 use Scalex\Zero\Http\Controllers\Controller;
+use Scalex\Zero\Models\School;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Str;
 
 class RegisterController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Register Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles the registration of new users as well as their
-    | validation and creation. By default this controller uses a trait to
-    | provide this functionality without requiring any additional code.
-    |
-    */
-
     use RegistersUsers;
 
     /**
@@ -38,6 +31,64 @@ class RegisterController extends Controller
         $this->middleware('guest');
     }
 
+
+    /**
+     * Show the application registration form.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showRegistrationForm(Request $request)
+    {
+        $institute = $request->input('institute', $request->old('institute'));
+        $token = $request->input('token', $request->old('token'));
+
+        if ($institute and $token) {
+            $school = repository(School::class)->find($institute);
+
+            $isTokenValid = !is_null($this->validateToken($school, $token));
+
+            return view('auth.register', compact('school', 'institute', 'token', 'isTokenValid'));
+        }
+
+        return view('auth.lost');
+    }
+
+
+    /**
+     * Handle a registration request for the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function register(Request $request)
+    {
+        $this->validator($request->all())->validate();
+
+        $token = $request->input('token');
+        $school = repository(School::class)->find($request->input('institute'));
+
+        if (!($user_type = $this->validateToken($school, $token))) {
+            return redirect()->back();
+        }
+
+        if (!$this->validateEmail($school, $request->input('email'))) {
+            return redirect()->back()->with('message', 'Your school does not allow creating accounts with this email address.');
+        }
+
+        event(new Registered($user = $this->create($request->all(), $school)));
+
+        $this->guard()->login($user);
+
+        $person = app(morph_model($user_type));
+        $person->first_name = $request->input('name');
+        $person->school_id = $school->getKey();
+
+        $user->person()->save($person);
+
+        return $this->registered($request, $user)
+            ?: redirect($this->redirectPath());
+    }
+
     /**
      * Get a validator for an incoming registration request.
      *
@@ -47,6 +98,7 @@ class RegisterController extends Controller
      */
     protected function validator(array $data) {
         return Validator::make($data, [
+            'name' => 'required',
             'institute' => 'required|exists:schools,id',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|confirmed',
@@ -60,13 +112,33 @@ class RegisterController extends Controller
      *
      * @return User
      */
-    protected function create(array $data) {
+    protected function create(array $data, School $school): User {
         return repository(User::class)
             ->create([
-                         'name' => ' ',
-                         'school_id' => $data['institute'],
-                         'email' => $data['email'],
-                         'password' => $data['password'],
-                     ]);
+                'name' => $data['name'],
+                'school_id' => $data['institute'],
+                'email' => $data['email'],
+                'password' => $data['password'],
+                'verification_token' => null,
+            ]);
+
+    }
+
+    public function validateToken(School $school, string $userToken) {
+        $tokens = (array)$school->tokens;
+
+        foreach($tokens as $key => $token) {
+            if (Str::is($token, $userToken)) {
+                return $key;
+            }
+        }
+    }
+
+    public function validateEmail(School $school, string $email): bool {
+        $domains = (array)$school->email_domains;
+
+        if (!count($domains)) return true;
+
+        return Str::endsWith($email, $domains);
     }
 }

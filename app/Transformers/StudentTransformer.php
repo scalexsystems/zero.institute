@@ -12,8 +12,9 @@ class StudentTransformer extends Transformer
         return [
             'name' => (string)$student->name,
             'bio' => (string)$student->bio,
-            'photo' => attach_url($student->profilePhoto) ?? asset('img/placeholder-64.jpg'),
+            'photo' => attach_url($student->profilePhoto) ?? asset('img/placeholder.jpg'),
             'has_account' => !is_null($student->user),
+            'user_id' => $student->user->getKey(),
 
             // Basic Information.
             'email' => (string)($student->user->email ?? $student->address->email),

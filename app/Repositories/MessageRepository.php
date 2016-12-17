@@ -1,5 +1,6 @@
 <?php namespace Scalex\Zero\Repositories;
 
+use Scalex\Zero\Models\Attachment;
 use Scalex\Zero\Models\Message;
 use Scalex\Zero\User;
 use Znck\Repositories\Repository;
@@ -31,7 +32,7 @@ class MessageRepository extends Repository
     protected $rules = [
         'sender_id' => 'required|exists:users,id',
         'receiver' => 'required',
-        'content' => 'required',
+        'content' => 'required_without:attachment_id',
         'intended_for' => 'nullable|exists:users,id',
     ];
 
@@ -41,6 +42,15 @@ class MessageRepository extends Repository
         $message->sender()->associate($attributes['sender_id']);
         $message->receiver()->associate($attributes['receiver']);
 
-        return $message->save();
+        $status = $message->save();
+        if ($status && array_has($attributes, 'attachment_id')) {
+            $attachment = find($attributes, 'attachment_id', Attachment::class);
+            $name = data_get($attributes, 'name');
+            if ($name !== data_get($attachment, 'name')) {
+                data_set($attachment, 'filename', $name);
+            }
+            $message->attachments()->save($attachment);
+        }
+        return $status;
     }
 }
