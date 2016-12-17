@@ -48,6 +48,8 @@ Route::get('/me/groups', 'Groups\CurrentUserController@index'); // NOTE: Lists g
 Route::post('/groups/{group}/join', 'Groups\CurrentUserController@store');
 Route::delete('/groups/{group}/leave', 'Groups\CurrentUserController@delete');
 
+Route::post('/groups/{group}/file', 'Groups\FileController@store');
+
 // Messages
 Route::put('/messages/{message}/read', 'Messages\MessageController@read');
 Route::put('/me/messages/{message}/read', 'Messages\MessageController@read'); // TODO: Remove this.
