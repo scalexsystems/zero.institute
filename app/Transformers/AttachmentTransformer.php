@@ -9,14 +9,26 @@ class AttachmentTransformer extends Transformer
     public function show(Attachment $attachment) {
         return [
             'extension' => $attachment->extension,
+            'title' => $attachment->title,
             'filename' => $attachment->filename,
             'mime' => $attachment->mime,
             'path' => attach_url($attachment),
             'size' => $attachment->size,
-
+            'links' => $this->getLinks($attachment),
         ];
     }
+
     public function index(Attachment $attachment) {
         return $this->show($attachment);
+    }
+
+    protected function getLinks(Attachment $attachment): array {
+        $links = ['original' => attach_url($attachment)];
+
+        foreach (array_keys($attachment->variations) as $variation) {
+            $links[$variation] = attach_url($attachment, $variation);
+        }
+
+        return $links;
     }
 }
