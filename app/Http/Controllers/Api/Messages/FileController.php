@@ -1,12 +1,14 @@
-<?php namespace Scalex\Zero\Http\Controllers\Api\Groups;
+<?php namespace Scalex\Zero\Http\Controllers\Api\Messages;
 
 
 use Ramsey\Uuid\Uuid;
 use Znck\Attach\Builder;
+use Znck\Attach\Processors\Resize;
 use Illuminate\Http\Request;
 use Scalex\Zero\Models\Group;
 use Scalex\Zero\Models\Message;
 use Scalex\Zero\Http\Controllers\Controller;
+use Scalex\Zero\User;
 
 class FileController extends Controller
 {
@@ -19,15 +21,14 @@ class FileController extends Controller
      * POST /groups/{group}/file
      * Requires: auth
      */
-    public function store(Request $request, Group $group) {
-        $this->authorize('upload-file', $group);
+    public function store(Request $request) {
         $this->validate($request, ['file' => 'required']);
 
         $schoolId = $request->user()->school_id;
-        $groupId = $group->getKey();
+        $userId = $request->user()->id;
         $title = $request->input('title');
         $slug = Uuid::uuid4();
-        $path = "schools/${schoolId}/groups/attachments/${groupId}";
+        $path = "schools/${schoolId}/messages/attachments/${userId}";
 
         $uploader = Builder::make($request, 'file');
 
