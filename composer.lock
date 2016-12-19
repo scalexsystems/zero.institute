@@ -3664,12 +3664,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/znck/attach.git",
-                "reference": "c448c6e12af8532e23025525db5d3f90ca8940c9"
+                "reference": "754fdc48605fd386c08841996206c7f7c4767d5a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/znck/attach/zipball/c448c6e12af8532e23025525db5d3f90ca8940c9",
-                "reference": "c448c6e12af8532e23025525db5d3f90ca8940c9",
+                "url": "https://api.github.com/repos/znck/attach/zipball/754fdc48605fd386c08841996206c7f7c4767d5a",
+                "reference": "754fdc48605fd386c08841996206c7f7c4767d5a",
                 "shasum": ""
             },
             "require": {
@@ -3715,7 +3715,7 @@
                 "attach",
                 "znck"
             ],
-            "time": "2016-12-19 10:47:21"
+            "time": "2016-12-19 11:26:00"
         },
         {
             "name": "znck/cities",
