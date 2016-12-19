@@ -9,7 +9,7 @@
 @endsection
 
 @section('vue-styles')
-    
+
     <link href="/static/css/app.73ac7c60010ed726912b47b753ded06f.css" rel="stylesheet">
     
 @endsection
