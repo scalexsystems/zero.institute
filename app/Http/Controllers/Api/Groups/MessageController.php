@@ -24,13 +24,13 @@ class MessageController extends Controller
     public function index(Group $group, Request $request) {
         $this->authorize('messages', $group);
 
-        return repository(Message::class)
+        return
+            repository(Message::class)
             ->pushCriteria(new MessageSentTo($group))
             ->pushCriteria(new MessageIntendedFor($request->user()))
             ->pushCriteria(new OrderBy('id', 'desc'))
             ->pushCriteria(criteria(function ($query) use ($request) {
-                /** @var \Illuminate\Database\Query\Builder $query */
-                $query->where('created_at', '<', Carbon::createFromTimestamp($request->input('timestamp', time())));
+                $query->where('created_at', '<=', Carbon::createFromTimestamp($request->input('timestamp', time())));
             }))
             ->with(['attachments', 'sender', 'userReadAt'])
             ->paginate();
