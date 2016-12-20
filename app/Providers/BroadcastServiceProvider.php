@@ -31,7 +31,7 @@ class BroadcastServiceProvider extends ServiceProvider
             return;
         }
 
-        $attributes = ['middleware' => ['auth:api,web']];
+        $attributes = [];
 
         $this->app['router']->group($attributes, function ($router) {
             $router->post('/broadcasting/auth', BroadcastController::class.'@authenticate');

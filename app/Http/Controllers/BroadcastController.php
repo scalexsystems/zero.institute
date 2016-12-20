@@ -22,6 +22,8 @@ class BroadcastController extends LaravelBroadcastController
             if ($this->auth->guard($guard)->check()) {
                 $this->auth->shouldUse($guard);
 
+                \Log::debug($guard, [$request]);
+
                 break;
             }
         }

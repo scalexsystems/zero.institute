@@ -25,7 +25,7 @@ class AttachmentTransformer extends Transformer
     protected function getLinks(Attachment $attachment): array {
         $links = ['original' => attach_url($attachment)];
 
-        foreach (array_keys($attachment->variations) as $variation) {
+        foreach (array_keys((array) $attachment->variations) as $variation) {
             $links[$variation] = attach_url($attachment, $variation);
         }
 
