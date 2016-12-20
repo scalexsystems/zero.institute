@@ -5,6 +5,7 @@
     "dev": "gulp watch"
   },
   "devDependencies": {
+    "del": "^2.2.2",
     "gulp": "^3.9.1",
     "laravel-echo-server": "^1.0.15",
     "laravel-elixir": "^6.0.0-9",

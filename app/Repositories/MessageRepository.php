@@ -32,7 +32,7 @@ class MessageRepository extends Repository
     protected $rules = [
         'sender_id' => 'required|exists:users,id',
         'receiver' => 'required',
-        'content' => 'required_without:attachment_id',
+        'content' => 'required_without:attachments',
         'intended_for' => 'nullable|exists:users,id',
     ];
 

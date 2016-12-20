@@ -8,6 +8,7 @@ use Scalex\Zero\Events\NewMessage;
 use Scalex\Zero\Http\Controllers\Controller;
 use Scalex\Zero\Models\Group;
 use Scalex\Zero\Models\Message;
+use Carbon\Carbon;
 
 class MessageController extends Controller
 {
@@ -23,13 +24,13 @@ class MessageController extends Controller
     public function index(Group $group, Request $request) {
         $this->authorize('messages', $group);
 
-        return repository(Message::class)
+        return
+            repository(Message::class)
             ->pushCriteria(new MessageSentTo($group))
             ->pushCriteria(new MessageIntendedFor($request->user()))
             ->pushCriteria(new OrderBy('id', 'desc'))
             ->pushCriteria(criteria(function ($query) use ($request) {
-                /** @var \Illuminate\Database\Query\Builder $query */
-                $query->where('id', '<', (int)$request->input('before', 2147483647));
+                $query->where('created_at', '<=', Carbon::createFromTimestamp($request->input('timestamp', time())));
             }))
             ->with(['attachments', 'sender', 'userReadAt'])
             ->paginate();
@@ -81,7 +82,7 @@ class MessageController extends Controller
         }
 
         if (!is_null($message->userReadAt)) {
-            abort(400, 'Message already marked read.');
+            return $this->accepted();
         }
 
         if ($message->userReadAt()->create($request->user()) !== true) {

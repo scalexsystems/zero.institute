@@ -1,20 +1,17 @@
 const elixir = require('laravel-elixir');
+const del = require('del');
 
 require('laravel-elixir-vue');
 
-/*
- |--------------------------------------------------------------------------
- | Elixir Asset Management
- |--------------------------------------------------------------------------
- |
- | Elixir provides a clean, fluent API for defining some basic Gulp tasks
- | for your Laravel application. By default, we are compiling the Sass
- | file for our application, as well as publishing vendor resources.
- |
- */
+elixir.extend('delete', function (path) {
+  return new elixir.Task('delete', function () {
+    del.sync(path);
+  });
+});
 
 elixir((mix) => {
-  mix
+
+  mix.delete('public/static')
     .copy('./node_modules/@scalex/zero.front/dist/vue.blade.php', 'resources/views/app/')
     .copy('./node_modules/@scalex/zero.front/dist/static', 'public/static')
     .sass('web.scss')
