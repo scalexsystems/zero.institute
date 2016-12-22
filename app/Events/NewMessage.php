@@ -22,7 +22,7 @@ class NewMessage implements ShouldBroadcast
     }
 
     public function broadcastWith() {
-        return transform($this->message);
+        return ['read_at' => null, 'unread' => true] + transform($this->message);
     }
 
     /**
