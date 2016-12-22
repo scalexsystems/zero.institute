@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@scalex/zero.front@^0.1.11":
-  version "0.1.12"
-  resolved "https://registry.yarnpkg.com/@scalex/zero.front/-/zero.front-0.1.12.tgz#8fe4e40c72f474c5294876277b0f77721a376bee"
+"@scalex/zero.front@^0.1.13":
+  version "0.1.13"
+  resolved "https://registry.yarnpkg.com/@scalex/zero.front/-/zero.front-0.1.13.tgz#049a65838a0ae9361255708e848f25f8c9f41d56"
   dependencies:
     Validator "^1.0.3"
     autosize "^3.0.17"
@@ -16,6 +16,7 @@
     jquery "^3.1.1"
     laravel-echo "^1.1.0"
     lodash "^4.16.4"
+    marked "^0.3.6"
     moment "^2.15.1"
     perfect-scrollbar "^0.6.12"
     pusher-js "^3.2.1"
@@ -4860,21 +4861,21 @@ source-map-url@~0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/source-map-url/-/source-map-url-0.3.0.tgz#7ecaf13b57bcd09da8a40c5d269db33799d4aaf9"
 
-source-map@0.4.x, source-map@^0.4.2, source-map@~0.4.1:
+source-map@0.4.x, source-map@0.X, source-map@^0.4.2, source-map@~0.4.1:
   version "0.4.4"
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.4.4.tgz#eba4f5da9c0dc999de68032d8b4f76173652036b"
   dependencies:
     amdefine ">=0.0.4"
-
-source-map@0.X, source-map@^0.5.0, source-map@^0.5.1, source-map@^0.5.3, source-map@^0.5.6, source-map@~0.5.0, source-map@~0.5.1, source-map@~0.5.3:
-  version "0.5.6"
-  resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.5.6.tgz#75ce38f52bf0733c5a7f0c118d81334a2bb5f412"
 
 source-map@^0.1.38:
   version "0.1.43"
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.1.43.tgz#c24bc146ca517c1471f5dacbe2571b2b7f9e3346"
   dependencies:
     amdefine ">=0.0.4"
+
+source-map@^0.5.0, source-map@^0.5.1, source-map@^0.5.3, source-map@^0.5.6, source-map@~0.5.0, source-map@~0.5.1, source-map@~0.5.3:
+  version "0.5.6"
+  resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.5.6.tgz#75ce38f52bf0733c5a7f0c118d81334a2bb5f412"
 
 sparkles@^1.0.0:
   version "1.0.0"
