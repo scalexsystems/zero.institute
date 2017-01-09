@@ -25,4 +25,9 @@ class EmployeePolicy extends AbstractPolicy
     public function readAddress(User $user, Employee $employee) {
         return $this->view($user, $employee);
     }
+
+    public function invite(User $user){
+        return true;
+        return trust($user)->to(Action::INVITE_EMPLOYEE);
+    }
 }
