@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Scalex\Zero\Http\Controllers\Controller;
+use Scalex\Zero\Models\School;
 
 class CurrentSchoolController extends Controller
 {

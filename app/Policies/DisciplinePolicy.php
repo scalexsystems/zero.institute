@@ -9,7 +9,8 @@ class DisciplinePolicy extends AbstractPolicy
     use VerifiesSchool;
 
     public function store(User $user) {
-        return trust($user)->to(Action::UPDATE_DISCIPLINE);
+        return true;
+//        return trust($user)->to(Action::UPDATE_DISCIPLINE);
     }
 
     public function update(User $user) {
