@@ -148,6 +148,10 @@ class Student extends BaseModel implements Person, BelongsToSchool
         return $this->morphOne(User::class, 'person');
     }
 
+    public function sessions() {
+        return $this->hasMany(Session::class);
+    }
+
     public function getRouteKeyName() {
         return 'uid';
     }

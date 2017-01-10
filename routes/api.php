@@ -62,6 +62,7 @@ Route::get('/me/messages/users/{user}', 'Messages\MessageController@index');
 Route::get('/me/messages/users', 'Messages\CurrentUserController@index');
 
 // Courses
+Route::get('/me/courses', 'Courses\CurrentUserController@index');
 Route::resource('courses', 'Courses\CourseController', $resource);
 
 // Intents

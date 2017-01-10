@@ -17,7 +17,7 @@ class GroupTransformer extends Transformer
             'name' => (string)$group->name,
             'description' => (string)$group->description,
             'photo' => attach_url($group->profilePhoto) ?? asset('img/placeholder-64.jpg'),
-            'type' => is_null($group->school_id) ? 'open' : 'closed',
+            'type' => (string) ($group->type ?? 'group'),
             'type_text' => trans_choice('groups.private', $group->private ? 1 : 0),
             'private' => (bool)$group->private,
             'member_count' => (int)($group->count_members ?? 0),

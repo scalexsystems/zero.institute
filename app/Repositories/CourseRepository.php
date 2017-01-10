@@ -2,9 +2,11 @@
 
 namespace Scalex\Zero\Repositories;
 
+use Scalex\Zero\Models\Group;
 use Scalex\Zero\Models\Course;
 use Scalex\Zero\Models\Teacher;
 use Scalex\Zero\Models\Attachment;
+use Scalex\Zero\Models\Course\Constraint;
 use Scalex\Zero\Criteria\OfSchool;
 use Znck\Repositories\Repository;
 
@@ -34,14 +36,13 @@ class CourseRepository extends Repository
      */
     protected $rules = [
         'name' => 'required|max:255',
-        'code' => 'nullable|max:255',
+        'code' => 'required|max:255',
         'description' => 'nullable|max:65535',
 
         'school_id' => 'required|exists:schools,id',
         'group_id' => 'nullable|exists:groups,id',
         'discipline_id' => 'nullable|exists:disciplines,id',
         'department_id' => 'required|exists:departments,id',
-        'instructor_id' => 'nullable|exists:teachers,id',
         'photo_id' => 'nullable|exists:attachments,id',
     ];
 
@@ -54,40 +55,107 @@ class CourseRepository extends Repository
     public function creating(Course $course, array $attributes)
     {
         $course->fill($attributes);
-
+        $school = $attributes['school_id'];
         $course->department()->associate(find($attributes, 'department_id'));
         $course->discipline()->associate(find($attributes, 'discipline_id'));
-        $course->instructor()->associate(find($attributes, 'instructor_id', Teacher::class));
-        $course->group()->associate(find($attributes, 'group_id'));
-        $course->school()->associate(find($attributes, 'school_id'));
+        $course->school()->associate($school);
 
-        if (array_has($attributes, 'photo_id')) {
-            attach_attachment($course, 'photo', find($attributes, 'photo_id', Attachment::class));
+        $status = $course->save();
+
+        if ($status) {
+            $instructors = $this->getInstructorIds((array) array_get($attributes, 'instructors'), $school);
+
+            if (count($instructors) > 0) {
+                $course->instructors()->attach($instructors);
+            }
+
+            $prerequisites = $this->getCourseIds((array) array_get($attributes, 'prerequisites'), $school);
+
+            if (count($prerequisites) > 0) {
+                $course->prerequisites()->saveMany(
+                    collect($prerequisites)->map(function ($id) {
+                        return new Constraint([
+                            'constraint_type' => 'course',
+                            'constraint_id' => $id,
+                        ]);
+                    })
+                );
+            }
         }
 
-        return $course->save();
+        return $status;
     }
 
     public function updating(Course $course, array $attributes)
     {
         $course->fill($attributes);
-
+        $school = $course->school_id;
         if (array_has($attributes, 'department_id')) {
             $course->department()->associate(find($attributes, 'department_id'));
         }
         if (array_has($attributes, 'discipline_id')) {
             $course->discipline()->associate(find($attributes, 'discipline_id'));
         }
-        if (array_has($attributes, 'instructor_id')) {
-            $course->instructor()->associate(find($attributes, 'instructor_id'));
-        }
-        if (array_has($attributes, 'group_id')) {
-            $course->group()->associate(find($attributes, 'group_id'));
-        }
         if (array_has($attributes, 'photo_id')) {
             attach_attachment($course, 'photo', find($attributes, 'photo_id', Attachment::class));
         }
 
+        $instructors = $this->getInstructorIds((array) array_get($attributes, 'instructors'), $school);
+
+        if (count($instructors) > 0) {
+            $course->instructors()->sync($instructors);
+        }
+
+        $prerequisites = $this->getCourseIds((array) array_get($attributes, 'prerequisites'), $school);
+
+        if (count($prerequisites) > 0) {
+            $all = array_flip($course->prerequisites->pluck('id')->toArray());
+            $create = [];
+
+            foreach ($prerequisites as $id) {
+                if (array_key_exists($id, $all)) {
+                    unset($all[$id]);
+                } else {
+                    $create[] = $id;
+                }
+            }
+
+            if (count($all)) {
+                $course->prerequisites()->whereIn('id', array_keys($all))->delete();
+            }
+
+            if (count($create)) {
+                $course->prerequisites()->saveMany(
+                    collect($create)->map(function ($id) {
+                        return new Constraint([
+                            'constraint_type' => 'course',
+                            'constraint_id' => $id,
+                        ]);
+                    })
+                );
+            }
+        }
+
         return $course->update();
+    }
+
+    public function getInstructorIds(array $instructors, int $school)
+    {
+        if (count($instructors) === 0) return [];
+
+        return \DB::table('teachers')->select('id')
+            ->where('school_id', $school)
+            ->whereIn('id', $instructors)
+            ->get()->pluck('id')->toArray();
+    }
+
+    public function getCourseIds(array $courses, int $school)
+    {
+        if (count($courses) === 0) return [];
+
+        return \DB::table('courses')->select('id')
+            ->where('school_id', $school)
+            ->whereIn('id', $courses)
+            ->get()->pluck('id')->toArray();
     }
 }
