@@ -33,6 +33,7 @@ class SchoolPolicy extends AbstractPolicy
      * @return bool
      */
     public function update(User $user, School $school) {
-        return $this->verifySchool($user, $school) and trust($user)->to(Action::UPDATE_SCHOOL);
+        return $this->verifySchool($user, $school);
+//        return $this->verifySchool($user, $school) and trust($user)->to(Action::UPDATE_SCHOOL);
     }
 }

@@ -5,7 +5,10 @@ $extra = ['only' => ['store', 'destroy']];
 
 // Schools
 Route::get('/schools', 'Schools\SchoolController@index');
-Route::resource('/school', 'Schools\CurrentSchoolController', ['only' => ['index', 'update']]);
+Route::get('/school', 'Schools\CurrentSchoolController@index');
+Route::put('/school', 'Schools\CurrentSchoolController@update');
+Route::post('/school/logo', 'Schools\FileController@store');
+
 Route::resource('/disciplines', 'Schools\DisciplineController', $resource);
 Route::resource('/departments', 'Schools\DepartmentController', $resource);
 
