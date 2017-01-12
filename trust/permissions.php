@@ -55,6 +55,7 @@ return [
         'name' => 'View Employee Profile',
         'description' => 'Allow user to see detailed employee profile.',
     ],
+
     Action::INVITE_STUDENT => [
         'name' => 'Invite Student',
         'description' => 'Allows user to invite student',
@@ -66,5 +67,17 @@ return [
     Action::INVITE_EMPLOYEE => [
         'name' => 'Invite Employee',
         'description' => 'Allows user to invite employee',
+
+    Action::CREATE_COURSE => [
+        'name' => 'Create Course',
+        'description' => 'Allow user to create a new course.',
+    ],
+    Action::UPDATE_COURSE => [
+        'name' => 'Update Course Information',
+        'description' => 'Allow user to update/manage a course.',
+    ],
+    Action::DELETE_COURSE => [
+        'name' => 'Delete Course',
+        'description' => 'Allow user to delete a course.',
     ],
 ];
