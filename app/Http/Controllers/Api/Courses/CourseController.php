@@ -5,7 +5,9 @@ namespace Scalex\Zero\Http\Controllers\Api\Courses;
 use Illuminate\Http\Request;
 use Scalex\Zero\Http\Controllers\Controller;
 use Scalex\Zero\Models\Course;
+use Scalex\Zero\Models\Course\Session;
 use Scalex\Zero\Criteria\OrderBy;
+use Carbon\Carbon;
 
 class CourseController extends Controller
 {
@@ -21,7 +23,7 @@ class CourseController extends Controller
     public function index(Request $request) {
         $this->authorize('index', Course::class);
 
-        $courses = repository(Course::class)->with('photo');
+        $courses = repository(Course::class)->with(['photo', 'sessions', 'instructors', 'prerequisites']);
 
         if ($request->has('q')) {
             $courses->search($request->input('q'));
@@ -55,6 +57,17 @@ class CourseController extends Controller
             ['school_id' => current_user()->school_id] + $request->all()
         );
 
+        $teacher = $course->instructors->first();
+
+        if ($teacher) {
+            repository(Session::class)->create([
+                'course_id' => $course->getKey(),
+                'instructor_id' => $teacher->getKey(),
+                'started_on' => Carbon::now(),
+                'ended_on' => Carbon::now()->addMonth(4),
+            ]);
+        }
+
         return $course;
     }
 
@@ -67,6 +80,22 @@ class CourseController extends Controller
         $this->authorize('update', $course);
 
         repository($course)->update($course, $request->all());
+
+        $course->fresh('instructors');
+
+        $teacher = $course->instructors->first();
+        $session = $course->sessions->filter(function ($session) { return $session->ended_on->isFuture(); })->first();
+
+        if ($teacher and $session) {
+            repository(Session::class)->update($session, [ 'instructor_id' => $teacher->getKey() ]);
+        } else if ($teacher) {
+            repository(Session::class)->create([
+                'course_id' => $course->getKey(),
+                'instructor_id' => $teacher->getKey(),
+                'started_on' => Carbon::now(),
+                'ended_on' => Carbon::now()->addMonth(4),
+            ]);
+        }
 
         return $course;
     }

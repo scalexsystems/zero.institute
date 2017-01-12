@@ -15,6 +15,7 @@ class CreateGroupsTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->text('description')->nullable();
+            $table->string('type')->nullable();
             $table->boolean('private')->default(false);
 
             $table->unsignedInteger('owner_id');

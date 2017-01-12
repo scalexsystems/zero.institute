@@ -5,6 +5,7 @@ use Scalex\Zero\Contracts\Database\BelongsToSchool;
 use Scalex\Zero\Contracts\Person;
 use Scalex\Zero\Database\BaseModel;
 use Scalex\Zero\Models\Geo\Address;
+use Scalex\Zero\Models\Course\Session;
 use Scalex\Zero\User;
 
 class Teacher extends BaseModel implements BelongsToSchool, Person
@@ -138,6 +139,10 @@ class Teacher extends BaseModel implements BelongsToSchool, Person
      */
     public function user() {
         return $this->morphOne(User::class, 'person');
+    }
+
+    public function sessions() {
+        return $this->hasMany(Session::class, 'instructor_id');
     }
 
     public function getRouteKeyName() {

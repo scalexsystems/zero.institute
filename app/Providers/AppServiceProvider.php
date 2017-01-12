@@ -123,6 +123,7 @@ class AppServiceProvider extends ServiceProvider
                  */
                 'group' => Models\Group::class,
                 'message' => Models\Message::class,
+                'course' => Models\Course::class,
             ]
         );
     }
