@@ -31,6 +31,7 @@ class AuthServiceProvider extends ServiceProvider
         Models\Message::class => Policies\MessagePolicy::class,
         /** Course */
         Models\Course::class => Policies\CoursePolicy::class,
+        Models\Course\Session::class => Policies\Course\SessionPolicy::class,
     ];
 
     /**

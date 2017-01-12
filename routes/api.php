@@ -46,6 +46,7 @@ Route::post('/groups/{group}/photo', 'Groups\PhotoController@store');
 Route::delete('/groups/{group}/photo', 'Groups\PhotoController@destroy');
 
 Route::get('/me/groups', 'Groups\CurrentUserController@index'); // NOTE: Lists groups current user is member of.
+Route::get('/me/groups/{group}', 'Groups\CurrentUserController@show');
 Route::post('/groups/{group}/join', 'Groups\CurrentUserController@store');
 Route::delete('/groups/{group}/leave', 'Groups\CurrentUserController@delete');
 
@@ -62,6 +63,9 @@ Route::get('/me/messages/users/{user}', 'Messages\MessageController@index');
 Route::get('/me/messages/users', 'Messages\CurrentUserController@index');
 
 // Courses
+Route::get('/me/courses', 'Courses\CurrentUserController@index');
+Route::get('me/courses/{course}/enrolled', 'Courses\EnrollmentController@index');
+Route::post('/courses/{course}/enroll', 'Courses\EnrollmentController@store');
 Route::resource('courses', 'Courses\CourseController', $resource);
 
 // Intents

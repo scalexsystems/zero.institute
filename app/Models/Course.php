@@ -8,12 +8,14 @@ use Scalex\Zero\Models\Teacher;
 use Scalex\Zero\Models\Department;
 use Scalex\Zero\Models\Discipline;
 use Scalex\Zero\Models\Attachment;
+use Scalex\Zero\Models\Course\Session;
+use Scalex\Zero\Models\Course\Constraint;
 
 class Course extends BaseModel implements BelongsToSchool
 {
     use \Illuminate\Database\Eloquent\SoftDeletes;
 
-    protected $fillable = ['name', 'code', 'description'];
+    protected $fillable = ['name', 'code', 'description', 'year', 'semester'];
 
     public function school() {
         return $this->belongsTo(School::class);
@@ -27,15 +29,19 @@ class Course extends BaseModel implements BelongsToSchool
         return $this->belongsTo(Discipline::class);
     }
 
-    public function group() {
-        return $this->belongsTo(Group::class);
+    public function instructors() {
+        return $this->belongsToMany(Teacher::class)->withTimestamps();
     }
 
-    public function instructor() {
-        return $this->belongsTo(Teacher::class);
+    public function prerequisites() {
+        return $this->hasMany(Constraint::class);
     }
 
     public function photo() {
         return $this->belongsTo(Attachment::class);
+    }
+
+    public function sessions() {
+        return $this->hasMany(Session::class)->orderBy('started_on');
     }
 }

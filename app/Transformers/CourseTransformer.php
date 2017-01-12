@@ -2,6 +2,7 @@
 
 use Scalex\Zero\Models\Course;
 use Znck\Transformers\Transformer;
+use Carbon\Carbon;
 
 
 class CourseTransformer extends Transformer
@@ -10,8 +11,16 @@ class CourseTransformer extends Transformer
         'school',
         'department',
         'discipline',
-        'instructor',
-        'group',
+        'instructors',
+        'sessions',
+        'session',
+    ];
+
+    protected $defaultIncludes = [
+        'active_sessions',
+        'future_sessions',
+        'instructors',
+        'prerequisites',
     ];
 
     public function show(Course $course) {
@@ -22,13 +31,30 @@ class CourseTransformer extends Transformer
         return [
             'name' => (string) $course->name,
             'code' => (string) $course->code,
-            'photo' => (string) attach_url($course->photo) ?? asset('img/placeholder-64.jpg'),
+            'photo' => (string) attach_url($course->photo),
             'description' => (string) $course->description,
             'department_id' => (int) $course->department_id,
             'discipline_id' => (int) $course->discipline_id,
-            'instructor_id' => (int) $course->instructor_id,
-            'group_id' => (int) $course->group_id,
+            'year' => (int) $course->year,
+            'year_text' => $this->getYear($course->year),
+            'semester' => (int) $course->year,
+            'semester_text' => $this->getSemester($course->semester),
         ];
+    }
+
+    protected function getYear($year) {
+        switch ($year) {
+            case 1: return 'First Year';
+            case 2: return 'Second Year';
+            case 3: return 'Third Year';
+            case 4: return 'Fourth Year';
+            default: return 'Any Year';
+        }
+    }
+
+    protected function getSemester($semester) {
+        if ($semester === 2) return 'Semester 2';
+        return 'Semester 1';
     }
 
     public function includeSchool(Course $course) {
@@ -43,11 +69,31 @@ class CourseTransformer extends Transformer
         return $this->item($course->discipline);
     }
 
-    public function includeGroup(Course $course) {
-        return $this->item($course->group);
+    public function includeSession(Course $course) {
+        return $this->item($course->session); // NOTE: $course->session is set in Courses/CurrentUserController.
     }
 
-    public function includeInstructor(Course $course) {
-        return $this->item($course->instructor);
+    public function includeSessions(Course $course) {
+        return $this->collection($course->sessions);
+    }
+
+    public function includeActiveSessions(Course $course) {
+        return $this->collection($course->sessions->filter(function ($session) {
+            return $session->ended_on->isFuture();
+        }));
+    }
+
+    public function includeFutureSessions(Course $course) {
+        return $this->collection($course->sessions->filter(function ($session) {
+            return $session->started_on->isFuture();
+        }));
+    }
+
+    public function includeInstructors(Course $course) {
+        return $this->collection($course->instructors);
+    }
+
+    public function includePrerequisites(Course $course) {
+        return $this->collection($course->prerequisites);
     }
 }

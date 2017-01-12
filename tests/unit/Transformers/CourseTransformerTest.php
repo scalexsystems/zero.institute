@@ -18,8 +18,6 @@ class CourseTransformerTest extends TestCase
             'photo', // Required.
             'description', // Required.
             'department_id', // UI; Multiple places.
-            'instructor_id',
-            'group_id',
         ];
 
         foreach ($keys as $key) {
