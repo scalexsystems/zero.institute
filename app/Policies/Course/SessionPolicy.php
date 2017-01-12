@@ -4,33 +4,17 @@ namespace Scalex\Zero\Policies\Course;
 
 use Scalex\Zero\User;
 use Scalex\Zero\Models\Course\Session;
+use Scalex\Zero\Models\Teacher;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class SessionPolicy
 {
     use HandlesAuthorization;
 
-    /**
-     * Determine whether the user can view the session.
-     *
-     * @param  \Scalex\Zero\User  $user
-     * @param  \Scalex\Zero\Session  $session
-     * @return mixed
-     */
-    public function view(User $user, Session $session)
+    protected function isInstructor($instructor, Session $session)
     {
-        //
-    }
-
-    /**
-     * Determine whether the user can create sessions.
-     *
-     * @param  \Scalex\Zero\User  $user
-     * @return mixed
-     */
-    public function create(User $user)
-    {
-        //
+        return $instructor instanceof Teacher
+            and $instructor->getKey() === (int) $session->instructor_id;
     }
 
     /**
@@ -40,9 +24,9 @@ class SessionPolicy
      * @param  \Scalex\Zero\Session  $session
      * @return mixed
      */
-    public function update(User $user, Session $session)
+    public function enroll(User $user, Session $session)
     {
-        //
+        return $this->isInstructor($user->person, $session);
     }
 
     /**
@@ -52,8 +36,8 @@ class SessionPolicy
      * @param  \Scalex\Zero\Session  $session
      * @return mixed
      */
-    public function delete(User $user, Session $session)
+    public function deroll(User $user, Session $session)
     {
-        //
+        return $this->isInstructor($user->person, $session);
     }
 }

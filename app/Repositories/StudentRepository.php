@@ -1,9 +1,11 @@
 <?php namespace Scalex\Zero\Repositories;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Scalex\Zero\Criteria\OfSchool;
 use Scalex\Zero\Models\Attachment;
 use Scalex\Zero\Models\Geo\Address;
+use Scalex\Zero\Models\School;
 use Scalex\Zero\Models\Guardian;
 use Scalex\Zero\Models\Student;
 use Znck\Repositories\Repository;
@@ -179,5 +181,23 @@ class StudentRepository extends Repository
         return 'Student ・ '
                .($student->department->short_name ?? $student->department->name).' '
                .$student->date_of_admission->year;
+    }
+
+    public function filterBySchool($students, School $school): Collection
+    {
+        if (is_array($students)) $students = collect($students);
+        else if (! ($students instanceof Collection)) throw new \InvalidArgumentException('Expected array or collection.');
+
+        $ids = $students->map(function ($student) {
+            if ($student instanceof Student) return $student->getKey();
+
+            return (int) $student;
+        })->toArray();
+
+        return \DB::table('students')
+                ->select('id')
+                ->whereSchoolId($school->getKey())
+                ->whereIn('id', $ids)
+                ->get()->pluck('id');
     }
 }

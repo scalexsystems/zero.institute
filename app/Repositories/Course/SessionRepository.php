@@ -1,4 +1,6 @@
-<?php namespace Scalex\Zero\Repositories\Course;
+<?php
+
+namespace Scalex\Zero\Repositories\Course;
 
 use Scalex\Zero\Models\Course\Session;
 use Scalex\Zero\Models\Group;
@@ -84,5 +86,17 @@ class SessionRepository extends Repository
         }
 
         return $session->update();
+    }
+
+    public function enroll(Session $session, array $students)
+    {
+        $enrolled = \DB::table('course_session_student')
+            ->select('student_id')->whereSessionId($session->getKey())
+            ->whereIn('student_id', (array) $students)->get()
+            ->pluck('student_id')->toArray();
+
+        $newEnrollments = array_values(array_diff($students, $enrolled));
+
+        return $session->students()->attach($newEnrollments);
     }
 }

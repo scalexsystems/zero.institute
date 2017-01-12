@@ -149,7 +149,7 @@ class Student extends BaseModel implements Person, BelongsToSchool
     }
 
     public function sessions() {
-        return $this->hasMany(Session::class);
+        return $this->belongsToMany(Session::class);
     }
 
     public function getRouteKeyName() {

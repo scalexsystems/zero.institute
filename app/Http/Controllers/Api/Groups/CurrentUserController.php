@@ -33,6 +33,15 @@ class CurrentUserController extends Controller
         return $groups;
     }
 
+    public function show(Request $request, Group $group)
+    {
+        if (!$group->isMember($request->user())) {
+            abort(404);
+        }
+
+        return $group;
+    }
+
     /**
      * Join group.
      */

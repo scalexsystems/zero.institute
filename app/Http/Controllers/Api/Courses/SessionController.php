@@ -20,12 +20,4 @@ class SessionController extends Controller
 
         return $course->sessions;
     }
-
-    public function store(Course $course, Request $request) {
-        $session = repository(Session::class)->create([
-            'course_id' => $course->getKey(),
-        ] + (array) $request->all() + [
-            'instructor_id' => $course->instructor_id,
-        ]);
-    }
 }

@@ -8,6 +8,8 @@ use Scalex\Zero\Models\Teacher;
 use Scalex\Zero\Models\Attachment;
 use Scalex\Zero\Models\Course\Constraint;
 use Scalex\Zero\Criteria\OfSchool;
+use Scalex\Zero\User;
+use Illuminate\Support\Collection;
 use Znck\Repositories\Repository;
 
 /**
@@ -139,7 +141,7 @@ class CourseRepository extends Repository
         return $course->update();
     }
 
-    public function getInstructorIds(array $instructors, int $school)
+    protected function getInstructorIds(array $instructors, int $school)
     {
         if (count($instructors) === 0) return [];
 
@@ -149,7 +151,7 @@ class CourseRepository extends Repository
             ->get()->pluck('id')->toArray();
     }
 
-    public function getCourseIds(array $courses, int $school)
+    protected function getCourseIds(array $courses, int $school)
     {
         if (count($courses) === 0) return [];
 
@@ -157,5 +159,21 @@ class CourseRepository extends Repository
             ->where('school_id', $school)
             ->whereIn('id', $courses)
             ->get()->pluck('id')->toArray();
+    }
+
+    public function findSessions(Course $course, User $user): Collection
+    {
+        if ($user->person instanceof Teacher or $user->person instanceof Student) {
+            return $user->person->sessions()->whereCourseId($course->getKey())->get();
+        }
+
+        return collect([]);
+    }
+
+    public function findActiveSessions(Course $course, User $user): Collection
+    {
+        return $this->findSessions($course, $user)->filter(function ($session) {
+                return $session->ended_on->isFuture();
+            });
     }
 }
