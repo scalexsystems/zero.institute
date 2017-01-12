@@ -11,7 +11,7 @@ Route::post('/school/logo', 'Schools\FileController@store');
 
 Route::resource('/disciplines', 'Schools\DisciplineController', $resource);
 Route::resource('/departments', 'Schools\DepartmentController', $resource);
-
+Route::resource('/semesters', 'Schools\SemesterController', $resource);
 
 // Cities
 Route::get('/geo/cities', 'CitiesController@index');
