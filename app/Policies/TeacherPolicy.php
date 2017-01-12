@@ -21,4 +21,8 @@ class TeacherPolicy extends AbstractPolicy
     public function readAddress(User $user, Teacher $teacher) {
         return $this->view($user, $teacher);
     }
+    public function invite(User $user){
+        return true;
+        return trust($user)->to(Action::INVITE_STUDENT);
+    }
 }

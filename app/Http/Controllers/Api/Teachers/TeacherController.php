@@ -1,8 +1,10 @@
 <?php namespace Scalex\Zero\Http\Controllers\Api\Teachers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Scalex\Zero\Criteria\OrderBy;
 use Scalex\Zero\Http\Controllers\Controller;
+use Scalex\Zero\Mail\InvitationMail;
 use Scalex\Zero\Models\Teacher;
 
 class TeacherController extends Controller
@@ -30,5 +32,14 @@ class TeacherController extends Controller
         $request->query->set('with', ['profilePhoto', 'address']);
 
         return $teacher;
+    }
+
+    public function invite(Request $request){
+        $this->authorize('invite', Teacher::class);
+        $this->validate($request, [
+            'teachers.*' => 'required | email'
+        ]);
+        Mail::to($request->teachers)
+            ->queue(new InvitationMail());
     }
 }

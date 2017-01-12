@@ -19,13 +19,15 @@ Route::get('/me/dashboard', 'Users\DashboardController@index');
 
 // Students
 Route::resource('/people/students', 'Students\StudentController', ['only' => ['index', 'show']]);
+Route::post('/people/students/invite', 'Students\StudentController@invite');
 
 // Teachers
 Route::resource('/people/teachers', 'Teachers\TeacherController', ['only' => ['index', 'show']]);
+Route::post('/people/teachers/invite', 'Teachers\TeacherController@invite');
 
 // Employees
 Route::resource('/people/employees', 'Employees\EmployeeController', ['only' => ['index', 'show']]);
-
+Route::post('/people/employees/invite', 'Employees\EmployeeController@invite');
 
 // People
 Route::get('/people', 'PeopleController@index');

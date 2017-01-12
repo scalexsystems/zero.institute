@@ -55,6 +55,19 @@ return [
         'name' => 'View Employee Profile',
         'description' => 'Allow user to see detailed employee profile.',
     ],
+
+    Action::INVITE_STUDENT => [
+        'name' => 'Invite Student',
+        'description' => 'Allows user to invite student',
+    ],
+    Action::INVITE_TEACHER => [
+        'name' => 'Invite Teacher',
+        'description' => 'Allows user to invite teacher',
+    ],
+    Action::INVITE_EMPLOYEE => [
+        'name' => 'Invite Employee',
+        'description' => 'Allows user to invite employee',
+
     Action::CREATE_COURSE => [
         'name' => 'Create Course',
         'description' => 'Allow user to create a new course.',

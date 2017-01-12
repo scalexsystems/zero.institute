@@ -1,8 +1,10 @@
 <?php namespace Scalex\Zero\Http\Controllers\Api\Employees;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Scalex\Zero\Criteria\OrderBy;
 use Scalex\Zero\Http\Controllers\Controller;
+use Scalex\Zero\Mail\InvitationMail;
 use Scalex\Zero\Models\Employee;
 
 class EmployeeController extends Controller
@@ -30,5 +32,14 @@ class EmployeeController extends Controller
         $request->query->set('with', ['profilePhoto', 'address']);
 
         return $employee;
+    }
+
+    public function invite(Request $request) {
+        $this->authorize('invite',  Employee::class);
+        $this->validate($request, [
+            'employees.*' => 'required | email',
+        ]);
+        Mail::to($request->employees)
+            ->queue(new InvitationMail());
     }
 }
