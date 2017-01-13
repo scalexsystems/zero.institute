@@ -37,6 +37,10 @@ Route::get('/people', 'PeopleController@index');
 Route::get('/people/stats', 'PeopleController@stats');
 Route::get('/people/{person}', 'PeopleController@show');
 
+Route::get('people/roles/{role}', 'RoleController@index');
+Route::post('people/roles/{role}', 'RoleController@store');
+
+
 // Groups
 Route::resource('/groups', 'Groups\GroupController', $resource);
 

@@ -4,6 +4,7 @@ namespace Scalex\Zero\Providers;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Znck\Trust\Models\Role;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -23,7 +24,9 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Route::bind('role', function ($value) {
+        return Role::where('slug', $value)->first();
+    });
 
         parent::boot();
     }

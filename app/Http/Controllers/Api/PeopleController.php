@@ -11,6 +11,7 @@ use Scalex\Zero\Models\Intent;
 use Scalex\Zero\Models\Student;
 use Scalex\Zero\Models\Teacher;
 use Scalex\Zero\User;
+use Znck\Trust\Models\Role;
 
 class PeopleController extends Controller
 {
@@ -84,4 +85,5 @@ class PeopleController extends Controller
             }),
         ];
     }
+
 }
