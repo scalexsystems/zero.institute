@@ -2,34 +2,34 @@
 # yarn lockfile v1
 
 
-"@scalex/zero.front@^0.1.13":
-  version "0.1.13"
-  resolved "https://registry.yarnpkg.com/@scalex/zero.front/-/zero.front-0.1.13.tgz#049a65838a0ae9361255708e848f25f8c9f41d56"
+"@scalex/zero.front@^0.1.14":
+  version "0.1.14"
+  resolved "https://registry.yarnpkg.com/@scalex/zero.front/-/zero.front-0.1.14.tgz#52b30b469aec2c3b715ac1193f2125e4f230ee4e"
   dependencies:
     Validator "^1.0.3"
-    autosize "^3.0.17"
-    bootstrap "~4.0.0-alpha"
-    debug "^2.2.0"
+    autosize "^3.0.20"
+    bootstrap "4.0.0-alpha.5"
+    debug "^2.6.0"
     es6-promise "^4.0.5"
     filesize "^3.3.0"
-    font-awesome "^4.6.3"
+    font-awesome "^4.7.0"
     jquery "^3.1.1"
-    laravel-echo "^1.1.0"
-    lodash "^4.16.4"
+    laravel-echo "^1.1.4"
+    lodash "^4.17.4"
     marked "^0.3.6"
-    moment "^2.15.1"
-    perfect-scrollbar "^0.6.12"
-    pusher-js "^3.2.1"
-    scrollmonitor "^1.0.13"
+    moment "^2.17.1"
+    perfect-scrollbar "^0.6.15"
+    pusher-js "^4.0.0"
+    scrollmonitor "^1.2.2"
     sifter "^0.5.2"
-    socket.io-client "^1.5.0"
-    tether "^1.3.7"
-    vue "^2.0.1"
-    vue-infinite-loading "2.0.0-rc.2"
+    socket.io-client "^1.7.2"
+    tether "^1.4.0"
+    vue "^2.1.8"
+    vue-infinite-loading "2.0.0-rc.5"
     vue-resource "^1.0.3"
     vue-route "^1.5.1"
-    vue-router "^2.0.1"
-    vuex "^2.0.0"
+    vue-router "^2.1.1"
+    vuex "^2.1.1"
 
 Validator@^1.0.3:
   version "1.0.3"
@@ -290,7 +290,7 @@ autoprefixer@^6.0.0, autoprefixer@^6.0.3, autoprefixer@^6.3.1:
     postcss "^5.2.6"
     postcss-value-parser "^3.2.3"
 
-autosize@^3.0.17:
+autosize@^3.0.20:
   version "3.0.20"
   resolved "https://registry.yarnpkg.com/autosize/-/autosize-3.0.20.tgz#e343ea7c5603834738169420f0349dc953e62a9e"
 
@@ -805,7 +805,7 @@ boom@2.x.x:
   dependencies:
     hoek "2.x.x"
 
-bootstrap@~4.0.0-alpha:
+bootstrap@4.0.0-alpha.5:
   version "4.0.0-alpha.5"
   resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-4.0.0-alpha.5.tgz#a126b648c3bd2f52b8fad4bbc5e2d0ad2abf7064"
   dependencies:
@@ -1509,6 +1509,12 @@ debug@2.X, debug@^2.1.1, debug@^2.2.0:
   dependencies:
     ms "0.7.2"
 
+debug@^2.6.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.0.tgz#bc596bcabe7617f11d9fa15361eded5608b8499b"
+  dependencies:
+    ms "0.7.2"
+
 decamelize@^1.0.0, decamelize@^1.1.1, decamelize@^1.1.2:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/decamelize/-/decamelize-1.2.0.tgz#f6534d15148269b20352e7bee26f501f9a191290"
@@ -1943,7 +1949,7 @@ flexbuffer@0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/flexbuffer/-/flexbuffer-0.0.6.tgz#039fdf23f8823e440c38f3277e6fef1174215b30"
 
-font-awesome@^4.6.3:
+font-awesome@^4.7.0:
   version "4.7.0"
   resolved "https://registry.yarnpkg.com/font-awesome/-/font-awesome-4.7.0.tgz#8fa8cf0411a1a31afd07b06d2902bb9fc815a133"
 
@@ -2944,9 +2950,9 @@ laravel-echo-server@^1.0.15:
     sqlite3 "^3.1.4"
     yargs "^5.0.0"
 
-laravel-echo@^1.1.0:
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/laravel-echo/-/laravel-echo-1.1.3.tgz#9cff1d544f8224eaff601e1db2cc61854ceabeb0"
+laravel-echo@^1.1.4:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/laravel-echo/-/laravel-echo-1.2.0.tgz#197e640940403d0704a5e9a10e09604af0475b93"
 
 laravel-elixir-vue@^0.1.4:
   version "0.1.8"
@@ -3288,9 +3294,13 @@ lodash@^3.6.0:
   version "3.10.1"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
 
-lodash@^4.0.0, lodash@^4.12.0, lodash@^4.14.0, lodash@^4.15.0, lodash@^4.16.4, lodash@^4.2.0, lodash@^4.3.0:
+lodash@^4.0.0, lodash@^4.12.0, lodash@^4.14.0, lodash@^4.15.0, lodash@^4.2.0, lodash@^4.3.0:
   version "4.17.2"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.2.tgz#34a3055babe04ce42467b607d700072c7ff6bf42"
+
+lodash@^4.17.4:
+  version "4.17.4"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
 
 lodash@~1.0.1:
   version "1.0.2"
@@ -3495,7 +3505,7 @@ modify-filename@^1.0.0, modify-filename@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/modify-filename/-/modify-filename-1.1.0.tgz#9a2dec83806fbb2d975f22beec859ca26b393aa1"
 
-moment@^2.15.1:
+moment@^2.17.1:
   version "2.17.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.17.1.tgz#fed9506063f36b10f066c8b59a144d7faebe1d82"
 
@@ -4000,9 +4010,9 @@ pbkdf2@^3.0.3:
   dependencies:
     create-hmac "^1.1.2"
 
-perfect-scrollbar@^0.6.12:
-  version "0.6.15"
-  resolved "https://registry.yarnpkg.com/perfect-scrollbar/-/perfect-scrollbar-0.6.15.tgz#7f953c17c35c464978438ecaaf486e9a5a3c29d4"
+perfect-scrollbar@^0.6.15:
+  version "0.6.16"
+  resolved "https://registry.yarnpkg.com/perfect-scrollbar/-/perfect-scrollbar-0.6.16.tgz#b1d61a5245cf3962bb9a8407a3fc669d923212fc"
 
 pify@^2.0.0:
   version "2.3.0"
@@ -4323,9 +4333,9 @@ punycode@^1.2.4, punycode@^1.4.1:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-1.4.1.tgz#c0d5a63b2718800ad8e1eb0fa5269c84dd41845e"
 
-pusher-js@^3.2.1:
-  version "3.2.4"
-  resolved "https://registry.yarnpkg.com/pusher-js/-/pusher-js-3.2.4.tgz#29dfc5c58ffa576dc71afba07815a3f895a71dc5"
+pusher-js@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/pusher-js/-/pusher-js-4.0.0.tgz#3f53f9a8e2cb55b89b7724881615f891f200ab8e"
   dependencies:
     faye-websocket "0.9.4"
     xmlhttprequest "^1.8.0"
@@ -4703,7 +4713,7 @@ sax@~1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.1.tgz#7b8e656190b228e81a66aea748480d828cd2d37a"
 
-scrollmonitor@^1.0.13:
+scrollmonitor@^1.2.2:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/scrollmonitor/-/scrollmonitor-1.2.2.tgz#7a5f314e875126ecd9f3cc68babd5dabf9951f39"
 
@@ -4795,7 +4805,7 @@ socket.io-adapter@0.5.0:
     debug "2.3.3"
     socket.io-parser "2.3.1"
 
-socket.io-client@1.7.2, socket.io-client@^1.5.0:
+socket.io-client@1.7.2, socket.io-client@^1.7.2:
   version "1.7.2"
   resolved "https://registry.yarnpkg.com/socket.io-client/-/socket.io-client-1.7.2.tgz#39fdb0c3dd450e321b7e40cfd83612ec533dd644"
   dependencies:
@@ -5100,7 +5110,7 @@ ternary-stream@^2.0.1:
     merge-stream "^1.0.0"
     through2 "^2.0.1"
 
-tether@^1.3.7:
+tether@^1.3.7, tether@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/tether/-/tether-1.4.0.tgz#0f9fa171f75bf58485d8149e94799d7ae74d1c1a"
 
@@ -5412,9 +5422,9 @@ vue-html-loader@^1.2.2:
     loader-utils "^0.2.15"
     object-assign "^4.1.0"
 
-vue-infinite-loading@2.0.0-rc.2:
-  version "2.0.0-rc.2"
-  resolved "https://registry.yarnpkg.com/vue-infinite-loading/-/vue-infinite-loading-2.0.0-rc.2.tgz#f438c03c9721b88885b4dbb7a15cb904adac5ebb"
+vue-infinite-loading@2.0.0-rc.5:
+  version "2.0.0-rc.5"
+  resolved "https://registry.yarnpkg.com/vue-infinite-loading/-/vue-infinite-loading-2.0.0-rc.5.tgz#11e543a2ede33a11144a41325c9e1a36db2d06ab"
 
 vue-loader@^8.3.1:
   version "8.5.4"
@@ -5443,7 +5453,7 @@ vue-route@^1.5.1:
   dependencies:
     page "^1.5.0"
 
-vue-router@^2.0.1:
+vue-router@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-2.1.1.tgz#10c31bbdcb6da92bd3e0223fa12345e73018625a"
 
@@ -5465,11 +5475,11 @@ vue@^1.0.24:
   dependencies:
     envify "^3.4.0"
 
-vue@^2.0.1:
-  version "2.1.6"
-  resolved "https://registry.yarnpkg.com/vue/-/vue-2.1.6.tgz#2fc0024c07479ac6bc7d34a2cd5ef9ca5e90b143"
+vue@^2.1.8:
+  version "2.1.8"
+  resolved "https://registry.yarnpkg.com/vue/-/vue-2.1.8.tgz#ae30aa86024fccf5535292ce414e7b4c221a1756"
 
-vuex@^2.0.0:
+vuex@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/vuex/-/vuex-2.1.1.tgz#78463ee45fae4871c5d05177b4e8cedd9e2cbccc"
 
