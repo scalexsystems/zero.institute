@@ -44,16 +44,19 @@ class DatabaseSeeder extends Seeder
             $people = new Collection();
             foreach ($departments as $d => $department) {
                 foreach ($disciplines as $e => $discipline) {
-                    for ($i = 0; $i < self::STUDENTS; ++$i) {
-                        $bar->setMessage("#${s} Creating students (${d}.${e}.${i}/".$departments->count().")...");
-                        $bar->advance();
-                        $people->push(factory(Student::class)
+                    foreach ($semesters as $f => $semester) {
+                         for ($i = 0; $i < self::STUDENTS; ++$i) {
+                            $bar->setMessage("#${s} Creating students (${d}.${e}.${f}.${i}/".$departments->count().")...");
+                            $bar->advance();
+                            $people->push(factory(Student::class)
                                           ->create([
                                                        'school_id' => $school->id,
                                                        'department_id' => $department->id,
                                                        'discipline_id' => $discipline->id,
+                                                       'semester_id' => $semester->id,
                                                    ]));
-                    }
+                            }
+                        }
                 }
                 $bar->setMessage("#${s} Creating teachers (${d}/".$departments->count().")...");
                 $bar->advance();

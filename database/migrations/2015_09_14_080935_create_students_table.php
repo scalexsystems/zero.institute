@@ -12,6 +12,7 @@ class CreateStudentsTable extends Migration
      */
     public function up() {
         Schema::create('students', function (Blueprint $table) {
+
             $table->increments('id');
             // Basic Information
             $table->unsignedBigInteger('photo_id')->nullable();
@@ -32,6 +33,7 @@ class CreateStudentsTable extends Migration
             $table->string('boarding_type')->nullable();
             $table->unsignedInteger('department_id')->nullable();
             $table->unsignedInteger('discipline_id')->nullable();
+            $table->unsignedInteger('semester_id')->nullable();
             $table->string('biometric_id')->nullable();
 
             // Contact Information
@@ -67,6 +69,7 @@ class CreateStudentsTable extends Migration
             $table->foreign('address_id')->references('id')->on('addresses');
             $table->foreign('department_id')->references('id')->on('departments');
             $table->foreign('discipline_id')->references('id')->on('disciplines');
+            $table->foreign('semester_id')->references('id')->on('semesters');
             $table->foreign('father_id')->references('id')->on('guardians');
             $table->foreign('mother_id')->references('id')->on('guardians');
         });
@@ -81,6 +84,7 @@ class CreateStudentsTable extends Migration
         Schema::table('students', function (Blueprint $table) {
             $table->dropForeign(['mother_id']);
             $table->dropForeign(['father_id']);
+            $table->dropForeign(['semester_id']);
             $table->dropForeign(['discipline_id']);
             $table->dropForeign(['department_id']);
             $table->dropForeign(['address_id']);

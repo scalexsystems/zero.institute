@@ -20,7 +20,7 @@ class RoleController extends Controller
      * Require: auth
      */
     public function index(Request $request, Role $role) {
-        return $role->users;
+        return $role->users ?? [];
 //        if ($request->has('id')) {
 //            return $users->findMany([$request->input('id')]);
 //        } elseif ($request->has('q')) {
