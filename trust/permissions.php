@@ -72,12 +72,12 @@ return [
         'name' => 'Create Course',
         'description' => 'Allow user to create a new course.',
     ],
-    Action::INVITE_TEACHER => [
-        'name' => 'Invite Teacher',
-        'description' => 'Allows user to invite teacher',
+    Action::UPDATE_COURSE => [
+        'name' => 'Update Course Information',
+        'description' => 'Allow user to update/manage a course.',
     ],
-    Action::INVITE_EMPLOYEE => [
-        'name' => 'Invite Employee',
-        'description' => 'Allows user to invite employee',
+    Action::DELETE_COURSE => [
+        'name' => 'Delete Course',
+        'description' => 'Allow user to delete a course.',
     ],
 ];
