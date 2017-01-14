@@ -5,10 +5,13 @@ $extra = ['only' => ['store', 'destroy']];
 
 // Schools
 Route::get('/schools', 'Schools\SchoolController@index');
-Route::resource('/school', 'Schools\CurrentSchoolController', ['only' => ['index', 'update']]);
+Route::get('/school', 'Schools\CurrentSchoolController@index');
+Route::put('/school', 'Schools\CurrentSchoolController@update');
+Route::post('/school/logo', 'Schools\FileController@store');
+
 Route::resource('/disciplines', 'Schools\DisciplineController', $resource);
 Route::resource('/departments', 'Schools\DepartmentController', $resource);
-
+Route::resource('/semesters', 'Schools\SemesterController', $resource);
 
 // Cities
 Route::get('/geo/cities', 'CitiesController@index');
@@ -33,6 +36,10 @@ Route::post('/people/employees/invite', 'Employees\EmployeeController@invite');
 Route::get('/people', 'PeopleController@index');
 Route::get('/people/stats', 'PeopleController@stats');
 Route::get('/people/{person}', 'PeopleController@show');
+
+Route::get('people/roles/{role}', 'RoleController@index');
+Route::post('people/roles/{role}', 'RoleController@store');
+
 
 // Groups
 Route::resource('/groups', 'Groups\GroupController', $resource);

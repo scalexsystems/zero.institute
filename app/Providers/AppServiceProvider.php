@@ -101,7 +101,8 @@ class AppServiceProvider extends ServiceProvider
                 'school' => Models\School::class,
                 'department' => Models\Department::class,
                 'discipline' => Models\Discipline::class,
-                /**
+                'semester' => Models\Semester::class,
+                 /**
                  * People
                  */
                 'student' => Models\Student::class,

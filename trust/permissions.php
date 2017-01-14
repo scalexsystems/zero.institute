@@ -67,7 +67,7 @@ return [
     Action::INVITE_EMPLOYEE => [
         'name' => 'Invite Employee',
         'description' => 'Allows user to invite employee',
-
+    ],
     Action::CREATE_COURSE => [
         'name' => 'Create Course',
         'description' => 'Allow user to create a new course.',

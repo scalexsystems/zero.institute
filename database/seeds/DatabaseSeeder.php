@@ -6,6 +6,7 @@ use Scalex\Zero\Models\Department;
 use Scalex\Zero\Models\Discipline;
 use Scalex\Zero\Models\Employee;
 use Scalex\Zero\Models\School;
+use Scalex\Zero\Models\Semester;
 use Scalex\Zero\Models\Student;
 use Scalex\Zero\Models\Teacher;
 use Scalex\Zero\User;
@@ -16,6 +17,7 @@ class DatabaseSeeder extends Seeder
     const SCHOOLS = 2;
     const DEPARTMENTS = 3;
     const DISCIPLINES = 2;
+    const SEMESTERS = 2;
 
     const STUDENTS = 20;
     const TEACHERS = 8;
@@ -36,19 +38,25 @@ class DatabaseSeeder extends Seeder
             $bar->setMessage("#${s} Creating disciplines...");
             $bar->advance();
             $disciplines = factory(Discipline::class, self::DISCIPLINES)->create(['school_id' => $school->id]);
+            $bar->setMessage("#${s} Creating semesters...");
+            $bar->advance();
+            $semesters = factory(Semester::class, self::SEMESTERS)->create(['school_id' => $school->id]);
             $people = new Collection();
             foreach ($departments as $d => $department) {
                 foreach ($disciplines as $e => $discipline) {
-                    for ($i = 0; $i < self::STUDENTS; ++$i) {
-                        $bar->setMessage("#${s} Creating students (${d}.${e}.${i}/".$departments->count().")...");
-                        $bar->advance();
-                        $people->push(factory(Student::class)
+                    foreach ($semesters as $f => $semester) {
+                         for ($i = 0; $i < self::STUDENTS; ++$i) {
+                            $bar->setMessage("#${s} Creating students (${d}.${e}.${f}.${i}/".$departments->count().")...");
+                            $bar->advance();
+                            $people->push(factory(Student::class)
                                           ->create([
                                                        'school_id' => $school->id,
                                                        'department_id' => $department->id,
                                                        'discipline_id' => $discipline->id,
+                                                       'semester_id' => $semester->id,
                                                    ]));
-                    }
+                            }
+                        }
                 }
                 $bar->setMessage("#${s} Creating teachers (${d}/".$departments->count().")...");
                 $bar->advance();

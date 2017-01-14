@@ -21,6 +21,7 @@ class AuthServiceProvider extends ServiceProvider
         Models\School::class => Policies\SchoolPolicy::class,
         Models\Discipline::class => Policies\DisciplinePolicy::class,
         Models\Department::class => Policies\DepartmentPolicy::class,
+        Models\Semester::class => Policies\SemesterPolicy::class,
         /** People */
         Models\Student::class => Policies\StudentPolicy::class,
         Models\Teacher::class => Policies\TeacherPolicy::class,
@@ -29,6 +30,7 @@ class AuthServiceProvider extends ServiceProvider
         Models\Intent::class => Policies\IntentPolicy::class,
         Models\Group::class => Policies\GroupPolicy::class,
         Models\Message::class => Policies\MessagePolicy::class,
+        \Znck\Trust\Models\Role::class => Policies\RolePolicy::class,
         /** Course */
         Models\Course::class => Policies\CoursePolicy::class,
         Models\Course\Session::class => Policies\Course\SessionPolicy::class,
