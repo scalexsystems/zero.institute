@@ -61,6 +61,12 @@ class CourseRepository extends Repository
         $course->department()->associate(find($attributes, 'department_id'));
         $course->discipline()->associate(find($attributes, 'discipline_id'));
         $course->school()->associate($school);
+        if (array_has($attributes, 'semester_id')) {
+            $course->semester()->associate(find($attributes, 'semester_id'));
+        }
+        if (array_has($attributes, 'year_id')) {
+            $course->year_id = $attributes['year_id'];
+        }
 
         $status = $course->save();
 
@@ -100,6 +106,12 @@ class CourseRepository extends Repository
         }
         if (array_has($attributes, 'photo_id')) {
             attach_attachment($course, 'photo', find($attributes, 'photo_id', Attachment::class));
+        }
+        if (array_has($attributes, 'semester_id')) {
+            $course->semester()->associate(find($attributes, 'semester_id'));
+        }
+        if (array_has($attributes, 'year_id')) {
+            $course->year_id = $attributes['year_id'];
         }
 
         $instructors = $this->getInstructorIds((array) array_get($attributes, 'instructors'), $school);

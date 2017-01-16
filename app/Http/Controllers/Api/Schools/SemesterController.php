@@ -30,7 +30,7 @@ class SemesterController extends Controller
             ] + $request->all()
         );
 
-        return $this->created($semester->getKey());
+        return $semester;
     }
 
     public function update(Request $request, $semester) {
@@ -39,7 +39,7 @@ class SemesterController extends Controller
 
         repository(Semester::class)->update($semester, $request->all());
 
-        return $this->accepted();
+        return $semester;
     }
 
     public function getPeopleCount(Request $request) {

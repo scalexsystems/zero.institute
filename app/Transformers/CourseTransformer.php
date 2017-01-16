@@ -14,6 +14,7 @@ class CourseTransformer extends Transformer
         'instructors',
         'sessions',
         'session',
+        'semester',
     ];
 
     protected $defaultIncludes = [
@@ -34,11 +35,10 @@ class CourseTransformer extends Transformer
             'photo' => (string) attach_url($course->photo),
             'description' => (string) $course->description,
             'department_id' => (int) $course->department_id,
-            'discipline_id' => (int) $course->discipline_id,
-            'year' => (int) $course->year,
+            'discipline_id' => $course->discipline_id ? (int) $course->discipline_id : null,
+            'year_id' => (int) $course->year,
             'year_text' => $this->getYear($course->year),
-            'semester' => (int) $course->year,
-            'semester_text' => $this->getSemester($course->semester),
+            'semester_id' => $course->semester_id ? (int) $course->semester_id : null,
         ];
     }
 
@@ -52,9 +52,8 @@ class CourseTransformer extends Transformer
         }
     }
 
-    protected function getSemester($semester) {
-        if ($semester === 2) return 'Semester 2';
-        return 'Semester 1';
+    public function includeSemester(Course $course) {
+        return $course->semeseter ? $this->item($course->semeseter) : $this->null();
     }
 
     public function includeSchool(Course $course) {

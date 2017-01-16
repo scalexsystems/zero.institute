@@ -89,6 +89,7 @@ class AppServiceProvider extends ServiceProvider
         Models\Student::observe(Observers\StudentObserver::class);
         Models\Employee::observe(Observers\EmployeeObserver::class);
         Models\Teacher::observe(Observers\TeacherObserver::class);
+        Models\Semester::observe(Observers\SemesterObserver::class);
     }
 
     protected function registerRelationMap() {
@@ -124,6 +125,7 @@ class AppServiceProvider extends ServiceProvider
                 'group' => Models\Group::class,
                 'message' => Models\Message::class,
                 'course' => Models\Course::class,
+                'semester' => Models\Semester::class,
             ]
         );
     }

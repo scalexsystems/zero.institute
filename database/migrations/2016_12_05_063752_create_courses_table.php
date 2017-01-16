@@ -20,8 +20,8 @@ class CreateCoursesTable extends Migration
             $table->string('code')->nullable();
             $table->text('description')->nullable();
 
-            $table->unsignedInteger('year')->nullable();
-            $table->unsignedInteger('semester')->nullable();
+            $table->unsignedInteger('year_id')->nullable();
+            $table->unsignedInteger('semester_id')->nullable();
             $table->unsignedInteger('school_id')->index();
             $table->unsignedInteger('department_id')->nullable();
             $table->unsignedInteger('discipline_id')->nullable();

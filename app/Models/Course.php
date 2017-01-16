@@ -10,12 +10,13 @@ use Scalex\Zero\Models\Discipline;
 use Scalex\Zero\Models\Attachment;
 use Scalex\Zero\Models\Course\Session;
 use Scalex\Zero\Models\Course\Constraint;
+use Scalex\Zero\Models\Semester;
 
 class Course extends BaseModel implements BelongsToSchool
 {
     use \Illuminate\Database\Eloquent\SoftDeletes;
 
-    protected $fillable = ['name', 'code', 'description', 'year', 'semester'];
+    protected $fillable = ['name', 'code', 'description'];
 
     public function school() {
         return $this->belongsTo(School::class);
@@ -35,6 +36,10 @@ class Course extends BaseModel implements BelongsToSchool
 
     public function prerequisites() {
         return $this->hasMany(Constraint::class);
+    }
+
+    public function semester() {
+        return $this->belongsTo(Semester::class);
     }
 
     public function photo() {
