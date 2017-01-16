@@ -1,6 +1,7 @@
 <?php namespace Scalex\Zero\Repositories;
 
 use Scalex\Zero\Criteria\OfSchool;
+use Scalex\Zero\Models\School;
 use Scalex\Zero\Models\Teacher;
 use Scalex\Zero\User;
 use Znck\Repositories\Repository;
@@ -23,7 +24,7 @@ class RoleRepository extends Repository
      *
      * @var string
      */
-    protected $model = Role::class; 
+    protected $model = Role::class;
 
     /**
      * Validation rules.
@@ -32,15 +33,39 @@ class RoleRepository extends Repository
      */
     protected $rules = [];
 
-    public function assign($attributes, Role $role){
-        return collect($attributes)->map(function ($member) use ($role) {
-            $personType = ucfirst(data_get($member, '_type'));
-            $person = repository($personType)
-              ->with('user')
-              ->findBy('uid', data_get($member, 'uid'));
-            if ($person) {
-                $person->user->assignRole($role);
-            }
-        });
+    public function assign(Role $role, School $school, array $people){
+        $validUserIds = [];
+
+        $people = collect($people)->groupBy('type');
+
+        foreach ($people as $type => $items) {
+            $class = morph_model($type);
+
+            $valid = (new $class)
+                ->whereSchoolId($school->getKey())
+                ->whereIn('id', $items->pluck('id')->toArray())
+                ->get();
+            $users = User::wherePersonType($type)
+                ->whereIn('person_id', $valid->pluck('id')->toArray())
+                ->get();
+
+            $ids = $users->pluck('id')->toArray();
+
+            $duplicates = $role->users()->findMany($ids);
+
+            $ids = array_flip($ids);
+
+            $duplicates->each(function ($duplicate) use (&$ids) {
+                if (isset($ids[$duplicate->getKey()])) {
+                    unset($ids[$duplicate->getKey()]);
+                }
+            });
+
+            $validUserIds = array_merge($validUserIds, array_keys($ids));
+        }
+
+        if (count($validUserIds)) {
+            $role->users()->attach($validUserIds, ['school_id' => $school->getKey()]);
+        }
     }
 }

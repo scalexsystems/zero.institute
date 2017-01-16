@@ -11,4 +11,9 @@ class UserPolicy extends AbstractPolicy
     public function readAccount(User $user, User $resource) {
         return $user->getKey() === $resource->getKey();
     }
+
+    public function isAdmin(User $user)
+    {
+        return $user->assumesRoleOf('admin');
+    }
 }
