@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Scalex\Zero\Criteria\OrderBy;
 use Scalex\Zero\Http\Controllers\Controller;
 use Scalex\Zero\User;
-use Znck\Trust\Models\Role;
+use Scalex\Zero\Models\Role;
 
 class RoleController extends Controller
 {
@@ -14,28 +14,35 @@ class RoleController extends Controller
         $this->middleware('auth:api,web');
     }
 
-    /**
-     * Get list of users with a role in school.
-     * GET /people
-     * Require: auth
-     */
-    public function index(Request $request, Role $role) {
-        return $role->users ?? [];
-//        if ($request->has('id')) {
-//            return $users->findMany([$request->input('id')]);
-//        } elseif ($request->has('q')) {
-//            $users->search($request->input('q'));
-//        } else {
-//            $users->pushCriteria(new OrderBy('name'));
-//        }
-//        return $users->paginate();
+    public function index(Request $request, $role) {
+        $this->authorize('isAdmin', $request->user());
+
+        if (!$role->exists) {
+            return abort(404, "No role name ${role} exists");
+        }
+
+        return $role
+            ->users()
+            ->wherePivot('school_id', $request->user()->school_id)
+            ->with('person')
+            ->get()
+            ->map(function ($user) {
+                return $user->person;
+            });
     }
 
-    public function store(Request $request, Role $role) {
-        $this->authorize('store', $role);
+    public function store(Request $request) {
+        $this->authorize('isAdmin', $request->user());
+        $this->validate($request, [
+            'role' => 'required|exists:roles,slug',
+            'managers.*.type' => 'required|in:student,teacher,employee',
+            'managers.*.id' => 'required|integer',
+        ]);
 
-        $members = $request->get('managers');
-        repository('Role')->assign($members, $role);
+        $role = Role::whereSlug($request->input('role'))->first();
+        $users = (array) $request->input('managers', []);
+
+        repository(Role::class)->assign($role, $request->user()->school, $users);
 
         return $this->created();
     }

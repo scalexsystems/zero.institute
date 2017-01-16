@@ -85,4 +85,8 @@ class User extends BaseModel implements
     public function lastMessageAt() {
         return new LastMessageAt((new Message())->newQuery(), $this);
     }
+
+    public function roles() {
+        return $this->belongsToMany(Models\Role::class)->withTimestamps()->withPivot('school_id');
+    }
 }
