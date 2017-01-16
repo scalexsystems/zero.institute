@@ -1,6 +1,7 @@
 <?php namespace Scalex\Zero\Transformers;
 
 use Scalex\Zero\User;
+use Scalex\Zero\Action;
 use Znck\Transformers\Transformer;
 
 
@@ -32,6 +33,10 @@ class UserTransformer extends Transformer
                 'registered' => !is_null($user->person),
                 'verified' => is_null($user->verification_token),
                 'approved' => (bool) $user->approved,
+                'permissions' => [
+                    'courses' => trust($user)->to(Action::UPDATE_COURSE),
+                    'settings' => trust($user)->to(Action::UPDATE_SCHOOL),
+                ],
             ], []);
     }
 
