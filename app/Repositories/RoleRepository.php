@@ -66,6 +66,8 @@ class RoleRepository extends Repository
 
         if (count($validUserIds)) {
             $role->users()->attach($validUserIds, ['school_id' => $school->getKey()]);
+
+            trust()->clearRoleCache($role);
         }
     }
 }
