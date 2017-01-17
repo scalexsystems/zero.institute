@@ -35,6 +35,6 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
     {
         Znck\Trust\Models\Permission::create(['slug' => $permission, 'name' => $permission]);
 
-        $user->givePermission($permission);
+        $user->grantPermission($permission);
     }
 }

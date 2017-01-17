@@ -2,8 +2,8 @@
 
 return [
     'models' => [
-        // 'user' => 'App\User',
-        'role' => Znck\Trust\Models\Role::class,
+        'user' => Scalex\Zero\User::class,
+        'role' => Scalex\Zero\Models\Role::class,
         'permission' => Znck\Trust\Models\Permission::class,
     ],
     'permissions' => 'trust/permissions.php',
