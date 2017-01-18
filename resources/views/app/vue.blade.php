@@ -1,15 +1,15 @@
 @section('vue-scripts')
 
-<script src="/static/js/manifest.b446dd5ceb42af6c7023.js"></script>
+<script src="/static/js/manifest.40ef1e33508d83c3d89e.js"></script>
 
-<script src="/static/js/vendor.a99a91c18245e3143ade.js"></script>
+<script src="/static/js/vendor.aa1e768d9d147d24040a.js"></script>
 
-<script src="/static/js/app.268274ee8b8b9df079e7.js"></script>
+<script src="/static/js/app.96e3a5525409a15d9805.js"></script>
 
 @endsection
 
 @section('vue-styles')
     
-    <link href="/static/css/app.b0fd79f000bbc06ce090e2479ebb6236.css" rel="stylesheet">
+    <link href="/static/css/app.592fde2c72542cd04efdabb37b95fdd6.css" rel="stylesheet">
     
 @endsection
