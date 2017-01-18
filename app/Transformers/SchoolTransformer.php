@@ -20,6 +20,7 @@ class SchoolTransformer extends Transformer
             'university' => (string)$school->university,
             'institute_type' => (string)$school->institute_type,
             'verified' => (boolean)$school->verified,
+            'slug' => $school->slug,
         ];
     }
 
@@ -35,7 +36,7 @@ class SchoolTransformer extends Transformer
     }
 
     public function includeAddress(School $school) {
-        return $this->item($school->address, transformer($school->address));
+        return $school->address ? $this->item($school->address, transformer($school->address)) : null;
     }
 
 
