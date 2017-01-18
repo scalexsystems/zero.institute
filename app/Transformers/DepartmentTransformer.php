@@ -7,7 +7,7 @@ class DepartmentTransformer extends Transformer
 {
     protected $defaultIncludes = ['head'];
 
-    public function index(Department $department) {
+    public function show(Department $department) {
         return [
             'name' => (string)$department->name,
             'short_name' => (string)$department->short_name,
@@ -19,6 +19,10 @@ class DepartmentTransformer extends Transformer
                 'employee' => $department->employee_count ?? 0,
             ],
         ];
+    }
+
+    public function index(Department $department) {
+        return $this->show($department);
     }
 
     public function includeHead(Department $department) {
