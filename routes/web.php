@@ -14,6 +14,10 @@ Route::get('/account/email/verify/{token}', 'Auth\VerificationController@verifyE
 
 Auth::routes();
 
+if (!app()->environment('production')) {
+    Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
+}
+
 // NOTE: **This should be last in list. It captures everything.**
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/{anything}', 'HomeController@app')->where('anything', '(.*)');

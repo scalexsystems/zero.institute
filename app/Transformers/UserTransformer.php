@@ -41,7 +41,7 @@ class UserTransformer extends Transformer
     }
 
     public function includePerson(User $user) {
-        return $this->item($user->person);
+        return $user->person ? $this->item($user->person) : $this->null();
     }
 
     public function getBio(User $user) {

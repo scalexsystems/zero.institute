@@ -175,6 +175,7 @@ return [
         Znck\States\StatesServiceProvider::class,
         Znck\Transformers\TransformerServiceProvider::class,
         Znck\Trust\TrustServiceProvider::class,
+        Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class,
 
         /*
          * Development Service Providers...

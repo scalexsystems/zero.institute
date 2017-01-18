@@ -30,7 +30,7 @@ class DepartmentController extends Controller
             ] + $request->all() // FIXME: This is too blunt.
         );
 
-        return $this->created($department->getKey());
+        return $department;
     }
 
     public function update(Request $request, $department) {
@@ -39,7 +39,7 @@ class DepartmentController extends Controller
 
         repository(Department::class)->update($department, $request->all());
 
-        return $this->accepted();
+        return $department;
     }
 
     public function getPeopleCount(Request $request) {
