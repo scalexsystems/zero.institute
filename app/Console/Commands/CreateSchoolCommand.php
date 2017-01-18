@@ -4,7 +4,9 @@ namespace Scalex\Zero\Console\Commands;
 
 use DB;
 use Illuminate\Console\Command;
+use Scalex\Zero\Models\Employee;
 use Scalex\Zero\Models\School;
+use Scalex\Zero\Models\Teacher;
 use Scalex\Zero\User;
 use Znck\Trust\Models\Role;
 
@@ -45,7 +47,6 @@ class CreateSchoolCommand extends Command
         if (!$schoolName) {
             $schoolName = $this->ask('Institute\'s Name');
         }
-
         $schoolSlug = $this->ask('Institute\'s Username');
 
         $num = 1;
@@ -53,7 +54,8 @@ class CreateSchoolCommand extends Command
         while ($num--) {
             $name = $this->ask('Administrator\'s Name');
             $email = $this->ask('Administrator\'s Email');
-            $inputs[] = compact('name', 'email');
+            $type = $this->choice('Role of Administrator?', ['Teacher', 'Employee']);
+            $inputs[] = compact('name', 'email', 'type');
         }
 
         try {
@@ -115,6 +117,12 @@ class CreateSchoolCommand extends Command
                 $this->warn('There are some errors in your input. (user)');
                 throw new Exception();
             }
+
+            $person = $input['type'] === 'Teacher' ? new Teacher() : new Employee();
+            $person->first_name = $input['name'];
+            $person->school_id = $school->getKey();
+            $user->person()->save($person);
+
             $user->roles()->save($role);
             $this->line('Created user with admin role.');
         }
@@ -132,6 +140,6 @@ class CreateSchoolCommand extends Command
         $this->line("URL: zero.institute");
 
         $this->comment('OWNER INFORMATION');
-        $this->table(['Name', 'Email', 'Password'], $inputs);
+        $this->table(['Name', 'Email', 'Type', 'Password'], $inputs);
     }
 }
