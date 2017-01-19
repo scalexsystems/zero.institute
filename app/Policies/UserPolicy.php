@@ -14,6 +14,6 @@ class UserPolicy extends AbstractPolicy
 
     public function isAdmin(User $user)
     {
-        return $user->assumesRoleOf('admin');
+        return trust($user)->is('admin');
     }
 }
