@@ -36,8 +36,8 @@ class CourseTransformer extends Transformer
             'description' => (string) $course->description,
             'department_id' => (int) $course->department_id,
             'discipline_id' => $course->discipline_id ? (int) $course->discipline_id : null,
-            'year_id' => (int) $course->year,
-            'year_text' => $this->getYear($course->year),
+            'year_id' => (int) $course->year_id,
+            'year_text' => $this->getYear($course->year_id),
             'semester_id' => $course->semester_id ? (int) $course->semester_id : null,
         ];
     }
