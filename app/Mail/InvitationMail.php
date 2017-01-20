@@ -32,15 +32,15 @@ class InvitationMail extends Mailable
      */
     protected $admin;
 
-    public function __construct(User $User, User $admin) {
+    public function __construct(User $user, User $admin) {
         $this->user = $user;
         $this->admin = $admin;
     }
 
     public function build() {
-        $tokens = app(UserProvider::class);
+        $tokens = app('auth.password')->getRepository();
 
-        $token = $tokens->create($user);
+        $token = $tokens->create($this->user);
 
         return $this->subject('')
                 ->view('emails.user.invite')

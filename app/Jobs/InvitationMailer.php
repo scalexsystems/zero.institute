@@ -10,6 +10,9 @@ use Mail;
 use Scalex\Zero\User;
 use Scalex\Zero\Mail\InvitationMail;
 use Scalex\Zero\Models\Role;
+use Scalex\Zero\Models\Teacher;
+use Scalex\Zero\Models\Student;
+use Scalex\Zero\Models\Employee;
 use Carbon\Carbon;
 
 class InvitationMailer implements ShouldQueue
@@ -73,6 +76,7 @@ class InvitationMailer implements ShouldQueue
 
             $users->each(function ($user) {
                 Mail::to($user->email)->send(new InvitationMail($user, $this->admin));
+                \Log::debug($user->email);
             });
         });
     }
@@ -81,7 +85,7 @@ class InvitationMailer implements ShouldQueue
     {
         $timestamp = Carbon::now();
 
-        User::insert($emails->map(function ($email) {
+        User::insert($emails->map(function ($email) use ($timestamp) {
             return [
                 'name' => $email,
                 'email' => $email,
@@ -90,23 +94,60 @@ class InvitationMailer implements ShouldQueue
                 'created_at' => $timestamp,
                 'updated_at' => $timestamp,
             ];
-        }));
+        })->toArray());
 
-        Teacher::insert($emails->map(function ($email) {
-            return [
-                'uid' => $email,
-            ];
-        }));
-
+        $persons = $this->createRelated($emails);
         $users = User::whereIn('email', $emails->toArray())->get();
-        $teachers = Teacher::whereIn('uid', $emails->toArray())->get()->keyBy('uid');
 
         $users->load('school');
 
-        $users->each(function ($user) use ($teachers) {
-            $user->person()->save($teachers->get($user->email));
+        $users->each(function ($user) use ($persons) {
+            $user->person()->save($persons->get($user->email));
         });
 
         return $users;
+    }
+
+    public function createRelated($emails) {
+        $timestamp = Carbon::now();
+
+        if ($this->type === 'teacher') {
+            Teacher::insert($emails->map(function ($email) use ($timestamp) {
+                return [
+                    'uid' => $email,
+                    'school_id' => $this->schoolId,
+                    'created_at' => $timestamp,
+                    'updated_at' => $timestamp,
+                ];
+            })->toArray());
+
+            return  Teacher::whereIn('uid', $emails->toArray())->get()->keyBy('uid');
+        }
+
+        if ($this->type === 'student') {
+            Student::insert($emails->map(function ($email) use ($timestamp) {
+                return [
+                    'uid' => $email,
+                    'school_id' => $this->schoolId,
+                    'created_at' => $timestamp,
+                    'updated_at' => $timestamp,
+                ];
+            })->toArray());
+
+            return  Student::whereIn('uid', $emails->toArray())->get()->keyBy('uid');
+        }
+
+        if ($this->type === 'employee') {
+            Employee::insert($emails->map(function ($email) use ($timestamp) {
+                return [
+                    'uid' => $email,
+                    'school_id' => $this->schoolId,
+                    'created_at' => $timestamp,
+                    'updated_at' => $timestamp,
+                ];
+            })->toArray());
+
+            return  Employee::whereIn('uid', $emails->toArray())->get()->keyBy('uid');
+        }
     }
 }
