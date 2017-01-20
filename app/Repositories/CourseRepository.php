@@ -115,10 +115,7 @@ class CourseRepository extends Repository
         }
 
         $instructors = $this->getInstructorIds((array) array_get($attributes, 'instructors'), $school);
-
-        if (count($instructors) > 0) {
-            $course->instructors()->sync($instructors);
-        }
+        $course->instructors()->sync($instructors);
 
         $prerequisites = $this->getCourseIds((array) array_get($attributes, 'prerequisites'), $school);
 
