@@ -38,7 +38,7 @@ if (!function_exists('find')) {
 
         $id = array_get($attributes, $key.'_id');
 
-        if (is_null($id)) {
+        if (!is_numeric($id)) {
             return null;
         }
 
