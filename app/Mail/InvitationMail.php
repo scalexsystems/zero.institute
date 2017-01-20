@@ -47,7 +47,7 @@ class InvitationMail extends Mailable
                 ->with([
                     'type' => $this->user->person_type,
                     'school' => $this->user->school->name,
-                    'token' => url('pasword/reset', $token),
+                    'url' => url('password/reset', $token),
                     'name' => $this->admin->name,
                 ]);
     }
