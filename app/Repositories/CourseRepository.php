@@ -59,7 +59,9 @@ class CourseRepository extends Repository
         $course->fill($attributes);
         $school = $attributes['school_id'];
         $course->department()->associate(find($attributes, 'department_id'));
-        $course->discipline()->associate(find($attributes, 'discipline_id'));
+        if (array_has($attributes, 'discipline_id')) {
+            $course->discipline()->associate(find($attributes, 'discipline_id'));
+        }
         $course->school()->associate($school);
         if (array_has($attributes, 'semester_id')) {
             $course->semester()->associate(find($attributes, 'semester_id'));
