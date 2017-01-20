@@ -65,8 +65,10 @@ class CourseRepository extends Repository
             $course->semester()->associate(find($attributes, 'semester_id'));
         }
         if (array_has($attributes, 'year_id')) {
-            $course->year_id = $attributes['year_id'];
+            $course->year_id = (int) $attributes['year_id'];
         }
+
+        \Log::debug($course->getAttributes());
 
         $status = $course->save();
 
@@ -111,7 +113,7 @@ class CourseRepository extends Repository
             $course->semester()->associate(find($attributes, 'semester_id'));
         }
         if (array_has($attributes, 'year_id')) {
-            $course->year_id = $attributes['year_id'];
+            $course->year_id = (int) $attributes['year_id'];
         }
 
         $instructors = $this->getInstructorIds((array) array_get($attributes, 'instructors'), $school);

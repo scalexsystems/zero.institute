@@ -3,6 +3,8 @@
 use Illuminate\Database\Eloquent\Model;
 use Scalex\Zero\Criteria\OfSchool;
 use Scalex\Zero\Models\Teacher;
+use Scalex\Zero\Models\Geo\Address;
+use Scalex\Zero\Models\Attachment;
 use Znck\Repositories\Repository;
 
 /**
@@ -92,7 +94,7 @@ class TeacherRepository extends Repository
 
     public function getRules(array $attributes, Model $model = null): array {
         $data = parent::getRules($attributes, $model);
-        $data['uid'] .= current_user()->school_id;
+        // $data['uid'] = current_user()->school_id;
 
         return $data;
     }
