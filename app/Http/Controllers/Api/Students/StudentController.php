@@ -5,8 +5,8 @@ use Illuminate\Support\Facades\Mail;
 use Scalex\Zero\Criteria\OrderBy;
 use Scalex\Zero\Http\Controllers\Controller;
 use Scalex\Zero\Http\Requests;
-use Scalex\Zero\Mail\InvitationMail;
 use Scalex\Zero\Models\Student;
+use Scalex\Zero\Jobs\InvitationMailer;
 
 class StudentController extends Controller
 {
@@ -36,11 +36,11 @@ class StudentController extends Controller
     }
 
     public function invite(Request $request) {
+        $this->authorize('invite',  Student::class);
         $this->validate($request, [
             'students.*' => 'required | email',
         ]);
-        $this->authorize('invite',  Student::class);
-        Mail::to($request->students)
-            ->queue(new InvitationMail());
+
+        dispatch(new InvitationMailer('student', $request->students, $request->user()->school_id, $request->user()));
     }
 }

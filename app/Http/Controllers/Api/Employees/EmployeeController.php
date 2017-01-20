@@ -6,6 +6,7 @@ use Scalex\Zero\Criteria\OrderBy;
 use Scalex\Zero\Http\Controllers\Controller;
 use Scalex\Zero\Mail\InvitationMail;
 use Scalex\Zero\Models\Employee;
+use Scalex\Zero\Jobs\InvitationMailer;
 
 class EmployeeController extends Controller
 {
@@ -39,7 +40,7 @@ class EmployeeController extends Controller
         $this->validate($request, [
             'employees.*' => 'required | email',
         ]);
-        Mail::to($request->employees)
-            ->queue(new InvitationMail());
+
+        dispatch(new InvitationMailer('employee', $request->employees, $request->user()->school_id, $request->user()));
     }
 }
