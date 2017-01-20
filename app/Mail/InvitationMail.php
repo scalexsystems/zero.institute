@@ -11,17 +11,45 @@ namespace Scalex\Zero\Mail;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\App;
+use Scalex\Zero\User;
 
-class InvitationMail extends Mailable implements ShouldQueue
+class InvitationMail extends Mailable
 {
-    use Queueable, SerializesModels;
+    /**
+     * Sending invitation to the user.
+     *
+     * @var User
+     */
+    protected $user;
 
-    public function build() {
-        return $this->subject('Welcome')
-            ->view('emails.user.invite');
+    /**
+     * Invitation sender.
+     *
+     * @var User
+     */
+    protected $admin;
+
+    public function __construct(User $user, User $admin) {
+        $this->user = $user;
+        $this->admin = $admin;
     }
 
+    public function build() {
+        $tokens = app(UserProvider::class);
 
+        $token = $tokens->create($this->user);
+
+        return $this->subject('')
+                ->view('emails.user.invite')
+                ->with([
+                    'type' => $this->user->person_type,
+                    'school' => $this->user->school->name,
+                    'token' => url('pasword/reset', $token),
+                    'name' => $this->admin->name,
+                ]);
+    }
 }
