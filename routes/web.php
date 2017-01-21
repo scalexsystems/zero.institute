@@ -9,6 +9,8 @@ Route::post('/request', 'HomeController@request');
 Route::get('/setup', 'SchoolSetupController@setup');
 Route::post('/setup', 'SchoolSetupController@handle');
 
+Route::get('/privacy', 'HomeController@privacy');
+
 Route::get('/account/update/email/verify/{token}', 'Auth\VerificationController@updateEmail');
 Route::get('/account/email/verify/{token}', 'Auth\VerificationController@verifyEmail');
 

@@ -66,8 +66,8 @@
                 </div>
             </div>
             <div class="text-xs-center">
-                <a href="{{ url('/register') }}" class="text-muted">
-                    <small>{{ trans('app::login.btn.register') }}</small>
+                <a href="{{ url('/privacy') }}" class="text-muted">
+                    <small>Privacy Policy</small>
                 </a>
             </div>
         </div>
