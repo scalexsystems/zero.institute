@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@scalex/zero.front@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@scalex/zero.front/-/zero.front-0.2.0.tgz#125407104f3632f880b27b1848ef659c1c88088e"
+"@scalex/zero.front@^0.2.1":
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/@scalex/zero.front/-/zero.front-0.2.1.tgz#e075e1b7606c2035094e68c41bd475c271bdb8c5"
   dependencies:
     Validator "^1.0.3"
     autosize "^3.0.20"

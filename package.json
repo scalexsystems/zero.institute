@@ -13,6 +13,6 @@
     "laravel-elixir-webpack-official": "^1.0.2"
   },
   "dependencies": {
-    "@scalex/zero.front": "^0.2.0"
+    "@scalex/zero.front": "^0.2.1"
   }
 }
