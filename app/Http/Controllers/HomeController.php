@@ -77,4 +77,8 @@ class HomeController extends Controller
 
         return view('web.accepted-invitation-request');
     }
+
+    public function privacy() {
+        return view('web.privacy');
+    }
 }
