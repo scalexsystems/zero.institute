@@ -15,6 +15,7 @@ class UserTransformer extends Transformer
             'photo' => attach_url($user->profilePhoto) ?? asset('img/placeholder-64.jpg'),
             'type' => morph_model($user->person),
             'bio' => $this->getBio($user),
+            'department' => $user->person->department->short_name ?? '',
             'active_at' => ($user->relationLoaded('lastMessageAt') and $user->lastMessageAt) ? iso_date($user->lastMessageAt->created_at) : null,
         ];
     }
