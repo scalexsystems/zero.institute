@@ -124,7 +124,7 @@ class Group extends BaseModel implements ReceivesMessage
 
         if (count($ids)) {
             $this->members()->attach($ids);
-            $this->count_members = $this->members()->count();
+            $this->count_members = $this->members->count();
             $this->save();
         }
 
