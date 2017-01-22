@@ -121,7 +121,9 @@ class CreateSchoolCommand extends Command
             $person = $input['type'] === 'Teacher' ? new Teacher() : new Employee();
             $person->first_name = $input['name'];
             $person->school_id = $school->getKey();
-            $user->person()->save($person);
+            $person->save();
+            $user->person()->associate($person);
+            $user->save();
 
             $user->roles()->save($role);
             $this->line('Created user with admin role.');
