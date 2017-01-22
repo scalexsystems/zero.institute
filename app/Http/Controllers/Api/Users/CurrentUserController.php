@@ -10,7 +10,7 @@ class CurrentUserController extends Controller
     }
 
     public function index(Request $request) {
-        $request->query->set('with', 'person,profilePhoto');
+        $request->query->set('with', 'person,profilePhoto', 'department');
 
         return $request->user();
     }
