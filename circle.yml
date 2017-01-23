@@ -10,7 +10,7 @@ dependencies:
   pre:
     - type -P yarn &> /dev/null || curl -o- -s -L https://yarnpkg.com/install.sh | bash
   override:
-    # - composer install --dev --no-interaction --no-progress
+    - composer install --dev --no-interaction --no-progress
     - yarn --no-progress
     # - npm rebuild node-sass phantomjs-prebuilt selenium-server chromedriver
   cache_directories:
