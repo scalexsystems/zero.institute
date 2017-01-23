@@ -14,8 +14,6 @@ use Znck\Repositories\Repository;
  */
 class SemesterRepository extends Repository
 {
-    use \Znck\Repositories\Traits\RepositoryHelper;
-
     /**
      * Class name of the Eloquent model.
      *

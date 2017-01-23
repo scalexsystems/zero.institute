@@ -17,8 +17,6 @@ use Znck\Trust\Models\Role;
  */
 class RoleRepository extends Repository
 {
-    use \Znck\Repositories\Traits\RepositoryHelper;
-
     /**
      * Class name of the Eloquent model.
      *

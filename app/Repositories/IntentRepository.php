@@ -14,8 +14,6 @@ use Znck\Repositories\Repository;
  */
 class IntentRepository extends Repository
 {
-    use \Znck\Repositories\Traits\RepositoryHelper;
-
     /**
      * Class name of the Eloquent model.
      *

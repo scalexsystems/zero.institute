@@ -16,8 +16,6 @@ use Znck\Repositories\Repository;
  */
 class GroupRepository extends Repository
 {
-    use \Znck\Repositories\Traits\RepositoryHelper;
-
     /**
      * Class name of the Eloquent model.
      *

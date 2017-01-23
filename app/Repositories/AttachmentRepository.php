@@ -13,14 +13,12 @@ use Znck\Repositories\Repository;
  */
 class AttachmentRepository extends Repository
 {
-    use \Znck\Repositories\Traits\RepositoryHelper;
-
     /**
      * Class name of the Eloquent model.
      *
      * @var string
      */
-    protected $model = Attachment::class; 
+    protected $model = Attachment::class;
 
     /**
      * Validation rules.

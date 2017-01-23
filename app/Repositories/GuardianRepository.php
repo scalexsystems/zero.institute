@@ -14,14 +14,12 @@ use Znck\Repositories\Repository;
  */
 class GuardianRepository extends Repository
 {
-    use \Znck\Repositories\Traits\RepositoryHelper;
-
     /**
      * Class name of the Eloquent model.
      *
      * @var string
      */
-    protected $model = Guardian::class; 
+    protected $model = Guardian::class;
 
     /**
      * Validation rules.

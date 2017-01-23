@@ -15,8 +15,6 @@ use Znck\Repositories\Repository;
  */
 class EmployeeRepository extends Repository
 {
-    use \Znck\Repositories\Traits\RepositoryHelper;
-
     /**
      * Class name of the Eloquent model.
      *

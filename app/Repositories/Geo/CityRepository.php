@@ -13,14 +13,12 @@ use Znck\Repositories\Repository;
  */
 class CityRepository extends Repository
 {
-    use \Znck\Repositories\Traits\RepositoryHelper;
-
     /**
      * Class name of the Eloquent model.
      *
      * @var string
      */
-    protected $model = City::class; 
+    protected $model = City::class;
 
     /**
      * Validation rules.
