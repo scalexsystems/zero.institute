@@ -9,7 +9,8 @@ use Scalex\Zero\Models\Message;
 
 class MemberController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('auth:api,web');
     }
 
@@ -18,7 +19,8 @@ class MemberController extends Controller
      * GET /groups/{group}/members
      * Requires: auth
      */
-    public function index(Group $group, Request $request) {
+    public function index(Group $group, Request $request)
+    {
         $this->authorize('members', $group);
 
         $members = $group->members();
@@ -40,7 +42,8 @@ class MemberController extends Controller
      * POST /groups/{group}/add
      * Requires: auth
      */
-    public function store(Group $group, Request $request) {
+    public function store(Group $group, Request $request)
+    {
         $this->authorize('add-member', $group);
 
         $result = $group->addMembers((array)$request->get('members', []));
@@ -59,7 +62,8 @@ class MemberController extends Controller
      * DELETE /groups/{group}/remove
      * Requires: auth
      */
-    public function destroy(Group $group, Request $request) {
+    public function destroy(Group $group, Request $request)
+    {
         $this->authorize($group);
 
         $result = $group->removeMembers((array)$request->get('members', []));

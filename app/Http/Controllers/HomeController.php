@@ -16,7 +16,8 @@ class HomeController extends Controller
      * @route GET /
      * @auth yes
      */
-    public function app() {
+    public function app()
+    {
         return view('app.home');
     }
 
@@ -25,7 +26,8 @@ class HomeController extends Controller
      * @route GET /
      * @auth no
      */
-    public function home() {
+    public function home()
+    {
         // If authenticated then serve app.
         if (auth()->check()) {
             return $this->app();
@@ -40,7 +42,8 @@ class HomeController extends Controller
      * Show social media share intent.
      * @route GET /share
      */
-    public function share() {
+    public function share()
+    {
         return view('web.share');
     }
 
@@ -48,7 +51,8 @@ class HomeController extends Controller
      * Accept invite request.
      * @route GET|POST /request
      */
-    public function request(Request $request) {
+    public function request(Request $request)
+    {
         $this->validate(
             $request,
             [
@@ -78,7 +82,8 @@ class HomeController extends Controller
         return view('web.accepted-invitation-request');
     }
 
-    public function privacy() {
+    public function privacy()
+    {
         return view('web.privacy');
     }
 }

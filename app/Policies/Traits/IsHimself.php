@@ -11,7 +11,8 @@ trait IsHimself
      *
      * @return bool
      */
-    protected function isHimself(User $user, $person) {
+    protected function isHimself(User $user, $person)
+    {
         return !is_null($user->person) and $person->id === $user->person->getKey();
     }
 }

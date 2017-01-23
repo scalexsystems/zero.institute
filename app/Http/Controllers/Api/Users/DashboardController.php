@@ -4,11 +4,13 @@ use Scalex\Zero\Http\Controllers\Controller;
 
 class DashboardController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('auth:api,web');
     }
 
-    public function index() {
+    public function index()
+    {
         return [
             'apps' => [],
         ];

@@ -14,7 +14,8 @@ class UserEmailUpdated
     /**
      * @return \Scalex\Zero\User
      */
-    public function getUser() {
+    public function getUser()
+    {
         return $this->user;
     }
 
@@ -23,7 +24,8 @@ class UserEmailUpdated
      *
      * @return void
      */
-    public function __construct(User $user) {
+    public function __construct(User $user)
+    {
         $this->user = $user;
     }
 }

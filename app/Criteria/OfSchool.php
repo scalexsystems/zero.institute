@@ -9,11 +9,13 @@ class OfSchool implements Criteria
 {
     protected $school;
 
-    public function __construct(School $school) {
+    public function __construct(School $school)
+    {
         $this->school = $school;
     }
 
-    public function apply($query, Repository $repository) {
+    public function apply($query, Repository $repository)
+    {
         if ($query instanceof Scout) {
             $query->where('school_id', $this->school->getKey());
         } else {

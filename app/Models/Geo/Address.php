@@ -19,11 +19,13 @@ class Address extends ExtendibleModel
 
     protected $with = ['city'];
 
-    public function city() {
+    public function city()
+    {
         return $this->belongsTo(City::class);
     }
 
-    public function addressee() {
+    public function addressee()
+    {
         return $this->morphTo();
     }
 }

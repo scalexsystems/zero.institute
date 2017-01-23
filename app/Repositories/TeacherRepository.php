@@ -17,8 +17,6 @@ use Znck\Repositories\Repository;
  */
 class TeacherRepository extends Repository
 {
-    use \Znck\Repositories\Traits\RepositoryHelper;
-
     /**
      * Class name of the Eloquent model.
      *
@@ -86,13 +84,15 @@ class TeacherRepository extends Repository
         'remarks' => 'nullable|max:65536',
     ];
 
-    public function boot() {
+    public function boot()
+    {
         if (current_user()) {
             $this->pushCriteria(new OfSchool(current_user()->school));
         }
     }
 
-    public function getRules(array $attributes, Model $model = null): array {
+    public function getRules(array $attributes, Model $model = null): array
+    {
         $data = parent::getRules($attributes, $model);
         // $data['uid'] = current_user()->school_id;
 
@@ -107,7 +107,8 @@ class TeacherRepository extends Repository
      *
      * @return array
      */
-    public function getUpdateRules(array $rules, array $attributes, $teacher) {
+    public function getUpdateRules(array $rules, array $attributes, $teacher)
+    {
         $rules += array_dot(
             [
                 'address' => repository(Address::class)->getRules($attributes, $teacher->address),
@@ -116,14 +117,16 @@ class TeacherRepository extends Repository
         return array_only($rules, array_keys($attributes));
     }
 
-    public function getCreateRules(array $attributes) {
+    public function getCreateRules(array $attributes)
+    {
         return $this->rules + array_dot(
             [
                 'address' => repository(Address::class)->getRules($attributes),
             ]);
     }
 
-    public function creating(Teacher $teacher, array $attributes) {
+    public function creating(Teacher $teacher, array $attributes)
+    {
         $teacher->fill($attributes);
 
         // Start Transaction.
@@ -145,7 +148,8 @@ class TeacherRepository extends Repository
         return $status;
     }
 
-    public function updating(Teacher $teacher, array $attributes) {
+    public function updating(Teacher $teacher, array $attributes)
+    {
         $teacher->fill($attributes);
 
         // Start Transaction.
@@ -170,7 +174,8 @@ class TeacherRepository extends Repository
         return $teacher->update();
     }
 
-    public function getBio(Teacher $teacher) {
+    public function getBio(Teacher $teacher)
+    {
         return $teacher->job_title.' ・ '
                .($teacher->department->short_name ?? $teacher->department->name);
     }

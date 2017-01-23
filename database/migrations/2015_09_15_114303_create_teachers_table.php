@@ -10,7 +10,8 @@ class CreateTeachersTable extends Migration
      *
      * @return void
      */
-    public function up() {
+    public function up()
+    {
         Schema::create('teachers', function (Blueprint $table) {
             $table->increments('id');
             // Basic Information
@@ -82,7 +83,8 @@ class CreateTeachersTable extends Migration
      *
      * @return void
      */
-    public function down() {
+    public function down()
+    {
         Schema::table('departments', function (Blueprint $table) {
             $table->dropForeign(['head_id']);
         });

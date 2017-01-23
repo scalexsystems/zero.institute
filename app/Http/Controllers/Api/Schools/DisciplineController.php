@@ -7,11 +7,13 @@ use Scalex\Zero\Models\Discipline;
 
 class DisciplineController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('auth:api,web');
     }
 
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
         return cache()->rememberForever(
             schoolify('disciplines'),
             function () use ($request) {
@@ -20,7 +22,8 @@ class DisciplineController extends Controller
         );
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         $this->authorize('store', Discipline::class);
 
         $discipline = repository(Discipline::class)->create(
@@ -33,7 +36,8 @@ class DisciplineController extends Controller
         return $this->created($discipline->getKey());
     }
 
-    public function update(Request $request, $discipline) {
+    public function update(Request $request, $discipline)
+    {
         $discipline = repository(Discipline::class)->find($discipline);
         $this->authorize($discipline);
 
@@ -42,7 +46,8 @@ class DisciplineController extends Controller
         return $this->accepted();
     }
 
-    public function getPeopleCount(Request $request) {
+    public function getPeopleCount(Request $request)
+    {
         $disciplines = repository(Discipline::class)->all();
 
         $students = DB::table('students')

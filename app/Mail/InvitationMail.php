@@ -8,7 +8,6 @@
 
 namespace Scalex\Zero\Mail;
 
-
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Contracts\Auth\UserProvider;
@@ -32,12 +31,14 @@ class InvitationMail extends Mailable
      */
     protected $admin;
 
-    public function __construct(User $user, User $admin) {
+    public function __construct(User $user, User $admin)
+    {
         $this->user = $user;
         $this->admin = $admin;
     }
 
-    public function build() {
+    public function build()
+    {
         $tokens = app('auth.password')->getRepository();
 
         $token = $tokens->create($this->user);

@@ -5,7 +5,8 @@ use Znck\Transformers\Transformer;
 
 class DisciplineTransformer extends Transformer
 {
-    public function index(Discipline $discipline) {
+    public function index(Discipline $discipline)
+    {
         return [
             'name' => (string)$discipline->name,
             'short_name' => (string)$discipline->short_name,

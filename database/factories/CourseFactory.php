@@ -10,19 +10,19 @@ use Faker\Generator;
 $factory->define(Course::class, function (Generator $f, array $attributes) {
     $courses = [
         'CH101' => 'Chemistry',
-        'EE101'	=> 'Electrical Sciences',
+        'EE101'    => 'Electrical Sciences',
         'MA101' => 'Mathematics',
         'PH101' => 'Physics',
         'CH110' => 'Chemistry Laboratory',
-        'PH110'	=> 'Workshop',
+        'PH110'    => 'Workshop',
         'ME110' => 'Physics Laboratory',
         'ME111' => 'Engineering Drawing',
         'BT101' => 'Modern Biology',
-        'CS101'	=> 'Introduction to Computing',
-        'ME101'	=> 'Engineering Mechanics',
-        'CS110'	=> 'Computing Laboratory',
-        'EE102'	=> 'Basic Electronics Laboratory',
-        'SA102'	=> 'Physical Training',
+        'CS101'    => 'Introduction to Computing',
+        'ME101'    => 'Engineering Mechanics',
+        'CS110'    => 'Computing Laboratory',
+        'EE102'    => 'Basic Electronics Laboratory',
+        'SA102'    => 'Physical Training',
     ];
 
     $code = $f->randomElement(array_keys($courses));

@@ -3,12 +3,12 @@
 use Scalex\Zero\Models\Teacher;
 use Znck\Transformers\Transformer;
 
-
 class TeacherTransformer extends Transformer
 {
     protected $availableIncludes = ['address', 'user'];
 
-    public function show(Teacher $teacher) {
+    public function show(Teacher $teacher)
+    {
         return [
             'name' => (string)$teacher->name,
             'bio' => (string)$teacher->bio,
@@ -61,7 +61,8 @@ class TeacherTransformer extends Transformer
         ];
     }
 
-    public function index(Teacher $teacher) {
+    public function index(Teacher $teacher)
+    {
         return [
             'uid' => (string)$teacher->uid,
             'name' => (string)$teacher->name,
@@ -71,11 +72,13 @@ class TeacherTransformer extends Transformer
         ];
     }
 
-    public function includeUser(Teacher $teacher) {
+    public function includeUser(Teacher $teacher)
+    {
         return $this->item($teacher->user);
     }
 
-    public function includeAddress(Teacher $teacher) {
+    public function includeAddress(Teacher $teacher)
+    {
         return allow(
             'read-address', $teacher,
             $this->item($teacher->address, transformer($teacher->address)),

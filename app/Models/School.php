@@ -38,11 +38,13 @@ class School extends BaseModel
         'email_domains' => 'array',
     ];
 
-    public function address() {
+    public function address()
+    {
         return $this->belongsTo(Address::class);
     }
 
-    public function logo() {
+    public function logo()
+    {
         return $this->belongsTo(Attachment::class);
     }
 }

@@ -4,12 +4,12 @@ use Scalex\Zero\User;
 use Scalex\Zero\Action;
 use Znck\Transformers\Transformer;
 
-
 class UserTransformer extends Transformer
 {
     protected $availableIncludes = ['person'];
 
-    public function index(User $user) {
+    public function index(User $user)
+    {
         return [
             'name' => (string) $user->name,
             'photo' => attach_url($user->profilePhoto) ?? asset('img/placeholder-64.jpg'),
@@ -20,7 +20,8 @@ class UserTransformer extends Transformer
         ];
     }
 
-    public function show(User $user) {
+    public function show(User $user)
+    {
         return
             [
                 'name' => (string) $user->name,
@@ -41,11 +42,13 @@ class UserTransformer extends Transformer
             ], []);
     }
 
-    public function includePerson(User $user) {
+    public function includePerson(User $user)
+    {
         return $user->person ? $this->item($user->person) : $this->null();
     }
 
-    public function getBio(User $user) {
+    public function getBio(User $user)
+    {
         return $user->person ? $user->person->bio : '';
     }
 }

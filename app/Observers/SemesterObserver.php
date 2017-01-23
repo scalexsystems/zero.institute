@@ -2,15 +2,18 @@
 
 class SemesterObserver
 {
-    public function created() {
+    public function created()
+    {
         cache()->forget(schoolify('semesters'));
     }
 
-    public function deleted() {
+    public function deleted()
+    {
         cache()->forget(schoolify('semesters'));
     }
 
-    public function updated() {
+    public function updated()
+    {
         cache()->forget(schoolify('semesters'));
     }
 }

@@ -5,7 +5,8 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 
 class LastMessageAt extends Relation
 {
-    public function addConstraints() {
+    public function addConstraints()
+    {
         $this->getBaseQuery()->where('receiver_type', $this->getParent()->getMorphClass())
              ->orderBy('id', 'desc');
 
@@ -14,11 +15,13 @@ class LastMessageAt extends Relation
         }
     }
 
-    public function addEagerConstraints(array $models) {
+    public function addEagerConstraints(array $models)
+    {
         $this->getBaseQuery()->whereIn('receiver_id', (new Collection($models))->modelKeys());
     }
 
-    public function initRelation(array $models, $relation) {
+    public function initRelation(array $models, $relation)
+    {
         foreach ($models as $model) {
             $model->setRelation($relation, null);
         }
@@ -26,7 +29,8 @@ class LastMessageAt extends Relation
         return $models;
     }
 
-    public function match(array $models, Collection $results, $relation) {
+    public function match(array $models, Collection $results, $relation)
+    {
         $dictionary = [];
 
         foreach ($results as $result) {
@@ -42,7 +46,8 @@ class LastMessageAt extends Relation
         return $models;
     }
 
-    public function getResults() {
+    public function getResults()
+    {
         return $this->getBaseQuery()->first();
     }
 }

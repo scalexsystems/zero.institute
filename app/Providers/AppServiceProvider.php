@@ -18,7 +18,8 @@ class AppServiceProvider extends ServiceProvider
 {
     protected $logs = [];
 
-    public function __construct($app) {
+    public function __construct($app)
+    {
         parent::__construct($app);
         AttachServiceProvider::$runMigrations = false;
     }
@@ -29,7 +30,8 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot() {
+    public function boot()
+    {
         $this->loadTranslationsFrom(resource_path('lang-web'), 'app');
 
         $this->registerApiSerializer();
@@ -42,11 +44,13 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register() {
+    public function register()
+    {
         $this->registerRelationMap();
     }
 
-    protected function registerQueryLogger() {
+    protected function registerQueryLogger()
+    {
         DB::listen(function ($query) {
             $this->logs[] = [
                 'sql' => $query->sql,
@@ -57,7 +61,7 @@ class AppServiceProvider extends ServiceProvider
         Event::listen('kernel.handled', function () {
             if (config('app.debug')) {
                 foreach ($this->logs as $log) {
-                     // Log::debug('DB QUERY', $log);
+                    // Log::debug('DB QUERY', $log);
                 }
             } else {
                 Log::info('DB QUERIES', $this->logs);
@@ -65,11 +69,13 @@ class AppServiceProvider extends ServiceProvider
         });
     }
 
-    protected function registerApiSerializer() {
+    protected function registerApiSerializer()
+    {
         Transformer::getManager()->setSerializer(new EmbedSerializer());
     }
 
-    protected function registerObservers() {
+    protected function registerObservers()
+    {
         if (\App::runningInConsole()) {
             return;
         }
@@ -92,7 +98,8 @@ class AppServiceProvider extends ServiceProvider
         Models\Semester::observe(Observers\SemesterObserver::class);
     }
 
-    protected function registerRelationMap() {
+    protected function registerRelationMap()
+    {
         Relation::morphMap(
             [
                 'user' => User::class,

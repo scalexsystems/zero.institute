@@ -10,7 +10,8 @@ class CreateSchoolsTable extends Migration
      *
      * @return void
      */
-    public function up() {
+    public function up()
+    {
         Schema::create('schools', function (Blueprint $table) {
             $table->increments('id');
 
@@ -50,7 +51,8 @@ class CreateSchoolsTable extends Migration
      *
      * @return void
      */
-    public function down() {
+    public function down()
+    {
         Schema::table('attachments', function (Blueprint $table) {
             $table->dropForeign(['school_id']);
         });

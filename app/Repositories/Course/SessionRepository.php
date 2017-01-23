@@ -17,8 +17,6 @@ use Znck\Repositories\Repository;
  */
 class SessionRepository extends Repository
 {
-    use \Znck\Repositories\Traits\RepositoryHelper;
-
     /**
      * Class name of the Eloquent model.
      *
@@ -39,7 +37,8 @@ class SessionRepository extends Repository
         'instructor_id' => 'required|exists:teachers,id',
     ];
 
-    public function creating(Session $session, array $attributes) {
+    public function creating(Session $session, array $attributes)
+    {
         $session->fill($attributes);
         $session->course()->associate(find($attributes, 'course_id'));
         $session->instructor()->associate($instructor = find($attributes, 'instructor_id', Teacher::class));
@@ -67,7 +66,8 @@ class SessionRepository extends Repository
         return $status;
     }
 
-    public function updating(Session $session, array $attributes) {
+    public function updating(Session $session, array $attributes)
+    {
         $session->fill($attributes);
 
         if (array_has($attributes, 'instructor_id')) {

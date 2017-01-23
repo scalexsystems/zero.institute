@@ -41,7 +41,8 @@ class GroupControllerTest extends TestCase
             ->seeStatusCode(200)
             ->seeJsonContains($data)
             ->seeInDatabase('groups', $data)
-            ->seeInDatabase('group_user', ['user_id' => $user->id]);;
+            ->seeInDatabase('group_user', ['user_id' => $user->id]);
+        ;
     }
 
     public function test_it_can_create_a_group_with_members()

@@ -10,7 +10,8 @@ use Scalex\Zero\User;
 
 class VerificationController extends Controller
 {
-    public function updateEmail($token) {
+    public function updateEmail($token)
+    {
         $user = repository(User::class)->findBy(
             User::getExtendedQueryKey('other_verification_token'),
             $token
@@ -27,7 +28,8 @@ class VerificationController extends Controller
         return redirect('/login')->with('message', 'Your email address is verified.');
     }
 
-    public function verifyEmail($token) {
+    public function verifyEmail($token)
+    {
         $user = repository(User::class)->findBy('verification_token', $token);
 
         $user->verification_token = null;

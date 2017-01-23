@@ -10,19 +10,23 @@ class Message extends BaseModel
 
     protected $dates = ['read_at'];
 
-    public function sender() {
+    public function sender()
+    {
         return $this->belongsTo(User::class);
     }
 
-    public function receiver() {
+    public function receiver()
+    {
         return $this->morphTo();
     }
 
-    public function attachments() {
+    public function attachments()
+    {
         return $this->morphMany(Attachment::class, 'related');
     }
 
-    public function userReadAt() {
+    public function userReadAt()
+    {
         return new MessageReadAt($this->newQuery(), current_user());
     }
 }

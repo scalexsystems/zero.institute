@@ -23,7 +23,8 @@ class DatabaseSeeder extends Seeder
     const TEACHERS = 8;
     const EMPLOYEES = 5;
 
-    public function run() {
+    public function run()
+    {
         $this->command->line('Seeding database...');
         $bar = new ProgressBar($this->command->getOutput());
         $bar->setFormat('very_verbose_nomax');
@@ -45,7 +46,7 @@ class DatabaseSeeder extends Seeder
             foreach ($departments as $d => $department) {
                 foreach ($disciplines as $e => $discipline) {
                     foreach ($semesters as $f => $semester) {
-                         for ($i = 0; $i < self::STUDENTS; ++$i) {
+                        for ($i = 0; $i < self::STUDENTS; ++$i) {
                             $bar->setMessage("#${s} Creating students (${d}.${e}.${f}.${i}/".$departments->count().")...");
                             $bar->advance();
                             $people->push(factory(Student::class)
@@ -55,8 +56,8 @@ class DatabaseSeeder extends Seeder
                                                        'discipline_id' => $discipline->id,
                                                        'semester_id' => $semester->id,
                                                    ]));
-                            }
                         }
+                    }
                 }
                 $bar->setMessage("#${s} Creating teachers (${d}/".$departments->count().")...");
                 $bar->advance();

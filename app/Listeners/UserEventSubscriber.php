@@ -8,7 +8,8 @@ use Scalex\Zero\Notifications\VerificationEmailSent;
 
 class UserEventSubscriber
 {
-    public function onEmailUpdate(UserEmailUpdated $event) {
+    public function onEmailUpdate(UserEmailUpdated $event)
+    {
         $token = $event->getUser()->other_verification_token;
         $email = $event->getUser()->email;
         $name = $event->getUser()->email;
@@ -23,7 +24,8 @@ class UserEventSubscriber
         $event->getUser()->notify(new VerificationEmailSent($email));
     }
 
-    public function onNewAccountRequest(AccountIntentSubmitted $event) {
+    public function onNewAccountRequest(AccountIntentSubmitted $event)
+    {
         cache()->forget(schoolify('stats.accounts'));
         cache()->forget(schoolify('stats.incomplete'));
     }
@@ -33,7 +35,8 @@ class UserEventSubscriber
      *
      * @param  \Illuminate\Events\Dispatcher $events
      */
-    public function subscribe($events) {
+    public function subscribe($events)
+    {
         $events->listen(UserEmailUpdated::class, self::class.'@onEmailUpdate');
         $events->listen(AccountIntentSubmitted::class, self::class.'@onNewAccountRequest');
     }

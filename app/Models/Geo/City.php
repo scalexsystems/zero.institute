@@ -10,7 +10,8 @@ class City extends BaseModel
 
     protected $with = ['state'];
 
-    public function state() {
+    public function state()
+    {
         return $this->belongsTo(State::class);
     }
 }

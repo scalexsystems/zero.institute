@@ -12,7 +12,8 @@ class AccountIntentController extends Controller
      *
      * @return Intent
      */
-    public function show(Request $request) {
+    public function show(Request $request)
+    {
         if ($request->user()->person) {
             abort(400, 'Your profile is already completed!');
         }
@@ -26,7 +27,8 @@ class AccountIntentController extends Controller
         abort(404, 'No intent found.');
     }
 
-    protected function store(Request $request) {
+    protected function store(Request $request)
+    {
         $intent = repository(Intent::class)->create(
             [
                 'user' => $request->user(),
@@ -40,7 +42,8 @@ class AccountIntentController extends Controller
         return $this->created($intent->getKey());
     }
 
-    public function update(Request $request) {
+    public function update(Request $request)
+    {
         $intent = $this->getAccountIntent($request);
         if (!$intent instanceof Intent) {
             return $this->store($request);
@@ -55,7 +58,8 @@ class AccountIntentController extends Controller
         return $this->accepted();
     }
 
-    public function submit(Request $request) {
+    public function submit(Request $request)
+    {
         $intent = $this->getAccountIntent($request);
 
         if (!$intent instanceof Intent) {
@@ -78,7 +82,8 @@ class AccountIntentController extends Controller
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    protected function getAccountIntent(Request $request):\Illuminate\Database\Eloquent\Collection {
+    protected function getAccountIntent(Request $request):\Illuminate\Database\Eloquent\Collection
+    {
         $intent = repository(Intent::class)->pushCriteria(criteria(function ($query) use ($request) {
             /** @var \Illuminate\Database\Query\Builder $query */
             $tag = $request->query('tag', 'account');
@@ -89,7 +94,8 @@ class AccountIntentController extends Controller
         return $intent;
     }
 
-    protected function validateIntent(Request $request, Intent $intent):void {
+    protected function validateIntent(Request $request, Intent $intent):void
+    {
         $method = 'validate'.Str::studly($intent->tag).'Intent';
         $service = app(IntentService::class);
         if (!method_exists($service, $method)) {

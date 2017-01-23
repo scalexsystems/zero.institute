@@ -10,11 +10,13 @@ use Scalex\Zero\Jobs\InvitationMailer;
 
 class TeacherController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('auth:api,web');
     }
 
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
         $teachers = repository(Teacher::class)->with('profilePhoto');
 
         if ($request->has('q')) {
@@ -26,7 +28,8 @@ class TeacherController extends Controller
         return $teachers->simplePaginate();
     }
 
-    public function show(Request $request, $teacher) {
+    public function show(Request $request, $teacher)
+    {
         $teacher = repository(Teacher::class)->findBy('uid', $teacher);
         $this->authorize($teacher);
 
@@ -35,7 +38,8 @@ class TeacherController extends Controller
         return $teacher;
     }
 
-    public function invite(Request $request){
+    public function invite(Request $request)
+    {
         $this->authorize('invite', Teacher::class);
         $this->validate($request, [
             'teachers.*' => 'required|email'

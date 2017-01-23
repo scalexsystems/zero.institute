@@ -10,7 +10,8 @@ class CreateUsersTable extends Migration
      *
      * @return void
      */
-    public function up() {
+    public function up()
+    {
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
@@ -50,7 +51,8 @@ class CreateUsersTable extends Migration
      *
      * @return void
      */
-    public function down() {
+    public function down()
+    {
         Schema::table('attachments', function (Blueprint $table) {
             $table->dropForeign(['user_id']);
         });

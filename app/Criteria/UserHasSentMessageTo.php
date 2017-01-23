@@ -12,11 +12,13 @@ class UserHasSentMessageTo implements Criteria
      */
     protected $user;
 
-    public function __construct(User $user) {
+    public function __construct(User $user)
+    {
         $this->user = $user;
     }
 
-    public function apply($query, Repository $repository) {
+    public function apply($query, Repository $repository)
+    {
         $query->join('messages', function (JoinClause $join) {
             $join->on(function (JoinClause $join) {
                 $join->on('users.id', '=', 'messages.sender_id')

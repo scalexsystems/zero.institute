@@ -8,7 +8,8 @@ use Scalex\Zero\User;
 
 class CurrentUserController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('auth:api,web');
     }
 
@@ -17,7 +18,8 @@ class CurrentUserController extends Controller
      * GET /me/messages/users
      * Required: auth
      */
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
         $request->query->set('with', 'person');
         $users = repository(User::class)->with(['person', 'profilePhoto', 'lastMessageAt']);
 

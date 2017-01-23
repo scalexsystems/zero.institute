@@ -5,11 +5,13 @@ use Scalex\Zero\User;
 
 class GroupPolicy extends AbstractPolicy
 {
-    public function show(User $user, Group $group) {
+    public function show(User $user, Group $group)
+    {
         return !$group->private or $group->isMember($user);
     }
 
-    public function store(User $user) {
+    public function store(User $user)
+    {
         return !is_null($user->person_id);
     }
 
@@ -19,7 +21,8 @@ class GroupPolicy extends AbstractPolicy
      * @param  Group  $group
      * @return bool
      */
-    public function update(User $user, Group $group) {
+    public function update(User $user, Group $group)
+    {
         return $this->isOwner($user, $group);
     }
 
@@ -29,41 +32,50 @@ class GroupPolicy extends AbstractPolicy
      * @param  Group  $group
      * @return bool
      */
-    public function delete(User $user, Group $group) {
+    public function delete(User $user, Group $group)
+    {
         return $this->isOwner($user, $group);
     }
 
-    public function addMember(User $user, Group $group) {
+    public function addMember(User $user, Group $group)
+    {
         return $this->isOwner($user, $group);
     }
 
-    public function removeMember(User $user, Group $group) {
+    public function removeMember(User $user, Group $group)
+    {
         return $this->isOwner($user, $group);
     }
 
-    public function members(User $user, Group $group) {
+    public function members(User $user, Group $group)
+    {
         return $group->private === false or $group->isMember($user);
     }
 
-    public function messages(User $user, Group $group) {
+    public function messages(User $user, Group $group)
+    {
         return $group->isMember($user);
     }
 
-    public function send(User $user, Group $group) {
+    public function send(User $user, Group $group)
+    {
         return $group->isMember($user);
     }
 
-    public function read(User $user, Group $group) {
+    public function read(User $user, Group $group)
+    {
         return $group->isMember($user);
     }
 
-    public function join(User $user, Group $group) {
+    public function join(User $user, Group $group)
+    {
         return is_null($group->school_id)
                or !$group->private
                or verify_school($user, $group);
     }
 
-    public function leave(User $user, Group $group) {
+    public function leave(User $user, Group $group)
+    {
         if ($this->isOwner($user, $group)) {
             return false;
         }
@@ -71,19 +83,23 @@ class GroupPolicy extends AbstractPolicy
         return $group->isMember($user);
     }
 
-    public function updateGroupPhoto(User $user, Group $group) {
+    public function updateGroupPhoto(User $user, Group $group)
+    {
         return $this->isOwner($user, $group);
     }
 
-    public function removeGroupPhoto(User $user, Group $group) {
+    public function removeGroupPhoto(User $user, Group $group)
+    {
         return $this->isOwner($user, $group);
     }
 
-    public function uploadFile(User $user, Group $group){
+    public function uploadFile(User $user, Group $group)
+    {
         return $group->isMember($user);
     }
 
-    protected function isOwner(User $user, Group $group): bool {
+    protected function isOwner(User $user, Group $group): bool
+    {
         return (int) $group->owner_id === $user->getKey();
     }
 }

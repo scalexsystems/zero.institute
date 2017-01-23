@@ -10,11 +10,13 @@ use Ramsey\Uuid\Uuid;
 
 class PhotoController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('auth:api,web');
     }
 
-    public function store(Request $request, Group $group) {
+    public function store(Request $request, Group $group)
+    {
         $this->authorize('update-group-photo', $group);
         $this->validate($request, ['photo' => 'required|image|max:10240']);
 
@@ -37,7 +39,8 @@ class PhotoController extends Controller
         return $this->accepted(attach_url($photo));
     }
 
-    public function destroy(Request $request, Group $group) {
+    public function destroy(Request $request, Group $group)
+    {
         $this->authorize('remove-group-photo', $group);
 
         repository(Group::class)->update($group, ['photo_id' => null]);

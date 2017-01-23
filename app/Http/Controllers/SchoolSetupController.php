@@ -9,11 +9,13 @@ use Ramsey\Uuid\Uuid;
 
 class SchoolSetupController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('auth:web');
     }
 
-    public function setup(Request $request) {
+    public function setup(Request $request)
+    {
         $user = $request->user();
         $school = $user->school;
 
@@ -28,7 +30,8 @@ class SchoolSetupController extends Controller
         return redirect()->intended();
     }
 
-    public function handle(Request $request) {
+    public function handle(Request $request)
+    {
         $this->validate($request, [
             'name' => 'required|max:255',
             'email' => 'required|email',
@@ -57,7 +60,8 @@ class SchoolSetupController extends Controller
         return redirect('/');
     }
 
-    protected function getInstituteTypes() {
+    protected function getInstituteTypes()
+    {
         return [
             'central_university' => 'Central University',
             'private_aided' => 'Aided (Private)',

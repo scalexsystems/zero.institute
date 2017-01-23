@@ -8,11 +8,13 @@ use Scalex\Zero\User;
 
 class MessageReadAt extends Relation
 {
-    public function __construct(Builder $query, User $parent) {
+    public function __construct(Builder $query, User $parent)
+    {
         parent::__construct($query, $parent);
     }
 
-    public function addConstraints() {
+    public function addConstraints()
+    {
         $this->getBaseQuery()
              ->from('message_reads')
              ->select()
@@ -23,11 +25,13 @@ class MessageReadAt extends Relation
         }
     }
 
-    public function addEagerConstraints(array $models) {
+    public function addEagerConstraints(array $models)
+    {
         $this->getBaseQuery()->whereIn('message_id', (new Collection($models))->modelKeys());
     }
 
-    public function initRelation(array $models, $relation) {
+    public function initRelation(array $models, $relation)
+    {
         foreach ($models as $model) {
             $model->setRelation($relation, null);
         }
@@ -35,7 +39,8 @@ class MessageReadAt extends Relation
         return $models;
     }
 
-    public function match(array $models, Collection $results, $relation) {
+    public function match(array $models, Collection $results, $relation)
+    {
         $dictionary = [];
 
         foreach ($results as $result) {
@@ -51,11 +56,13 @@ class MessageReadAt extends Relation
         return $models;
     }
 
-    public function getResults() {
+    public function getResults()
+    {
         return $this->getBaseQuery()->first();
     }
 
-    public function create(User $user) {
+    public function create(User $user)
+    {
         return $this->getBaseQuery()->from('message_reads')
                     ->insert([
                                  'message_id' => $this->getRelated()->getKey(),

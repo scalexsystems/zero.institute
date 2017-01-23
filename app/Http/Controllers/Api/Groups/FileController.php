@@ -1,6 +1,5 @@
 <?php namespace Scalex\Zero\Http\Controllers\Api\Groups;
 
-
 use Ramsey\Uuid\Uuid;
 use Znck\Attach\Builder;
 use Illuminate\Http\Request;
@@ -10,7 +9,8 @@ use Scalex\Zero\Http\Controllers\Controller;
 
 class FileController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('auth:api,web');
     }
 
@@ -19,7 +19,8 @@ class FileController extends Controller
      * POST /groups/{group}/file
      * Requires: auth
      */
-    public function store(Request $request, Group $group) {
+    public function store(Request $request, Group $group)
+    {
         $this->authorize('upload-file', $group);
         $this->validate($request, ['file' => 'required']);
 
@@ -46,7 +47,8 @@ class FileController extends Controller
         return $file;
     }
 
-    protected function isImage($file) {
+    protected function isImage($file)
+    {
         return in_array($file->guessExtension(), ['jpeg', 'png', 'gif', 'bmp']);
     }
 }

@@ -10,7 +10,8 @@ class CreateGroupsTable extends Migration
      *
      * @return void
      */
-    public function up() {
+    public function up()
+    {
         Schema::create('groups', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
@@ -37,7 +38,8 @@ class CreateGroupsTable extends Migration
      *
      * @return void
      */
-    public function down() {
+    public function down()
+    {
         Schema::table('groups', function (Blueprint $table) {
             $table->dropForeign(['school_id']);
             $table->dropForeign(['owner_id']);

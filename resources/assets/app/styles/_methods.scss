@@ -1,0 +1,17 @@
+@import './variables';
+
+@function strip-unit($number) {
+  @if type-of($number) == 'number' and not unitless($number) {
+    @return $number / ($number * 0 + 1);
+  }
+
+  @return $number;
+}
+
+@function rem($value) {
+  @if (unit($value) == 'px') {
+    $base: strip-unit($font-size-root);
+    $value: strip-unit($value);
+    @return $value/$base + 0rem;
+  }
+}

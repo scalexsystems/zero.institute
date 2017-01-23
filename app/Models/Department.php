@@ -12,11 +12,13 @@ class Department extends ExtendibleModel implements BelongsToSchool
 
     protected $extends = ['student_count', 'employee_count', 'teacher_count'];
 
-    public function school() {
+    public function school()
+    {
         return $this->belongsTo(School::class);
     }
 
-    public function head() {
+    public function head()
+    {
         return $this->belongsTo(Teacher::class);
     }
 }

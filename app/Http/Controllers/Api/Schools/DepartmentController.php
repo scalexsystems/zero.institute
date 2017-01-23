@@ -7,11 +7,13 @@ use Scalex\Zero\Models\Department;
 
 class DepartmentController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('auth:api,web');
     }
 
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
         return cache()->rememberForever(
             schoolify('departments'),
             function () use ($request) {
@@ -20,7 +22,8 @@ class DepartmentController extends Controller
         );
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         $this->authorize('store', Department::class);
 
         $department = repository(Department::class)->create(
@@ -33,7 +36,8 @@ class DepartmentController extends Controller
         return $department;
     }
 
-    public function update(Request $request, $department) {
+    public function update(Request $request, $department)
+    {
         $department = repository(Department::class)->find($department);
         $this->authorize($department);
 
@@ -42,7 +46,8 @@ class DepartmentController extends Controller
         return $department;
     }
 
-    public function getPeopleCount(Request $request) {
+    public function getPeopleCount(Request $request)
+    {
         $departments = repository(Department::class)->with('head')->all();
 
         $students = DB::table('students')

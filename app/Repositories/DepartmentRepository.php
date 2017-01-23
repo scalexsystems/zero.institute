@@ -16,8 +16,6 @@ use Znck\Repositories\Repository;
  */
 class DepartmentRepository extends Repository
 {
-    use \Znck\Repositories\Traits\RepositoryHelper;
-
     /**
      * Class name of the Eloquent model.
      *
@@ -38,13 +36,15 @@ class DepartmentRepository extends Repository
         'school_id' => 'required|exists:schools,id',
     ];
 
-    public function boot() {
+    public function boot()
+    {
         if (current_user()) {
             $this->pushCriteria(new OfSchool(current_user()->school));
         }
     }
 
-    public function creating(Department $department, array $attributes) {
+    public function creating(Department $department, array $attributes)
+    {
         $department->fill($attributes);
 
         if (Arr::has($attributes, 'head_id')) {
@@ -56,7 +56,8 @@ class DepartmentRepository extends Repository
         return $department->save();
     }
 
-    public function updating(Department $department, array $attributes) {
+    public function updating(Department $department, array $attributes)
+    {
         $department->fill($attributes);
 
         if (Arr::has($attributes, 'head_id')) {

@@ -1,16 +1,39 @@
 machine:
   php:
     version: 7.0.4
+  node:
+    version: 7.1.0
+  environment:
+    DBUS_SESSION_BUS_ADDRESS: /dev/null
 
 dependencies:
-  cache_directories:
-    - "~/.composer/cache/"
+  pre:
+    - type -P yarn &> /dev/null || curl -o- -s -L https://yarnpkg.com/install.sh | bash
   override:
-    - composer install --no-progress
-    - cp .env.example .env
-    - php artisan key:generate
-    - php artisan passport:keys
+    - composer install --dev --no-interaction --no-progress
+    - yarn --no-progress
+    # - npm rebuild node-sass phantomjs-prebuilt selenium-server chromedriver
+  cache_directories:
+    - "~/.composer/cache"
+    - "~/.yarn-cache"
 
 test:
   override:
-    - composer test
+    - composer lint -- --using-cache=no --path-mode=intersection `git diff --name-only --diff-filter=ACMRTUXB $COMMIT_RANGE`
+    # - composer test:unit
+    # - composer test:e2e
+    # - yarn prod -- --bail
+    - git diff --name-only --diff-filter=ACMRTUXB $COMMIT_RANGE| grep -E '\.(js|vue)$' | xargs yarn run eslint -- --ext .js,.vue
+    # - yarn test:unit
+    # Prepare system & e2e tests
+    # - cp .env.testing .env
+    # - php artisan key:generate
+    # - php artisan route:cache
+    # - php artisan config:cache
+    # - yarn test:e2e
+
+# general:
+  # artifacts:
+    # - selenium-debug.log
+    # - phantomjsdriver.log
+    # - tests/reports

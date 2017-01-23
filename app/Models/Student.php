@@ -66,7 +66,8 @@ class Student extends BaseModel implements Person, BelongsToSchool
 
     protected $appends = ['name'];
 
-    public function getNameAttribute() {
+    public function getNameAttribute()
+    {
         return str_replace(
             '  ', ' ',
             $this->attributes['first_name'].' '.
@@ -80,7 +81,8 @@ class Student extends BaseModel implements Person, BelongsToSchool
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function school() {
+    public function school()
+    {
         return $this->belongsTo(School::class);
     }
 
@@ -89,7 +91,8 @@ class Student extends BaseModel implements Person, BelongsToSchool
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function department() {
+    public function department()
+    {
         return $this->belongsTo(Department::class);
     }
 
@@ -98,7 +101,8 @@ class Student extends BaseModel implements Person, BelongsToSchool
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function discipline() {
+    public function discipline()
+    {
         return $this->belongsTo(Discipline::class);
     }
 
@@ -108,7 +112,8 @@ class Student extends BaseModel implements Person, BelongsToSchool
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function address() {
+    public function address()
+    {
         return $this->belongsTo(Address::class);
     }
 
@@ -117,7 +122,8 @@ class Student extends BaseModel implements Person, BelongsToSchool
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function father() {
+    public function father()
+    {
         return $this->belongsTo(Guardian::class);
     }
 
@@ -126,7 +132,8 @@ class Student extends BaseModel implements Person, BelongsToSchool
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function mother() {
+    public function mother()
+    {
         return $this->belongsTo(Guardian::class);
     }
 
@@ -135,7 +142,8 @@ class Student extends BaseModel implements Person, BelongsToSchool
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function profilePhoto() {
+    public function profilePhoto()
+    {
         return $this->belongsTo(Attachment::class, 'photo_id');
     }
 
@@ -144,15 +152,18 @@ class Student extends BaseModel implements Person, BelongsToSchool
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphOne
      */
-    public function user() {
+    public function user()
+    {
         return $this->morphOne(User::class, 'person');
     }
 
-    public function sessions() {
+    public function sessions()
+    {
         return $this->belongsToMany(Session::class);
     }
 
-    public function getRouteKeyName() {
+    public function getRouteKeyName()
+    {
         return 'uid';
     }
 }

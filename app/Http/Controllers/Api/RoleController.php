@@ -10,11 +10,13 @@ use Scalex\Zero\Models\Role;
 
 class RoleController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('auth:api,web');
     }
 
-    public function index(Request $request, $role) {
+    public function index(Request $request, $role)
+    {
         $this->authorize('isAdmin', $request->user());
 
         if (!$role->exists) {
@@ -31,7 +33,8 @@ class RoleController extends Controller
             });
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         $this->authorize('isAdmin', $request->user());
         $this->validate($request, [
             'role' => 'required|exists:roles,slug',

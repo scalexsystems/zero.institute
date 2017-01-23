@@ -3,10 +3,10 @@
 use Scalex\Zero\Models\Attachment;
 use Znck\Transformers\Transformer;
 
-
 class AttachmentTransformer extends Transformer
 {
-    public function show(Attachment $attachment) {
+    public function show(Attachment $attachment)
+    {
         return [
             'extension' => $attachment->extension,
             'title' => $attachment->title,
@@ -18,11 +18,13 @@ class AttachmentTransformer extends Transformer
         ];
     }
 
-    public function index(Attachment $attachment) {
+    public function index(Attachment $attachment)
+    {
         return $this->show($attachment);
     }
 
-    protected function getLinks(Attachment $attachment): array {
+    protected function getLinks(Attachment $attachment): array
+    {
         $links = ['original' => attach_url($attachment)];
 
         foreach (array_keys((array) $attachment->variations) as $variation) {

@@ -12,7 +12,8 @@ class Discipline extends ExtendibleModel implements BelongsToSchool
 
     protected $extends = ['student_count'];
 
-    public function school() {
+    public function school()
+    {
         return $this->belongsTo(School::class);
     }
 }

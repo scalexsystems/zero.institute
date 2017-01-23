@@ -9,14 +9,16 @@ use Scalex\Zero\Models\Group;
 
 class CurrentUserController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('auth:api,web');
     }
 
     /**
      * List joined groups.
      */
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
         $user = $request->user();
 
         if ($request->has('q') and is_numeric($q = $request->query('q'))) {
@@ -45,7 +47,8 @@ class CurrentUserController extends Controller
     /**
      * Join group.
      */
-    public function store(Group $group) {
+    public function store(Group $group)
+    {
         $this->authorize('join', $group);
 
         $user = current_user();
@@ -66,7 +69,8 @@ class CurrentUserController extends Controller
     /**
      * Leave group.
      */
-    public function delete(Group $group) {
+    public function delete(Group $group)
+    {
         $this->authorize('leave', $group);
 
         $user = current_user();

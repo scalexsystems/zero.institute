@@ -17,13 +17,15 @@ class ExactMatch implements Criteria
      *
      * @param string|int $id
      */
-    public function __construct($id, $key = null) {
+    public function __construct($id, $key = null)
+    {
         $this->id = $id;
         $this->key = $key;
     }
 
 
-    public function apply($model, Repository $repository) {
+    public function apply($model, Repository $repository)
+    {
         $id = $this->id;
 
         if (is_numeric($id) and $id > 0) {

@@ -3,12 +3,12 @@
 use Scalex\Zero\Models\School;
 use Znck\Transformers\Transformer;
 
-
 class SchoolTransformer extends Transformer
 {
     protected $availableIncludes = ['address'];
 
-    public function show(School $school) {
+    public function show(School $school)
+    {
         return [
             'name' => $school->name,
             'logo' => $this->logo($school),
@@ -24,7 +24,8 @@ class SchoolTransformer extends Transformer
         ];
     }
 
-    public function index(School $school) {
+    public function index(School $school)
+    {
         return [
             'name' => $school->name,
             'logo' => $this->logo($school),
@@ -35,7 +36,8 @@ class SchoolTransformer extends Transformer
         ];
     }
 
-    public function includeAddress(School $school) {
+    public function includeAddress(School $school)
+    {
         return $school->address ? $this->item($school->address, transformer($school->address)) : null;
     }
 
@@ -45,7 +47,8 @@ class SchoolTransformer extends Transformer
      *
      * @return string
      */
-    protected function logo(School $school) {
+    protected function logo(School $school)
+    {
         return ($school->relationLoaded('logo') and $school->logo)
             ? attach_url($school->logo)
             : asset('img/placeholder-64.jpg');

@@ -10,7 +10,8 @@ class CreateAddressesTable extends Migration
      *
      * @return void
      */
-    public function up() {
+    public function up()
+    {
         Schema::create('addresses', function (Blueprint $table) {
             $table->increments('id');
             $table->string('address_line1')->nullable();
@@ -40,7 +41,8 @@ class CreateAddressesTable extends Migration
      *
      * @return void
      */
-    public function down() {
+    public function down()
+    {
         Schema::table('addresses', function (Blueprint $table) {
             $table->dropForeign(['city_id']);
             $table->drop();
