@@ -13,7 +13,7 @@ class Intent extends BaseModel  implements BelongsToSchool
         'tag',
         'body',
         'remarks',
-        'locked',]
+        'locked',
         'status',
     ];
 

@@ -13,4 +13,4 @@ dependencies:
 
 test:
   override:
-    - composer test
+    - composer test:unit

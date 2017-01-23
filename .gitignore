@@ -8,6 +8,7 @@ Homestead.yaml
 .env.backup
 hot
 npm-debug.log
+/tests/reports
 
 ## FORCE ADD ON PRODUCTION BUILD
 /public/js

@@ -12,7 +12,7 @@ class IntentTransformer extends Transformer
         $service = app(IntentService::class);
         $method = 'transform'.Str::studly($intent->tag).'Intent';
 
-        return call_user_func([$service, $method] $intent);
+        return call_user_func([$service, $method], $intent);
     }
 
     public function show(Intent $intent) {
