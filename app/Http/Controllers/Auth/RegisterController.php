@@ -27,7 +27,8 @@ class RegisterController extends Controller
      *
      * @return void
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('guest');
     }
 
@@ -96,7 +97,8 @@ class RegisterController extends Controller
      *
      * @return \Illuminate\Contracts\Validation\Validator
      */
-    protected function validator(array $data) {
+    protected function validator(array $data)
+    {
         return Validator::make($data, [
             'name' => 'required',
             'institute' => 'required|exists:schools,id',
@@ -112,7 +114,8 @@ class RegisterController extends Controller
      *
      * @return User
      */
-    protected function create(array $data, School $school): User {
+    protected function create(array $data, School $school): User
+    {
         return repository(User::class)
             ->create([
                 'name' => $data['name'],
@@ -121,23 +124,26 @@ class RegisterController extends Controller
                 'password' => $data['password'],
                 'verification_token' => null,
             ]);
-
     }
 
-    public function validateToken(School $school, string $userToken) {
+    public function validateToken(School $school, string $userToken)
+    {
         $tokens = (array)$school->tokens;
 
-        foreach($tokens as $key => $token) {
+        foreach ($tokens as $key => $token) {
             if (Str::is($token, $userToken)) {
                 return $key;
             }
         }
     }
 
-    public function validateEmail(School $school, string $email): bool {
+    public function validateEmail(School $school, string $email): bool
+    {
         $domains = (array)$school->email_domains;
 
-        if (!count($domains)) return true;
+        if (!count($domains)) {
+            return true;
+        }
 
         return Str::endsWith($email, $domains);
     }

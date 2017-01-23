@@ -81,13 +81,15 @@ class EmployeeRepository extends Repository
         'remarks' => 'nullable|max:65536',
     ];
 
-    public function boot() {
+    public function boot()
+    {
         if (current_user()) {
             $this->pushCriteria(new OfSchool(current_user()->school));
         }
     }
 
-    public function getRules(array $attributes, Model $model = null): array {
+    public function getRules(array $attributes, Model $model = null): array
+    {
         $data = parent::getRules($attributes, $model);
         $data['uid'] .= current_user()->school_id;
 
@@ -101,7 +103,8 @@ class EmployeeRepository extends Repository
      *
      * @return array
      */
-    public function getUpdateRules(array $rules, array $attributes, $employee) {
+    public function getUpdateRules(array $rules, array $attributes, $employee)
+    {
         $rules += array_dot(
             [
                 'address' => repository(Address::class)->getRules($attributes, $employee->address),
@@ -110,14 +113,16 @@ class EmployeeRepository extends Repository
         return array_only($rules, array_keys($attributes));
     }
 
-    public function getCreateRules(array $attributes) {
+    public function getCreateRules(array $attributes)
+    {
         return $this->rules + array_dot(
             [
                 'address' => repository(Address::class)->getRules($attributes),
             ]);
     }
 
-    public function creating(Employee $employee, array $attributes) {
+    public function creating(Employee $employee, array $attributes)
+    {
         $employee->fill($attributes);
 
         // Start Transaction.
@@ -139,7 +144,8 @@ class EmployeeRepository extends Repository
         return $status;
     }
 
-    public function updating(Employee $employee, array $attributes) {
+    public function updating(Employee $employee, array $attributes)
+    {
         $employee->fill($attributes);
 
         // Start Transaction.
@@ -163,7 +169,8 @@ class EmployeeRepository extends Repository
         return $employee->update();
     }
 
-    public function getBio(Employee $employee) {
+    public function getBio(Employee $employee)
+    {
         return $employee->job_title.' ・ '
                .($employee->department->short_name ?? $employee->department->name);
     }

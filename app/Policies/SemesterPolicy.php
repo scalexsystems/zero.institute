@@ -11,15 +11,15 @@ class SemesterPolicy
 {
     use VerifiesSchool;
 
-    public function store(User $user) {
+    public function store(User $user)
+    {
         return verify_school($user);
 //        return trust($user)->to(Action::UPDATE_DEPARTMENT);
     }
 
-    public function update(User $user, Semester $semester) {
+    public function update(User $user, Semester $semester)
+    {
         return verify_school($user);
 //        return trust($user)->to(Action::UPDATE_DEPARTMENT);
     }
-
 }
-

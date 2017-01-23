@@ -9,7 +9,8 @@ class AddressTransformer extends Transformer
 
     public $defaultIncludes = ['city'];
 
-    public function show(Address $address) {
+    public function show(Address $address)
+    {
         return [
             'address_line1' => (string)$address->address_line1,
             'address_line2' => (string)$address->address_line2,
@@ -21,7 +22,8 @@ class AddressTransformer extends Transformer
         ];
     }
 
-    public function includeCity(Address $address) {
+    public function includeCity(Address $address)
+    {
         return $this->item($address->city);
     }
 }

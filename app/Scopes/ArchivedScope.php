@@ -6,7 +6,8 @@ use Illuminate\Database\Eloquent\Scope;
 
 class ArchivedScope implements Scope
 {
-    public function apply(Builder $builder, Model $model) {
+    public function apply(Builder $builder, Model $model)
+    {
         $builder->where('archived', false);
     }
 }

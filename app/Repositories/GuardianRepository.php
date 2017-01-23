@@ -28,7 +28,8 @@ class GuardianRepository extends Repository
      */
     protected $rules = [];
 
-    public function boot() {
+    public function boot()
+    {
         if (current_user()) {
             $this->pushCriteria(new OfSchool(current_user()->school));
         }

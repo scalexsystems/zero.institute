@@ -58,35 +58,43 @@ class User extends BaseModel implements
         'approved' => 'bool',
     ];
 
-    public function school() {
+    public function school()
+    {
         return $this->belongsTo(School::class);
     }
 
-    public function profilePhoto() {
+    public function profilePhoto()
+    {
         return $this->belongsTo(Attachment::class, 'photo_id');
     }
 
-    public function person() {
+    public function person()
+    {
         return $this->morphTo();
     }
 
-    public function groups() {
+    public function groups()
+    {
         return $this->belongsToMany(Group::class)->withTimestamps();
     }
 
-    public function getChannelName() : string {
+    public function getChannelName() : string
+    {
         return $this->getMorphClass().'-'.$this->getKey();
     }
 
-    public function getChannel() {
+    public function getChannel()
+    {
         return new PrivateChannel($this->getChannelName());
     }
 
-    public function lastMessageAt() {
+    public function lastMessageAt()
+    {
         return new LastMessageAt((new Message())->newQuery(), $this);
     }
 
-    public function roles() {
+    public function roles()
+    {
         return $this->belongsToMany(Models\Role::class)->withTimestamps()->withPivot('school_id');
     }
 }

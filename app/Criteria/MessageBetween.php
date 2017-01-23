@@ -15,12 +15,14 @@ class MessageBetween implements Criteria
      */
     private $other;
 
-    public function __construct(User $one, User $other) {
+    public function __construct(User $one, User $other)
+    {
         $this->one = $one;
         $this->other = $other;
     }
 
-    public function apply($query, Repository $repository) {
+    public function apply($query, Repository $repository)
+    {
         $query->where(function ($query) {
             /** @var \Illuminate\Database\Query\Builder $query */
             $query->where(function ($query) {

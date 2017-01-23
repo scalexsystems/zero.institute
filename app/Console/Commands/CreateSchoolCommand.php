@@ -101,7 +101,8 @@ class CreateSchoolCommand extends Command
      *
      * @return mixed
      */
-    protected function addAdminUsers(School $school, $inputs) {
+    protected function addAdminUsers(School $school, $inputs)
+    {
         $role = Role::where('slug', 'admin')->first();
         foreach ($inputs as $key => $input) {
             $user = new User(
@@ -136,7 +137,8 @@ class CreateSchoolCommand extends Command
      * @param School $school
      * @param array $inputs
      */
-    protected function printSchoolInfo(School $school, array $inputs) {
+    protected function printSchoolInfo(School $school, array $inputs)
+    {
         $this->comment('INSTITUTE INFORMATION');
         $this->line("Name: {$school->name}");
         $this->line("URL: zero.institute");

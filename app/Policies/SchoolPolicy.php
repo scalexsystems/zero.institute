@@ -20,7 +20,8 @@ class SchoolPolicy extends AbstractPolicy
      *
      * @return bool
      */
-    public function view(User $user, School $school) {
+    public function view(User $user, School $school)
+    {
         return $this->verifySchool($user, $school) and trust($user)->to(Action::VIEW_PRIVATE_SCHOOL_INFO);
     }
 
@@ -32,7 +33,8 @@ class SchoolPolicy extends AbstractPolicy
      *
      * @return bool
      */
-    public function update(User $user, School $school) {
+    public function update(User $user, School $school)
+    {
         return $this->verifySchool($user, $school);
 //        return $this->verifySchool($user, $school) and trust($user)->to(Action::UPDATE_SCHOOL);
     }

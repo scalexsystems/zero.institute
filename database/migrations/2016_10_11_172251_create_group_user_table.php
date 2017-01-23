@@ -11,7 +11,8 @@ class CreateGroupUserTable extends Migration
      *
      * @return void
      */
-    public function up() {
+    public function up()
+    {
         Schema::create('group_user', function (Blueprint $table) {
             $table->unsignedInteger('group_id');
             $table->unsignedInteger('user_id');
@@ -28,7 +29,8 @@ class CreateGroupUserTable extends Migration
      *
      * @return void
      */
-    public function down() {
+    public function down()
+    {
         Schema::table('group_user', function (Blueprint $table) {
             $table->dropForeign(['user_id']);
             $table->dropForeign(['group_id']);

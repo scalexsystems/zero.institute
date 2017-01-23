@@ -16,7 +16,8 @@ class SendInvitationVerification implements ShouldQueue
      *
      * @return void
      */
-    public function handle(InvitationRequest $event) {
+    public function handle(InvitationRequest $event)
+    {
         $name = $event->name;
         $email = $event->email;
         Mail::send(

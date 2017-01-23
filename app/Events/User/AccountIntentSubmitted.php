@@ -22,7 +22,8 @@ class AccountIntentSubmitted implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct(Intent $intent) {
+    public function __construct(Intent $intent)
+    {
         $this->intent = $intent;
     }
 
@@ -31,7 +32,8 @@ class AccountIntentSubmitted implements ShouldBroadcast
      *
      * @return Channel|array
      */
-    public function broadcastOn() {
+    public function broadcastOn()
+    {
         return new PrivateChannel(schoolify('accounts'));
     }
 }

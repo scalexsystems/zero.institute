@@ -17,11 +17,13 @@ class NewMessage implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct(Message $message) {
+    public function __construct(Message $message)
+    {
         $this->message = $message;
     }
 
-    public function broadcastWith() {
+    public function broadcastWith()
+    {
         return ['read_at' => null, 'unread' => true] + transform($this->message);
     }
 
@@ -30,7 +32,8 @@ class NewMessage implements ShouldBroadcast
      *
      * @return Channel|array
      */
-    public function broadcastOn() {
+    public function broadcastOn()
+    {
         return $this->message->receiver->getChannel();
     }
 }

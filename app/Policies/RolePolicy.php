@@ -8,5 +8,4 @@ use Znck\Trust\Models\Role;
 
 class RolePolicy
 {
-    
 }

@@ -11,11 +11,13 @@ class BroadcastController extends LaravelBroadcastController
      */
     protected $auth;
 
-    public function __construct(Auth $auth) {
+    public function __construct(Auth $auth)
+    {
         $this->auth = $auth;
     }
 
-    public function authenticate(Request $request) {
+    public function authenticate(Request $request)
+    {
         $guards = ['web', 'api'];
 
         foreach ($guards as $guard) {

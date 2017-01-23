@@ -33,7 +33,8 @@ class UserRepository extends Repository
         'school_id' => 'required|exists:schools,id',
     ];
 
-    public function creating(User $user, array $attributes) {
+    public function creating(User $user, array $attributes)
+    {
         $user->fill(array_only($attributes, ['name', 'email']));
         $user->verification_token = str_random(32);
 
@@ -56,7 +57,8 @@ class UserRepository extends Repository
         return $user->save();
     }
 
-    public function updating(User $user, array $attributes, array $options = []) {
+    public function updating(User $user, array $attributes, array $options = [])
+    {
         if (array_has($attributes, 'email')) {
             $user->other_email = $attributes['email'];
             $user->other_verification_token = str_random(32);

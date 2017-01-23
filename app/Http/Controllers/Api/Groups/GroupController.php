@@ -8,7 +8,8 @@ use Scalex\Zero\Models\Group;
 
 class GroupController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('auth:api,web');
     }
 
@@ -17,7 +18,8 @@ class GroupController extends Controller
      * GET /groups
      * Requires: auth
      */
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
         $groups = repository(Group::class)
             ->with('profilePhoto')
             ->pushCriteria(criteria(function ($query) {
@@ -39,7 +41,8 @@ class GroupController extends Controller
      * GET /groups/{group}
      * Requires: auth
      */
-    public function show(Group $group) {
+    public function show(Group $group)
+    {
         $this->authorize('show', $group);
 
         return $group;
@@ -50,7 +53,8 @@ class GroupController extends Controller
      * POST /groups
      * Requires: auth
      */
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         $this->authorize('store', Group::class);
 
         $group = repository(Group::class)->create(
@@ -82,7 +86,8 @@ class GroupController extends Controller
      * PUT /groups/{group}
      * Requires: auth
      */
-    public function update(Request $request, Group $group) {
+    public function update(Request $request, Group $group)
+    {
         $this->authorize('update', $group);
 
         repository(Group::class)->update($group, $request->all()); // FIXME: This is blunt.
@@ -90,7 +95,8 @@ class GroupController extends Controller
         return $group;
     }
 
-    public function destroy(Group $group) {
+    public function destroy(Group $group)
+    {
         $this->authorize('delete', $group);
 
         repository(Group::class)->delete($group);

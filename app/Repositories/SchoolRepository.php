@@ -49,7 +49,8 @@ class SchoolRepository extends Repository
      *
      * @return array
      */
-    public function getUpdateRules(array $rules, array $attributes, $school) {
+    public function getUpdateRules(array $rules, array $attributes, $school)
+    {
         $all = $rules +
                array_dot(
                    [
@@ -60,7 +61,8 @@ class SchoolRepository extends Repository
         return array_only($all, array_keys($attributes));
     }
 
-    public function updating(School $school, array $attr) {
+    public function updating(School $school, array $attr)
+    {
         $school->fill($attr);
 
         if (!$school->address) {

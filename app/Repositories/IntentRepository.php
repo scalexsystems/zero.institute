@@ -36,13 +36,15 @@ class IntentRepository extends Repository
         'school_id' => 'required|exists:schools,id',
     ];
 
-    public function boot() {
+    public function boot()
+    {
         if (current_user()) {
             $this->pushCriteria(new OfSchool(current_user()->school));
         }
     }
 
-    public function creating(Intent $intent, array $attributes) {
+    public function creating(Intent $intent, array $attributes)
+    {
         $intent->fill($attributes);
         $intent->user()->associate(find($attributes, 'user_id'));
         $intent->school()->associate(find($attributes, 'school_id'));
@@ -50,11 +52,13 @@ class IntentRepository extends Repository
         return $intent->save();
     }
 
-    public function updating(Intent $intent, array $attributes) {
+    public function updating(Intent $intent, array $attributes)
+    {
         return $intent->update($attributes);
     }
 
-    public function deleting(Intent $intent) {
+    public function deleting(Intent $intent)
+    {
         return $intent->delete();
     }
 }

@@ -5,11 +5,13 @@ use Scalex\Zero\User;
 
 class MemberControllerTest extends TestCase
 {
-    public function createGroup($attributes = []) {
+    public function createGroup($attributes = [])
+    {
         return factory(Group::class)->create($attributes);
     }
 
-    public function test_it_can_list_all_members() {
+    public function test_it_can_list_all_members()
+    {
         $user = $this->createAnUser();
         $group = $this->createGroup([
             'school_id' => $user->school_id,
@@ -25,7 +27,8 @@ class MemberControllerTest extends TestCase
             ->seeJsonContains(transform($group->members));
     }
 
-    public function test_it_can_add_members() {
+    public function test_it_can_add_members()
+    {
         $user = $this->createAnUser();
         $other = $this->createAnUser(['school_id' => $user->school_id]);
         $group = $this->createGroup(['school_id' => $user->school_id, 'owner_id' => $user->id]);
@@ -45,7 +48,8 @@ class MemberControllerTest extends TestCase
             ]);
     }
 
-    public function test_it_can_remove_members() {
+    public function test_it_can_remove_members()
+    {
         $user = $this->createAnUser();
         $other = $this->createAnUser(['school_id' => $user->school_id]);
         $group = $this->createGroup(['school_id' => $user->school_id, 'owner_id' => $user->id]);

@@ -6,16 +6,19 @@ use Scalex\Zero\Models\Group;
 
 class GroupEventListener
 {
-    public function onMemberCountChanged(Group $group) {
+    public function onMemberCountChanged(Group $group)
+    {
         $group->count_members = $group->members()->count();
         $group->save();
     }
 
-    public function onMemberJoined(MemberJoined $event) {
+    public function onMemberJoined(MemberJoined $event)
+    {
         $this->onMemberCountChanged($event->getGroup());
     }
 
-    public function onMemberLeft(MemberLeft $event) {
+    public function onMemberLeft(MemberLeft $event)
+    {
         $this->onMemberCountChanged($event->getGroup());
     }
 
@@ -24,7 +27,8 @@ class GroupEventListener
      *
      * @param  \Illuminate\Events\Dispatcher $events
      */
-    public function subscribe($events) {
+    public function subscribe($events)
+    {
         $events->listen(MemberJoined::class, self::class.'@onMemberJoined');
         $events->listen(MemberLeft::class, self::class.'@onMemberLeft');
     }

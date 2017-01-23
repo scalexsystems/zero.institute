@@ -86,7 +86,8 @@ class Employee extends BaseModel implements BelongsToSchool, Person
 
     protected $appends = ['name'];
 
-    public function getNameAttribute() {
+    public function getNameAttribute()
+    {
         return str_replace(
             '  ', ' ',
             $this->attributes['first_name'].' '.
@@ -100,7 +101,8 @@ class Employee extends BaseModel implements BelongsToSchool, Person
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function school() {
+    public function school()
+    {
         return $this->belongsTo(School::class);
     }
 
@@ -109,7 +111,8 @@ class Employee extends BaseModel implements BelongsToSchool, Person
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function department() {
+    public function department()
+    {
         return $this->belongsTo(Department::class);
     }
 
@@ -118,7 +121,8 @@ class Employee extends BaseModel implements BelongsToSchool, Person
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function address() {
+    public function address()
+    {
         return $this->belongsTo(Address::class);
     }
 
@@ -127,7 +131,8 @@ class Employee extends BaseModel implements BelongsToSchool, Person
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function profilePhoto() {
+    public function profilePhoto()
+    {
         return $this->belongsTo(Attachment::class, 'photo_id');
     }
 
@@ -136,11 +141,13 @@ class Employee extends BaseModel implements BelongsToSchool, Person
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphOne
      */
-    public function user() {
+    public function user()
+    {
         return $this->morphOne(User::class, 'person');
     }
 
-    public function getRouteKeyName() {
+    public function getRouteKeyName()
+    {
         return 'uid';
     }
 }

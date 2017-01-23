@@ -10,9 +10,9 @@ class CreateStudentsTable extends Migration
      *
      * @return void
      */
-    public function up() {
+    public function up()
+    {
         Schema::create('students', function (Blueprint $table) {
-
             $table->increments('id');
             // Basic Information
             $table->unsignedBigInteger('photo_id')->nullable();
@@ -80,7 +80,8 @@ class CreateStudentsTable extends Migration
      *
      * @return void
      */
-    public function down() {
+    public function down()
+    {
         Schema::table('students', function (Blueprint $table) {
             $table->dropForeign(['mother_id']);
             $table->dropForeign(['father_id']);

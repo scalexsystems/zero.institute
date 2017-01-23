@@ -6,7 +6,8 @@ use Scalex\Zero\User;
 
 class UserObserver
 {
-    public function created(User $user) {
+    public function created(User $user)
+    {
         Mail::to($user)
             ->queue(
                 new EmailVerificationMail(

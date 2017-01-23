@@ -4,11 +4,13 @@ use Scalex\Zero\Models\Student;
 
 class StudentObserver
 {
-    public function created(Student $student) {
+    public function created(Student $student)
+    {
         cache()->forget(schoolify('stats.people'));
     }
 
-    public function deleted(Student $student) {
+    public function deleted(Student $student)
+    {
         cache()->forget(schoolify('stats.people'));
     }
 }

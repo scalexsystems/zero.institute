@@ -32,6 +32,5 @@ class CreateCourseConstraintsTable extends Migration
      */
     public function down()
     {
-
     }
 }

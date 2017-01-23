@@ -46,7 +46,8 @@ class CourseRepository extends Repository
         'photo_id' => 'nullable|exists:attachments,id',
     ];
 
-    public function boot() {
+    public function boot()
+    {
         if (current_user()) {
             $this->pushCriteria(new OfSchool(current_user()->school));
         }
@@ -154,7 +155,9 @@ class CourseRepository extends Repository
 
     protected function getInstructorIds(array $instructors, int $school)
     {
-        if (count($instructors) === 0) return [];
+        if (count($instructors) === 0) {
+            return [];
+        }
 
         return \DB::table('teachers')->select('id')
             ->where('school_id', $school)
@@ -164,7 +167,9 @@ class CourseRepository extends Repository
 
     protected function getCourseIds(array $courses, int $school)
     {
-        if (count($courses) === 0) return [];
+        if (count($courses) === 0) {
+            return [];
+        }
 
         return \DB::table('courses')->select('id')
             ->where('school_id', $school)
@@ -184,7 +189,7 @@ class CourseRepository extends Repository
     public function findActiveSessions(Course $course, User $user): Collection
     {
         return $this->findSessions($course, $user)->filter(function ($session) {
-                return $session->ended_on->isFuture();
-            });
+            return $session->ended_on->isFuture();
+        });
     }
 }

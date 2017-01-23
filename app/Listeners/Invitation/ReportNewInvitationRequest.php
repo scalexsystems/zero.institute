@@ -16,7 +16,8 @@ class ReportNewInvitationRequest implements ShouldQueue
      *
      * @return void
      */
-    public function handle(InvitationRequest $event) {
+    public function handle(InvitationRequest $event)
+    {
         $name = $event->name;
         Mail::send(
             ['raw' => "New invite request from {$event->email} for {$event->name}."],

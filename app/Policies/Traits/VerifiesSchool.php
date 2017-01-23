@@ -9,8 +9,11 @@
  */
 trait VerifiesSchool
 {
-    public function beforeVerifiesSchool(User $user, $policy, $other = null) {
-        if (isset($this->skipSchoolVerification) and $this->skipSchoolVerification === true) return;
+    public function beforeVerifiesSchool(User $user, $policy, $other = null)
+    {
+        if (isset($this->skipSchoolVerification) and $this->skipSchoolVerification === true) {
+            return;
+        }
 
         return $this->verifySchool($other);
     }
@@ -21,7 +24,8 @@ trait VerifiesSchool
      *
      * @return bool
      */
-    protected function verifySchool($model, $school = null):bool {
+    protected function verifySchool($model, $school = null):bool
+    {
         return verify_school($model, $school);
     }
 }

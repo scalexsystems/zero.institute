@@ -34,7 +34,8 @@ class MessageRepository extends Repository
         'intended_for' => 'nullable|exists:users,id',
     ];
 
-    public function creating(Message $message, array $attributes) {
+    public function creating(Message $message, array $attributes)
+    {
         $message->fill($attributes);
 
         $message->sender()->associate($attributes['sender_id']);

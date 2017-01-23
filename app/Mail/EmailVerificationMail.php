@@ -24,7 +24,8 @@ class EmailVerificationMail extends Mailable implements ShouldQueue
      *
      * @return void
      */
-    public function __construct($name, $url) {
+    public function __construct($name, $url)
+    {
         $this->name = $name;
         $this->url = $url;
     }
@@ -34,7 +35,8 @@ class EmailVerificationMail extends Mailable implements ShouldQueue
      *
      * @return $this
      */
-    public function build() {
+    public function build()
+    {
         return $this->subject('Verify your email address')
                     ->view('emails.user.verify');
     }

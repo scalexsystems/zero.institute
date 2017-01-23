@@ -4,19 +4,23 @@ use Scalex\Zero\Models\Department;
 
 class DepartmentObserver
 {
-    public function created(Department $department) {
+    public function created(Department $department)
+    {
         $this->forgetCached();
     }
 
-    public function updated(Department $department) {
+    public function updated(Department $department)
+    {
         $this->forgetCached();
     }
 
-    public function deleted(Department $department) {
+    public function deleted(Department $department)
+    {
         $this->forgetCached();
     }
 
-    protected function forgetCached() {
+    protected function forgetCached()
+    {
         cache()->forget(schoolify('departments'));
     }
 }

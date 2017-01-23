@@ -35,11 +35,13 @@ class GroupRepository extends Repository
         'owner_id' => 'required|exists:users,id',
     ];
 
-    public function boot() {
+    public function boot()
+    {
         $this->pushCriteria(new OfSchool(current_user()->school));
     }
 
-    public function creating(Group $group, array $attributes) {
+    public function creating(Group $group, array $attributes)
+    {
         $group->fill($attributes);
 
         $group->private = hash_equals('private', $attributes['type']);
@@ -51,7 +53,8 @@ class GroupRepository extends Repository
         return $group->save();
     }
 
-    public function updating(Group $group, array $attributes) {
+    public function updating(Group $group, array $attributes)
+    {
         $group->fill($attributes);
 
         if (array_has($attributes, 'type')) {
@@ -73,7 +76,8 @@ class GroupRepository extends Repository
         return $group->update();
     }
 
-    public function deleting(Group $group) {
+    public function deleting(Group $group)
+    {
         return $group->delete();
     }
 }

@@ -31,7 +31,8 @@ class RoleRepository extends Repository
      */
     protected $rules = [];
 
-    public function assign(Role $role, School $school, array $people){
+    public function assign(Role $role, School $school, array $people)
+    {
         $validUserIds = [];
 
         $people = collect($people)->groupBy('type');

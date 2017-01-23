@@ -10,7 +10,8 @@ class CreateAttachmentsTable extends Migration
      *
      * @return void
      */
-    public function up() {
+    public function up()
+    {
         Schema::create('attachments', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->uuid('slug')->index();
@@ -41,7 +42,8 @@ class CreateAttachmentsTable extends Migration
      *
      * @return void
      */
-    public function down() {
+    public function down()
+    {
         Schema::table('attachments', function (Blueprint $table) {
             $table->dropIndex(['related_id', 'related_type']);
             $table->drop();

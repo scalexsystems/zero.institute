@@ -11,7 +11,8 @@ use Scalex\Zero\Models\Student;
 /* Uses /me Scope. */
 class EnrollmentController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('auth:api,web');
     }
 
@@ -20,7 +21,6 @@ class EnrollmentController extends Controller
      */
     public function index(Request $request, Course $course)
     {
-
         $request->query->set('with', ['user']);
         $session = repository(Course::class)->findActiveSessions($course, $request->user())->first();
 

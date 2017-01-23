@@ -11,7 +11,8 @@ class SchoolController extends Controller
      *
      * GET /schools
      */
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
         $schools = repository(School::class)
             ->with(['address', 'logo'])
             ->pushCriteria(

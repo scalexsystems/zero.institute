@@ -25,7 +25,8 @@ class MakeResourceCommand extends Command
      *
      * @return mixed
      */
-    public function handle() {
+    public function handle()
+    {
         $model = $this->argument('name');
         $class = str_replace('Models/', '', $model);
         $controller = str_replace('Models/', 'Api/', $model).'Controller';

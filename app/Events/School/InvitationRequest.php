@@ -20,7 +20,8 @@ class InvitationRequest implements ShouldBroadcast
      */
     public $email;
 
-    public function __construct(string $name, string $email) {
+    public function __construct(string $name, string $email)
+    {
         $this->name = $name;
         $this->email = $email;
     }
@@ -30,7 +31,8 @@ class InvitationRequest implements ShouldBroadcast
      *
      * @return Channel|array
      */
-    public function broadcastOn() {
+    public function broadcastOn()
+    {
         return new PrivateChannel('zero:invitations');
     }
 }

@@ -49,7 +49,8 @@ class Guardian extends ExtendibleModel implements Person
 
     protected $appends = ['name'];
 
-    public function getNameAttribute() {
+    public function getNameAttribute()
+    {
         return str_replace(
             '  ', ' ',
             $this->attributes['first_name'].' '.
@@ -63,7 +64,8 @@ class Guardian extends ExtendibleModel implements Person
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function school() {
+    public function school()
+    {
         return $this->belongsTo(School::class);
     }
 
@@ -72,7 +74,8 @@ class Guardian extends ExtendibleModel implements Person
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function address() {
+    public function address()
+    {
         return $this->belongsTo(Address::class);
     }
 
@@ -81,7 +84,8 @@ class Guardian extends ExtendibleModel implements Person
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function profilePhoto() {
+    public function profilePhoto()
+    {
         return $this->belongsTo(Attachment::class, 'photo_id');
     }
 }

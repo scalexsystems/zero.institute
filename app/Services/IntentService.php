@@ -6,7 +6,8 @@ use Validator;
 
 class IntentService
 {
-    protected function transformAccountIntent(Intent $intent) {
+    protected function transformAccountIntent(Intent $intent)
+    {
         return [
             'type' => $intent->body['type'] ?? '',
             'uid' => $intent->body['uid'] ?? '',
@@ -18,7 +19,8 @@ class IntentService
         ];
     }
 
-    protected function handleAccountIntent(Request $request, Intent $intent, bool $accept) {
+    protected function handleAccountIntent(Request $request, Intent $intent, bool $accept)
+    {
         if ($accept === false) {
             repository($intent)->update($intent, [
                 'closed' => true,
@@ -41,7 +43,8 @@ class IntentService
         repository(Intent::class)->update($intent, ['closed' => true, 'locked' => true, 'status' => 'accepted']);
     }
 
-    protected function validateAccountIntent(Request $request, Intent $intent) {
+    protected function validateAccountIntent(Request $request, Intent $intent)
+    {
         $type = $request->input('type', $intent->body['type'] ?? null);
 
         if (!in_array($type, ['student', 'teacher', 'employee'])) {

@@ -32,20 +32,23 @@ class DisciplineRepository extends Repository
         'school_id' => 'required|exists:schools,id',
     ];
 
-    public function boot() {
+    public function boot()
+    {
         if (current_user()) {
             $this->pushCriteria(new OfSchool(current_user()->school));
         }
     }
 
-    public function creating(Discipline $discipline, array $attributes) {
+    public function creating(Discipline $discipline, array $attributes)
+    {
         $discipline->fill($attributes);
         $discipline->school()->associate(find($attributes, 'school_id'));
 
         return $discipline->save();
     }
 
-    public function updating(Discipline $discipline, array  $attribute) {
+    public function updating(Discipline $discipline, array  $attribute)
+    {
         $discipline->fill($attribute);
 
         return $discipline->update();

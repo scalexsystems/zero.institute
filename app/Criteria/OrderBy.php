@@ -8,11 +8,13 @@ class OrderBy implements Criteria
 {
     public $columns;
 
-    public function __construct($column, $order = 'asc') {
+    public function __construct($column, $order = 'asc')
+    {
         $this->columns = is_array($column) ? $column : [[$column, $order]];
     }
 
-    public function apply($model, Repository $repository) {
+    public function apply($model, Repository $repository)
+    {
         if (!$model instanceof Builder) {
             foreach ($this->columns as $column) {
                 call_user_func_array([$model, 'orderBy'], (array)$column);

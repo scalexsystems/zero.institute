@@ -12,7 +12,8 @@ use Carbon\Carbon;
 
 class MessageController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('auth:api,web');
     }
 
@@ -21,7 +22,8 @@ class MessageController extends Controller
      * GET /groups/{group}/messages
      * Requires: auth
      */
-    public function index(Group $group, Request $request) {
+    public function index(Group $group, Request $request)
+    {
         $this->authorize('messages', $group);
 
         return
@@ -41,7 +43,8 @@ class MessageController extends Controller
      * POST /groups/{group}/messages
      * Requires: auth
      */
-    public function store(Group $group, Request $request) {
+    public function store(Group $group, Request $request)
+    {
         $this->authorize('send', $group);
 
         $message = repository(Message::class)->create(
@@ -63,7 +66,8 @@ class MessageController extends Controller
      * PUT /groups/{group}/messages/{message}/read
      * Requires: auth
      */
-    public function read(Request $request, $group, Message $message = null) {
+    public function read(Request $request, $group, Message $message = null)
+    {
         if (is_null($message)) {
             $message = $group;
         }
@@ -91,5 +95,4 @@ class MessageController extends Controller
 
         return $this->accepted();
     }
-
 }

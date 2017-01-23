@@ -2,5 +2,4 @@
 
 class Authenticate extends \Illuminate\Auth\Middleware\Authenticate
 {
-
 }

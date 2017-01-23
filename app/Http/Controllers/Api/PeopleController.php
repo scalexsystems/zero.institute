@@ -15,7 +15,8 @@ use Znck\Trust\Models\Role;
 
 class PeopleController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('auth:api,web');
     }
 
@@ -24,7 +25,8 @@ class PeopleController extends Controller
      * GET /people
      * Require: auth
      */
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
         $request->query->set('with', 'person');
 
         $users = repository(User::class)
@@ -42,7 +44,8 @@ class PeopleController extends Controller
         return $users->paginate();
     }
 
-    public function show(Request $request, $person) {
+    public function show(Request $request, $person)
+    {
         $request->query->set('with', 'person');
         $user = repository(User::class)
             ->with(['person', 'profilePhoto', 'person.profilePhoto'])
@@ -57,7 +60,8 @@ class PeopleController extends Controller
      * GET /people/stats
      * Require: auth, permission:school-stats
      */
-    public function stats() {
+    public function stats()
+    {
         // FIXME: Check permission here!
         // FIXME: Move to other controller.
 
@@ -85,5 +89,4 @@ class PeopleController extends Controller
             }),
         ];
     }
-
 }

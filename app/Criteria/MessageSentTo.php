@@ -8,11 +8,13 @@ class MessageSentTo implements Criteria
 {
     protected $receiver;
 
-    public function __construct(ReceivesMessage $receiver) {
+    public function __construct(ReceivesMessage $receiver)
+    {
         $this->receiver = $receiver;
     }
 
-    public function apply($query, Repository $repository) {
+    public function apply($query, Repository $repository)
+    {
         $query->where('receiver_id', $this->receiver->getKey())
               ->where('receiver_type', $this->receiver->getMorphClass());
     }

@@ -10,18 +10,22 @@ class TeacherPolicy extends AbstractPolicy
 {
     use VerifiesSchool, IsHimself;
 
-    public function index(User $user) {
+    public function index(User $user)
+    {
         return true;
     }
 
-    public function view(User $user, Teacher $teacher) {
+    public function view(User $user, Teacher $teacher)
+    {
         return trust($user)->to(Action::VIEW_TEACHER) or $this->isHimself($user, $teacher);
     }
 
-    public function readAddress(User $user, Teacher $teacher) {
+    public function readAddress(User $user, Teacher $teacher)
+    {
         return $this->view($user, $teacher);
     }
-    public function invite(User $user){
+    public function invite(User $user)
+    {
         return true;
         return trust($user)->to(Action::INVITE_STUDENT);
     }

@@ -1,6 +1,5 @@
 <?php namespace Scalex\Zero\Http\Controllers\Api\Messages;
 
-
 use Ramsey\Uuid\Uuid;
 use Znck\Attach\Builder;
 use Znck\Attach\Processors\Resize;
@@ -12,7 +11,8 @@ use Scalex\Zero\User;
 
 class FileController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('auth:api,web');
     }
 
@@ -21,7 +21,8 @@ class FileController extends Controller
      * POST /groups/{group}/file
      * Requires: auth
      */
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         $this->validate($request, ['file' => 'required']);
 
         $schoolId = $request->user()->school_id;
@@ -47,7 +48,8 @@ class FileController extends Controller
         return $file;
     }
 
-    protected function isImage($file) {
+    protected function isImage($file)
+    {
         return in_array($file->guessExtension(), ['jpeg', 'png', 'gif', 'bmp']);
     }
 }
