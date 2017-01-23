@@ -3,7 +3,7 @@
   <div class="row hub-body">
     <div class="col-xs-12 col-lg-2 hub-sidebar-left fl fl-ver py-1" ref="sidebarLeft" @click="closeSidebar">
       <router-link v-if="user.permissions && user.permissions.courses" class="btn btn-text text-xs-left" :to="{ name: 'acad' }">
-        <i class="fa fa-fw fa-book" /> Manage Courses
+            <img src="../assets/manage-courses.svg"> Manage Courses
       </router-link>
 
       <course-list />
