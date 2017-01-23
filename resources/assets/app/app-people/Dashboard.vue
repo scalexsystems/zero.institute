@@ -10,8 +10,8 @@
                 <div class="title">Students</div>
                 <div class="count">{{ stats.student }}</div>
                 <div class="subtitle">
-                  <span :class="{'text-muted': studentRequests.count == 0, 'text-danger': studentRequests.count > 0}">
-                    {{ studentRequests.count_text }}
+                  <span :class="{'text-muted': requests.student.count == 0, 'text-danger': requests.student.count > 0}">
+                    {{ requests.student.count_text }}
                   </span>
                 </div>
               </div>
@@ -21,8 +21,8 @@
                 <div class="title">Teachers</div>
                 <div class="count">{{ stats.teacher }}</div>
                 <div class="subtitle">
-                  <span :class="{'text-muted': teacherRequests.count == 0, 'text-danger': teacherRequests.count > 0}">
-                    {{ teacherRequests.count_text }}
+                  <span :class="{'text-muted': requests.teacher.count == 0, 'text-danger': requests.teacher.count > 0}">
+                    {{ requests.teacher.count_text }}
                   </span>
                 </div>
               </div>
@@ -32,8 +32,8 @@
                 <div class="title">Employees</div>
                 <div class="count">{{ stats.employee }}</div>
                 <div class="subtitle">
-                  <span :class="{'text-muted': employeeRequests.count == 0, 'text-danger': employeeRequests.count > 0}">
-                    {{ employeeRequests.count_text }}
+                  <span :class="{'text-muted': requests.employee.count == 0, 'text-danger': requests.employee.count > 0}">
+                    {{ requests.employee.count_text }}
                   </span>
                 </div>
               </div>
@@ -117,45 +117,74 @@
 </template>
 
 <script lang="babel">
-import { WindowBox } from '../components'
-
+import { WindowBox } from '../components';
 export default {
   components: { WindowBox },
-  computed: {
-    stats: () => ({
-      student: 0,
-      teacher: 0,
-      employee: 0
-    }),
-    studentRequests: () => ({ count: 0, count_text: '0 requests pending' }),
-    teacherRequests: () => ({ count: 0, count_text: '0 requests pending' }),
-    employeeRequests: () => ({ count: 0, count_text: '0 requests pending' }),
-    stages: () => [
-      {
-        name: 'Digital Profiles',
-        desc: 'Create Profiles for Students and Employees.',
-        completed: true
+  created() {
+    if (!this.checkStats()) {
+      this.updateStats();
+    }
+  },
+  data() {
+    return {
+      stats: {
+        student: 0,
+        teacher: 0,
+        employee: 0,
       },
-      {
-        name: 'Academia',
-        desc: 'Courses and discussion hub.',
-        completed: true
+      requests: {
+        student: { count: 0, count_text: '0 requests pending' },
+        teacher: { count: 0, count_text: '0 requests pending' },
+        employee: { count: 0, count_text: '0 requests pending' },
       },
-      {
-        name: 'Attendance',
-        desc: 'Student attendance via mobile app.'
+     };
+    },
+   computed: {
+     stages: () => [
+       {
+         name: 'Digital Profiles',
+          desc: 'Create Profiles for Students and Employees.',
+          completed: true,
+        },
+        {
+          name: 'Academia',
+          desc: 'Courses and discussion hub.',
+          completed: true,
+        },
+        {
+          name: 'Attendance',
+          desc: 'Student attendance via mobile app.',
+        },
+        {
+          name: 'Institute Events',
+          desc: 'Add and share institute events.',
+        },
+        {
+          name: 'Registrations and Finances',
+          desc: 'Semester Registration and fees.',
+        },
+      ],
       },
-      {
-        name: 'Institute Events',
-        desc: 'Add and share institute events.'
-      },
-      {
-        name: 'Registrations and Finances',
-        desc: 'Semester Registration and fees.'
-      }
-    ]
-  }
-}
+   methods: {
+    updateStats() {
+      this.$http.get('people/stats')
+     .then(response => response.json())
+     .then((result) => {
+       this.stats = result.accounts;
+       this.request.map((request, key) => ({
+       count: result.requests[key],
+         count_text: `${result.requests[key]} requests pending`,
+       }),
+       );
+      })
+     .catch(response => response);
+     },
+    checkStats() {
+      const empty = Object.keys(this.stats).filter(stat => this.stats[stat] === 0);
+      return Object.keys(empty).length === 0;
+    },
+  },
+};
 </script>
 
 <style lang="scss">
