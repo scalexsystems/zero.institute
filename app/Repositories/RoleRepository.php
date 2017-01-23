@@ -17,8 +17,6 @@ use Znck\Trust\Models\Role;
  */
 class RoleRepository extends Repository
 {
-    use \Znck\Repositories\Traits\RepositoryHelper;
-
     /**
      * Class name of the Eloquent model.
      *
@@ -33,7 +31,8 @@ class RoleRepository extends Repository
      */
     protected $rules = [];
 
-    public function assign(Role $role, School $school, array $people){
+    public function assign(Role $role, School $school, array $people)
+    {
         $validUserIds = [];
 
         $people = collect($people)->groupBy('type');

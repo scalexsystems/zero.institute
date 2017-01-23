@@ -6,7 +6,8 @@ use Scalex\Zero\Models\School;
 
 class CurrentSchoolController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('auth:api,web');
     }
 
@@ -17,7 +18,8 @@ class CurrentSchoolController extends Controller
      *
      * Requires: auth
      */
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
         $request->query->add(['with' => 'address']);
 
         return $request->user()->school;
@@ -30,7 +32,8 @@ class CurrentSchoolController extends Controller
      *
      * Requires: auth
      */
-    public function update(Request $request) {
+    public function update(Request $request)
+    {
         $school = $request->user()->school;
 
         $this->authorize($school);

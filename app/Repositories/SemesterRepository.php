@@ -14,8 +14,6 @@ use Znck\Repositories\Repository;
  */
 class SemesterRepository extends Repository
 {
-    use \Znck\Repositories\Traits\RepositoryHelper;
-
     /**
      * Class name of the Eloquent model.
      *
@@ -33,20 +31,23 @@ class SemesterRepository extends Repository
         'school_id' => 'required|exists:schools,id',
     ];
 
-    public function boot() {
+    public function boot()
+    {
         if (current_user()) {
             $this->pushCriteria(new OfSchool(current_user()->school));
         }
     }
 
-    public function creating(Semester $semester, array $attributes) {
+    public function creating(Semester $semester, array $attributes)
+    {
         $semester->fill($attributes);
         $semester->school()->associate(find($attributes, 'school_id'));
 
         return $semester->save();
     }
 
-    public function updating(Semester $semester, array  $attribute) {
+    public function updating(Semester $semester, array  $attribute)
+    {
         $semester->fill($attribute);
 
         return $semester->update();

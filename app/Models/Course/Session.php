@@ -16,19 +16,23 @@ class Session extends Model
 
     protected $dates = ['started_on', 'ended_on'];
 
-    public function course() {
+    public function course()
+    {
         return $this->belongsTo(Course::class);
     }
 
-    public function instructor() {
+    public function instructor()
+    {
         return $this->belongsTo(Teacher::class);
     }
 
-    public function group() {
+    public function group()
+    {
         return $this->belongsTo(Group::class);
     }
 
-    public function students() {
+    public function students()
+    {
         return $this->belongsToMany(Student::class, 'course_session_student');
     }
 }

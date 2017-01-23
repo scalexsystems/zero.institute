@@ -3,12 +3,12 @@
 use Scalex\Zero\Models\Guardian;
 use Znck\Transformers\Transformer;
 
-
 class GuardianTransformer extends Transformer
 {
     protected $availableIncludes = ['address'];
 
-    public function show(Guardian $guardian) {
+    public function show(Guardian $guardian)
+    {
         return [
             'name' => (string)$guardian->name,
 
@@ -37,7 +37,8 @@ class GuardianTransformer extends Transformer
     }
 
 
-    public function includeAddress(Guardian $guardian) {
+    public function includeAddress(Guardian $guardian)
+    {
         return allow(
             'read-address', $guardian,
             $this->item($guardian->address, transformer($guardian->address)),

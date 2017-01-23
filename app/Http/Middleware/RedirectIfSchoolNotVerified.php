@@ -40,11 +40,10 @@ class RedirectIfSchoolNotVerified
      */
     public function handle($request, Closure $next)
     {
-        if ( ! $this->shouldPassThrough($request) and \Auth::check() ) {
+        if (! $this->shouldPassThrough($request) and \Auth::check()) {
             $school = $request->user()->school;
 
             if ($school->verified !== true) {
-
                 return redirect('/setup');
             }
         }

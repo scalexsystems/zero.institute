@@ -10,7 +10,8 @@ use Scalex\Zero\Services\IntentService;
 
 class IntentController extends Controller
 {
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
         $this->authorize('index', Intent::class);
 
         if (!$request->has('tag')) {
@@ -25,7 +26,8 @@ class IntentController extends Controller
         return $intents->paginate();
     }
 
-    public function show(Request $request, Intent $intent) {
+    public function show(Request $request, Intent $intent)
+    {
         $this->authorize($intent);
 
         $request->query->set('with', ['user', 'user.profilePhoto']);
@@ -33,7 +35,8 @@ class IntentController extends Controller
         return $intent;
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         $this->authorize('store', Intent::class);
 
         $type = $request->input('tag');
@@ -47,7 +50,8 @@ class IntentController extends Controller
         return $intent;
     }
 
-    public function update(Request $request, Intent $intent) {
+    public function update(Request $request, Intent $intent)
+    {
         $this->authorize($intent);
 
         $this->validateIntent($request, $intent);
@@ -56,7 +60,8 @@ class IntentController extends Controller
         return $this->accepted();
     }
 
-    public function lock(Intent $intent) {
+    public function lock(Intent $intent)
+    {
         $this->authorize($intent);
 
         repository(Intent::class)->update($intent, ['locked' => true]);
@@ -64,7 +69,8 @@ class IntentController extends Controller
         return $this->accepted();
     }
 
-    public function accept(Request $request, Intent $intent) {
+    public function accept(Request $request, Intent $intent)
+    {
         $this->authorize($intent);
 
         $this->validateIntent($request, $intent);
@@ -73,7 +79,8 @@ class IntentController extends Controller
         return $this->accepted();
     }
 
-    public function reject(Request $request, Intent $intent) {
+    public function reject(Request $request, Intent $intent)
+    {
         $this->authorize($intent);
 
         $this->processIntent($request, $intent, false);
@@ -81,7 +88,8 @@ class IntentController extends Controller
         return $this->accepted();
     }
 
-    protected function validateIntent(Request $request, Intent $intent):void {
+    protected function validateIntent(Request $request, Intent $intent):void
+    {
         $method = 'validate'.Str::studly($intent->tag).'Intent';
         $service = app(IntentService::class);
         if (!method_exists($service, $method)) {
@@ -90,7 +98,8 @@ class IntentController extends Controller
         $service->$method($request, $intent);
     }
 
-    protected function processIntent(Request $request, Intent $intent, bool $accept = true) {
+    protected function processIntent(Request $request, Intent $intent, bool $accept = true)
+    {
         $method = 'handle'.Str::studly($intent->tag).'Intent';
         $service = app(IntentService::class);
         if (!method_exists($service, $method)) {
@@ -99,7 +108,8 @@ class IntentController extends Controller
         $service->$method($request, $intent, $accept);
     }
 
-    protected function canHandleIntent(string $type): bool {
+    protected function canHandleIntent(string $type): bool
+    {
         $method = 'handle'.Str::studly($intent->tag).'Intent';
         $service = app(IntentService::class);
 

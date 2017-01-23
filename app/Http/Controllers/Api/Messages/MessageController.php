@@ -11,7 +11,8 @@ use Scalex\Zero\User;
 
 class MessageController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('auth:api,web');
     }
 
@@ -20,7 +21,8 @@ class MessageController extends Controller
      * GET /messages/users/{user}
      * Required: auth
      */
-    public function index(Request $request, User $user) {
+    public function index(Request $request, User $user)
+    {
         return repository(Message::class)
             ->pushCriteria(new MessageBetween($user, $request->user()))
             ->pushCriteria(new OrderBy('id', 'desc'))
@@ -37,7 +39,8 @@ class MessageController extends Controller
      * POST /messages/users/{user}
      * Required: auth
      */
-    public function store(Request $request, User $user) {
+    public function store(Request $request, User $user)
+    {
         $message = repository(Message::class)->create(
             [
                 'sender' => $request->user(),
@@ -57,7 +60,8 @@ class MessageController extends Controller
      * POST /messages/{message}/read
      * Required: auth
      */
-    public function read(Message $message) {
+    public function read(Message $message)
+    {
         $this->authorize('read', $message);
 
         if (is_null($message->read_at)) {

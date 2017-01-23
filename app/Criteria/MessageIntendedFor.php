@@ -11,11 +11,13 @@ class MessageIntendedFor implements Criteria
      */
     protected $user;
 
-    public function __construct(User $user = null) {
+    public function __construct(User $user = null)
+    {
         $this->user = $user;
     }
 
-    public function apply($query, Repository $repository) {
+    public function apply($query, Repository $repository)
+    {
         if (!is_null($this->user)) {
             $query->where(function ($query) {
                 /** @var \Illuminate\Database\Query\Builder $query */

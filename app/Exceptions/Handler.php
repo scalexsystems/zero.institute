@@ -46,11 +46,13 @@ class Handler extends ExceptionHandler
      *
      * @return \Illuminate\Http\Response
      */
-    protected function unauthenticated($request, AuthenticationException $exception) {
+    protected function unauthenticated($request, AuthenticationException $exception)
+    {
         return redirect()->guest('login');
     }
 
-    protected function unauthenticatedApi($request, AuthenticationException $exception) {
+    protected function unauthenticatedApi($request, AuthenticationException $exception)
+    {
         return response()->json(['error' => 'unauthenticated'], 403);
     }
 
@@ -62,7 +64,8 @@ class Handler extends ExceptionHandler
      *
      * @return \Symfony\Component\HttpFoundation\Response|void
      */
-    public function render($request, Exception $e) {
+    public function render($request, Exception $e)
+    {
         if (Str::startsWith($request->getPathInfo(), ['/api', '/broadcasting'])) {
             return $this->renderForApi($request, $e);
         }
@@ -78,7 +81,8 @@ class Handler extends ExceptionHandler
      *
      * @return \Symfony\Component\HttpFoundation\Response|void
      */
-    public function renderForApi($request, $e) {
+    public function renderForApi($request, $e)
+    {
         if (
             $e instanceof UpdateResourceException or
             $e instanceof StoreResourceException or
@@ -89,7 +93,7 @@ class Handler extends ExceptionHandler
             return $this->unauthenticatedApi($request, $e);
         } elseif ($e instanceof AuthorizationException) {
             return response()->json(['message' => 'You are not authorised to access this content.'], Response::HTTP_UNAUTHORIZED);
-        }  elseif ($e instanceof ValidationException) {
+        } elseif ($e instanceof ValidationException) {
             return $this->convertValidationExceptionToJson($e, $request);
         } elseif (
             $e instanceof NotFoundHttpException or
@@ -127,7 +131,8 @@ class Handler extends ExceptionHandler
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function convertValidationExceptionToJson($e, $request) {
+    public function convertValidationExceptionToJson($e, $request)
+    {
         return response()->json(
             [
                 'message' => $e->getMessage(),

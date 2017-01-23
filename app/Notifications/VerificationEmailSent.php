@@ -10,7 +10,8 @@ class VerificationEmailSent extends Notification implements ShouldQueue
 
     public $email;
 
-    public function __construct(string $email) {
+    public function __construct(string $email)
+    {
         $this->email = $email;
     }
 
@@ -21,7 +22,8 @@ class VerificationEmailSent extends Notification implements ShouldQueue
      *
      * @return array
      */
-    public function via($notifiable) {
+    public function via($notifiable)
+    {
         return ['database'];
     }
 
@@ -32,13 +34,15 @@ class VerificationEmailSent extends Notification implements ShouldQueue
      *
      * @return array
      */
-    public function toArray($notifiable) {
+    public function toArray($notifiable)
+    {
         return [
             'message' => 'Verification email has been sent to '.$this->email.'.',
         ];
     }
 
-    public function toBroadcast($notifiable) {
+    public function toBroadcast($notifiable)
+    {
         return $this->toArray($notifiable);
     }
 }

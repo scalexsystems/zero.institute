@@ -20,8 +20,6 @@ use Znck\Repositories\Repository;
  */
 class StudentRepository extends Repository
 {
-    use \Znck\Repositories\Traits\RepositoryHelper;
-
     /**
      * Class name of the Eloquent model.
      *
@@ -79,13 +77,15 @@ class StudentRepository extends Repository
         'school_id' => 'required|exists:schools,id',
     ];
 
-    public function boot() {
+    public function boot()
+    {
         if (current_user()) {
             $this->pushCriteria(new OfSchool(current_user()->school));
         }
     }
 
-    public function getRules(array $attributes, Model $model = null): array {
+    public function getRules(array $attributes, Model $model = null): array
+    {
         $data = parent::getRules($attributes, $model);
         $data['uid'] .= current_user()->school_id;
 
@@ -99,7 +99,8 @@ class StudentRepository extends Repository
      *
      * @return array
      */
-    public function getUpdateRules(array $rules, array $attributes, $student) {
+    public function getUpdateRules(array $rules, array $attributes, $student)
+    {
         $rules += array_dot(
             [
                 'address' => repository(Address::class)->getRules($attributes, $student->address),
@@ -110,7 +111,8 @@ class StudentRepository extends Repository
         return array_only($rules, array_keys($attributes));
     }
 
-    public function getCreateRules(array $attributes) {
+    public function getCreateRules(array $attributes)
+    {
         $guardianRules = repository(Guardian::class)->getRules($attributes);
 
         return $this->rules + array_dot(
@@ -121,7 +123,8 @@ class StudentRepository extends Repository
             ]);
     }
 
-    public function creating(Student $student, array $attributes) {
+    public function creating(Student $student, array $attributes)
+    {
         $student->fill($attributes);
 
         // Start Transaction.
@@ -146,7 +149,8 @@ class StudentRepository extends Repository
         return $status;
     }
 
-    public function updating(Student $student, array $attributes) {
+    public function updating(Student $student, array $attributes)
+    {
         $student->fill($attributes);
 
         // Start Transaction.
@@ -177,7 +181,8 @@ class StudentRepository extends Repository
         return $student->update();
     }
 
-    public function getBio(Student $student) {
+    public function getBio(Student $student)
+    {
         return 'Student ・ '
                .($student->department->short_name ?? $student->department->name).' '
                .$student->date_of_admission->year;
@@ -185,11 +190,16 @@ class StudentRepository extends Repository
 
     public function filterBySchool($students, School $school): Collection
     {
-        if (is_array($students)) $students = collect($students);
-        else if (! ($students instanceof Collection)) throw new \InvalidArgumentException('Expected array or collection.');
+        if (is_array($students)) {
+            $students = collect($students);
+        } elseif (! ($students instanceof Collection)) {
+            throw new \InvalidArgumentException('Expected array or collection.');
+        }
 
         $ids = $students->map(function ($student) {
-            if ($student instanceof Student) return $student->getKey();
+            if ($student instanceof Student) {
+                return $student->getKey();
+            }
 
             return (int) $student;
         })->toArray();

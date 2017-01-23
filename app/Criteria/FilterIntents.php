@@ -14,11 +14,13 @@ class FilterIntents implements Criteria
      *
      * @param array|Request $request
      */
-    public function __construct($request) {
+    public function __construct($request)
+    {
         $this->request = new Collection($request instanceof Request ? $request->query() : $request);
     }
 
-    public function apply($query, Repository $repository) {
+    public function apply($query, Repository $repository)
+    {
         if ($this->request->has('tag')) {
             $query->where('tag', $this->request->get('tag'));
         }

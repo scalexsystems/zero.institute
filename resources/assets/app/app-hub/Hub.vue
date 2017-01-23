@@ -4,6 +4,7 @@
     <div class="col-xs-12 col-lg-2 hub-sidebar-left fl fl-ver py-1" ref="sidebarLeft" @click="closeSidebar">
       <router-link v-if="user.permissions && user.permissions.courses" class="btn btn-text text-xs-left" :to="{ name: 'acad' }">
             <img src="../assets/manage-courses.svg"> Manage Courses
+
       </router-link>
 
       <course-list />

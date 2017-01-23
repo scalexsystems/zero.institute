@@ -5,13 +5,15 @@ use Znck\Transformers\Transformer;
 
 class GroupTransformer extends Transformer
 {
-    public function show(Group $group) {
+    public function show(Group $group)
+    {
         return $this->index($group) + [
             'owner' => transform($group->owner),
         ];
     }
 
-    public function index(Group $group) {
+    public function index(Group $group)
+    {
         $user = current_user();
         return [
             'name' => (string)$group->name,

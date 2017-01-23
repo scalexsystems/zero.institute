@@ -8,7 +8,8 @@ use Scalex\Zero\User;
 
 class BroadcastServiceProvider extends ServiceProvider
 {
-    public function boot() {
+    public function boot()
+    {
         $this->registerRoutes();
         Broadcast::channel($this->channel(User::class), function (User $user, $userId) {
             return (int)$user->id === (int)$userId;
@@ -22,11 +23,13 @@ class BroadcastServiceProvider extends ServiceProvider
         });
     }
 
-    protected function channel($class):string {
+    protected function channel($class):string
+    {
         return morph_model($class).'-*';
     }
 
-    protected function registerRoutes() {
+    protected function registerRoutes()
+    {
         if ($this->app->routesAreCached()) {
             return;
         }

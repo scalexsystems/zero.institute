@@ -5,7 +5,7 @@ use Scalex\Zero\Contracts\Database\BelongsToSchool;
 use Scalex\Zero\Database\BaseModel;
 use Scalex\Zero\User;
 
-class Intent extends BaseModel  implements BelongsToSchool
+class Intent extends BaseModel implements BelongsToSchool
 {
     use SoftDeletes;
 
@@ -23,11 +23,13 @@ class Intent extends BaseModel  implements BelongsToSchool
         'closed' => 'bool',
     ];
 
-    public function school() {
+    public function school()
+    {
         return $this->belongsTo(School::class);
     }
 
-    public function user() {
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 }

@@ -15,7 +15,8 @@ abstract class BaseModel extends ExtendibleModel
 
     protected $searchable = ['*'];
 
-    public function toSearchableArray() {
+    public function toSearchableArray()
+    {
         $fields = $this->getSearchableFields();
 
         if ($fields === ['*']) {
@@ -33,7 +34,8 @@ abstract class BaseModel extends ExtendibleModel
         return $data;
     }
 
-    public function getSearchableFields(): array {
+    public function getSearchableFields(): array
+    {
         return $this->searchable;
     }
 }

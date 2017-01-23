@@ -108,7 +108,8 @@ class InvitationMailer implements ShouldQueue
         return $users;
     }
 
-    public function createRelated($emails) {
+    public function createRelated($emails)
+    {
         $timestamp = Carbon::now();
 
         if ($this->type === 'teacher') {

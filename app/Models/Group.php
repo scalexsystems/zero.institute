@@ -20,23 +20,28 @@ class Group extends BaseModel implements ReceivesMessage
 
     protected $isMemberCache = [];
 
-    public function members() {
+    public function members()
+    {
         return $this->belongsToMany(User::class)->withTimestamps();
     }
 
-    public function owner() {
+    public function owner()
+    {
         return $this->belongsTo(User::class);
     }
 
-    public function school() {
+    public function school()
+    {
         return $this->belongsTo(School::class);
     }
 
-    public function profilePhoto() {
+    public function profilePhoto()
+    {
         return $this->belongsTo(Attachment::class, 'photo_id');
     }
 
-    public function lastMessageAt() {
+    public function lastMessageAt()
+    {
         return new LastMessageAt((new Message())->newQuery(), $this);
     }
 
@@ -46,11 +51,13 @@ class Group extends BaseModel implements ReceivesMessage
     |
     */
 
-    public function isAdmin(User $member) {
+    public function isAdmin(User $member)
+    {
         return false;
     }
 
-    public function isMember(User $member) {
+    public function isMember(User $member)
+    {
         $id = $member->getKey();
 
         if (array_key_exists($id, $this->isMemberCache)) {
@@ -72,7 +79,8 @@ class Group extends BaseModel implements ReceivesMessage
      *
      * @return array
      */
-    public function filterMemberIds($members) {
+    public function filterMemberIds($members)
+    {
         if ($members instanceof Collection) {
             $members = $members->modelKeys();
         }
@@ -90,7 +98,8 @@ class Group extends BaseModel implements ReceivesMessage
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function filterMembers($members) {
+    public function filterMembers($members)
+    {
         return User::findMany($this->filterMemberIds($members));
     }
 
@@ -101,7 +110,8 @@ class Group extends BaseModel implements ReceivesMessage
      *
      * @return array
      */
-    public function filterNonMemberIds($members) {
+    public function filterNonMemberIds($members)
+    {
         if ($members instanceof Collection) {
             $members = $members->modelKeys();
         }
@@ -114,11 +124,13 @@ class Group extends BaseModel implements ReceivesMessage
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function filterNonMembers($members) {
+    public function filterNonMembers($members)
+    {
         return User::findMany($this->filterNonMemberIds($members));
     }
 
-    public function addMembers(array $ids) {
+    public function addMembers(array $ids)
+    {
         $prepared = $this->prepareMemberIds($ids);
         $ids = $prepared['ids'];
 
@@ -131,7 +143,8 @@ class Group extends BaseModel implements ReceivesMessage
         return $prepared;
     }
 
-    public function removeMembers(array $ids) {
+    public function removeMembers(array $ids)
+    {
         $prepared = $this->prepareMemberIds($ids, false);
         $ids = $prepared['ids'];
 
@@ -144,11 +157,13 @@ class Group extends BaseModel implements ReceivesMessage
         return $prepared;
     }
 
-    public function getChannelName() : string {
+    public function getChannelName() : string
+    {
         return $this->getMorphClass().'-'.$this->getKey();
     }
 
-    public function getChannel() {
+    public function getChannel()
+    {
         return new PresenceChannel($this->getChannelName());
     }
 
@@ -157,7 +172,8 @@ class Group extends BaseModel implements ReceivesMessage
      *
      * @return array
      */
-    protected function prepareMemberIds(array $ids, bool $add = true):array {
+    protected function prepareMemberIds(array $ids, bool $add = true):array
+    {
         $method = $add ? 'filterNonMemberIds' : 'filterMemberIds';
         $ids = $original = array_map(function ($v) {
             return (int)$v;

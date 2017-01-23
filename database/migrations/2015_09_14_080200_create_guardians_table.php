@@ -11,7 +11,8 @@ class CreateGuardiansTable extends Migration
      *
      * @return void
      */
-    public function up() {
+    public function up()
+    {
         Schema::create('guardians', function (Blueprint $table) {
             $table->increments('id');
 
@@ -65,7 +66,8 @@ class CreateGuardiansTable extends Migration
      *
      * @return void
      */
-    public function down() {
+    public function down()
+    {
         Schema::table('guardians', function (Blueprint $table) {
             $table->dropForeign(['photo_id']);
             $table->dropForeign(['address_id']);

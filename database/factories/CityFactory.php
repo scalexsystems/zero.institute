@@ -9,7 +9,7 @@ $factory->define(Scalex\Zero\Models\Geo\City::class, function (Faker\Generator $
         'name' => $f->city,
         'code' => $f->unique()->countryCode.' '.$f->unique()->countryISOAlpha3,
         'state_id' => $state_id ?? function () {
-                return factory(Scalex\Zero\Models\Geo\State::class)->create()->id;
-            },
+            return factory(Scalex\Zero\Models\Geo\State::class)->create()->id;
+        },
     ];
 });

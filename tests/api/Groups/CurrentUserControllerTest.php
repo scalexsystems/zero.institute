@@ -3,11 +3,13 @@ use Scalex\Zero\Models\Group;
 
 class CurrentUserControllerTest extends TestCase
 {
-    public function createGroup($attributes = []) {
+    public function createGroup($attributes = [])
+    {
         return factory(Group::class)->create($attributes);
     }
 
-    public function test_it_can_list_all_groups() {
+    public function test_it_can_list_all_groups()
+    {
         $user = $this->createAnUser();
         $groups = factory(Group::class, 2)->create([
             'school_id' => $user->school_id,
@@ -24,7 +26,8 @@ class CurrentUserControllerTest extends TestCase
             ->seeJsonContains(transform($groups));
     }
 
-    public function test_it_can_join_group() {
+    public function test_it_can_join_group()
+    {
         $user = $this->createAnUser();
         $group = $this->createGroup(['school_id' => $user->school_id, 'private' => false]);
 
@@ -37,7 +40,8 @@ class CurrentUserControllerTest extends TestCase
             ]);
     }
 
-    public function test_it_can_remove_members() {
+    public function test_it_can_remove_members()
+    {
         $user = $this->createAnUser();
         $group = $this->createGroup(['school_id' => $user->school_id]);
         $group->addMembers([$user->id]);

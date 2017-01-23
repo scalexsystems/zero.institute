@@ -7,11 +7,13 @@ use Scalex\Zero\Models\Semester;
 
 class SemesterController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('auth:api,web');
     }
 
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
         return cache()->rememberForever(
             schoolify('semesters'),
             function () use ($request) {
@@ -20,7 +22,8 @@ class SemesterController extends Controller
         );
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         $this->authorize('store', Semester::class);
 
         $semester = repository(Semester::class)->create(
@@ -33,7 +36,8 @@ class SemesterController extends Controller
         return $semester;
     }
 
-    public function update(Request $request, $semester) {
+    public function update(Request $request, $semester)
+    {
         $semester = repository(Semester::class)->find($semester);
         $this->authorize($semester);
 
@@ -42,7 +46,8 @@ class SemesterController extends Controller
         return $semester;
     }
 
-    public function getPeopleCount(Request $request) {
+    public function getPeopleCount(Request $request)
+    {
         $disciplines = repository(Semester::class)->all();
 
         $students = DB::table('students')

@@ -11,7 +11,8 @@ use Carbon\Carbon;
 
 class CourseController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('auth:api,web');
     }
 
@@ -20,7 +21,8 @@ class CourseController extends Controller
      * GET /courses
      * Requires: auth
      */
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
         $this->authorize('index', Course::class);
 
         $courses = repository(Course::class)->with(['photo', 'sessions', 'instructors', 'prerequisites']);
@@ -39,7 +41,8 @@ class CourseController extends Controller
      * GET /courses/{course}
      * Required: auth
      */
-    public function show(Request $request, Course $course) {
+    public function show(Request $request, Course $course)
+    {
         $this->authorize($course);
 
         return $course;
@@ -50,7 +53,8 @@ class CourseController extends Controller
      * POST /courses
      * Requires: auth
      */
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         $this->authorize('store', Course::class);
 
         $course = repository(Course::class)->create(
@@ -76,7 +80,8 @@ class CourseController extends Controller
      * PUT /courses/{course}
      * Requires: auth
      */
-    public function update(Request $request, Course $course) {
+    public function update(Request $request, Course $course)
+    {
         $this->authorize('update', $course);
 
         repository($course)->update($course, $request->all());
@@ -84,11 +89,13 @@ class CourseController extends Controller
         $course->fresh('instructors');
 
         $teacher = $course->instructors->first();
-        $session = $course->sessions->filter(function ($session) { return $session->ended_on->isFuture(); })->first();
+        $session = $course->sessions->filter(function ($session) {
+            return $session->ended_on->isFuture();
+        })->first();
 
         if ($teacher and $session) {
             repository(Session::class)->update($session, [ 'instructor_id' => $teacher->getKey() ]);
-        } else if ($teacher) {
+        } elseif ($teacher) {
             repository(Session::class)->create([
                 'course_id' => $course->getKey(),
                 'instructor_id' => $teacher->getKey(),
@@ -105,7 +112,8 @@ class CourseController extends Controller
      * DELETE /courses/{course}
      * Requried: auth
      */
-    public function destroy(Request $request, Course $course) {
+    public function destroy(Request $request, Course $course)
+    {
         $this->authorize('delete', $course);
 
         repository($course)->delete($course);

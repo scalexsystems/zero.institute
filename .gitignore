@@ -9,6 +9,7 @@ Homestead.yaml
 hot
 npm-debug.log
 /tests/reports
+.php_cs.cache
 
 ## FORCE ADD ON PRODUCTION BUILD
 /public/js

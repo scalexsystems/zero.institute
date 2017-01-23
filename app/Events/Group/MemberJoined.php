@@ -25,7 +25,8 @@ class MemberJoined implements ShouldBroadcast
      * @param array|Model $ids
      * @param \Scalex\Zero\Models\Group $group
      */
-    public function __construct($ids, Group $group) {
+    public function __construct($ids, Group $group)
+    {
         if ($ids instanceof Model) {
             $this->members = (array)$ids->getKey();
         }
@@ -37,14 +38,16 @@ class MemberJoined implements ShouldBroadcast
      *
      * @return Channel|array
      */
-    public function broadcastOn() {
+    public function broadcastOn()
+    {
         return new PresenceChannel($this->group->getChannelName());
     }
 
     /**
      * @return \Scalex\Zero\Models\Group
      */
-    public function getGroup(): \Scalex\Zero\Models\Group {
+    public function getGroup(): \Scalex\Zero\Models\Group
+    {
         return $this->group;
     }
 }

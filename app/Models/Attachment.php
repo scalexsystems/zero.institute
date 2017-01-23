@@ -30,15 +30,18 @@ class Attachment extends ExtendibleModel implements AttachmentContract
         'variations' => 'array',
     ];
 
-    public function owner() : BelongsTo {
+    public function owner() : BelongsTo
+    {
         return $this->belongsTo(User::class);
     }
 
-    public function related() {
+    public function related()
+    {
         return $this->morphTo();
     }
 
-    public function getAttachmentKeyName() : string {
+    public function getAttachmentKeyName() : string
+    {
         return 'slug';
     }
 }

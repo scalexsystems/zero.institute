@@ -10,7 +10,8 @@ abstract class AbstractPolicy
 {
     use HandlesAuthorization;
 
-    public function before(User $user, $policy, $other = null) {
+    public function before(User $user, $policy, $other = null)
+    {
         $class = self::class;
         foreach (class_uses_recursive($class) as $trait) {
             if (method_exists($class, $method = 'before'.class_basename($trait))) {

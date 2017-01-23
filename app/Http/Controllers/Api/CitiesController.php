@@ -9,11 +9,13 @@ use Scalex\Zero\Models\Geo\City;
 
 class CitiesController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('auth:api,web');
     }
 
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
         $cities = repository(City::class);
 
         if ($request->has('q')) {

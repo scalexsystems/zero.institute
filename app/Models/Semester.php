@@ -5,7 +5,6 @@ use Scalex\Zero\Contracts\Database\BelongsToSchool;
 use Scalex\Zero\Database\ExtendibleModel;
 use Scalex\Zero\Models\School;
 
-
 class Semester extends ExtendibleModel implements BelongsToSchool
 {
     use SoftDeletes;
@@ -14,7 +13,8 @@ class Semester extends ExtendibleModel implements BelongsToSchool
 
     protected $extends = ['student_count'];
 
-    public function school() {
+    public function school()
+    {
         return $this->belongsTo(School::class);
     }
 }

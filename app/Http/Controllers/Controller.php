@@ -14,7 +14,8 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, TransformResponse, ValidatesRequests;
 
-    protected function created($location = null) {
+    protected function created($location = null)
+    {
         $response = $this->response(Response::HTTP_CREATED);
 
         if ($location) {
@@ -24,7 +25,8 @@ class Controller extends BaseController
         return $response;
     }
 
-    protected function accepted($location = null) {
+    protected function accepted($location = null)
+    {
         $response = $this->response(Response::HTTP_ACCEPTED);
 
         if ($location) {
@@ -39,7 +41,8 @@ class Controller extends BaseController
      *
      * @return \Illuminate\Http\Response
      */
-    private function response($status) {
+    private function response($status)
+    {
         return response('', $status);
     }
 }

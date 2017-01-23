@@ -11,7 +11,8 @@ use Scalex\Zero\Models\Student;
 
 class CurrentUserController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('auth:api,web');
     }
 
@@ -20,7 +21,8 @@ class CurrentUserController extends Controller
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
         $user = $request->user();
         $request->query->add(['with' => 'session']);
 
@@ -39,7 +41,8 @@ class CurrentUserController extends Controller
         abort(401, 'You are not allowed to join courses.');
     }
 
-    public function show(Request $request, $courseId) {
+    public function show(Request $request, $courseId)
+    {
         abort(401, 'You are not allowed to join courses.');
     }
 }

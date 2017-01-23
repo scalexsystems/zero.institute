@@ -10,6 +10,7 @@
                 <div class="title">Students</div>
                 <div class="count">{{ stats.student }}</div>
                 <div class="subtitle">
+
                   <span :class="{'text-muted': requests.student.count == 0, 'text-danger': requests.student.count > 0}">
                     {{ requests.student.count_text }}
                   </span>
@@ -185,6 +186,7 @@ export default {
     },
   },
 };
+
 </script>
 
 <style lang="scss">
