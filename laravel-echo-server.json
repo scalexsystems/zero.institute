@@ -1,0 +1,19 @@
+{
+	"appKey": "uhb707ti52jdpntg3e18fhonmka9mrg0phm4tcka5jeh9tr5keghs5gn8j2n",
+	"authHost": "http://zero.institute.app",
+	"authEndpoint": "/broadcasting/auth",
+	"database": "redis",
+	"databaseConfig": {
+		"redis": {},
+		"sqlite": {
+			"databasePath": "/database/laravel-echo-server.sqlite"
+		}
+	},
+	"devMode": true,
+	"host": "0.0.0.0",
+	"port": "6001",
+	"referrers": [],
+	"socketio": {},
+	"sslCertPath": "",
+	"sslKeyPath": ""
+}

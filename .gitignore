@@ -5,4 +5,13 @@
 Homestead.json
 Homestead.yaml
 .env
+.env.backup
+hot
 npm-debug.log
+
+## FORCE ADD ON PRODUCTION BUILD
+/public/js
+/public/css
+/public/img
+/public/fonts
+/public/mix-manifest.json

@@ -66,9 +66,10 @@
       "Illuminate\\Foundation\\ComposerScripts::postUpdate",
       "php artisan optimize"
     ],
-    "test": [
-      "phpunit"
-    ]
+    "test:e2e": "phpunit --testsuite e2e",
+    "test:unit": "phpunit --testsuite unit --coverage-html tests/reports/unit/phpunit",
+    "lint": "php-cs-fixer fix --config=.php_cs --dry-run",
+    "lint:fix": "php-cs-fixer fix --config=.php_cs"
   },
   "config": {
     "preferred-install": "dist"

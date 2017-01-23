@@ -28,7 +28,7 @@
     </script>
 
     {{--Styles--}}
-    <link href="{!! elixir('css/web.css') !!}" rel="stylesheet">
+    <link href="{{ mix('/css/web.css') }}" rel="stylesheet">
 
     @yield('in-head')
 </head>

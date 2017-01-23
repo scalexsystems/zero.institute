@@ -1,0 +1,54 @@
+/*
+ |
+ | Bootstrap v4.0.0-alpha.4 configuration.
+ |
+ */
+
+$grid-gutter-width: 20px !default;
+
+$enable-flex: true !default;
+$enable-rounded: true !default;
+$enable-shadows: false !default;
+$enable-gradients: false !default;
+$enable-transitions: false !default;
+$enable-hover-media-query: false !default;
+$enable-grid-classes: true !default;
+$enable-print-styles: true !default;
+
+$font-size-root: 14px !default;
+
+$brand-accent: #21303e !default;
+
+$brand-primary: #20a0ff !default;
+$brand-success: #6bb719 !default;
+// $brand-info: #20a0ff !default;
+$brand-warning: #f0ad4e !default;
+$brand-danger: #d0021b !default;
+
+$gray: #9b9b9b !default;
+$gray-light: #b3b3b3 !default;
+$gray-lighter: #f7f7f7 !default;
+$gray-lightest: #e7e7e7 !default;
+
+$blue: #001dFF !default;
+$black: #000000 !default;
+$border-color: #e7e7e7 !default;
+$input-border-color: $border-color !default;
+$card-border-color: $border-color !default;
+
+$btn-primary-color: #ffffff;
+$btn-primary-bg: #20a0ff;
+$btn-primary-border: $btn-primary-bg;
+
+$input-color: #333;
+
+@import 'node_modules/bootstrap/scss/variables';
+
+/*
+ |
+ | Font Awesome configuration.
+ |
+ */
+$fa-font-path: '/static/fonts' !default;
+
+$navbar-height: 46px;

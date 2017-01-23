@@ -1,17 +1,21 @@
 @extends('layouts.app')
 
-@include('app.vue')
-
 @section('content')
     <div id="app"></div>
 @endsection
 
 @section('styles')
-    @yield('vue-styles')
+     <link href="{{ mix('/css/app.css') }}" rel="stylesheet">
 @endsection
 
 @section('scripts')
-    @yield('vue-scripts')
+    @if(mix('/js/manifest.js'))
+        <script src="{{ mix('/js/manifest.js') }}"></script>
+    @endif
+    @if(mix('/js/vendor.js'))
+        <script src="{{ mix('/js/vendor.js') }}"></script>
+    @endif
+    <script src="{{ mix('/js/app.js') }}"></script>
 @endsection
 
 @section('snippets')

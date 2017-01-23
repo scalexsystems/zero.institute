@@ -3,8 +3,8 @@
 $body-bg: #f7f7f7;
 $text-light: #9b9b9b;
 
-@import '../../../node_modules/bootstrap/scss/bootstrap';
-@import '../../../node_modules/font-awesome/scss/font-awesome';
+@import 'node_modules/bootstrap/scss/bootstrap';
+@import 'node_modules/font-awesome/scss/font-awesome';
 
 .navbar-light .navbar-nav .nav-link.mail {
   color: $brand-primary;
