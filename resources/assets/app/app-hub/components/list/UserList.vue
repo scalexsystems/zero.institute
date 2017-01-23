@@ -18,69 +18,69 @@
 </template>
 
 <script lang="babel">
-import sort from 'lodash/sortBy';
-import first from 'lodash/first';
-import int from 'lodash/toInteger';
-import { mapActions, mapGetters } from 'vuex';
-import moment from 'moment';
+import sort from 'lodash/sortBy'
+import first from 'lodash/first'
+import int from 'lodash/toInteger'
+import { mapActions, mapGetters } from 'vuex'
+import moment from 'moment'
 
-import { httpThen } from '../../../util';
-import { getters, actions } from '../../vuex/meta';
+import { httpThen } from '../../../util'
+import { getters, actions } from '../../vuex/meta'
 
 export default {
-  created() {
+  created () {
     if (!this.users.length) {
-      this.getRecentUsers();
+      this.getRecentUsers()
     }
   },
   computed: {
-    sortedUsers() {
-      const users = this.users;
+    sortedUsers () {
+      const users = this.users
 
       return sort(users, (user) => {
-        const message = first(user.messages);
-        if (!message) return 0;
+        const message = first(user.messages)
+        if (!message) return 0
 
-        return -moment(message.received_at).valueOf();
-      });
+        return -moment(message.received_at).valueOf()
+      })
     },
-    activeId() {
-      const route = this.$route;
+    activeId () {
+      const route = this.$route
 
       if (route.name === 'hub.user') {
-        return int(route.params.user);
+        return int(route.params.user)
       }
 
-      return -1;
+      return -1
     },
     ...mapGetters({
-      users: getters.users,
-    }),
+      users: getters.users
+    })
   },
   methods: {
-    onUserSelected(user) {
+    onUserSelected (user) {
       this.$router.push({
         name: 'hub.user',
-        params: { user: user.id },
-      });
+        params: { user: user.id }
+      })
     },
-    getRecentUsers() {
+    getRecentUsers () {
       this.getUsers()
               .then(httpThen)
               .then((result) => {
-                const paginator = result._meta.pagination;
+                const paginator = result._meta.pagination
 
                 if (paginator.current_page < Math.min(2, paginator.total_pages)) {
-                  setTimeout(() => this.getRecentUsers());
+                  setTimeout(() => this.getRecentUsers())
                 }
               })
-              .catch(response => response);
+              .catch(response => response)
     },
     ...mapActions({
-      getUsers: actions.getMessagedUsers,
-    }),
-  },
-};
+      getUsers: actions.getMessagedUsers
+    })
+  }
+}
 </script>
 
 <style lang="scss" scoped>

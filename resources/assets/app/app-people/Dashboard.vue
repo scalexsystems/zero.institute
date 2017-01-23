@@ -117,7 +117,7 @@
 </template>
 
 <script lang="babel">
-import { WindowBox } from '../components';
+import { WindowBox } from '../components'
 
 export default {
   components: { WindowBox },
@@ -125,7 +125,7 @@ export default {
     stats: () => ({
       student: 0,
       teacher: 0,
-      employee: 0,
+      employee: 0
     }),
     studentRequests: () => ({ count: 0, count_text: '0 requests pending' }),
     teacherRequests: () => ({ count: 0, count_text: '0 requests pending' }),
@@ -134,28 +134,28 @@ export default {
       {
         name: 'Digital Profiles',
         desc: 'Create Profiles for Students and Employees.',
-        completed: true,
+        completed: true
       },
       {
         name: 'Academia',
         desc: 'Courses and discussion hub.',
-        completed: true,
+        completed: true
       },
       {
         name: 'Attendance',
-        desc: 'Student attendance via mobile app.',
+        desc: 'Student attendance via mobile app.'
       },
       {
         name: 'Institute Events',
-        desc: 'Add and share institute events.',
+        desc: 'Add and share institute events.'
       },
       {
         name: 'Registrations and Finances',
-        desc: 'Semester Registration and fees.',
-      },
-    ],
-  },
-};
+        desc: 'Semester Registration and fees.'
+      }
+    ]
+  }
+}
 </script>
 
 <style lang="scss">

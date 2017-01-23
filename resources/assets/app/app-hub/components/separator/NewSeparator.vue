@@ -10,17 +10,17 @@
 export default {
   props: {
     count: {
-      type: Number,
-    },
+      type: Number
+    }
   },
   computed: {
-    text() {
-      const count = this.count;
+    text () {
+      const count = this.count
 
-      return count === 1 ? '1 New Message' : `${count} New Messages`;
-    },
-  },
-};
+      return count === 1 ? '1 New Message' : `${count} New Messages`
+    }
+  }
+}
 </script>
 
 <style lang="scss">

@@ -36,75 +36,75 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
-import throttle from 'lodash/throttle';
+import { mapActions, mapGetters } from 'vuex'
+import throttle from 'lodash/throttle'
 
-import { Modal, PersonCard } from '../../components';
+import { Modal, PersonCard } from '../../components'
 
 export default {
   name: 'CourseEnrollment',
-  data() {
-    return { show: false, course: null, query: '', selected: [], message: null };
+  data () {
+    return { show: false, course: null, query: '', selected: [], message: null }
   },
   computed: {
-    ...mapGetters('school', ['students', 'departments', 'disciplines']),
+    ...mapGetters('school', ['students', 'departments', 'disciplines'])
   },
   methods: {
-    department(student) {
-      return (this.departments.find(d => student.department_id === d.id) || {}).name;
+    department (student) {
+      return (this.departments.find(d => student.department_id === d.id) || {}).name
     },
-    discipline(student) {
-      return (this.disciplines.find(d => student.discipline_id === d.id) || {}).name;
+    discipline (student) {
+      return (this.disciplines.find(d => student.discipline_id === d.id) || {}).name
     },
-    enroll() {
-      const ids = this.selected.map(student => student.id);
+    enroll () {
+      const ids = this.selected.map(student => student.id)
 
-      if (!ids.length) return;
+      if (!ids.length) return
 
-      this.$refs.enroll.classList.add('disabled');
+      this.$refs.enroll.classList.add('disabled')
       this.$http.post(`courses/${this.course.id}/enroll`, { students: ids, session_id: this.course.session.id })
         .then(() => {
-          this.$refs.enroll.classList.remove('disabled');
-          this.selected = [];
-          this.message = { success: true, message: 'All students enrolled.' };
-          this.$emit('enrolled');
+          this.$refs.enroll.classList.remove('disabled')
+          this.selected = []
+          this.message = { success: true, message: 'All students enrolled.' }
+          this.$emit('enrolled')
         })
         .catch(() => {
-          this.$refs.enroll.classList.remove('disabled');
+          this.$refs.enroll.classList.remove('disabled')
 
-          this.message = { success: false, message: 'Failed to enroll these students.' };
-        });
+          this.message = { success: false, message: 'Failed to enroll these students.' }
+        })
     },
-    onSelect(student) {
-      if (this.selected.indexOf(student) < 0) this.selected.push(student);
-      this.message = null;
+    onSelect (student) {
+      if (this.selected.indexOf(student) < 0) this.selected.push(student)
+      this.message = null
     },
-    onRemove(student) {
-      const index = this.selected.indexOf(student);
+    onRemove (student) {
+      const index = this.selected.indexOf(student)
 
       if (index > -1) {
-        this.selected.splice(index, 1);
-        this.$refs.students.$emit('remove', student);
+        this.selected.splice(index, 1)
+        this.$refs.students.$emit('remove', student)
       }
     },
-    onSuggest: throttle(function onSuggest({ value, start, end }) {
-      start();
-      this.getStudents({ q: value }).then(() => end());
+    onSuggest: throttle(function onSuggest ({ value, start, end }) {
+      start()
+      this.getStudents({ q: value }).then(() => end())
     }, 600),
-    ...mapActions('school', ['getStudents', 'getDepartments', 'getDisciplines']),
+    ...mapActions('school', ['getStudents', 'getDepartments', 'getDisciplines'])
   },
   components: { Modal, PersonCard },
-  created() {
+  created () {
     this.$on('open', (course) => {
-      this.course = course;
-      this.query = '';
-      this.selected = [];
-      this.show = true;
-      this.message = null;
-    });
-    if (!this.departments.length) this.getDepartments();
-    if (!this.disciplines.length) this.getDisciplines();
-    if (!this.students.length) this.getStudents();
-  },
-};
+      this.course = course
+      this.query = ''
+      this.selected = []
+      this.show = true
+      this.message = null
+    })
+    if (!this.departments.length) this.getDepartments()
+    if (!this.disciplines.length) this.getDisciplines()
+    if (!this.students.length) this.getStudents()
+  }
+}
 </script>

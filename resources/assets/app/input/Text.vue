@@ -14,26 +14,26 @@
 </template>
 
 <script lang="babel">
-import input from './mixins/input';
+import input from './mixins/input'
 
 export default {
   props: {
     type: {
       type: String,
-      default: 'text',
+      default: 'text'
     },
     placeholder: {
       type: String,
-      default: '',
-    },
+      default: ''
+    }
   },
   mixins: [input],
   computed: {
-    helpId() {
-      return `${this.id}-help-text`;
-    },
-  },
-};
+    helpId () {
+      return `${this.id}-help-text`
+    }
+  }
+}
 </script>
 
 

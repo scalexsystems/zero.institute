@@ -8,33 +8,33 @@
 </template>
 
 <script lang="babel">
-import moment from 'moment';
+import moment from 'moment'
 
 export default {
   props: {
     date: {
-      require: true,
+      require: true
     },
     unread: {
-      default: false,
+      default: false
     },
     count: {
-      type: Number,
-    },
+      type: Number
+    }
   },
   filters: {
-    day(date) {
-      return moment(date).format('D MMMM YYYY');
-    },
+    day (date) {
+      return moment(date).format('D MMMM YYYY')
+    }
   },
   computed: {
-    text() {
-      const count = this.count;
+    text () {
+      const count = this.count
 
-      return count === 1 ? '1 New Message' : `${count} New Messages`;
-    },
-  },
-};
+      return count === 1 ? '1 New Message' : `${count} New Messages`
+    }
+  }
+}
 </script>
 
 <style lang="scss">

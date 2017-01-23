@@ -24,36 +24,36 @@ export default{
   props: {
     attachment: {
       type: Object,
-      required: true,
+      required: true
     },
     messageId: {
       type: Number,
-      required: true,
-    },
+      required: true
+    }
   },
-  data() {
-    return { uploading: false, error: null };
+  data () {
+    return { uploading: false, error: null }
   },
   computed: {
-    extension() {
-      const attachment = this.attachment;
+    extension () {
+      const attachment = this.attachment
 
-      return attachment.payload.get(attachment.name).name.split('.').pop();
+      return attachment.payload.get(attachment.name).name.split('.').pop()
     },
-    filename() {
-      const attachment = this.attachment;
+    filename () {
+      const attachment = this.attachment
 
-      return attachment.payload.get(attachment.name).name;
+      return attachment.payload.get(attachment.name).name
     },
-    errorMessage() {
-      const attachment = this.attachment;
-      const error = this.error;
+    errorMessage () {
+      const attachment = this.attachment
+      const error = this.error
 
-      return String(error || attachment.message);
-    },
+      return String(error || attachment.message)
+    }
   },
   methods: {
-    getClassFor(ext) {
+    getClassFor (ext) {
       switch (ext) {
         case 'webp':
         case 'tiff':
@@ -62,56 +62,56 @@ export default{
         case 'jpeg':
         case 'jpg':
         case 'gif':
-        case 'png': return 'fa-file-picture-o';
+        case 'png': return 'fa-file-picture-o'
         case '7z':
         case 'gz':
         case 'tar':
         case 'rar':
-        case 'zip': return 'fa-file-zip-o';
+        case 'zip': return 'fa-file-zip-o'
         case 'rtf':
         case 'odt':
         case 'pages':
         case 'doc':
-        case 'docx': return 'fa-file-word-o';
+        case 'docx': return 'fa-file-word-o'
         case 'ods':
         case 'numbers':
         case 'xls':
-        case 'xlsx': return 'fa-file-excel-o';
+        case 'xlsx': return 'fa-file-excel-o'
         case 'odp':
         case 'keynote':
         case 'ppt':
-        case 'pptx': return 'fa-file-powerpoint';
+        case 'pptx': return 'fa-file-powerpoint'
         case 'eps':
         case 'ps':
-        case 'pdf': return 'fa-file-pdf-o';
-        case 'txt': return 'fa-file-text-o';
-        default: return 'fa-file-o';
+        case 'pdf': return 'fa-file-pdf-o'
+        case 'txt': return 'fa-file-text-o'
+        default: return 'fa-file-o'
       }
     },
-    retry() {
-      if (this.uploading) return;
+    retry () {
+      if (this.uploading) return
 
-      this.uploading = true;
+      this.uploading = true
 
-      this.attachment.payload.append('message_id', this.messageId);
+      this.attachment.payload.append('message_id', this.messageId)
       this.$http.post(this.attachment.dest, this.attachment.payload)
         .then(response => response.json())
         .then(() => {
-          this.error = null;
+          this.error = null
         })
         .catch((response) => {
           if (response && 'json' in response) {
             response.json().then((result) => {
-              this.error = result.errors.file;
-            });
+              this.error = result.errors.file
+            })
           }
         })
         .then(() => {
-          this.uploading = false;
-        });
-    },
-  },
-};
+          this.uploading = false
+        })
+    }
+  }
+}
 </script>
 <style lang="scss" scoped>
 @import "../../../styles/variables";

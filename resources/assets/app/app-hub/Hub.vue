@@ -28,86 +28,86 @@
 </template>
 
 <script lang="babel">
-import scrollbar from 'perfect-scrollbar';
-import { mapActions, mapGetters } from 'vuex';
+import scrollbar from 'perfect-scrollbar'
+import { mapActions, mapGetters } from 'vuex'
 
-import * as components from './components';
+import * as components from './components'
 
 export default {
   name: 'Hub',
   components: { ...components },
-  beforeDestroy() {
-    scrollbar.destroy(this.$refs.sidebarLeft);
+  beforeDestroy () {
+    scrollbar.destroy(this.$refs.sidebarLeft)
   },
   computed: {
-    countUserMessages() {
-      return this.users.reduce((total, user) => total + user.unread_count, 0);
+    countUserMessages () {
+      return this.users.reduce((total, user) => total + user.unread_count, 0)
     },
-    countGroupMessages() {
-      return this.groups.reduce((total, group) => total + group.unread_count, 0);
+    countGroupMessages () {
+      return this.groups.reduce((total, group) => total + group.unread_count, 0)
     },
     ...mapGetters('hub', ['groups', 'users']),
-    ...mapGetters(['user']),
+    ...mapGetters(['user'])
   },
-  data() {
+  data () {
     return {
-      browseUsers: false,
-    };
+      browseUsers: false
+    }
   },
   methods: {
-    closeSidebar() {
-      this.$el.classList.remove('open-sidebar');
+    closeSidebar () {
+      this.$el.classList.remove('open-sidebar')
     },
-    openSidebar() {
-      this.$el.classList.add('open-sidebar');
+    openSidebar () {
+      this.$el.classList.add('open-sidebar')
     },
-    toggleSidebar() {
+    toggleSidebar () {
       if (this.$el.classList.contains('open-sidebar')) {
-        this.closeSidebar();
+        this.closeSidebar()
       } else {
-        this.openSidebar();
+        this.openSidebar()
       }
     },
-    redirect() {
+    redirect () {
       if (this.$route.name === 'hub') {
-        const group = this.$el.querySelector('.group-list-item');
-        const user = this.$el.querySelector('.group-list-item');
-        const link = this.$el.querySelector('a[href]');
+        const group = this.$el.querySelector('.group-list-item')
+        const user = this.$el.querySelector('.group-list-item')
+        const link = this.$el.querySelector('a[href]')
 
-        if (group) group.click();
-        else if (user) user.click();
-        else if (link) link.click();
+        if (group) group.click()
+        else if (user) user.click()
+        else if (link) link.click()
       }
     },
-    ...mapActions('hub', ['onNewMessageToUser']),
+    ...mapActions('hub', ['onNewMessageToUser'])
   },
   watch: {
-    $route: 'redirect',
+    $route: 'redirect'
   },
-  mounted() {
+  mounted () {
     this.$nextTick(() => {
       scrollbar.initialize(this.$refs.sidebarLeft, {
-        suppressScrollX: true,
-      });
-      this.redirect();
-    });
+        suppressScrollX: true
+      })
+      this.redirect()
+    })
   },
-  created() {
+  created () {
     if (this.user.channel) {
       this.$echo.private(this.user.channel)
-        .listen('NewMessage', message => this.onNewMessageToUser({ message }));
+        .listen('NewMessage', message => this.onNewMessageToUser({ message }))
     }
-    this.$root.$on('sidebar', () => this.toggleSidebar());
+    this.$root.$on('sidebar', () => this.toggleSidebar())
   },
-  beforeRouteEnter(to, from, next) {
-    document.body.classList.add('has-sidebar');
-    next();
+  beforeRouteEnter (to, from, next) {
+    document.body.classList.add('has-sidebar')
+    next()
   },
-  beforeRouteLeave(to, from, next) {
-    document.body.classList.remove('has-sidebar');
-    next();
-  },
-};
+  beforeRouteLeave (to, from, next) {
+    document.body.classList.remove('has-sidebar')
+    next()
+  }
+}
 </script>
 
 

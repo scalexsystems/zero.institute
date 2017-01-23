@@ -72,26 +72,26 @@
 
 </template>
 <script lang="babel">
-import pick from 'lodash/pick';
-import SettingsBox from './SettingsBox.vue';
-import PhotoHolder from '../components/ProfilePhotoUploader.vue';
+import pick from 'lodash/pick'
+import SettingsBox from './SettingsBox.vue'
+import PhotoHolder from '../components/ProfilePhotoUploader.vue'
 
 export default{
-  created() {
+  created () {
     this.$http.get('school')
       .then(response => response.json())
       .then((response) => {
-        this.institute = pick(response, Object.keys(this.institute));
-        this.institute.username = response.slug;
-        this.contact.website = response.website;
-        this.contact.fax = response.fax;
+        this.institute = pick(response, Object.keys(this.institute))
+        this.institute.username = response.slug
+        this.contact.website = response.website
+        this.contact.fax = response.fax
         if (response.address) {
-          this.contact = pick(response.address, Object.keys(this.contact));
-          this.contact.city = response.address.city.name;
+          this.contact = pick(response.address, Object.keys(this.contact))
+          this.contact.city = response.address.city.name
         }
-      });
+      })
   },
-  data() {
+  data () {
     return {
       loaded: false,
       institute: {
@@ -100,7 +100,7 @@ export default{
         email: '',
         university: '',
         institute_type: '',
-        logo: '',
+        logo: ''
       },
       contact: {
         address_line1: '',
@@ -109,31 +109,31 @@ export default{
         city: '',
         pin_code: '',
         website: '',
-        fax: '',
+        fax: ''
       },
       errors: {},
-      logo_id: undefined,
-    };
+      logo_id: undefined
+    }
   },
   computed: {
   },
   components: { SettingsBox, PhotoHolder },
   methods: {
-    saveInstitute() {
+    saveInstitute () {
       this.$http.put('school', { ...this.institute })
         .then(() => {
-        });
+        })
     },
-    saveContact() {
+    saveContact () {
       this.$http.put('school', { ...this.contact })
         .then(() => {
-        });
+        })
     },
-    logoUpdated(src, response) {
-      this.institute.push({ logo_id: response.body.id });
-    },
-  },
-};
+    logoUpdated (src, response) {
+      this.institute.push({ logo_id: response.body.id })
+    }
+  }
+}
 </script>
 <style lang="scss" scoped>
 @import "../styles/methods";

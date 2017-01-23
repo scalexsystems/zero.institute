@@ -14,21 +14,21 @@
 
 <script lang="babel">
 export default{
-  data() {
+  data () {
     return {
-    };
+    }
   },
   props: {
     actions: {
-      type: Array,
-    },
+      type: Array
+    }
   },
   methods: {
-    click(event, action, index) {
-      this.$emit('message-option-click', event, action, index);
-    },
-  },
-};
+    click (event, action, index) {
+      this.$emit('message-option-click', event, action, index)
+    }
+  }
+}
 </script>
 
 <style>

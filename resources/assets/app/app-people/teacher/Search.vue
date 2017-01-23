@@ -38,11 +38,11 @@
 </template>
 
 <script lang="babel">
-import { mapGetters, mapActions } from 'vuex';
-import throttle from 'lodash/throttle';
+import { mapGetters, mapActions } from 'vuex'
+import throttle from 'lodash/throttle'
 
-import { getters, actions } from '../../vuex/meta';
-import { WindowBox } from '../../components';
+import { getters, actions } from '../../vuex/meta'
+import { WindowBox } from '../../components'
 
 export default {
   name: 'teacherSearch',
@@ -50,36 +50,36 @@ export default {
   computed: {
     ...mapGetters({
       suggestions: getters.teachers,
-      departments: getters.departments,
-    }),
+      departments: getters.departments
+    })
   },
-  data() {
+  data () {
     return {
-      query: '',
-    };
+      query: ''
+    }
   },
-  created() {
+  created () {
     if (this.departments.length === 0) {
-      this.getDepartments();
+      this.getDepartments()
     }
   },
   methods: {
-    onSearchInput: throttle(function onSearchInput({ start, end, value }) {
-      start();
-      this.getteachers({ q: value }).then(() => end());
+    onSearchInput: throttle(function onSearchInput ({ start, end, value }) {
+      start()
+      this.getteachers({ q: value }).then(() => end())
     }),
-    onSearch() {
-      this.$router.push({ name: 'teacher.find', query: { q: this.query } });
+    onSearch () {
+      this.$router.push({ name: 'teacher.find', query: { q: this.query }})
     },
-    onSelect(teacher) {
-      this.$debug(teacher);
+    onSelect (teacher) {
+      this.$debug(teacher)
     },
     ...mapActions({
       getteachers: actions.getteachers,
-      getDepartments: actions.getDepartments,
-    }),
-  },
-};
+      getDepartments: actions.getDepartments
+    })
+  }
+}
 </script>
 
 <style lang="scss" scoped>

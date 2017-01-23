@@ -68,118 +68,118 @@
 </template>
 
 <script lang="babel">
-import int from 'lodash/toInteger';
-import { mapGetters, mapActions } from 'vuex';
-import throttle from 'lodash/throttle';
-import InfiniteScroll from 'vue-infinite-loading';
+import int from 'lodash/toInteger'
+import { mapGetters, mapActions } from 'vuex'
+import throttle from 'lodash/throttle'
+import InfiniteScroll from 'vue-infinite-loading'
 
-import { pushIf } from '../util';
-import { actions } from './vuex/meta';
-import { getters as rootGetters, actions as rootActions } from '../vuex/meta';
-import { LoadingPlaceholder, ActivityBox, PersonCard as ItemCard, ActionMenu, PhotoHolder } from '../components';
+import { pushIf } from '../util'
+import { actions } from './vuex/meta'
+import { getters as rootGetters, actions as rootActions } from '../vuex/meta'
+import { LoadingPlaceholder, ActivityBox, PersonCard as ItemCard, ActionMenu, PhotoHolder } from '../components'
 
 /* eslint-disable max-len */
 export default {
   name: 'GroupPreview',
   components: { LoadingPlaceholder, ActivityBox, ItemCard, InfiniteScroll, ActionMenu, PhotoHolder },
   computed: {
-    title() {
-      const group = this.group;
+    title () {
+      const group = this.group
 
-      return group ? group.name : '';
+      return group ? group.name : ''
     },
-    subtitle() {
-      return 'Group Information';
+    subtitle () {
+      return 'Group Information'
     },
-    group() {
-      const route = this.$route;
-      const groupMap = this.groupMap;
-      const groups = this.groups;
+    group () {
+      const route = this.$route
+      const groupMap = this.groupMap
+      const groups = this.groups
 
-      const id = int(route.params.group);
-      const index = groupMap[id];
-      const group = groups[index];
+      const id = int(route.params.group)
+      const index = groupMap[id]
+      const group = groups[index]
 
-      return group;
+      return group
     },
-    ...mapGetters({ groups: rootGetters.groups, groupMap: rootGetters.groupMap }),
+    ...mapGetters({ groups: rootGetters.groups, groupMap: rootGetters.groupMap })
   },
-  created() {
-    this.findGroup();
+  created () {
+    this.findGroup()
   },
-  data() {
+  data () {
     return {
       ids: {},
       members: [],
       q: '',
       page: 0,
-      uploadHover: false,
-    };
+      uploadHover: false
+    }
   },
   methods: {
-    search: throttle(function search() {
-      this.page = 0;
-      this.onInfinite();
+    search: throttle(function search () {
+      this.page = 0
+      this.onInfinite()
     }),
-    onInfinite() {
-      this.$http.get(`groups/${this.group.id}/members`, { params: { q: this.q, page: this.page + 1 } })
+    onInfinite () {
+      this.$http.get(`groups/${this.group.id}/members`, { params: { q: this.q, page: this.page + 1 }})
               .then(response => response.json())
               .then((result) => {
-                pushIf(this.members, result.data, this.ids);
-                this.page = result._meta.pagination.current_page;
-                this.$refs.infinite.$emit('$InfiniteLoading:loaded');
+                pushIf(this.members, result.data, this.ids)
+                this.page = result._meta.pagination.current_page
+                this.$refs.infinite.$emit('$InfiniteLoading:loaded')
               })
-              .catch(() => this.$refs.infinite.$emit('$InfiniteLoading:loaded'));
+              .catch(() => this.$refs.infinite.$emit('$InfiniteLoading:loaded'))
     },
-    findGroup() {
-      const id = int(this.$route.params.group);
+    findGroup () {
+      const id = int(this.$route.params.group)
 
       if (!(id in this.groupMap)) {
-        this.getGroup({ id });
+        this.getGroup({ id })
       }
     },
     ...mapActions({
       getGroup: rootActions.getGroups,
       joinGroupAction: actions.joinGroup,
       leaveGroupAction: actions.leaveGroup,
-      updatePhoto: actions.updateGroupPhoto,
+      updatePhoto: actions.updateGroupPhoto
     }),
 
-    joinGroup() {
+    joinGroup () {
       this.$http.post(`groups/${this.group.id}/join`)
       .then(() => {
-        this.joinGroupAction({ groupId: this.group.id });
-        this.$router.push({ name: 'hub.group' });
-      });
+        this.joinGroupAction({ groupId: this.group.id })
+        this.$router.push({ name: 'hub.group' })
+      })
     },
 
-    leaveGroup() {
+    leaveGroup () {
       this.$http.delete(`groups/${this.group.id}/leave`)
       .then(() => {
-        this.leaveGroupAction({ groupId: this.group.id });
-        this.$router.push({ name: 'hub.groups' });
-      });
+        this.leaveGroupAction({ groupId: this.group.id })
+        this.$router.push({ name: 'hub.groups' })
+      })
     },
 
-    actionClicks(event, action, index) {
-      const clickActions = [this.leaveGroup];
-      return clickActions[index] ? clickActions[index]() : () => {};
+    actionClicks (event, action, index) {
+      const clickActions = [this.leaveGroup]
+      return clickActions[index] ? clickActions[index]() : () => {}
     },
 
-    openFile() {
-      return this.$refs.inputFile.click();
+    openFile () {
+      return this.$refs.inputFile.click()
     },
 
-    profileUpdated(src) {
-      this.updatePhoto({ groupId: this.group.id, photo: src });
-    },
+    profileUpdated (src) {
+      this.updatePhoto({ groupId: this.group.id, photo: src })
+    }
   },
   watch: {
-    $route() {
-      this.findGroup();
-    },
-  },
-};
+    $route () {
+      this.findGroup()
+    }
+  }
+}
 </script>
 
 <style lang="scss">

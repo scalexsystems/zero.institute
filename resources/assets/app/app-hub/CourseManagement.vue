@@ -60,80 +60,80 @@
     </settings-box>
 </template>
 <script lang="babel">
-import { mapActions, mapGetters } from 'vuex';
-import { throttle } from 'lodash';
-import SettingsBox from './SettingsBox.vue';
-import SettingsCard from './SettingsCard.vue';
-import Modal from '../components/Modal.vue';
-import { PersonCard as ItemCard } from '../components';
+import { mapActions, mapGetters } from 'vuex'
+import { throttle } from 'lodash'
+import SettingsBox from './SettingsBox.vue'
+import SettingsCard from './SettingsCard.vue'
+import Modal from '../components/Modal.vue'
+import { PersonCard as ItemCard } from '../components'
 
 export default{
-  created() {
+  created () {
     if (this.managers.length === 0) {
-      this.getManagers();
+      this.getManagers()
     }
     if (!this.teachers.length) {
-      this.getTeachers();
+      this.getTeachers()
     }
   },
-  data() {
+  data () {
     return {
       loaded: false,
       errors: {},
       managers: [],
       query: '',
       message: undefined,
-      addedManagers: [],
-    };
+      addedManagers: []
+    }
   },
   computed: {
-    suggestions() {
-      return [].concat(this.teachers);
+    suggestions () {
+      return [].concat(this.teachers)
     },
-    ...mapGetters('school', ['teachers']),
+    ...mapGetters('school', ['teachers'])
   },
   components: { SettingsBox, Modal, SettingsCard, ItemCard },
   methods: {
-    getManagers() {
+    getManagers () {
       this.$http.get('people/roles/course-manager')
         .then((response) => {
-          this.managers = response.body.data;
-        });
+          this.managers = response.body.data
+        })
     },
-    onSuggest: throttle(function onSuggest({ value, start, end }) {
-      start();
-      this.getTeachers({ q: value }).then(end);
+    onSuggest: throttle(function onSuggest ({ value, start, end }) {
+      start()
+      this.getTeachers({ q: value }).then(end)
     }, 400),
-    onSelect(person) {
+    onSelect (person) {
       if (this.managers.indexOf(person.id) < 0) {
-        this.query = person.name;
-        this.addedManagers.push(person);
+        this.query = person.name
+        this.addedManagers.push(person)
       }
     },
-    onSave() {
-      const managers = this.addedManagers.map(m => ({ id: m.id, type: m._type }));
+    onSave () {
+      const managers = this.addedManagers.map(m => ({ id: m.id, type: m._type }))
       if (managers.length) {
         this.$http.post('people/roles', { managers, role: 'course-manager' })
         .then(() => {
-          this.managers = this.managers.concat(this.addedManagers);
-          this.message = undefined;
-          this.addedManagers = [];
+          this.managers = this.managers.concat(this.addedManagers)
+          this.message = undefined
+          this.addedManagers = []
         })
         .catch(response => response.json())
         .then(({ message }) => {
-          this.message = message;
-        });
+          this.message = message
+        })
       }
     },
-    onCancel() {
+    onCancel () {
       if (this.addedManagers.length) {
-        this.addedManagers = [];
-        this.message = undefined;
+        this.addedManagers = []
+        this.message = undefined
       }
     },
-    ...mapActions('school', ['getTeachers']),
-  },
-};
+    ...mapActions('school', ['getTeachers'])
+  }
+}
 </script>
 <style lang="scss" scoped>
 @import '../styles/variables';

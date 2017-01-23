@@ -31,73 +31,73 @@
 </template>
 
 <script lang="babel">
-import { mapGetters, mapActions } from 'vuex';
-import { getters, actions } from '../vuex/meta';
-import SettingCard from './SettingsCard.vue';
-import SettingsBox from './SettingsBox.vue';
+import { mapGetters, mapActions } from 'vuex'
+import { getters, actions } from '../vuex/meta'
+import SettingCard from './SettingsCard.vue'
+import SettingsBox from './SettingsBox.vue'
 
 
 export default {
-  data() {
+  data () {
     return {
       title: 'Settings',
-      subtitle: 'Institute Admin Settings',
-    };
+      subtitle: 'Institute Admin Settings'
+    }
   },
   components: { SettingsBox, SettingCard },
   computed: {
-    settingCards() {
+    settingCards () {
       return [
         {
           title: 'Departments',
           text: `${this.departments.length} departments added`,
-          path: 'departments',
+          path: 'departments'
         },
         {
           title: 'Disciplines',
           text: 'Add discipline here',
-          path: 'disciplines',
+          path: 'disciplines'
         },
         {
           title: 'Semesters',
           text: 'Click to add semesters',
-          path: 'semesters',
+          path: 'semesters'
         },
         {
           title: 'Course Management',
           text: 'Click here to assign',
-          path: 'course-management',
+          path: 'course-management'
         },
         {
           title: 'Institute webmail domain',
           text: 'Set intitute website',
-          path: '/webmail-domain',
+          path: '/webmail-domain'
         },
         {
           title: 'Institute Details',
           text: 'Enter institute details',
-          path: 'institute-details',
+          path: 'institute-details'
         },
         {
           title: 'Send invites',
           text: 'Invite students and teachers',
-          path: 'send-invites',
-        },
-      ];
+          path: 'send-invites'
+        }
+      ]
     },
     ...mapGetters({
-      departments: getters.departments,
-    }),
+      departments: getters.departments
+    })
   },
   methods: {
-    settingClicked(index) {
-      this.$router.push({ name: this.settingCards[index].path });
+    settingClicked (index) {
+      this.$router.push({ name: this.settingCards[index].path })
     },
     ...mapActions({
-      getDepartments: actions.getDepartments,
-    }),
-  },
-};
+      getDepartments: actions.getDepartments
+    })
+  }
+}
 </script>
 
 <style lang="scss" scoped>

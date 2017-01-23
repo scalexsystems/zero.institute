@@ -21,12 +21,12 @@
 export default {
   props: {
     item: {
-      required: true,
-    },
+      required: true
+    }
   },
   computed: {
-  },
-};
+  }
+}
 </script>
 
 <style lang="scss">

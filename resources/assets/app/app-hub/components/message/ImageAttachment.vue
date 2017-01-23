@@ -38,51 +38,51 @@
   </div>
 </template>
 <script lang="babel">
-import $ from 'jquery';
-import Modal from '../../../components/Modal.vue';
+import $ from 'jquery'
+import Modal from '../../../components/Modal.vue'
 
 export default{
-  data() {
-    return { show: false, full: false };
+  data () {
+    return { show: false, full: false }
   },
   props: {
     images: {
       type: Array,
-      required: true,
-    },
+      required: true
+    }
   },
   computed: {
-    labelText() {
-      const images = this.images;
+    labelText () {
+      const images = this.images
 
-      return `${images.length} Images`;
+      return `${images.length} Images`
     },
-    preview() {
-      const images = this.images;
+    preview () {
+      const images = this.images
 
-      return images[0].links.preview || images[0].links.original;
-    },
+      return images[0].links.preview || images[0].links.original
+    }
   },
   components: { Modal },
   methods: {
-    go(where) {
-      this.full = false;
-      $(this.$refs.carousel).carousel(where);
-    },
+    go (where) {
+      this.full = false
+      $(this.$refs.carousel).carousel(where)
+    }
   },
   watch: {
-    show(state) {
+    show (state) {
       if (state) {
         this.$nextTick(() => {
-          this.$refs.carousel.querySelector('.carousel-indicators li').classList.add('active');
-          this.$refs.carousel.querySelector('.carousel-item').classList.add('active');
-          this.$refs.carousel.focus();
-          $(this.$refs.carousel).carousel({ interval: false });
-        });
+          this.$refs.carousel.querySelector('.carousel-indicators li').classList.add('active')
+          this.$refs.carousel.querySelector('.carousel-item').classList.add('active')
+          this.$refs.carousel.focus()
+          $(this.$refs.carousel).carousel({ interval: false })
+        })
       }
-    },
-  },
-};
+    }
+  }
+}
 </script>
 <style lang="scss" scoped>
 @import '../../../styles/variables';

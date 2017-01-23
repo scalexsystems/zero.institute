@@ -20,22 +20,22 @@
 </template>
 
 <script lang="babel">
-import { bool } from '../util';
+import { bool } from '../util'
 
 export default {
   props: {
     disableFooter: {
-      default: false,
-    },
+      default: false
+    }
   },
   computed: {
-    isFooterDisabled() {
-      const disableFooter = this.disableFooter;
+    isFooterDisabled () {
+      const disableFooter = this.disableFooter
 
-      return bool(disableFooter);
-    },
-  },
-};
+      return bool(disableFooter)
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

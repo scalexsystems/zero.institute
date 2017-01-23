@@ -106,139 +106,139 @@
 </template>
 
 <script>
-import throttle from 'lodash/throttle';
-import int from 'lodash/toInteger';
-import { mapGetters, mapActions } from 'vuex';
+import throttle from 'lodash/throttle'
+import int from 'lodash/toInteger'
+import { mapGetters, mapActions } from 'vuex'
 
-import { actions, getters } from '../vuex/meta';
-import { mapObject } from '../util';
-import { ActivityBox, PersonCard, LoadingPlaceholder } from '../components';
+import { actions, getters } from '../vuex/meta'
+import { mapObject } from '../util'
+import { ActivityBox, PersonCard, LoadingPlaceholder } from '../components'
 
 export default {
   name: 'CourseEdit',
-  data() {
+  data () {
     return {
       qi: '',
       qc: '',
       course: {},
       instructors: [],
       prerequisites: [],
-      errors: {},
-    };
+      errors: {}
+    }
   },
   components: { ActivityBox, PersonCard, LoadingPlaceholder },
   computed: {
-    hasCourse() {
-      return 'id' in this.course;
+    hasCourse () {
+      return 'id' in this.course
     },
-    years() {
+    years () {
       return [
         { id: 1, name: 'First Year' },
         { id: 2, name: 'Second Year' },
         { id: 3, name: 'Third Year' },
-        { id: 4, name: 'Fourth Year' },
-      ];
+        { id: 4, name: 'Fourth Year' }
+      ]
     },
-    departments() {
-      return this.allDepartments.filter(department => department.academic);
+    departments () {
+      return this.allDepartments.filter(department => department.academic)
     },
     ...mapGetters({
       courses: getters.courses,
       teachers: getters.teachers,
       disciplines: getters.disciplines,
-      allDepartments: getters.departments,
+      allDepartments: getters.departments
     }),
-    ...mapGetters('school', ['semesters']),
+    ...mapGetters('school', ['semesters'])
   },
   methods: {
-    findInstructor: throttle(function findInstructor({ value, start, end }) {
-      start();
-      this.findTeachers({ q: value }).then(end);
+    findInstructor: throttle(function findInstructor ({ value, start, end }) {
+      start()
+      this.findTeachers({ q: value }).then(end)
     }, 400),
-    addInstructor(teacher) {
-      if (this.instructors.indexOf(teacher) > -1) return;
+    addInstructor (teacher) {
+      if (this.instructors.indexOf(teacher) > -1) return
 
-      this.instructors.splice(0, 1, teacher);
+      this.instructors.splice(0, 1, teacher)
     },
-    removeInstructor(teacher) {
-      const index = this.instructors.indexOf(teacher);
+    removeInstructor (teacher) {
+      const index = this.instructors.indexOf(teacher)
       if (index > -1) {
-        this.instructors.splice(index, 1);
-        this.$refs.instructor.$emit('unselect', teacher);
+        this.instructors.splice(index, 1)
+        this.$refs.instructor.$emit('unselect', teacher)
       }
     },
-    findPreRequisiteCourse: throttle(function findInstructor({ value, start, end }) {
-      start();
-      this.findCourses({ q: value }).then(end);
+    findPreRequisiteCourse: throttle(function findInstructor ({ value, start, end }) {
+      start()
+      this.findCourses({ q: value }).then(end)
     }, 400),
-    addPreRequisiteCourse(course) {
-      if (this.prerequisites.indexOf(course) > -1) return;
+    addPreRequisiteCourse (course) {
+      if (this.prerequisites.indexOf(course) > -1) return
 
-      this.prerequisites.push(course);
+      this.prerequisites.push(course)
     },
-    removePreRequisiteCourse(course) {
-      const index = this.prerequisites.indexOf(course);
+    removePreRequisiteCourse (course) {
+      const index = this.prerequisites.indexOf(course)
       if (index > -1) {
-        this.prerequisites.splice(index, 1);
-        this.$refs.course.$emit('unselect', course);
+        this.prerequisites.splice(index, 1)
+        this.$refs.course.$emit('unselect', course)
       }
     },
-    updateCourse() {
+    updateCourse () {
       // TODO: Add validation.
       const payload = {
         ...mapObject(this.course, ['name', 'code', 'department_id', 'discipline_id', 'year_id', 'semester_id']),
         instructors: this.instructors.map(instructor => instructor.id),
-        prerequisites: this.prerequisites.map(course => course.id),
-      };
+        prerequisites: this.prerequisites.map(course => course.id)
+      }
 
-      this.$refs.action.classList.add('disabled');
+      this.$refs.action.classList.add('disabled')
       this.$http.put(`courses/${this.course.id}`, payload)
         .then(response => response.json())
         .then((course) => {
-          this.errors = {};
-          this.$store.commit('school/ADD_COURSE', this.course = course);
+          this.errors = {}
+          this.$store.commit('school/ADD_COURSE', this.course = course)
 
-          setTimeout(() => this.$router.push({ name: 'acad' }), 0);
+          setTimeout(() => this.$router.push({ name: 'acad' }), 0)
         })
         .catch(response => response.json())
         .then(result => this.$set(this, 'errors', result.errors))
         .catch(error => error)
-        .then(() => this.$refs.action && this.$refs.action.classList.remove('disabled'));
+        .then(() => this.$refs.action && this.$refs.action.classList.remove('disabled'))
     },
-    fetchCourse(id) {
-      this.course = {};
-      this.instructors = [];
-      this.prerequisites = [];
-      this.errors = {};
+    fetchCourse (id) {
+      this.course = {}
+      this.instructors = []
+      this.prerequisites = []
+      this.errors = {}
 
       this.$http.get(`courses/${id}`)
         .then(response => response.json())
         .then((course) => {
-          this.course = course;
-          this.instructors.push(...course.instructors.data);
-          this.prerequisites.push(...course.prerequisites.data.map(p => p.course));
+          this.course = course
+          this.instructors.push(...course.instructors.data)
+          this.prerequisites.push(...course.prerequisites.data.map(p => p.course))
         })
-        .catch(response => response);
+        .catch(response => response)
     },
     ...mapActions({
       findTeachers: actions.getTeachers,
-      findCourses: actions.getCourses,
-    }),
+      findCourses: actions.getCourses
+    })
   },
   watch: {
-    $route({ params }) {
-      this.fetchCourse(int(params.course));
-    },
+    $route ({ params }) {
+      this.fetchCourse(int(params.course))
+    }
   },
-  created() {
+  created () {
     if (!this.courses.length) {
-      this.findCourses();
+      this.findCourses()
     }
     if (!this.teachers.length) {
-      this.findTeachers();
+      this.findTeachers()
     }
 
-    this.fetchCourse(int(this.$route.params.course));
-  },
-};
+    this.fetchCourse(int(this.$route.params.course))
+  }
+}
 </script>

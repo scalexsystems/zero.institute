@@ -16,65 +16,65 @@ export default {
     name: String,
     show: {
       default: undefined,
-      type: Boolean,
+      type: Boolean
     },
     dissmissOnBackdrop: {
       default: true,
-      type: Boolean,
+      type: Boolean
     },
     wrapper: {
       type: String,
-      default: 'wrapper-default',
+      default: 'wrapper-default'
     },
     dismissable: {
       type: Boolean,
-      default: true,
-    },
+      default: true
+    }
   },
   computed: {
-    showing() {
-      const show = this.show;
-      const state = this.state;
+    showing () {
+      const show = this.show
+      const state = this.state
 
       if (show === undefined) {
-        return state;
+        return state
       }
 
-      return show;
-    },
+      return show
+    }
   },
-  data() {
+  data () {
     return {
-      state: false,
-    };
+      state: false
+    }
   },
-  created() {
+  created () {
     this.$on('show', () => {
-      this.state = true;
-    });
+      this.state = true
+    })
     this.$on('hide', () => {
-      this.state = false;
-    });
+      this.state = false
+    })
   },
   methods: {
-    onWrapper(event) {
-      if (!this.dismissable) return;
+    onWrapper (event) {
+      if (!this.dismissable) return
 
       if (this.dissmissOnBackdrop && this.$refs.wrapper === event.target) {
-        this.$emit('hide');
+        this.$emit('hide')
       }
-    },
+    }
   },
   watch: {
-    showing(state) {
+    showing (state) {
       if (state) {
-        document.body.classList.add('modal-open');
+        document.body.classList.add('modal-open')
       } else {
-        document.body.classList.remove('modal-open');
+        document.body.classList.remove('modal-open')
       }
-    },
-  },
-};
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

@@ -24,16 +24,16 @@
 </template>
 
 <script lang="babel">
-import LayoutBox from './LayoutBox.vue';
+import LayoutBox from './LayoutBox.vue'
 
 export default {
   props: {
     title: String,
     subtitle: String,
-    ...LayoutBox.props,
+    ...LayoutBox.props
   },
-  components: { LayoutBox },
-};
+  components: { LayoutBox }
+}
 </script>
 
 <style lang="scss">

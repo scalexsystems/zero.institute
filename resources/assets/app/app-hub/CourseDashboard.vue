@@ -71,64 +71,64 @@
 </template>
 
 <script lang="babel">
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapActions } from 'vuex'
 
-import { ActivityBox, Modal, PersonCard } from '../components';
+import { ActivityBox, Modal, PersonCard } from '../components'
 
 export default {
   name: 'CourseDashboard',
   components: { ActivityBox, Modal, PersonCard },
-  data() {
-    return { q: '', course: null };
+  data () {
+    return { q: '', course: null }
   },
-  created() {
+  created () {
     if (!this.courses.length) {
-      this.getCourses();
+      this.getCourses()
     }
   },
   computed: {
-    showCourse() {
-      return this.course !== null;
+    showCourse () {
+      return this.course !== null
     },
-    department() {
-      const course = this.course;
-      const departments = this.departments;
+    department () {
+      const course = this.course
+      const departments = this.departments
 
       if (course) {
-        return (departments.find(d => course.department_id === d.id) || {}).name;
+        return (departments.find(d => course.department_id === d.id) || {}).name
       }
 
-      return '';
+      return ''
     },
-    discipline() {
-      const course = this.course;
-      const disciplines = this.disciplines;
+    discipline () {
+      const course = this.course
+      const disciplines = this.disciplines
 
       if (course) {
-        return (disciplines.find(d => course.discipline_id === d.id) || {}).name;
+        return (disciplines.find(d => course.discipline_id === d.id) || {}).name
       }
 
-      return '';
+      return ''
     },
-    semester() {
-      const course = this.course;
-      const semesters = this.semesters;
+    semester () {
+      const course = this.course
+      const semesters = this.semesters
 
       if (course) {
-        return (semesters.find(semester => semester.id === course.semester_id) || {}).name;
+        return (semesters.find(semester => semester.id === course.semester_id) || {}).name
       }
 
-      return '';
+      return ''
     },
-    ...mapGetters('school', ['courses', 'departments', 'disciplines', 'semesters']),
+    ...mapGetters('school', ['courses', 'departments', 'disciplines', 'semesters'])
   },
   methods: {
-    openCourse(course) {
-      this.course = course;
+    openCourse (course) {
+      this.course = course
     },
-    ...mapActions('school', ['getCourses']),
-  },
-};
+    ...mapActions('school', ['getCourses'])
+  }
+}
 </script>
 
 <style lang="scss" scoped>

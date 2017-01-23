@@ -17,21 +17,21 @@ const spinnerMapping = {
   circles: 'loading-circles',
   default: 'loading-default',
   spiral: 'loading-spiral',
-  waveDots: 'loading-wave-dots',
-};
+  waveDots: 'loading-wave-dots'
+}
 
 /**
  * get the first scroll parent of an element
  * @param  {DOM} elm    the element which find scroll parent
  * @return {DOM}        the first scroll parent
  */
-function getScrollParent(elm) {
+function getScrollParent (elm) {
   if (elm.tagName === 'BODY') {
-    return window;
+    return window
   } else if (['scroll', 'auto'].indexOf(window.getComputedStyle(elm).overflowY) > -1) {
-    return elm;
+    return elm
   }
-  return getScrollParent(elm.parentNode);
+  return getScrollParent(elm.parentNode)
 }
 
 /**
@@ -39,7 +39,7 @@ function getScrollParent(elm) {
  * @param  {DOM} elm    scroll element
  * @return {Number}     distance
  */
-function getCurrentDistance(elm) {
+function getCurrentDistance (elm) {
   /*
    const styles = getComputedStyle(elm === window ? document.body : elm);
    const innerHeight = elm === window
@@ -49,75 +49,75 @@ function getCurrentDistance(elm) {
    ? document.body.scrollHeight
    : elm.scrollHeight;
    */
-  const scrollTop = isNaN(elm.scrollTop) ? elm.pageYOffset : elm.scrollTop;
+  const scrollTop = isNaN(elm.scrollTop) ? elm.pageYOffset : elm.scrollTop
   // const paddingTop = parseInt(styles.paddingTop, 10);
   // const paddingBottom = parseInt(styles.paddingBottom, 10);
 
-  return scrollTop;
+  return scrollTop
 }
 
 export default {
-  data() {
+  data () {
     return {
       scrollParent: null,
       scrollHandler: null,
       isLoading: false,
       isComplete: false,
-      isFirstLoad: true, // save the current loading whether it is the first loading
-    };
+      isFirstLoad: true // save the current loading whether it is the first loading
+    }
   },
   computed: {
-    spinnerType() {
-      return spinnerMapping[this.spinner] || spinnerMapping.default;
-    },
+    spinnerType () {
+      return spinnerMapping[this.spinner] || spinnerMapping.default
+    }
   },
   props: {
     distance: {
       type: Number,
-      default: 0,
+      default: 0
     },
     onInfinite: Function,
-    spinner: String,
+    spinner: String
   },
-  mounted() {
-    this.scrollParent = getScrollParent(this.$el);
+  mounted () {
+    this.scrollParent = getScrollParent(this.$el)
 
     this.scrollHandler = () => {
-      const currentDistance = getCurrentDistance(this.scrollParent);
+      const currentDistance = getCurrentDistance(this.scrollParent)
       if (!this.isLoading && currentDistance <= this.distance) {
-        this.isLoading = true;
+        this.isLoading = true
         if (this.onInfinite) {
-          this.onInfinite.call();
+          this.onInfinite.call()
         }
       }
-    };
+    }
 
-    setTimeout(this.scrollHandler, 1);
-    this.scrollParent.addEventListener('scroll', this.scrollHandler);
+    setTimeout(this.scrollHandler, 1)
+    this.scrollParent.addEventListener('scroll', this.scrollHandler)
 
     this.$on('$InfiniteLoading:loaded', () => {
-      this.isLoading = false;
-      this.isFirstLoad = false;
-    });
+      this.isLoading = false
+      this.isFirstLoad = false
+    })
     this.$on('$InfiniteLoading:complete', () => {
-      this.isLoading = false;
-      this.isComplete = true;
-      this.scrollParent.removeEventListener('scroll', this.scrollHandler);
-    });
+      this.isLoading = false
+      this.isComplete = true
+      this.scrollParent.removeEventListener('scroll', this.scrollHandler)
+    })
     this.$on('$InfiniteLoading:reset', () => {
-      this.isLoading = false;
-      this.isComplete = false;
-      this.isFirstLoad = true;
-      this.scrollParent.addEventListener('scroll', this.scrollHandler);
-      setTimeout(this.scrollHandler, 1);
-    });
+      this.isLoading = false
+      this.isComplete = false
+      this.isFirstLoad = true
+      this.scrollParent.addEventListener('scroll', this.scrollHandler)
+      setTimeout(this.scrollHandler, 1)
+    })
   },
-  destroyed() {
+  destroyed () {
     if (!this.isComplete) {
-      this.scrollParent.removeEventListener('scroll', this.scrollHandler);
+      this.scrollParent.removeEventListener('scroll', this.scrollHandler)
     }
-  },
-};
+  }
+}
 
 </script>
 

@@ -8,72 +8,72 @@
     </div>
 </template>
 <script lang="babel">
-import FileAttachment from './FileAttachment.vue';
-import ImageAttachment from './ImageAttachment.vue';
-import FailedAttachment from './FailedAttachment.vue';
+import FileAttachment from './FileAttachment.vue'
+import ImageAttachment from './ImageAttachment.vue'
+import FailedAttachment from './FailedAttachment.vue'
 
 export default{
-  data() {
-    return { };
+  data () {
+    return { }
   },
   props: {
     message: {
-      required: true,
-    },
+      required: true
+    }
   },
   computed: {
-    files() {
-      const attachments = this.attachments;
+    files () {
+      const attachments = this.attachments
 
-      return attachments.filter(a => !this.isImage(a));
+      return attachments.filter(a => !this.isImage(a))
     },
-    images() {
-      const attachments = this.attachments;
+    images () {
+      const attachments = this.attachments
 
-      return attachments.filter(a => this.isImage(a));
+      return attachments.filter(a => this.isImage(a))
     },
-    attachments() {
-      const message = this.message;
-      const errors = this.message.errors;
-      const items = message.attachments.data;
+    attachments () {
+      const message = this.message
+      const errors = this.message.errors
+      const items = message.attachments.data
 
       if (errors === undefined) {
-        return items;
+        return items
       }
 
-      const prepared = [];
+      const prepared = []
 
       for (let i = 0, index = 0; i < errors.length; i += 1) {
         if (errors[i]) {
-          prepared[i] = errors[i];
+          prepared[i] = errors[i]
         } else {
-          prepared[i] = items[index];
+          prepared[i] = items[index]
 
-          index += 1;
+          index += 1
         }
       }
 
-      return prepared;
-    },
+      return prepared
+    }
   },
   methods: {
-    isImage(attachment) {
-      if (!('mime' in attachment)) return false;
+    isImage (attachment) {
+      if (!('mime' in attachment)) return false
 
-      return ['png', 'gif', 'jpg', 'jpeg', 'webp', 'tiff'].indexOf(attachment.extension) > -1;
+      return ['png', 'gif', 'jpg', 'jpeg', 'webp', 'tiff'].indexOf(attachment.extension) > -1
     },
-    isFile(attachment) {
-      if (!('mime' in attachment)) return false;
+    isFile (attachment) {
+      if (!('mime' in attachment)) return false
 
-      return ['png', 'gif', 'jpg', 'jpeg', 'webp', 'tiff'].indexOf(attachment.extension) < 0;
+      return ['png', 'gif', 'jpg', 'jpeg', 'webp', 'tiff'].indexOf(attachment.extension) < 0
     },
-    isError(attachment) {
-      return !('mime' in attachment);
-    },
+    isError (attachment) {
+      return !('mime' in attachment)
+    }
   },
 
-  components: { FileAttachment, ImageAttachment, FailedAttachment },
-};
+  components: { FileAttachment, ImageAttachment, FailedAttachment }
+}
 </script>
 <style lang="scss" scoped>
 @import '../../../styles/methods';

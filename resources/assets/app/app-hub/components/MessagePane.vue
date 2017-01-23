@@ -16,156 +16,156 @@
 </template>
 
 <script lang="babel">
-import moment from 'moment';
-import last from 'lodash/last';
-import first from 'lodash/first';
+import moment from 'moment'
+import last from 'lodash/last'
+import first from 'lodash/first'
 
-import Message from './message/Message.vue';
-import InfiniteLoading from '../../components/PullToRefresh.vue';
-import ContinuedMessage from './message/ContinuedMessage.vue';
-import DateSeparator from './separator/DateSeparator.vue';
-import NewSeparator from './separator/NewSeparator.vue';
+import Message from './message/Message.vue'
+import InfiniteLoading from '../../components/PullToRefresh.vue'
+import ContinuedMessage from './message/ContinuedMessage.vue'
+import DateSeparator from './separator/DateSeparator.vue'
+import NewSeparator from './separator/NewSeparator.vue'
 
-function getScrollParent(elm) {
+function getScrollParent (elm) {
   if (elm.tagName === 'BODY') {
-    return window;
+    return window
   } else if (['scroll', 'auto'].indexOf(window.getComputedStyle(elm).overflowY) > -1) {
-    return elm;
+    return elm
   }
-  return getScrollParent(elm.parentNode);
+  return getScrollParent(elm.parentNode)
 }
 
 export default {
   props: {
     messages: {
-      required: true,
-    },
+      required: true
+    }
   },
   components: { Message, ContinuedMessage, DateSeparator, NewSeparator, InfiniteLoading },
   computed: {
-    unread() {
-      const messages = this.messages;
-      const unread = messages.filter(message => message.unread);
-      const firstUnread = first(unread);
+    unread () {
+      const messages = this.messages
+      const unread = messages.filter(message => message.unread)
+      const firstUnread = first(unread)
 
       if (firstUnread) {
-        return { id: firstUnread.id, count: unread.length };
+        return { id: firstUnread.id, count: unread.length }
       }
 
-      return { id: undefined, count: 0 };
-    },
+      return { id: undefined, count: 0 }
+    }
   },
-  created() {
-    this.$on('scrollToLast', () => this.scrollInView(last(this.messages)));
-    this.$on('scrollToFirst', () => this.scrollInView(first(this.messages)));
-    this.$on('reset', () => this.$refs.infinite.$emit('$InfiniteLoading:complete'));
+  created () {
+    this.$on('scrollToLast', () => this.scrollInView(last(this.messages)))
+    this.$on('scrollToFirst', () => this.scrollInView(first(this.messages)))
+    this.$on('reset', () => this.$refs.infinite.$emit('$InfiniteLoading:complete'))
   },
-  mounted() {
-    this.scrollParent = getScrollParent(this.$el);
-    this.$nextTick(() => this.$emit('scrollToLast'));
+  mounted () {
+    this.scrollParent = getScrollParent(this.$el)
+    this.$nextTick(() => this.$emit('scrollToLast'))
   },
-  data() {
+  data () {
     return {
       scrollParent: null,
       loading: false,
       skipScroll: false,
-      hideLoadButton: false,
-    };
+      hideLoadButton: false
+    }
   },
   methods: {
-    scrollInView(message) {
-      this.skipScroll = false;
-      if (!message) return;
+    scrollInView (message) {
+      this.skipScroll = false
+      if (!message) return
 
-      const element = document.getElementById(`message-${message.id}`);
+      const element = document.getElementById(`message-${message.id}`)
       if (element) {
-        element.scrollIntoView(true);
+        element.scrollIntoView(true)
       }
     },
-    decorator(message, index) {
-      let type = 'message';
+    decorator (message, index) {
+      let type = 'message'
 
       if (message._type === 'image') {
-        type = message._type;
+        type = message._type
       }
 
       if (index < 1 || this.isDateChangingAt(message, index) ||
         message.id === this.unread.id ||
         (message.attachments && message.attachments.data.length > 0)
       ) {
-        return type;
+        return type
       }
 
-      const prevMessage = this.messages[index - 1];
+      const prevMessage = this.messages[index - 1]
 
-      if (prevMessage.sender && message.sender.id === prevMessage.sender.id
-              && moment(message.received_at).diff(moment(prevMessage.received_at), 'minutes') < 2) {
-        return `continued-${type}`;
+      if (prevMessage.sender && message.sender.id === prevMessage.sender.id &&
+              moment(message.received_at).diff(moment(prevMessage.received_at), 'minutes') < 2) {
+        return `continued-${type}`
       }
 
-      return type;
+      return type
     },
-    isDateChangingAt(message, index) {
-      if (index === 0) return true;
+    isDateChangingAt (message, index) {
+      if (index === 0) return true
 
-      const prevMessage = this.messages[index - 1];
+      const prevMessage = this.messages[index - 1]
 
-      return !moment(message.received_at).isSame(moment(prevMessage.received_at), 'day');
+      return !moment(message.received_at).isSame(moment(prevMessage.received_at), 'day')
     },
-    loadMore() {
-      this.loading = true;
-      const toEnd = this.messages.length === 0;
+    loadMore () {
+      this.loading = true
+      const toEnd = this.messages.length === 0
 
       const done = () => {
-        this.loading = false;
-        if (toEnd) this.$nextTick(() => this.$emit('scrollToLast'));
+        this.loading = false
+        if (toEnd) this.$nextTick(() => this.$emit('scrollToLast'))
         if (this.$refs.infinite) {
-          this.$refs.infinite.$emit('$InfiniteLoading:loaded');
+          this.$refs.infinite.$emit('$InfiniteLoading:loaded')
         }
 
         this.$nextTick(() => {
-          const sh = this.scrollParent.getBoundingClientRect().height;
+          const sh = this.scrollParent.getBoundingClientRect().height
           if (sh >= this.$el.getBoundingClientRect().height) {
-            this.loadMore();
+            this.loadMore()
           }
-        });
-      };
+        })
+      }
       const end = () => {
-        this.hideLoadButton = true;
-        if (toEnd) this.$nextTick(() => this.$emit('scrollToLast'));
+        this.hideLoadButton = true
+        if (toEnd) this.$nextTick(() => this.$emit('scrollToLast'))
 
         if (this.$refs.infinite) {
-          this.$refs.infinite.$emit('$InfiniteLoading:complete');
+          this.$refs.infinite.$emit('$InfiniteLoading:complete')
         }
-      };
+      }
 
-      this.$emit('load-more', { done, end, error: end });
-    },
+      this.$emit('load-more', { done, end, error: end })
+    }
   },
   watch: {
-    messages(n, o) {
-      if (this.skipScroll) return;
+    messages (n, o) {
+      if (this.skipScroll) return
 
-      this.skipScroll = true;
-      const el = this.$el.getBoundingClientRect();
+      this.skipScroll = true
+      const el = this.$el.getBoundingClientRect()
 
-      const ty = this.scrollParent.scrollTop;
-      const by = el.height - ty;
-      const pre = first(n) === first(o);
+      const ty = this.scrollParent.scrollTop
+      const by = el.height - ty
+      const pre = first(n) === first(o)
 
       this.$nextTick(() => {
-        const height = this.$el.getBoundingClientRect().height;
-        const sh = height - by;
-        this.skipScroll = false;
+        const height = this.$el.getBoundingClientRect().height
+        const sh = height - by
+        this.skipScroll = false
         if (pre) {
-          this.scrollInView(last(this.messages));
+          this.scrollInView(last(this.messages))
         } else {
-          this.scrollParent.scrollTop = sh;
+          this.scrollParent.scrollTop = sh
         }
-      });
-    },
-  },
-};
+      })
+    }
+  }
+}
 </script>
 
 

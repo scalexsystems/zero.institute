@@ -22,35 +22,35 @@
 </template>
 <script lang="babel">
 export default{
-  data() {
+  data () {
     return {
-    };
+    }
   },
   props: {
     title: {
       type: String,
-      required: true,
+      required: true
     },
     text: {
-      type: String,
+      type: String
     },
     index: {
-      default: 0,
+      default: 0
     },
     additional: {
-      default: false,
+      default: false
     },
     context: {
       type: String,
-      default: '',
-    },
+      default: ''
+    }
   },
   methods: {
-    settingClicked() {
-    },
+    settingClicked () {
+    }
   },
-  components: {},
-};
+  components: {}
+}
 </script>
 <style lang="scss" scoped>
 @import '../styles/methods';

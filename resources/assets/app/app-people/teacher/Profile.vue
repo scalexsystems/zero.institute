@@ -222,104 +222,104 @@
 </template>
 
 <script lang="babel">
-import first from 'lodash/first';
-import toNumber from 'lodash/toNumber';
-import isNaN from 'lodash/isNaN';
-import moment from 'moment';
-import { mapGetters, mapActions } from 'vuex';
+import first from 'lodash/first'
+import toNumber from 'lodash/toNumber'
+import isNaN from 'lodash/isNaN'
+import moment from 'moment'
+import { mapGetters, mapActions } from 'vuex'
 
-import { getters, actions } from '../../vuex/meta';
-import { WindowBox, LoadingPlaceholder } from '../../components';
+import { getters, actions } from '../../vuex/meta'
+import { WindowBox, LoadingPlaceholder } from '../../components'
 
 export default {
   name: 'teacherProfile',
-  data() {
+  data () {
     return {
       errors: null,
-      remote: null,
-    };
+      remote: null
+    }
   },
   computed: {
-    teacher() {
-      const local = this.local || {};
-      const remote = this.remote;
+    teacher () {
+      const local = this.local || {}
+      const remote = this.remote
 
-      if (remote) return remote;
+      if (remote) return remote
 
-      return local;
+      return local
     },
-    local() {
-      const teachers = this.teachers;
-      const uid = this.$route.params.teacher;
+    local () {
+      const teachers = this.teachers
+      const uid = this.$route.params.teacher
 
-      return first(teachers.filter(teacher => teacher.uid === uid));
+      return first(teachers.filter(teacher => teacher.uid === uid))
     },
-    loading() {
-      return this.remote === null && this.errors === null;
+    loading () {
+      return this.remote === null && this.errors === null
     },
-    success() {
-      return this.remote !== null;
+    success () {
+      return this.remote !== null
     },
-    department() {
-      const departments = this.departments;
-      const id = this.teacher.department_id;
+    department () {
+      const departments = this.departments
+      const id = this.teacher.department_id
 
-      return first(departments.filter(d => d.id === id)) || {};
+      return first(departments.filter(d => d.id === id)) || {}
     },
     ...mapGetters({
       teachers: getters.teachers,
-      departments: getters.departments,
-    }),
+      departments: getters.departments
+    })
   },
   components: { WindowBox, LoadingPlaceholder },
-  created() {
+  created () {
     if (this.departments.length === 0) {
-      this.getDepartments();
+      this.getDepartments()
     }
 
-    this.getteacher();
+    this.getteacher()
   },
   filters: {
-    currency(value) {
-      const amount = toNumber(value);
+    currency (value) {
+      const amount = toNumber(value)
 
-      if (isNaN(amount)) return '₹ 0';
+      if (isNaN(amount)) return '₹ 0'
 
-      return `₹ ${amount}`;
+      return `₹ ${amount}`
     },
-    dateForHumans(value) {
-      return moment(value).format('D MMMM YYYY');
-    },
+    dateForHumans (value) {
+      return moment(value).format('D MMMM YYYY')
+    }
   },
   methods: {
-    getteacher() {
-      const id = this.$route.params.teacher;
+    getteacher () {
+      const id = this.$route.params.teacher
 
-      this.remote = this.errors = null;
+      this.remote = this.errors = null
 
       this.$http.get(`people/teachers/${id}`)
           .then(response => response.json())
           .then((result) => {
-            this.remote = result;
+            this.remote = result
           })
           .catch((response) => {
             response.json()
                 .then((result) => {
-                  this.errors = result.message;
+                  this.errors = result.message
                 })
                 .catch(() => {
-                  this.errors = 'Retry. There was some error apprehending response from server.';
-                });
-          });
+                  this.errors = 'Retry. There was some error apprehending response from server.'
+                })
+          })
     },
     ...mapActions({
-      getDepartments: actions.getDepartments,
-    }),
+      getDepartments: actions.getDepartments
+    })
   },
   watch: {
-    $route: 'getteacher',
-  },
-};
+    $route: 'getteacher'
+  }
+}
 </script>
 
 <style lang="scss" scoped>

@@ -31,96 +31,96 @@
 
 <script lang="babel">
 /* eslint-disable no-underscore-dangle */
-import $ from 'jquery';
-import debounce from 'lodash/debounce';
-import each from 'lodash/each';
+import $ from 'jquery'
+import debounce from 'lodash/debounce'
+import each from 'lodash/each'
 
 export default {
   props: {
     actions: {
       type: Array,
-      default: () => [],
-    },
+      default: () => []
+    }
   },
   computed: {
-    id() {
-      return `message-box-${this._uid}`;
+    id () {
+      return `message-box-${this._uid}`
     },
-    isEmpty() {
-      const actions = this.actions;
+    isEmpty () {
+      const actions = this.actions
 
-      return actions.length === 0;
+      return actions.length === 0
     },
-    isSpaceAvailable() {
-      const canFit = this.canFit;
+    isSpaceAvailable () {
+      const canFit = this.canFit
 
-      return canFit > 0;
+      return canFit > 0
     },
-    maxIndex() {
-      const actions = this.actions;
+    maxIndex () {
+      const actions = this.actions
 
-      let index;
+      let index
       each(actions, (action, id) => {
         if (index === undefined && action.collapseIfRoom === false) {
-          index = id;
+          index = id
         }
-      });
+      })
 
-      return index === undefined ? actions.length : index;
+      return index === undefined ? actions.length : index
     },
-    otherActions() {
-      const actions = this.actions;
-      const canFit = Math.min(this.canFit, this.maxIndex);
+    otherActions () {
+      const actions = this.actions
+      const canFit = Math.min(this.canFit, this.maxIndex)
 
       if (canFit >= actions.length) {
-        return [];
+        return []
       }
 
       return actions.slice(canFit)
-              .map((action, index) => ({ action, index }));
+              .map((action, index) => ({ action, index }))
     },
-    collapsedActions() {
-      const actions = this.actions;
-      const canFit = Math.min(this.canFit, this.maxIndex);
+    collapsedActions () {
+      const actions = this.actions
+      const canFit = Math.min(this.canFit, this.maxIndex)
 
       if (canFit < 1) {
-        return [];
+        return []
       }
 
       return actions.slice(0, canFit)
-              .map((action, index) => ({ action, index }));
-    },
+              .map((action, index) => ({ action, index }))
+    }
   },
-  data() {
+  data () {
     return {
-      canFit: 0,
-    };
+      canFit: 0
+    }
   },
   methods: {
-    checkWidth() {
-      const selector = $(this.$refs.dropdown);
-      const container = $(this.$el).parent();
+    checkWidth () {
+      const selector = $(this.$refs.dropdown)
+      const container = $(this.$el).parent()
 
-      const num = (container.width() - selector.outerWidth()) / selector.outerWidth();
+      const num = (container.width() - selector.outerWidth()) / selector.outerWidth()
 
-      this.canFit = parseInt(num, 10);
+      this.canFit = parseInt(num, 10)
     },
-    click(event, action, index) {
-      this.$emit('option-click', event, action, index);
-    },
+    click (event, action, index) {
+      this.$emit('option-click', event, action, index)
+    }
   },
-  mounted() {
+  mounted () {
     $(window).on('resize.action-menu', debounce(() => {
-      this.checkWidth();
-    }, 500));
+      this.checkWidth()
+    }, 500))
     this.$nextTick(() => {
-      this.checkWidth();
-    });
+      this.checkWidth()
+    })
   },
-  beforeDestroy() {
-    $(window).off('resize.action-menu');
-  },
-};
+  beforeDestroy () {
+    $(window).off('resize.action-menu')
+  }
+}
 </script>
 
 <style lang="scss">

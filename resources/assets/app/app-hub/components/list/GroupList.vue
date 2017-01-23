@@ -23,96 +23,96 @@
 </template>
 
 <script lang="babel">
-import each from 'lodash/each';
-import sort from 'lodash/sortBy';
-import first from 'lodash/first';
-import int from 'lodash/toInteger';
-import { mapActions, mapGetters } from 'vuex';
-import moment from 'moment';
+import each from 'lodash/each'
+import sort from 'lodash/sortBy'
+import first from 'lodash/first'
+import int from 'lodash/toInteger'
+import { mapActions, mapGetters } from 'vuex'
+import moment from 'moment'
 
-import { httpThen } from '../../../util';
-import { actions, getters } from '../../vuex/meta';
+import { httpThen } from '../../../util'
+import { actions, getters } from '../../vuex/meta'
 
 export default {
-  created() {
+  created () {
     if (!this.loaded) {
-      this.getAllGroups();
-      this.loaded = true;
+      this.getAllGroups()
+      this.loaded = true
     }
   },
   computed: {
-    sortedGroups() {
-      const groups = this.groups.filter(group => group.type === 'group');
+    sortedGroups () {
+      const groups = this.groups.filter(group => group.type === 'group')
 
       return sort(groups, (group) => {
-        const message = first(group.messages);
-        if (!message) return 0;
+        const message = first(group.messages)
+        if (!message) return 0
 
-        return -moment(message.received_at).valueOf();
-      });
+        return -moment(message.received_at).valueOf()
+      })
     },
-    activeId() {
-      const route = this.$route;
+    activeId () {
+      const route = this.$route
 
       if ('group' in route.params) {
-        return int(route.params.group);
+        return int(route.params.group)
       }
 
-      return -1;
+      return -1
     },
     ...mapGetters({
-      groups: getters.groups,
-    }),
+      groups: getters.groups
+    })
   },
-  data() {
+  data () {
     return {
       joined: {},
-      loaded: false,
-    };
+      loaded: false
+    }
   },
   methods: {
-    onGroupSelected(group) {
+    onGroupSelected (group) {
       this.$router.push({
         name: 'hub.group',
-        params: { group: group.id },
-      });
+        params: { group: group.id }
+      })
     },
-    joinGroupChannels() {
+    joinGroupChannels () {
       each(this.groups, (group) => {
         if (this.joined[group.id] !== true && group.channel) {
           this.$echo.join(group.channel).listen('NewMessage', (message) => {
-            this.$debug('New Message', message);
-            this.onMessage({ groupId: group.id, message });
-          });
+            this.$debug('New Message', message)
+            this.onMessage({ groupId: group.id, message })
+          })
 
-          this.joined[group.id] = true;
+          this.joined[group.id] = true
         }
-      });
+      })
     },
-    getAllGroups() {
+    getAllGroups () {
       return this.getGroups()
               .then(httpThen)
               .then((result) => {
-                const paginator = result._meta.pagination;
+                const paginator = result._meta.pagination
 
                 if (paginator.current_page < paginator.total_pages) {
-                  setTimeout(() => this.getAllGroups(), 0);
+                  setTimeout(() => this.getAllGroups(), 0)
                 }
               })
-              .catch(response => response);
+              .catch(response => response)
     },
     ...mapActions({
       getGroups: actions.getGroups,
       sendMessage: actions.sendMessageToGroup,
-      onMessage: actions.onNewMessageToGroup,
-    }),
+      onMessage: actions.onNewMessageToGroup
+    })
   },
   watch: {
-    groups() {
-      this.joinGroupChannels();
-    },
-  },
-};
+    groups () {
+      this.joinGroupChannels()
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

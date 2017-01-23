@@ -46,100 +46,100 @@
 
 </template>
 <script lang="babel">
-import { mapActions, mapGetters } from 'vuex';
-import { clone } from 'lodash';
-import SettingsBox from './SettingsBox.vue';
-import SettingsCard from './SettingsCard.vue';
-import Modal from '../components/Modal.vue';
-import { actions, getters } from '../vuex/meta';
+import { mapActions, mapGetters } from 'vuex'
+import { clone } from 'lodash'
+import SettingsBox from './SettingsBox.vue'
+import SettingsCard from './SettingsCard.vue'
+import Modal from '../components/Modal.vue'
+import { actions, getters } from '../vuex/meta'
 
 export default{
-  created() {
+  created () {
     if (this.disciplines.length === 0) {
-      this.getDisciplines();
+      this.getDisciplines()
     }
   },
-  data() {
+  data () {
     return {
       onAdd: false,
       loaded: false,
       discipline: {
         name: '',
-        short_name: '',
+        short_name: ''
       },
       editReference: {
         id: false,
-        index: false,
+        index: false
       },
-      errors: {},
-    };
+      errors: {}
+    }
   },
   computed: {
-    title() {
-      return this.editReference.id ? 'Edit Discipline' : 'Add New Discipline';
+    title () {
+      return this.editReference.id ? 'Edit Discipline' : 'Add New Discipline'
     },
     ...mapGetters({
-      disciplines: getters.disciplines,
-    }),
+      disciplines: getters.disciplines
+    })
   },
   components: { SettingsBox, Modal, SettingsCard },
   methods: {
-    showAddDiscipline() {
-      this.onAdd = true;
+    showAddDiscipline () {
+      this.onAdd = true
     },
-    onCancel() {
-      this.onAdd = false;
-      this.resetReference();
+    onCancel () {
+      this.onAdd = false
+      this.resetReference()
     },
-    onSubmit() {
-      const call = this.editReference.id ? 'updateDiscipline' : 'addNewDiscipline';
-      this[call]();
+    onSubmit () {
+      const call = this.editReference.id ? 'updateDiscipline' : 'addNewDiscipline'
+      this[call]()
     },
-    addNewDiscipline() {
+    addNewDiscipline () {
       this.$http.post('disciplines', this.discipline)
       .then(() => {
-        const discipline = clone(this.discipline);
-        this.onAdd = false;
-        this.addDiscipline(discipline);
-        this.resetReference();
+        const discipline = clone(this.discipline)
+        this.onAdd = false
+        this.addDiscipline(discipline)
+        this.resetReference()
       })
-      .catch(() => {});
+      .catch(() => {})
     },
-    updateDiscipline() {
+    updateDiscipline () {
       this.$http.put(`disciplines/${this.editReference.id}`, this.discipline)
       .then(() => {
-        this.onAdd = false;
-        const discipline = clone(this.discipline);
-        this.disciplines[this.editReference.index] = discipline;
-        this.updateDisciplineAction(discipline);
-        this.resetReference();
-      });
+        this.onAdd = false
+        const discipline = clone(this.discipline)
+        this.disciplines[this.editReference.index] = discipline
+        this.updateDisciplineAction(discipline)
+        this.resetReference()
+      })
     },
-    disciplineClicked(index) {
-      const discipline = this.disciplines[index];
+    disciplineClicked (index) {
+      const discipline = this.disciplines[index]
       this.editReference = {
         id: discipline.id,
-        index,
-      };
-      this.discipline = clone(discipline);
-      this.onAdd = true;
+        index
+      }
+      this.discipline = clone(discipline)
+      this.onAdd = true
     },
-    resetReference() {
+    resetReference () {
       Object.keys(this.discipline).forEach((key) => {
-        this.discipline[key] = '';
-      });
+        this.discipline[key] = ''
+      })
       this.editReference = {
         id: false,
-        index: false,
-      };
+        index: false
+      }
     },
     ...mapActions({
       getDisciplines: actions.getDisciplines,
       addDiscipline: actions.addDiscipline,
-      updateDisciplineAction: actions.updateDiscipline,
-    }),
-  },
-};
+      updateDisciplineAction: actions.updateDiscipline
+    })
+  }
+}
 </script>
 <style lang="scss" scoped>
 @import '../styles/variables';

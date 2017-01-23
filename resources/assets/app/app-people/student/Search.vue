@@ -47,11 +47,11 @@
 </template>
 
 <script lang="babel">
-import { mapGetters, mapActions } from 'vuex';
-import throttle from 'lodash/throttle';
+import { mapGetters, mapActions } from 'vuex'
+import throttle from 'lodash/throttle'
 
-import { getters, actions } from '../../vuex/meta';
-import { WindowBox } from '../../components';
+import { getters, actions } from '../../vuex/meta'
+import { WindowBox } from '../../components'
 
 export default {
   name: 'StudentSearch',
@@ -60,41 +60,41 @@ export default {
     ...mapGetters({
       suggestions: getters.students,
       departments: getters.departments,
-      disciplines: getters.disciplines,
-    }),
+      disciplines: getters.disciplines
+    })
   },
-  data() {
+  data () {
     return {
-      query: '',
-    };
+      query: ''
+    }
   },
-  created() {
+  created () {
     if (this.departments.length === 0) {
-      this.getDepartments();
+      this.getDepartments()
     }
 
     if (this.disciplines.length === 0) {
-      this.getDisciplines();
+      this.getDisciplines()
     }
   },
   methods: {
-    onSearchInput: throttle(function onSearchInput({ start, end, value }) {
-      start();
-      this.getStudents({ q: value }).then(() => end());
+    onSearchInput: throttle(function onSearchInput ({ start, end, value }) {
+      start()
+      this.getStudents({ q: value }).then(() => end())
     }),
-    onSearch() {
-      this.$router.push({ name: 'student.find', query: { q: this.query } });
+    onSearch () {
+      this.$router.push({ name: 'student.find', query: { q: this.query }})
     },
-    onSelect(student) {
-      this.$debug(student);
+    onSelect (student) {
+      this.$debug(student)
     },
     ...mapActions({
       getStudents: actions.getStudents,
       getDepartments: actions.getDepartments,
-      getDisciplines: actions.getDisciplines,
-    }),
-  },
-};
+      getDisciplines: actions.getDisciplines
+    })
+  }
+}
 </script>
 
 <style lang="scss" scoped>

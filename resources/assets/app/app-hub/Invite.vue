@@ -112,12 +112,12 @@
 
 </template>
 <script lang="babel">
-import SettingsBox from './SettingsBox.vue';
+import SettingsBox from './SettingsBox.vue'
 
 export default{
-  created() {
+  created () {
   },
-  data() {
+  data () {
     return {
       onAdd: false,
       loaded: false,
@@ -127,53 +127,53 @@ export default{
       invited: {
         students: 0,
         teachers: 0,
-        employees: 0,
+        employees: 0
       },
-      errors: {},
-    };
+      errors: {}
+    }
   },
   computed: {
   },
   methods: {
-    sendStudentsInvite() {
-      this.sendInvite('students');
+    sendStudentsInvite () {
+      this.sendInvite('students')
     },
 
-    sendTeachersInvite() {
-      this.sendInvite('teachers');
+    sendTeachersInvite () {
+      this.sendInvite('teachers')
     },
 
-    sendEmployeesInvite() {
-      this.sendInvite('employees');
+    sendEmployeesInvite () {
+      this.sendInvite('employees')
     },
 
-    sendInvite(type) {
-      const emails = this.getArrayFromString(this[type]);
+    sendInvite (type) {
+      const emails = this.getArrayFromString(this[type])
       if (emails) {
-        const entries = this.validateEmails(emails);
+        const entries = this.validateEmails(emails)
         if (entries.length) {
           this.$http.post(`people/${type}/invite`, { [type]: entries })
            .then(() => {
-             this.invited[type] += entries.length;
-             this[type] = emails.filter(email => entries.indexOf(email) < 0).join(', ');
-           });
+             this.invited[type] += entries.length
+             this[type] = emails.filter(email => entries.indexOf(email) < 0).join(', ')
+           })
         }
       }
     },
 
-    getArrayFromString(string) {
-      return string.split(/[;,\s\r\n\t]+/g);
+    getArrayFromString (string) {
+      return string.split(/[;,\s\r\n\t]+/g)
     },
-    cancel(type) {
-      this[type] = '';
+    cancel (type) {
+      this[type] = ''
     },
-    validateEmails(emails) {
-      const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      return emails.filter(email => re.test(email));
-    },
+    validateEmails (emails) {
+      const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      return emails.filter(email => re.test(email))
+    }
   },
-  components: { SettingsBox },
-};
+  components: { SettingsBox }
+}
 </script>
 <style lang="scss" scoped>
 @import '../styles/methods';

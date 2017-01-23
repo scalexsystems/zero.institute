@@ -10,25 +10,25 @@
 </template>
 
 <script lang="babel">
-import { bool } from '../util';
+import { bool } from '../util'
 
 export default {
   props: {
     open: {
       type: Boolean,
-      default: false,
+      default: false
     },
     contentClass: String,
-    sidebarClass: String,
+    sidebarClass: String
   },
   computed: {
-    stateClass() {
-      const state = this.open;
+    stateClass () {
+      const state = this.open
 
-      return bool(state) === true ? 'open' : undefined;
-    },
-  },
-};
+      return bool(state) === true ? 'open' : undefined
+    }
+  }
+}
 </script>
 
 <style lang="scss">

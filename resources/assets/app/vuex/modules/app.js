@@ -1,5 +1,5 @@
 export default {
   state: {
-    active: 'hub',
-  },
-};
+    active: 'hub'
+  }
+}

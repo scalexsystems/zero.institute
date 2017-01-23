@@ -19,66 +19,66 @@
 </template>
 
 <script lang="babel">
-import isArray from 'lodash/isArray';
-import isString from 'lodash/isString';
+import isArray from 'lodash/isArray'
+import isString from 'lodash/isString'
 
-import input from './mixins/input';
+import input from './mixins/input'
 
 export default {
   props: {
     type: {
       default: 'radio',
-      validator(value) {
-        return ['radio', 'checkbox'].indexOf(value) > -1;
-      },
+      validator (value) {
+        return ['radio', 'checkbox'].indexOf(value) > -1
+      }
     },
     stacked: Boolean,
     options: {
       type: Object,
-      required: true,
-    },
+      required: true
+    }
   },
   mixins: [input],
   computed: {
-    helpId() {
-      return `${this.id}-help-text`;
+    helpId () {
+      return `${this.id}-help-text`
     },
-    localValue() {
-      const value = this.value;
+    localValue () {
+      const value = this.value
 
       if (isArray(value)) {
-        return value;
+        return value
       }
 
       if (isString(value) && value.length > 0) {
-        return [value];
+        return [value]
       }
 
-      return [];
-    },
+      return []
+    }
   },
   methods: {
-    onInput(event, option) {
+    onInput (event, option) {
       if (this.type === 'radio') {
-        return this.$emit('input', option);
+        return this.$emit('input', option)
       }
 
-      const value = this.value;
+      const value = this.value
       if (!isArray(value)) {
-        return this.$emit('input', [option]);
+        return this.$emit('input', [option])
       }
 
-      const index = value.indexOf(option);
+      const index = value.indexOf(option)
       if (index > -1) {
-        value.splice(index, 1);
+        value.splice(index, 1)
       } else {
-        value.push(option);
+        value.push(option)
       }
 
-      return this.$emit('input', value);
-    },
-  },
-};
+      return this.$emit('input', value)
+    }
+  }
+}
 </script>
 
 <style lang="scss">

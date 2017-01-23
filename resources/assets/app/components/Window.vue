@@ -29,13 +29,13 @@
 export default {
   props: {
     title: {
-      type: String,
+      type: String
     },
     subtitle: {
-      type: String,
-    },
-  },
-};
+      type: String
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

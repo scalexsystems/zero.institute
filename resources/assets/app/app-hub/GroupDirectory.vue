@@ -50,88 +50,88 @@
 </template>
 
 <script lang="babel">
-import Shifter from 'sifter';
-import throttle from 'lodash/throttle';
-import { mapActions, mapGetters } from 'vuex';
+import Shifter from 'sifter'
+import throttle from 'lodash/throttle'
+import { mapActions, mapGetters } from 'vuex'
 
-import InfiniteScroll from 'vue-infinite-loading';
-import { httpThen } from '../util';
-import { getters, actions } from '../vuex/meta';
-import ActivityBox from '../components/ActivityBox.vue';
-import PersonCard from '../components/PersonCard.vue';
+import InfiniteScroll from 'vue-infinite-loading'
+import { httpThen } from '../util'
+import { getters, actions } from '../vuex/meta'
+import ActivityBox from '../components/ActivityBox.vue'
+import PersonCard from '../components/PersonCard.vue'
 
 export default {
   name: 'GroupDirectory',
   components: { ActivityBox, InfiniteScroll, PersonCard },
   computed: {
     ...mapGetters({
-      groups: getters.groups,
+      groups: getters.groups
     }),
-    searchable() {
-      const items = this.groups;
-      return new Shifter(items);
+    searchable () {
+      const items = this.groups
+      return new Shifter(items)
     },
-    filtered() {
-      const searchable = this.searchable;
-      const items = this.groups;
-      const query = this.q;
+    filtered () {
+      const searchable = this.searchable
+      const items = this.groups
+      const query = this.q
       const result = searchable.search(query, {
         fields: ['name'],
-        sort_empty: [{ field: 'name', direction: 'asc' }],
-      });
-      return result.items.map(({ id }) => items[id]);
-    },
+        sort_empty: [{ field: 'name', direction: 'asc' }]
+      })
+      return result.items.map(({ id }) => items[id])
+    }
   },
-  data() {
+  data () {
     return {
       q: '',
       page: 0,
       resultMessage: '',
       title: 'Campus Groups',
-      subtitle: 'You can join any of these groups.',
-    };
+      subtitle: 'You can join any of these groups.'
+    }
   },
   methods: {
-    onClose() {
-      this.$router.go(-1);
+    onClose () {
+      this.$router.go(-1)
     },
-    onGroupSelected(group) {
-      const name = group.is_member === true ? 'hub.group' : 'hub.group-preview';
+    onGroupSelected (group) {
+      const name = group.is_member === true ? 'hub.group' : 'hub.group-preview'
 
-      this.$router.push({ name, params: { group: group.id } });
+      this.$router.push({ name, params: { group: group.id }})
     },
-    onSearch: throttle(function onSearch(query) {
-      this.q = query;
-      this.page = 1;
-      this.getGroups({ q: query });
+    onSearch: throttle(function onSearch (query) {
+      this.q = query
+      this.page = 1
+      this.getGroups({ q: query })
     }, 500),
 
-    onInfinite() {
+    onInfinite () {
       const emit = (e) => {
         if (this.$refs.infinite) {
-          this.$refs.infinite.$emit(e);
+          this.$refs.infinite.$emit(e)
         }
-      };
-      const end = () => emit('$InfiniteLoading:complete');
-      const done = () => emit('$InfiniteLoading:loaded');
+      }
+      const end = () => emit('$InfiniteLoading:complete')
+      const done = () => emit('$InfiniteLoading:loaded')
       this.getGroups({ q: this.q, page: this.page + 1 })
               .then(httpThen)
               .then((result) => {
-                this.page = result._meta.pagination.current_page;
-                return result.data.length ? done() : end();
-              });
+                this.page = result._meta.pagination.current_page
+                return result.data.length ? done() : end()
+              })
 
       this.$emit('load-more', {
         done,
         end,
-        error: end,
-      });
+        error: end
+      })
     },
     ...mapActions({
-      getGroups: actions.getGroups,
-    }),
-  },
-};
+      getGroups: actions.getGroups
+    })
+  }
+}
 </script>
 
 <style lang="scss">

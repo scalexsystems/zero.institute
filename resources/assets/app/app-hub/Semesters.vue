@@ -47,100 +47,100 @@
 
 </template>
 <script lang="babel">
-import { mapActions, mapGetters } from 'vuex';
-import { clone } from 'lodash';
-import SettingsBox from './SettingsBox.vue';
-import SettingsCard from './SettingsCard.vue';
-import Modal from '../components/Modal.vue';
-import { actions, getters } from '../vuex/meta';
+import { mapActions, mapGetters } from 'vuex'
+import { clone } from 'lodash'
+import SettingsBox from './SettingsBox.vue'
+import SettingsCard from './SettingsCard.vue'
+import Modal from '../components/Modal.vue'
+import { actions, getters } from '../vuex/meta'
 
 export default{
-  created() {
+  created () {
     if (this.semesters.length === 0) {
-      this.getSemesters();
+      this.getSemesters()
     }
   },
-  data() {
+  data () {
     return {
       onAdd: false,
       loaded: false,
       semester: {
-        name: '',
+        name: ''
       },
       editReference: {
         id: false,
-        index: false,
+        index: false
       },
-      errors: {},
-    };
+      errors: {}
+    }
   },
   computed: {
-    title() {
-      return this.editReference.id ? 'Edit Semester' : 'Add New Semester';
+    title () {
+      return this.editReference.id ? 'Edit Semester' : 'Add New Semester'
     },
     ...mapGetters({
-      semesters: getters.semesters,
-    }),
+      semesters: getters.semesters
+    })
   },
   components: { SettingsBox, Modal, SettingsCard },
   methods: {
-    showAddSemester() {
-      this.onAdd = true;
+    showAddSemester () {
+      this.onAdd = true
     },
-    onCancel() {
-      this.onAdd = false;
-      this.resetReference();
+    onCancel () {
+      this.onAdd = false
+      this.resetReference()
     },
-    onSubmit() {
-      const call = this.editReference.id ? 'updateSemester' : 'addNewSemester';
-      this[call]();
+    onSubmit () {
+      const call = this.editReference.id ? 'updateSemester' : 'addNewSemester'
+      this[call]()
     },
-    addNewSemester() {
+    addNewSemester () {
       this.$http.post('semesters', this.semester)
       .then(() => {
-        const semester = clone(this.semester);
-        this.onAdd = false;
-        this.addSemester(semester);
-        this.resetReference();
+        const semester = clone(this.semester)
+        this.onAdd = false
+        this.addSemester(semester)
+        this.resetReference()
       })
-      .catch(() => {});
+      .catch(() => {})
     },
-    updateSemester() {
+    updateSemester () {
       this.$http.put(`semesters/${this.editReference.id}`, this.semester)
       .then(() => {
-        this.onAdd = false;
-        const semester = clone(this.semester);
-        this.semesters[this.editReference.index] = semester;
-        this.updateSemesterAction(semester);
-        this.resetReference();
-      });
+        this.onAdd = false
+        const semester = clone(this.semester)
+        this.semesters[this.editReference.index] = semester
+        this.updateSemesterAction(semester)
+        this.resetReference()
+      })
     },
-    semesterClicked(index) {
-      const semester = this.semesters[index];
+    semesterClicked (index) {
+      const semester = this.semesters[index]
       this.editReference = {
         id: semester.id,
-        index,
-      };
-      this.semester = clone(semester);
-      this.onAdd = true;
+        index
+      }
+      this.semester = clone(semester)
+      this.onAdd = true
     },
-    resetReference() {
+    resetReference () {
       Object.keys(this.semester).forEach((key) => {
-        this.semester[key] = '';
-      });
+        this.semester[key] = ''
+      })
       this.editReference = {
         id: false,
-        index: false,
-      };
+        index: false
+      }
     },
     ...mapActions({
       getSemesters: actions.getSemesters,
       addSemester: actions.addSemester,
-      updateSemesterAction: actions.updateSemester,
-    }),
+      updateSemesterAction: actions.updateSemester
+    })
 
-  },
-};
+  }
+}
 </script>
 <style lang="scss" scoped>
     @import '../styles/variables';

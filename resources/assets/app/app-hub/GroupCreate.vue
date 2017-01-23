@@ -41,106 +41,106 @@
 </template>
 
 <script lang="babel">
-import Validator from 'Validator';
-import throttle from 'lodash/throttle';
-import { mapGetters, mapActions } from 'vuex';
+import Validator from 'Validator'
+import throttle from 'lodash/throttle'
+import { mapGetters, mapActions } from 'vuex'
 
-import { ActivityBox, PersonCard } from '../components';
-import { types as mutations } from './vuex/meta';
-import { types as rootMutations, getters, actions } from '../vuex/meta';
-import { isValidationException, normalizeValidationErrors as normalize } from '../util';
+import { ActivityBox, PersonCard } from '../components'
+import { types as mutations } from './vuex/meta'
+import { types as rootMutations, getters, actions } from '../vuex/meta'
+import { isValidationException, normalizeValidationErrors as normalize } from '../util'
 
 export default {
   name: 'GroupCreate',
   components: { ActivityBox, PersonCard },
-  data() {
+  data () {
     return {
       group: {
         name: '',
         type: 'public',
         description: '',
-        member_ids: [],
+        member_ids: []
       },
       query: '',
       members: [],
-      errors: {},
-    };
+      errors: {}
+    }
   },
   computed: {
-    groupTypes() {
+    groupTypes () {
       return {
         public: 'Public',
-        private: 'Private',
-      };
+        private: 'Private'
+      }
     },
-    ...mapGetters({ suggestions: getters.users }),
+    ...mapGetters({ suggestions: getters.users })
   },
   methods: {
-    createGroup() {
+    createGroup () {
       if (!this.validate()) {
-        return;
+        return
       }
 
-      this.$refs.action.classList.add('disabled');
+      this.$refs.action.classList.add('disabled')
       this.$http.post('groups', this.group)
               .then(response => response.json())
               .then((result) => {
-                this.$refs.action.classList.remove('disabled');
-                this.$store.commit(mutations.ADD_GROUP, result);
-                this.$store.commit(rootMutations.ADD_GROUP, result);
-                this.$router.push({ name: 'hub.group', params: { group: result.id } });
+                this.$refs.action.classList.remove('disabled')
+                this.$store.commit(mutations.ADD_GROUP, result)
+                this.$store.commit(rootMutations.ADD_GROUP, result)
+                this.$router.push({ name: 'hub.group', params: { group: result.id }})
 
-                return result;
+                return result
               })
               .catch((response) => {
-                this.$refs.action.classList.remove('disabled');
+                this.$refs.action.classList.remove('disabled')
                 if (isValidationException(response)) {
-                  response.json().then(result => this.$set(this, 'errors', normalize(result.errors)));
+                  response.json().then(result => this.$set(this, 'errors', normalize(result.errors)))
                 }
 
-                return response;
-              });
+                return response
+              })
     },
-    validate() {
+    validate () {
       const v = Validator.make(this.group, {
         name: 'required|min:3|max:60',
         type: 'required',
-        description: 'required',
-      });
+        description: 'required'
+      })
 
       if (v.fails()) {
-        this.$set(this, 'errors', normalize(v.getErrors()));
+        this.$set(this, 'errors', normalize(v.getErrors()))
 
-        return false;
+        return false
       }
 
-      this.$set(this, 'errors', {});
+      this.$set(this, 'errors', {})
 
-      return true;
+      return true
     },
-    onSuggest: throttle(function onSuggest({ value, start, end }) {
-      start();
-      this.findMembers({ q: value }).then(end);
+    onSuggest: throttle(function onSuggest ({ value, start, end }) {
+      start()
+      this.findMembers({ q: value }).then(end)
     }, 400),
-    onSelect(member) {
+    onSelect (member) {
       if (this.group.member_ids.indexOf(member.id) < 0) {
-        this.group.member_ids.push(member.id);
-        this.members.push(member);
+        this.group.member_ids.push(member.id)
+        this.members.push(member)
       }
     },
-    removeMember(member) {
-      const index = this.group.member_ids.indexOf(member.id);
+    removeMember (member) {
+      const index = this.group.member_ids.indexOf(member.id)
       if (index > -1) {
-        this.group.member_ids.splice(index, 1);
-        this.members.splice(index, 1);
+        this.group.member_ids.splice(index, 1)
+        this.members.splice(index, 1)
       }
     },
-    ...mapActions({ findMembers: actions.getUsers }),
+    ...mapActions({ findMembers: actions.getUsers })
   },
-  created() {
-    if (!this.suggestions.length) this.findMembers();
-  },
-};
+  created () {
+    if (!this.suggestions.length) this.findMembers()
+  }
+}
 </script>
 
 <style lang="scss">

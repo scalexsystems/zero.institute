@@ -44,47 +44,47 @@
 </template>
 
 <script lang="babel">
-import { mapGetters, mapActions } from 'vuex';
-import { getters, actions } from '../vuex/meta';
+import { mapGetters, mapActions } from 'vuex'
+import { getters, actions } from '../vuex/meta'
 
-import GlobalSearch from './GlobalSearch.vue';
-import AppsMenu from './AppsMenu.vue';
+import GlobalSearch from './GlobalSearch.vue'
+import AppsMenu from './AppsMenu.vue'
 
 export default {
-  created() {
+  created () {
     if (Object.keys(this.school).length === 0) {
-      this.getSchool();
+      this.getSchool()
     }
   },
   computed: {
-    schoolName() {
-      return this.school.name;
+    schoolName () {
+      return this.school.name
     },
-    name() {
-      const user = this.user;
+    name () {
+      const user = this.user
 
-      if ('name' in user) return user.name;
+      if ('name' in user) return user.name
 
-      return '';
+      return ''
     },
-    token() {
-      return window.Laravel.csrfToken;
+    token () {
+      return window.Laravel.csrfToken
     },
-    userType() {
-      return (this.user.permissions && this.user.permissions.settings) ? 'administrator' : this.user.type;
+    userType () {
+      return (this.user.permissions && this.user.permissions.settings) ? 'administrator' : this.user.type
     },
     ...mapGetters({
       user: getters.user,
-      school: getters.school,
-    }),
+      school: getters.school
+    })
   },
   methods: {
     ...mapActions({
-      getSchool: actions.getSchool,
-    }),
+      getSchool: actions.getSchool
+    })
   },
-  components: { AppsMenu, GlobalSearch },
-};
+  components: { AppsMenu, GlobalSearch }
+}
 </script>
 
 <style lang="scss" scoped>

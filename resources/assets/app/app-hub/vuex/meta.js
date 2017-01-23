@@ -11,8 +11,8 @@ export const types = {
   SET_MESSAGE_PAGE_TO_USER: 'hub/SET_MESSAGE_PAGE_TO_GROUP',
   STATUS_MESSAGE: 'hub/STATUS_MESSAGE',
   READ_MESSAGE: 'hub/READ_MESSAGE',
-  SET_VALUE_ON_GROUP: 'hub/SET_VALUE_ON_GROUP',
-};
+  SET_VALUE_ON_GROUP: 'hub/SET_VALUE_ON_GROUP'
+}
 
 export const actions = {
   // Groups.
@@ -33,8 +33,8 @@ export const actions = {
   onNewMessageToUser: 'hub/onNewMessageToUser',
   joinGroup: 'hub/joinGroup',
   leaveGroup: 'hub/leaveGroup',
-  updateGroupPhoto: 'hub/updateGroupPhoto',
-};
+  updateGroupPhoto: 'hub/updateGroupPhoto'
+}
 
 export const getters = {
   groups: 'hub/groups',
@@ -44,5 +44,5 @@ export const getters = {
   courses: 'hub/courses',
 
   users: 'hub/users',
-  userMap: 'hub/userMap',
-};
+  userMap: 'hub/userMap'
+}

@@ -63,129 +63,129 @@
 </template>
 
 <script lang="babel">
-import Sifter from 'sifter';
-import get from 'lodash/get';
-import toArray from 'lodash/toArray';
-import toInt from 'lodash/toInteger';
-import { mapGetters, mapActions } from 'vuex';
+import Sifter from 'sifter'
+import get from 'lodash/get'
+import toArray from 'lodash/toArray'
+import toInt from 'lodash/toInteger'
+import { mapGetters, mapActions } from 'vuex'
 
-import { WindowBox, PersonCard, InfiniteLoader } from '../../components';
-import { getters, actions } from '../../vuex/meta';
+import { WindowBox, PersonCard, InfiniteLoader } from '../../components'
+import { getters, actions } from '../../vuex/meta'
 
 export default {
   name: 'employeeSearchResults',
   components: { WindowBox, PersonCard, InfiniteLoader },
   computed: {
-    countText() {
-      const employees = this.employees;
+    countText () {
+      const employees = this.employees
 
-      return employees.length === 1 ? '1 employee' : `${employees.length} employees`;
+      return employees.length === 1 ? '1 employee' : `${employees.length} employees`
     },
-    searchText() {
-      return 'All employees';
+    searchText () {
+      return 'All employees'
     },
-    filteredSource() {
-      const departments = this.department;
-      const source = this.source;
+    filteredSource () {
+      const departments = this.department
+      const source = this.source
 
       if (!departments.length) {
-        return source;
+        return source
       }
 
       return source.filter((item) => {
         if (departments.length && departments.indexOf(item.department_id) < 0) {
-          return false;
+          return false
         }
 
-        return true;
-      });
+        return true
+      })
     },
-    searchable() {
-      const source = this.filteredSource;
+    searchable () {
+      const source = this.filteredSource
 
-      return new Sifter(source);
+      return new Sifter(source)
     },
-    employees() {
-      const searchable = this.searchable;
-      const query = this.query;
+    employees () {
+      const searchable = this.searchable
+      const query = this.query
       const results = searchable.search(query, {
         fields: ['name', 'uid'],
         sort: [{ field: 'name', direction: 'asc' }],
-        sort_empty: [{ field: 'name', direction: 'asc' }],
-      });
+        sort_empty: [{ field: 'name', direction: 'asc' }]
+      })
 
-      return results.items.map(({ id }) => this.source[id]);
+      return results.items.map(({ id }) => this.source[id])
     },
     ...mapGetters({
       source: getters.employees,
-      departments: getters.departments,
-    }),
+      departments: getters.departments
+    })
   },
-  data() {
+  data () {
     return {
       reviewingRequests: false,
       department: [],
       query: '',
       ignoreChanges: false,
-      page: 0,
-    };
+      page: 0
+    }
   },
-  created() {
+  created () {
     if (this.departments.length === 0) {
-      this.getDepartments();
+      this.getDepartments()
     }
 
-    this.getRouteParams();
+    this.getRouteParams()
   },
   methods: {
-    onLoad({ done }) {
+    onLoad ({ done }) {
       this.getEmployees({ page: this.page + 1 })
           .then((result) => {
-            done();
+            done()
 
-            if (!('data' in result)) return;
+            if (!('data' in result)) return
 
-            this.page = get(result, '_meta.pagination.current_page', 0);
-          });
+            this.page = get(result, '_meta.pagination.current_page', 0)
+          })
     },
-    go() {
-      const query = {};
+    go () {
+      const query = {}
 
-      if (this.ignoreChanges) return;
+      if (this.ignoreChanges) return
 
       if (this.query.trim().length) {
-        query.q = this.query;
+        query.q = this.query
       }
 
       if (this.department.length) {
-        query.department = this.department;
+        query.department = this.department
       }
 
-      this.$debug('UpdateRoute', query);
+      this.$debug('UpdateRoute', query)
 
-      this.$router.replace({ name: 'employee.find', query });
+      this.$router.replace({ name: 'employee.find', query })
     },
-    getRouteParams() {
-      this.$debug('LoadRoute', this.$route.query);
-      this.ignoreChanges = true;
-      this.page = 0;
-      this.query = this.$route.query.q || '';
-      this.department = toArray(this.$route.query.department).map(toInt);
+    getRouteParams () {
+      this.$debug('LoadRoute', this.$route.query)
+      this.ignoreChanges = true
+      this.page = 0
+      this.query = this.$route.query.q || ''
+      this.department = toArray(this.$route.query.department).map(toInt)
       this.$nextTick(() => {
-        this.ignoreChanges = false;
-      });
+        this.ignoreChanges = false
+      })
     },
     ...mapActions({
       getEmployees: actions.getEmployees,
-      getDepartments: actions.getDepartments,
-    }),
+      getDepartments: actions.getDepartments
+    })
   },
   watch: {
     department: 'go',
     query: 'go',
-    $route: 'getRouteParams',
-  },
-};
+    $route: 'getRouteParams'
+  }
+}
 </script>
 
 <style lang="scss" scoped>

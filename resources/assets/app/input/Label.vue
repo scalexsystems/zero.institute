@@ -12,12 +12,12 @@
 </template>
 
 <script lang="babel">
-import id from './mixins/input';
+import id from './mixins/input'
 
 export default {
   props: ['title', 'subtitle'],
-  mixins: [id],
-};
+  mixins: [id]
+}
 </script>
 
 

@@ -88,23 +88,23 @@
 
 </template>
 <script lang="babel">
-import { mapActions, mapGetters } from 'vuex';
-import { clone, throttle } from 'lodash';
-import SettingsBox from './SettingsBox.vue';
-import SettingsCard from './SettingsCard.vue';
-import Modal from '../components/Modal.vue';
-import { actions, getters } from '../vuex/meta';
+import { mapActions, mapGetters } from 'vuex'
+import { clone, throttle } from 'lodash'
+import SettingsBox from './SettingsBox.vue'
+import SettingsCard from './SettingsCard.vue'
+import Modal from '../components/Modal.vue'
+import { actions, getters } from '../vuex/meta'
 
 export default{
-  created() {
+  created () {
     if (Object.keys(this.departmentsByType).length === 0) {
-      this.getDepartments();
+      this.getDepartments()
     }
     if (this.suggestions.length === 0) {
-      this.getTeachers();
+      this.getTeachers()
     }
   },
-  data() {
+  data () {
     return {
       onAdd: false,
       loaded: false,
@@ -112,121 +112,121 @@ export default{
         name: '',
         short_name: '',
         head: '',
-        academic: '',
+        academic: ''
       },
       editReference: {
         id: false,
-        index: false,
+        index: false
       },
       query: '',
-      errors: {},
-    };
+      errors: {}
+    }
   },
   computed: {
-    departmentTypes() {
+    departmentTypes () {
       return {
         academic: 'Academic',
-        nonAcademic: 'Non-Academic/Administrative',
-      };
+        nonAcademic: 'Non-Academic/Administrative'
+      }
     },
-    academic() {
-      return this.departmentsByType.academic;
+    academic () {
+      return this.departmentsByType.academic
     },
 
-    nonAcademic() {
-      return this.departmentsByType.nonAcademic;
+    nonAcademic () {
+      return this.departmentsByType.nonAcademic
     },
-    title() {
-      return this.editReference.id ? 'Edit Department' : 'Add New Department';
+    title () {
+      return this.editReference.id ? 'Edit Department' : 'Add New Department'
     },
-    subtitle() {
-      return `Add/remove Departments. ${this.departmentCount} departments added`;
+    subtitle () {
+      return `Add/remove Departments. ${this.departmentCount} departments added`
     },
     ...mapGetters({
       departmentsByType: getters.departmentsByType,
       suggestions: getters.teachers,
-      departmentCount: getters.departmentCount,
+      departmentCount: getters.departmentCount
 
-    }),
+    })
   },
   components: { SettingsBox, Modal, SettingsCard },
   methods: {
-    showAddDepartment() {
-      this.onAdd = true;
+    showAddDepartment () {
+      this.onAdd = true
     },
-    onCancel() {
-      this.onAdd = false;
-      this.resetReference();
+    onCancel () {
+      this.onAdd = false
+      this.resetReference()
     },
-    onSubmit() {
-      const type = this.department.academic;
-      this.department.academic = type === 'academic';
-      const call = this.editReference.id ? 'updateDepartment' : 'addNewDepartment';
-      this[call](type);
+    onSubmit () {
+      const type = this.department.academic
+      this.department.academic = type === 'academic'
+      const call = this.editReference.id ? 'updateDepartment' : 'addNewDepartment'
+      this[call](type)
     },
-    onSuggest: throttle(function onSuggest({ value, start, end }) {
-      start();
-      this.getTeachers({ q: value }).then(end);
+    onSuggest: throttle(function onSuggest ({ value, start, end }) {
+      start()
+      this.getTeachers({ q: value }).then(end)
     }, 400),
-    search() {},
-    onSelect(teacher) {
-      this.department.head = teacher;
-      this.department.head_id = teacher.id;
-      this.query = teacher.name;
+    search () {},
+    onSelect (teacher) {
+      this.department.head = teacher
+      this.department.head_id = teacher.id
+      this.query = teacher.name
     },
-    addNewDepartment() {
+    addNewDepartment () {
       this.$http.post('departments', this.department)
       .then(response => response.json())
       .then((department) => {
-        this.onAdd = false;
-        this.addDepartment(department);
-        this.resetReference();
+        this.onAdd = false
+        this.addDepartment(department)
+        this.resetReference()
       })
-       .catch(() => {});
+       .catch(() => {})
     },
-    updateDepartment(type) {
+    updateDepartment (type) {
       this.$http.put(`departments/${this.editReference.id}`, this.department)
         .then(() => {
-          this.onAdd = false;
-          const department = clone(this.department);
-          this.departmentsByType[type][this.editReference.index] = department;
-          this.updateDepartmentAction(department);
-          this.resetReference();
-        });
+          this.onAdd = false
+          const department = clone(this.department)
+          this.departmentsByType[type][this.editReference.index] = department
+          this.updateDepartmentAction(department)
+          this.resetReference()
+        })
     },
-    getText(department) {
-      const hod = department.head && Object.keys(department.head).length ? department.head.name : 'Not assigned';
-      return `HOD: ${hod}`;
+    getText (department) {
+      const hod = department.head && Object.keys(department.head).length ? department.head.name : 'Not assigned'
+      return `HOD: ${hod}`
     },
-    departmentClicked(index, context) {
-      const department = this.departmentsByType[context][index];
+    departmentClicked (index, context) {
+      const department = this.departmentsByType[context][index]
       this.editReference = {
         id: department.id,
-        index,
-      };
-      this.department = clone(department);
-      this.department.academic = this.department.academic ? 'academic' : 'nonAcademic';
-      this.query = department.head.name || '';
-      this.onAdd = true;
+        index
+      }
+      this.department = clone(department)
+      this.department.academic = this.department.academic ? 'academic' : 'nonAcademic'
+      this.query = department.head.name || ''
+      this.onAdd = true
     },
-    resetReference() {
+    resetReference () {
       Object.keys(this.department).forEach((key) => {
-        this.department[key] = '';
-      });
-      this.query = '';
+        this.department[key] = ''
+      })
+      this.query = ''
       this.editReference = {
         id: false,
-        index: false,
-      };
+        index: false
+      }
     },
     ...mapActions({
       getDepartments: actions.getDepartments,
       addDepartment: actions.addDepartment,
       updateDepartmentAction: actions.updateDepartment,
-      getTeachers: actions.getTeachers,
-    }),
-  },
-};
+      getTeachers: actions.getTeachers
+    })
+  }
+}
 </script>
 <style lang="scss" scoped>
   @import '../styles/variables';

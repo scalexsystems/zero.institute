@@ -30,48 +30,48 @@
 </template>
 
 <script lang="babel">
-import { mapGetters } from 'vuex';
-import people from '../assets/apps/people.svg';
-import hub from '../assets/apps/hub.svg';
-import settings from '../assets/apps/menu-settings.svg';
-import academics from '../assets/apps/academics.svg';
-import finances from '../assets/apps/finance.svg';
+import { mapGetters } from 'vuex'
+import people from '../assets/apps/people.svg'
+import hub from '../assets/apps/hub.svg'
+import settings from '../assets/apps/menu-settings.svg'
+import academics from '../assets/apps/academics.svg'
+import finances from '../assets/apps/finance.svg'
 
 export default {
     // DATA
-  data() {
+  data () {
     return {
       current: null,
-      allowed: [],
-    };
+      allowed: []
+    }
   },
   computed: {
-    id() {
+    id () {
       /* eslint-disable */
       return this._uid;
       /* eslint-enable */
     },
-    toggler() {
-      return `${this.id}-toggler`;
+    toggler () {
+      return `${this.id}-toggler`
     },
-    apps() {
-      const user = this.user;
+    apps () {
+      const user = this.user
       const apps = [
         { name: 'Hub', icon: hub, link: '/' },
         { name: 'People', icon: people, link: '/people' },
         { name: 'Academics', icon: academics, link: '/academics', locked: true },
-        { name: 'Finances', icon: finances, link: '/finances', locked: true },
-      ];
+        { name: 'Finances', icon: finances, link: '/finances', locked: true }
+      ]
 
       if (user.permissions && user.permissions.settings) {
-        apps.splice(2, 0, { name: 'Settings', icon: settings, link: '/hub/settings' });
+        apps.splice(2, 0, { name: 'Settings', icon: settings, link: '/hub/settings' })
       }
 
-      return apps;
+      return apps
     },
-    ...mapGetters(['user']),
-  },
-};
+    ...mapGetters(['user'])
+  }
+}
 </script>
 
 <style lang="scss" scoped>

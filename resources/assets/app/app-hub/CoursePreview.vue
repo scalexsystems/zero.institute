@@ -56,14 +56,14 @@
 </template>
 
 <script lang="babel">
-import int from 'lodash/toInteger';
-import { mapGetters, mapActions } from 'vuex';
-import throttle from 'lodash/throttle';
-import InfiniteScroll from 'vue-infinite-loading';
+import int from 'lodash/toInteger'
+import { mapGetters, mapActions } from 'vuex'
+import throttle from 'lodash/throttle'
+import InfiniteScroll from 'vue-infinite-loading'
 
-import CourseEnrollment from './components/CourseEnrollment.vue';
-import { pushOrMerge as set, isLastRecord } from '../util';
-import { LoadingPlaceholder, ActivityBox, PersonCard as ItemCard, ActionMenu, PhotoHolder } from '../components';
+import CourseEnrollment from './components/CourseEnrollment.vue'
+import { pushOrMerge as set, isLastRecord } from '../util'
+import { LoadingPlaceholder, ActivityBox, PersonCard as ItemCard, ActionMenu, PhotoHolder } from '../components'
 
 export default {
   name: 'CoursePreview',
@@ -74,104 +74,104 @@ export default {
     InfiniteScroll,
     ItemCard,
     LoadingPlaceholder,
-    PhotoHolder,
+    PhotoHolder
   },
-  data() {
+  data () {
     return {
       students: [],
       q: '',
-      page: 0,
-    };
+      page: 0
+    }
   },
   computed: {
-    title() {
-      const course = this.course;
+    title () {
+      const course = this.course
 
-      return course ? course.name : '';
+      return course ? course.name : ''
     },
-    subtitle() {
-      return 'Course Information';
+    subtitle () {
+      return 'Course Information'
     },
-    courseId() {
-      const route = this.$route;
+    courseId () {
+      const route = this.$route
 
-      return int(route.params.course);
+      return int(route.params.course)
     },
-    course() {
-      const courses = this.courses;
-      const courseId = this.courseId;
+    course () {
+      const courses = this.courses
+      const courseId = this.courseId
 
-      return courses.find(course => course.id === courseId);
+      return courses.find(course => course.id === courseId)
     },
-    isInstructor() {
-      const course = this.course;
-      const user = this.user;
+    isInstructor () {
+      const course = this.course
+      const user = this.user
 
       if (course && user) {
-        return course.session.instructor_id === user.person.id && user.person._type === 'teacher';
+        return course.session.instructor_id === user.person.id && user.person._type === 'teacher'
       }
 
-      return false;
+      return false
     },
     ...mapGetters('hub', ['courses']),
-    ...mapGetters(['user']),
+    ...mapGetters(['user'])
   },
   methods: {
-    search: throttle(function search() {
-      this.page = 0;
-      this.onInfinite();
+    search: throttle(function search () {
+      this.page = 0
+      this.onInfinite()
     }),
-    fetchCourse() {
-      const course = this.course;
+    fetchCourse () {
+      const course = this.course
 
-      this.students = [];
+      this.students = []
 
       if (!course && this.coruseId) {
-        this.find(this.courseId);
+        this.find(this.courseId)
       }
     },
-    onAction() {
-      this.$refs.enroll.$emit('open', this.course);
+    onAction () {
+      this.$refs.enroll.$emit('open', this.course)
     },
-    resetInfinite() {
-      this.page = 0;
-      this.onInfinite(false);
+    resetInfinite () {
+      this.page = 0
+      this.onInfinite(false)
     },
-    onInfinite(fromInfinite = true) {
+    onInfinite (fromInfinite = true) {
       const actions = {
         loaded: () => this.$refs.infinite.$emit('$InfiniteLoading:loaded'),
         complete: () => this.$refs.infinite.$emit('$InfiniteLoading:complete'),
-        reset: () => this.$refs.infinite.$emit('$InfiniteLoading:reset'),
-      };
+        reset: () => this.$refs.infinite.$emit('$InfiniteLoading:reset')
+      }
 
-      if (!fromInfinite) actions.reset();
+      if (!fromInfinite) actions.reset()
 
-      this.page += 1;
+      this.page += 1
 
       this.$http.get(`me/courses/${this.course.id}/enrolled`, { page: this.page })
         .then(response => response.json())
         .then((result) => {
-          set(this.students, result.data);
+          set(this.students, result.data)
           if (isLastRecord(result)) {
-            actions.complete();
+            actions.complete()
           } else {
-            actions.loaded();
+            actions.loaded()
           }
         })
-        .catch(() => actions.complete());
+        .catch(() => actions.complete())
     },
-    openProfile(student) {
-      this.$router.push({ name: 'hub.user-preview', params: { user: student.user.id } });
+    openProfile (student) {
+      this.$router.push({ name: 'hub.user-preview', params: { user: student.user.id }})
     },
-    ...mapActions('hub', { find: 'findCourse' }),
+    ...mapActions('hub', { find: 'findCourse' })
   },
-  created() {
-    this.fetchCourse();
+  created () {
+    this.fetchCourse()
   },
   watch: {
-    courseId: 'fetchCourse',
-  },
-};
+    courseId: 'fetchCourse'
+  }
+}
 </script>
 
 <style lang="scss">

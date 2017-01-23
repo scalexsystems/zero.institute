@@ -15,22 +15,22 @@
 </template>
 
 <script lang="babel">
-import input from './mixins/input';
+import input from './mixins/input'
 
 export default {
   props: {
     type: {
       type: String,
-      default: 'noresize',
-    },
+      default: 'noresize'
+    }
   },
   mixins: [input],
   computed: {
-    helpId() {
-      return `${this.id}-help-text`;
-    },
-  },
-};
+    helpId () {
+      return `${this.id}-help-text`
+    }
+  }
+}
 </script>
 
 

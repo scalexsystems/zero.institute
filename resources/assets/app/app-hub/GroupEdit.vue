@@ -45,59 +45,59 @@
 </template>
 
 <script lang="babel">
-import int from 'lodash/toInteger';
-import Validator from 'Validator';
-import { mapGetters, mapActions } from 'vuex';
-import throttle from 'lodash/throttle';
-import InfiniteScroll from 'vue-infinite-loading';
+import int from 'lodash/toInteger'
+import Validator from 'Validator'
+import { mapGetters, mapActions } from 'vuex'
+import throttle from 'lodash/throttle'
+import InfiniteScroll from 'vue-infinite-loading'
 
-import { pushOrMerge as set, isLastRecord, isValidationException, normalizeValidationErrors as normalize } from '../util';
-import { actions } from './vuex/meta';
-import { getters as rootGetters, actions as rootActions } from '../vuex/meta';
-import { LoadingPlaceholder, ActivityBox, PersonCard } from '../components';
+import { pushOrMerge as set, isLastRecord, isValidationException, normalizeValidationErrors as normalize } from '../util'
+import { actions } from './vuex/meta'
+import { getters as rootGetters, actions as rootActions } from '../vuex/meta'
+import { LoadingPlaceholder, ActivityBox, PersonCard } from '../components'
 
 export default {
   name: 'GroupEdit',
   components: { LoadingPlaceholder, ActivityBox, PersonCard, InfiniteScroll },
   computed: {
-    title() {
-      const group = this.group;
+    title () {
+      const group = this.group
 
-      return group ? group.name : '';
+      return group ? group.name : ''
     },
-    groupTypes() {
+    groupTypes () {
       return {
         public: 'Public',
-        private: 'Private',
-      };
+        private: 'Private'
+      }
     },
-    group() {
-      const route = this.$route;
-      const groupMap = this.groupMap;
-      const groups = this.groups;
+    group () {
+      const route = this.$route
+      const groupMap = this.groupMap
+      const groups = this.groups
 
-      const id = int(route.params.group);
-      const index = groupMap[id];
-      const group = groups[index];
+      const id = int(route.params.group)
+      const index = groupMap[id]
+      const group = groups[index]
 
-      return group;
+      return group
     },
     ...mapGetters(['user']),
     ...mapGetters({
       groups: rootGetters.groups,
       groupMap: rootGetters.groupMap,
-      suggestions: rootGetters.users,
-    }),
+      suggestions: rootGetters.users
+    })
   },
-  created() {
-    this.findGroup();
+  created () {
+    this.findGroup()
   },
-  data() {
+  data () {
     return {
       values: {
         name: '',
         type: undefined,
-        description: '',
+        description: ''
       },
       errors: {},
       query: '',
@@ -108,138 +108,138 @@ export default {
         description: '',
         type: 'public',
         addedMembers: [],
-        removedMembers: [],
-      },
-    };
+        removedMembers: []
+      }
+    }
   },
   methods: {
-    updateGroup() {
+    updateGroup () {
       if (!this.validate()) {
-        return;
+        return
       }
 
-      this.$refs.action.classList.add('disabled');
+      this.$refs.action.classList.add('disabled')
       this.$http.put(`groups/${this.group.id}`,
         {
           ...this.values,
           addedMembers: this.editedGroup.addedMembers,
-          removedMembers: this.editedGroup.removedMembers,
+          removedMembers: this.editedGroup.removedMembers
         })
           .then(response => response.json())
           .then((result) => {
-            this.$refs.action.classList.remove('disabled');
-            this.updateGroupAction([result]);
-            this.$router.push({ name: 'hub.group-preview', params: { group: this.group.id } });
+            this.$refs.action.classList.remove('disabled')
+            this.updateGroupAction([result])
+            this.$router.push({ name: 'hub.group-preview', params: { group: this.group.id }})
           })
           .catch((response) => {
-            this.$refs.action.classList.remove('disabled');
+            this.$refs.action.classList.remove('disabled')
             if (isValidationException(response)) {
-              response.json().then(result => this.$set(this, 'errors', normalize(result.errors)));
+              response.json().then(result => this.$set(this, 'errors', normalize(result.errors)))
             }
 
-            return response;
-          });
+            return response
+          })
     },
-    validate() {
+    validate () {
       const v = Validator.make(this.values, {
         name: 'required|min:3|max:60',
         type: 'required',
-        description: 'required',
-      });
+        description: 'required'
+      })
 
       if (v.fails()) {
-        this.$set(this, 'errors', normalize(v.getErrors()));
+        this.$set(this, 'errors', normalize(v.getErrors()))
 
-        return false;
+        return false
       }
 
-      this.$set(this, 'errors', {});
+      this.$set(this, 'errors', {})
 
-      return true;
+      return true
     },
-    onSuggest: throttle(function onSuggest({ value, start, end }) {
-      start();
-      this.findMembers({ q: value }).then(end);
+    onSuggest: throttle(function onSuggest ({ value, start, end }) {
+      start()
+      this.findMembers({ q: value }).then(end)
     }, 400),
-    onSelect(member) {
-      if (this.editedGroup.addedMembers.indexOf(member.id) < 0
-              && this.members.indexOf(member) < 0) {
-        this.editedGroup.addedMembers.push(member.id);
-        this.members.push(member);
+    onSelect (member) {
+      if (this.editedGroup.addedMembers.indexOf(member.id) < 0 &&
+              this.members.indexOf(member) < 0) {
+        this.editedGroup.addedMembers.push(member.id)
+        this.members.push(member)
       }
     },
-    removeMember(member) {
+    removeMember (member) {
       if (this.editedGroup.removedMembers.indexOf(member.id) < 0) {
-        const index = this.editedGroup.addedMembers.indexOf(member.id);
+        const index = this.editedGroup.addedMembers.indexOf(member.id)
         if (index > -1) {
-          this.editedGroup.addedMembers.splice(index, 1);
-          this.members.splice(index, 1);
+          this.editedGroup.addedMembers.splice(index, 1)
+          this.members.splice(index, 1)
         }
       } else if (this.members.indexOf(member) < 0) {
-        this.editedGroup.removedMembers.push(member.id);
-        const removedMember = this.members.indexOf(member);
+        this.editedGroup.removedMembers.push(member.id)
+        const removedMember = this.members.indexOf(member)
         if (removedMember >= 0) {
-          this.members.splice(removedMember, 1);
+          this.members.splice(removedMember, 1)
         }
       }
     },
-    search: throttle(function search() {
-      this.page = 0;
-      this.onInfinite(true);
+    search: throttle(function search () {
+      this.page = 0
+      this.onInfinite(true)
     }),
-    onInfinite(fromInfinite = true) {
+    onInfinite (fromInfinite = true) {
       const infinite = {
         loaded: () => this.$refs.infinite.$emit('$InfiniteLoading:loaded'),
         complete: () => this.$refs.infinite.$emit('$InfiniteLoading:complete'),
-        reset: () => this.$refs.infinite.$emit('$InfiniteLoading:reset'),
-      };
+        reset: () => this.$refs.infinite.$emit('$InfiniteLoading:reset')
+      }
 
-      if (!fromInfinite) infinite.reset();
-      this.page += 1;
-      this.$http.get(`groups/${this.group.id}/members`, { params: { q: this.query } })
+      if (!fromInfinite) infinite.reset()
+      this.page += 1
+      this.$http.get(`groups/${this.group.id}/members`, { params: { q: this.query }})
               .then(response => response.json())
               .then((result) => {
-                set(this.members, result.data, this.ids);
+                set(this.members, result.data, this.ids)
                 if (isLastRecord(result)) {
-                  infinite.complete();
+                  infinite.complete()
                 } else {
-                  infinite.loaded();
+                  infinite.loaded()
                 }
               })
-              .catch(() => infinite.complete());
+              .catch(() => infinite.complete())
     },
-    setGroup() {
+    setGroup () {
       if (this.group) {
         this.values = {
           name: this.group.name || '',
           type: this.group.private ? 'private' : 'public',
-          description: this.group.description || '',
-        };
+          description: this.group.description || ''
+        }
       }
     },
-    findGroup() {
-      const id = int(this.$route.params.group);
+    findGroup () {
+      const id = int(this.$route.params.group)
 
       if (!(id in this.groupMap)) {
-        this.getGroup({ id });
+        this.getGroup({ id })
       } else {
-        this.setGroup();
+        this.setGroup()
       }
     },
-    isAdmin(member) {
-      return this.group.is_admin && this.user.id === member.id;
+    isAdmin (member) {
+      return this.group.is_admin && this.user.id === member.id
     },
     ...mapActions({
       getGroup: rootActions.getGroups,
       updateGroupAction: actions.setGroups,
-      findMembers: rootActions.getUsers,
-    }),
+      findMembers: rootActions.getUsers
+    })
   },
   watch: {
     $route: 'findGroup',
-    group: 'setGroup',
-  },
-};
+    group: 'setGroup'
+  }
+}
 </script>
 
 <style lang="scss">

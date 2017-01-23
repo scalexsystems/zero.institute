@@ -15,24 +15,24 @@
   </div>
 </template>
 <script lang="babel">
-import filesize from 'filesize';
+import filesize from 'filesize'
 
 export default{
-  data() {
-    return { };
+  data () {
+    return { }
   },
   props: {
     attachment: {
       type: Object,
-      required: true,
-    },
+      required: true
+    }
   },
   methods: {
-    downloadFile() {
-      const path = this.attachment.path || '#';
-      window.open(path);
+    downloadFile () {
+      const path = this.attachment.path || '#'
+      window.open(path)
     },
-    getClassFor(ext) {
+    getClassFor (ext) {
       switch (ext) {
         case 'webp':
         case 'tiff':
@@ -41,40 +41,40 @@ export default{
         case 'jpeg':
         case 'jpg':
         case 'gif':
-        case 'png': return 'fa-picture-o';
+        case 'png': return 'fa-picture-o'
         case '7z':
         case 'gz':
         case 'tar':
         case 'rar':
-        case 'zip': return 'fa-file-zip-o';
+        case 'zip': return 'fa-file-zip-o'
         case 'rtf':
         case 'odt':
         case 'pages':
         case 'doc':
-        case 'docx': return 'fa-file-word-o';
+        case 'docx': return 'fa-file-word-o'
         case 'ods':
         case 'numbers':
         case 'xls':
         case 'csv':
-        case 'xlsx': return 'fa-file-excel-o';
+        case 'xlsx': return 'fa-file-excel-o'
         case 'odp':
         case 'keynote':
         case 'ppt':
-        case 'pptx': return 'fa-file-powerpoint-o';
+        case 'pptx': return 'fa-file-powerpoint-o'
         case 'eps':
         case 'ps':
-        case 'pdf': return 'fa-file-pdf-o';
-        case 'txt': return 'fa-file-text-o';
-        default: return 'fa-file-o';
+        case 'pdf': return 'fa-file-pdf-o'
+        case 'txt': return 'fa-file-text-o'
+        default: return 'fa-file-o'
       }
-    },
+    }
   },
   filters: {
-    forHumans(value) {
-      return filesize(value);
-    },
-  },
-};
+    forHumans (value) {
+      return filesize(value)
+    }
+  }
+}
 </script>
 <style lang="scss" scoped>
 @import "../../../styles/variables";

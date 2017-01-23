@@ -40,29 +40,29 @@
     </activity-box>
 </template>
 <script lang="babel">
-import ActivityBox from '../components/ActivityBox.vue';
+import ActivityBox from '../components/ActivityBox.vue'
 
 export default{
-  data() {
-    return {};
+  data () {
+    return {}
   },
 
   props: {
     title: {
       type: String,
-      required: true,
+      required: true
     },
     subtitle: {
       type: String,
-      default: '  ',
+      default: '  '
     },
     withHeader: {
       type: Boolean,
-      default: true,
-    },
+      default: true
+    }
   },
-  components: { ActivityBox },
-};
+  components: { ActivityBox }
+}
 </script>
 <style lang="scss" scoped>
 @import '../styles/methods';

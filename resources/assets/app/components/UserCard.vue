@@ -5,12 +5,12 @@
 </template>
 
 <script lang="babel">
-import PersonCard from './PersonCard.vue';
+import PersonCard from './PersonCard.vue'
 
 export default {
   props: PersonCard.props,
-  components: { PersonCard },
-};
+  components: { PersonCard }
+}
 </script>
 
 

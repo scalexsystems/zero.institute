@@ -2167,6 +2167,12 @@ eslint-plugin-html@^1.5.2, eslint-plugin-html@^1.7.0:
   dependencies:
     htmlparser2 "^3.8.2"
 
+eslint-plugin-html@^2.0.0-beta.0:
+  version "2.0.0-beta.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-html/-/eslint-plugin-html-2.0.0-beta.0.tgz#ab3b457fd3315810149a4bec9a3be9621b6b5aa3"
+  dependencies:
+    htmlparser2 "^3.8.2"
+
 eslint-plugin-jasmine@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/eslint-plugin-jasmine/-/eslint-plugin-jasmine-2.2.0.tgz#7135879383c39a667c721d302b9f20f0389543de"
@@ -2184,6 +2190,13 @@ eslint-plugin-vue@^1.0.0:
   resolved "https://registry.yarnpkg.com/eslint-plugin-vue/-/eslint-plugin-vue-1.0.0.tgz#01b133cef42c40d807f535011715d3fd18795337"
   dependencies:
     eslint-plugin-html "^1.5.2"
+    eslint-plugin-react "^6.2.0"
+
+"eslint-plugin-vue@https://github.com/vuejs/eslint-plugin-vue.git":
+  version "1.0.0"
+  resolved "https://github.com/vuejs/eslint-plugin-vue.git#2cf82552b663002ca7a558ac0cf9ed3daeae3d0d"
+  dependencies:
+    eslint-plugin-html "^2.0.0-beta.0"
     eslint-plugin-react "^6.2.0"
 
 eslint@^3.13.1:
@@ -4339,13 +4352,9 @@ oauth-sign@~0.8.1:
   version "0.8.2"
   resolved "https://registry.yarnpkg.com/oauth-sign/-/oauth-sign-0.8.2.tgz#46a6ab7f0aead8deae9ec0565780b7d4efeb9d43"
 
-object-assign@4.1.0:
+object-assign@4.1.0, object-assign@^4.0.0, object-assign@^4.0.1, object-assign@^4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-4.1.0.tgz#7a3b3d0e98063d43f4c03f2e8ae6cd51a86883a0"
-
-object-assign@^4.0.0, object-assign@^4.0.1, object-assign@^4.1.0:
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-4.1.1.tgz#2109adc7965887cfc05cbbd442cac8bfbb360863"
 
 object-component@0.0.3:
   version "0.0.3"
@@ -5474,11 +5483,11 @@ selenium-server@^3.0:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/selenium-server/-/selenium-server-3.0.1.tgz#78c662d7fbdd9abbc882428a92f78e7f9f5b85bf"
 
-"semver@2 || 3 || 4 || 5", semver@^5.1.0, semver@~5.3.0:
+"semver@2 || 3 || 4 || 5", "semver@2.x || 3.x || 4 || 5", semver@^5.1.0, semver@~5.3.0:
   version "5.3.0"
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.3.0.tgz#9b2ce5d3de02d17c6012ad326aa6b4d0cf54f94f"
 
-"semver@2.x || 3.x || 4 || 5", semver@~4.3.3:
+semver@~4.3.3:
   version "4.3.6"
   resolved "https://registry.yarnpkg.com/semver/-/semver-4.3.6.tgz#300bc6e0e86374f7ba61068b5b1ecd57fc6532da"
 

@@ -6,15 +6,15 @@
 </template>
 
 <script lang="babel">
-import Message from './Message.vue';
+import Message from './Message.vue'
 
 export default {
   name: 'ContinuedMessage',
   props: {
-    ...Message.props,
+    ...Message.props
   },
-  components: { Message },
-};
+  components: { Message }
+}
 </script>
 
 

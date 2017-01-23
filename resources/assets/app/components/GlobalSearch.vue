@@ -19,38 +19,38 @@ export default {
   computed: {
     suggestions: () => [
       'Rahul Kadyan',
-      'Suwardhan Ahirrao',
+      'Suwardhan Ahirrao'
     ],
-    isQueryEmpty() {
-      const query = this.query;
+    isQueryEmpty () {
+      const query = this.query
 
-      return query.trim().length === 0;
+      return query.trim().length === 0
     },
-    suggestionText() {
-      const query = this.query;
-      const isQueryEmpty = this.isQueryEmpty;
-      const suggestions = this.suggestions;
+    suggestionText () {
+      const query = this.query
+      const isQueryEmpty = this.isQueryEmpty
+      const suggestions = this.suggestions
 
-      if (isQueryEmpty) return '';
+      if (isQueryEmpty) return ''
 
-      const filtered = suggestions.filter(item => item.startsWith(query));
+      const filtered = suggestions.filter(item => item.startsWith(query))
 
-      if (filtered.length) return filtered[0];
+      if (filtered.length) return filtered[0]
 
-      return '';
+      return ''
     },
-    hasSuggestionText() {
-      const suggestionText = this.suggestionText;
+    hasSuggestionText () {
+      const suggestionText = this.suggestionText
 
-      return suggestionText.trim().length > 0;
-    },
+      return suggestionText.trim().length > 0
+    }
   },
-  data() {
+  data () {
     return {
-      query: '',
-    };
-  },
-};
+      query: ''
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

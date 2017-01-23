@@ -16,64 +16,64 @@
 </template>
 
 <script lang="babel">
-import resize from 'autosize';
-import FileUploader from './FileUploader.vue';
+import resize from 'autosize'
+import FileUploader from './FileUploader.vue'
 
 export default {
-  data() {
+  data () {
     return {
-      showPopup: false,
-    };
+      showPopup: false
+    }
   },
   props: {
     disabled: {
       type: Boolean,
-      default: false,
+      default: false
     },
     value: {
       type: String,
-      required: true,
+      required: true
     },
     dest: {
-      type: String,
-    },
+      type: String
+    }
   },
   components: { FileUploader },
   methods: {
-    resize() {
-      const event = window.document.createEvent('Event');
-      event.initEvent('autosize:destroy', false, true);
-      this.$refs.input.dispatchEvent(event);
+    resize () {
+      const event = window.document.createEvent('Event')
+      event.initEvent('autosize:destroy', false, true)
+      this.$refs.input.dispatchEvent(event)
       this.$nextTick(() => {
-        resize(this.$refs.input);
-      });
+        resize(this.$refs.input)
+      })
     },
-    focus() {
-      setTimeout(() => this.$refs.input.focus(), 0);
+    focus () {
+      setTimeout(() => this.$refs.input.focus(), 0)
     },
-    onInput(event) {
-      this.$emit('input', event.target.value);
+    onInput (event) {
+      this.$emit('input', event.target.value)
     },
-    onEnter(event) {
+    onEnter (event) {
       if (event.shiftKey !== true && event.target.value.trim()) {
-        event.preventDefault();
-        this.$emit('send', this.value);
+        event.preventDefault()
+        this.$emit('send', this.value)
       }
     },
-    onUploaded(attachments, errors) {
-      if (!attachments.length) return;
+    onUploaded (attachments, errors) {
+      if (!attachments.length) return
 
-      const message = attachments[0].message || '';
+      const message = attachments[0].message || ''
 
-      this.$emit('send', message, attachments.map(i => i.id), errors);
-    },
+      this.$emit('send', message, attachments.map(i => i.id), errors)
+    }
   },
-  mounted() {
+  mounted () {
     this.$nextTick(() => {
-      resize(this.$refs.input);
-    });
-  },
-};
+      resize(this.$refs.input)
+    })
+  }
+}
 </script>
 
 

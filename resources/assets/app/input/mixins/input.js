@@ -1,4 +1,4 @@
-import isString from 'lodash/isString';
+import isString from 'lodash/isString'
 
 export default {
   props: {
@@ -6,54 +6,54 @@ export default {
     title: String,
     subtitle: String,
     value: {
-      default: false,
+      default: false
     },
     required: {
       type: Boolean,
-      default: false,
+      default: false
     },
     feedback: null,
     feedbackType: {
       default: 'danger',
-      validator(value) {
-        return ['danger', 'success', 'warning'].indexOf(value) > -1;
-      },
-    },
+      validator (value) {
+        return ['danger', 'success', 'warning'].indexOf(value) > -1
+      }
+    }
   },
   computed: {
-    id() {
-      const uid = this._uid;
+    id () {
+      const uid = this._uid
 
-      return `id${uid}`;
+      return `id${uid}`
     },
-    identifier() {
-      const name = this.name;
-      const raw = null;
+    identifier () {
+      const name = this.name
+      const raw = null
 
-      return name || raw;
+      return name || raw
     },
-    feedbackState() {
-      const feedback = this.feedbackType;
-      const condition = this.feedback !== undefined;
+    feedbackState () {
+      const feedback = this.feedbackType
+      const condition = this.feedback !== undefined
 
       if (condition && isString(feedback)) {
-        return `has-${feedback}`;
+        return `has-${feedback}`
       }
 
-      return '';
+      return ''
     },
-    formControlState() {
-      const feedback = this.feedbackType;
-      const condition = this.feedback !== undefined;
+    formControlState () {
+      const feedback = this.feedbackType
+      const condition = this.feedback !== undefined
 
       if (condition && isString(feedback)) {
-        return `form-control-${feedback}`;
+        return `form-control-${feedback}`
       }
 
-      return '';
-    },
+      return ''
+    }
   },
   methods: {
-    is: isString,
-  },
-};
+    is: isString
+  }
+}

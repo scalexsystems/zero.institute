@@ -26,33 +26,33 @@
 </template>
 
 <script lang="babel">
-import LayoutBox from './LayoutBox.vue';
+import LayoutBox from './LayoutBox.vue'
 
 export default {
   props: {
     type: {
       type: String,
-      default: 'user',
+      default: 'user'
     },
     title: String,
     subtitle: String,
     photo: String,
-    ...LayoutBox.props,
+    ...LayoutBox.props
   },
   components: { LayoutBox },
   computed: {
-    typeClass() {
-      const type = this.type;
+    typeClass () {
+      const type = this.type
 
       switch (type) {
         case 'user':
-          return 'photo-square';
+          return 'photo-square'
         default:
-          return 'photo-round';
+          return 'photo-round'
       }
-    },
-  },
-};
+    }
+  }
+}
 </script>
 
 <style lang="scss">

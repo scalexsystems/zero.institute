@@ -22,54 +22,54 @@
 </template>
 
 <script lang="babel">
-import int from 'lodash/toInteger';
-import groupHelper from './mixins/group';
+import int from 'lodash/toInteger'
+import groupHelper from './mixins/group'
 
 export default {
   name: 'Group',
   methods: {
-    openTitle() {
-      this.$router.push({ name: 'hub.group-preview' });
-    },
+    openTitle () {
+      this.$router.push({ name: 'hub.group-preview' })
+    }
   },
   mixins: [groupHelper],
   computed: {
-    groupId() {
-      return int(this.$route.params.group);
-    },
+    groupId () {
+      return int(this.$route.params.group)
+    }
   },
   watch: {
-    $route(to, from) {
+    $route (to, from) {
       if (this.message.trim().length) {
-        const key = `group.${from.params.group}.message`;
+        const key = `group.${from.params.group}.message`
 
-        window.localStorage.setItem(key, this.message);
+        window.localStorage.setItem(key, this.message)
       }
 
-      const key = `group.${to.params.group}.message`;
+      const key = `group.${to.params.group}.message`
 
-      this.message = window.localStorage.getItem(key) || '';
+      this.message = window.localStorage.getItem(key) || ''
 
-      return this.findGroup();
-    },
+      return this.findGroup()
+    }
   },
-  beforeRouteEnter(to, from, next) {
-    const key = `group.${to.params.group}.message`;
+  beforeRouteEnter (to, from, next) {
+    const key = `group.${to.params.group}.message`
 
     if (key in window.localStorage) {
-      next(vm => vm.$set(vm, 'message', window.localStorage.getItem(key)));
+      next(vm => vm.$set(vm, 'message', window.localStorage.getItem(key)))
     } else {
-      next(vm => vm.$set(vm, 'message', ''));
+      next(vm => vm.$set(vm, 'message', ''))
     }
   },
-  beforeRouteLeave(to, from, next) {
+  beforeRouteLeave (to, from, next) {
     if (this.message.trim().length) {
-      const key = `group.${this.context.id}.message`;
+      const key = `group.${this.context.id}.message`
 
-      window.localStorage.setItem(key, this.message);
+      window.localStorage.setItem(key, this.message)
     }
 
-    next();
-  },
-};
+    next()
+  }
+}
 </script>

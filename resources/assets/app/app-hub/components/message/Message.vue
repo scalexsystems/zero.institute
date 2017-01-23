@@ -30,27 +30,27 @@
 </template>
 
 <script lang="babel">
-import moment from 'moment';
-import marked from 'marked';
-import { escapeHtml as e, nl2br } from '../../../util';
-import MessageAttachment from './MessageAttachment.vue';
+import moment from 'moment'
+import marked from 'marked'
+import { escapeHtml as e, nl2br } from '../../../util'
+import MessageAttachment from './MessageAttachment.vue'
 
 export default {
   name: 'Message',
   props: {
     message: {
-      required: true,
-    },
+      required: true
+    }
   },
   components: { MessageAttachment },
   filters: {
-    time(date) {
-      return moment(date).format('LT');
-    },
+    time (date) {
+      return moment(date).format('LT')
+    }
   },
   computed: {
-    content() {
-      const message = this.message;
+    content () {
+      const message = this.message
 
       if (message.type === 'markdown') {
         return marked(message.content, {
@@ -60,19 +60,19 @@ export default {
           pedantic: false,
           sanitize: true,
           smartLists: true,
-          smartypants: true,
-        });
+          smartypants: true
+        })
       }
 
-      return nl2br(e(message.content.trim()));
-    },
+      return nl2br(e(message.content.trim()))
+    }
   },
   methods: {
-    onSenderProfile() {
-      this.$emit('open-sender', this.message);
-    },
-  },
-};
+    onSenderProfile () {
+      this.$emit('open-sender', this.message)
+    }
+  }
+}
 </script>
 
 

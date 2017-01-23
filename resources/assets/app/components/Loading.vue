@@ -39,7 +39,7 @@
 </template>
 
 <script lang="babel">
-export default {};
+export default {}
 </script>
 
 <style lang="scss">

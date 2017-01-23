@@ -19,79 +19,79 @@
 </template>
 
 <script lang="babel">
-import each from 'lodash/each';
-import sort from 'lodash/sortBy';
-import first from 'lodash/first';
-import int from 'lodash/toInteger';
-import { mapActions, mapGetters } from 'vuex';
-import moment from 'moment';
+import each from 'lodash/each'
+import sort from 'lodash/sortBy'
+import first from 'lodash/first'
+import int from 'lodash/toInteger'
+import { mapActions, mapGetters } from 'vuex'
+import moment from 'moment'
 
 export default {
-  created() {
-    this.getCourses();
+  created () {
+    this.getCourses()
   },
   computed: {
-    groups() {
-      return this.courses.map(course => course.session.group);
+    groups () {
+      return this.courses.map(course => course.session.group)
     },
-    sortedGroups() {
-      const groups = this.groups;
+    sortedGroups () {
+      const groups = this.groups
 
       return sort(groups, (group) => {
-        const message = first(group.messages);
-        if (!message) return 0;
+        const message = first(group.messages)
+        if (!message) return 0
 
-        return -moment(message.received_at).valueOf();
-      });
+        return -moment(message.received_at).valueOf()
+      })
     },
-    activeId() {
-      const route = this.$route;
+    activeId () {
+      const route = this.$route
 
       if ('group' in route.params) {
-        return int(route.params.group);
+        return int(route.params.group)
       }
 
-      return -1;
+      return -1
     },
-    ...mapGetters('hub', ['courses']),
+    ...mapGetters('hub', ['courses'])
   },
-  data() {
+  data () {
     return {
       joined: {},
-      loaded: false,
-    };
+      loaded: false
+    }
   },
   methods: {
-    onGroupSelected({ id }) {
+    onGroupSelected ({ id }) {
       this.$router.push({
         name: 'acad.course',
-        params: { course: id },
-      });
+        params: { course: id }
+      })
     },
-    joinGroupChannels() {
+    joinGroupChannels () {
       each(this.groups, (group) => {
         if (this.joined[group.id] !== true && group.channel) {
           this.$echo.join(group.channel).listen('NewMessage', (message) => {
-            this.$debug('New Message', message);
-            this.onMessage({ groupId: group.id, message });
-          });
+            this.$debug('New Message', message)
+            this.onMessage({ groupId: group.id, message })
+          })
 
-          this.joined[group.id] = true;
+          this.joined[group.id] = true
         }
-      });
+      })
     },
     ...mapActions('hub', {
       sendMessage: 'sendMessageToGroup',
-      onMessage: 'onNewMessageToGroup',
+      onMessage: 'onNewMessageToGroup'
     }),
-    ...mapActions('hub', ['getCourses']),
+    ...mapActions('hub', ['getCourses'])
   },
   watch: {
-    groups() {
-      this.joinGroupChannels();
-    },
-  },
-};
+    groups () {
+      this.joinGroupChannels()
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

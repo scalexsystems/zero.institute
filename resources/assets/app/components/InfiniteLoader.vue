@@ -3,34 +3,34 @@
 </template>
 
 <script lang="babel">
-import InfiniteScroll from 'vue-infinite-loading';
+import InfiniteScroll from 'vue-infinite-loading'
 
 export default {
   components: { InfiniteScroll },
   events: {
-    '$InfiniteLoading:reset': function reset() {
-      this.emit('$InfiniteLoading:reset');
+    '$InfiniteLoading:reset': function reset () {
+      this.emit('$InfiniteLoading:reset')
     },
-    '$InfiniteLoading:complete': function complete() {
-      this.emit('$InfiniteLoading:loaded');
+    '$InfiniteLoading:complete': function complete () {
+      this.emit('$InfiniteLoading:loaded')
     },
-    '$InfiniteLoading:loaded': function loaded() {
-      this.emit('$InfiniteLoading:loaded');
-    },
+    '$InfiniteLoading:loaded': function loaded () {
+      this.emit('$InfiniteLoading:loaded')
+    }
   },
   methods: {
-    onInfinite() {
-      const reset = () => this.emit('$InfiniteLoading:reset');
-      const end = () => this.emit('$InfiniteLoading:complete');
-      const done = () => this.emit('$InfiniteLoading:loaded');
+    onInfinite () {
+      const reset = () => this.emit('$InfiniteLoading:reset')
+      const end = () => this.emit('$InfiniteLoading:complete')
+      const done = () => this.emit('$InfiniteLoading:loaded')
 
-      this.$emit('load', { reset, end, done });
+      this.$emit('load', { reset, end, done })
     },
-    emit(e) {
+    emit (e) {
       if (this.$refs && this.$refs.infinite) {
-        this.$refs.infinite.$emit(e);
+        this.$refs.infinite.$emit(e)
       }
-    },
-  },
-};
+    }
+  }
+}
 </script>

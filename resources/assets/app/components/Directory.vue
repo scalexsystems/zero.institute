@@ -36,66 +36,66 @@
 </template>
 
 <script lang="babel">
-import Shifter from 'sifter';
-import InfiniteScroll from 'vue-infinite-loading';
+import Shifter from 'sifter'
+import InfiniteScroll from 'vue-infinite-loading'
 
-import ItemCard from './PersonCard.vue';
-import ActivityBox from './ActivityBox.vue';
-import { mapObject } from '../util';
+import ItemCard from './PersonCard.vue'
+import ActivityBox from './ActivityBox.vue'
+import { mapObject } from '../util'
 
 export default {
   props: {
     items: {
-      required: true,
+      required: true
     },
     component: {
       default: 'item-card',
-      type: String,
+      type: String
     },
-    ...mapObject(ActivityBox.props, ['title', 'subtitle', 'actions', 'enableTopbar']),
+    ...mapObject(ActivityBox.props, ['title', 'subtitle', 'actions', 'enableTopbar'])
   },
   components: { ActivityBox, ItemCard, InfiniteScroll },
   computed: {
-    searchable() {
-      const items = this.items;
+    searchable () {
+      const items = this.items
 
-      return new Shifter(items);
+      return new Shifter(items)
     },
-    filtered() {
-      const searchable = this.searchable;
-      const items = this.items;
-      const query = this.q;
+    filtered () {
+      const searchable = this.searchable
+      const items = this.items
+      const query = this.q
       const result = searchable.search(query, {
         fields: ['name'],
-        sort_empty: [{ field: 'name', direction: 'asc' }],
-      });
-      return result.items.map(({ id }) => items[id]);
-    },
+        sort_empty: [{ field: 'name', direction: 'asc' }]
+      })
+      return result.items.map(({ id }) => items[id])
+    }
   },
-  data() {
+  data () {
     return {
       q: '',
-      resultMessage: '',
-    };
+      resultMessage: ''
+    }
   },
   methods: {
-    onInfinite() {
+    onInfinite () {
       const emit = (e) => {
         if (this.$refs.infinite) {
-          this.$refs.infinite.$emit(e);
+          this.$refs.infinite.$emit(e)
         }
-      };
-      const end = () => emit('$InfiniteLoading:complete');
-      const done = () => emit('$InfiniteLoading:loaded');
+      }
+      const end = () => emit('$InfiniteLoading:complete')
+      const done = () => emit('$InfiniteLoading:loaded')
 
       this.$emit('load-more', {
         done,
         end,
-        error: end,
-      });
-    },
-  },
-};
+        error: end
+      })
+    }
+  }
+}
 </script>
 
 <style lang="scss">

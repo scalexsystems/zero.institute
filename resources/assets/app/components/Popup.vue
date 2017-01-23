@@ -27,37 +27,37 @@
 </template>
 <script>
 export default{
-  data() {
+  data () {
     return {
-    };
+    }
   },
   components: {},
   props: {
     showHeader: {
       type: Boolean,
-      default: true,
+      default: true
     },
     showFooter: {
       type: Boolean,
-      default: true,
+      default: true
     },
     title: {
       type: String,
-      default: '',
+      default: ''
     },
 
     styleClass: {
       type: String,
-      default: '',
+      default: ''
     },
 
     dismissable: {
       type: Boolean,
-      default: true,
-    },
-  },
+      default: true
+    }
+  }
 
-};
+}
 </script>
 <style lang="scss">
     @import '../styles/methods';

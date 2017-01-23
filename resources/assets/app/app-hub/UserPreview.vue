@@ -34,63 +34,63 @@
 </template>
 
 <script lang="babel">
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapActions } from 'vuex'
 
-import { LoadingPlaceholder, ActivityBox } from '../components';
+import { LoadingPlaceholder, ActivityBox } from '../components'
 
 export default {
   name: 'UserPreview',
   components: { LoadingPlaceholder, ActivityBox },
-  beforeRouteEnter(to, from, next) {
+  beforeRouteEnter (to, from, next) {
     next((vm) => {
-      vm.user = null;
-    });
+      vm.user = null
+    })
   },
   computed: {
-    title() {
-      const user = this.user || {};
+    title () {
+      const user = this.user || {}
 
-      return user.name;
+      return user.name
     },
-    subtitle() {
-      const user = this.user || {};
+    subtitle () {
+      const user = this.user || {}
 
-      return user.bio || 'User Profile';
+      return user.bio || 'User Profile'
     },
-    ...mapGetters('school', ['departments']),
+    ...mapGetters('school', ['departments'])
   },
-  data() {
+  data () {
     return {
-      user: null,
-    };
-  },
-  created() {
-    if (!this.departments.length) {
-      this.getDepartments();
+      user: null
     }
-    this.fetchUser();
+  },
+  created () {
+    if (!this.departments.length) {
+      this.getDepartments()
+    }
+    this.fetchUser()
   },
   methods: {
-    close() {
-      window.history.back();
+    close () {
+      window.history.back()
     },
-    department(value) {
-      return (this.departments.find(d => d.id === value) || {}).name;
+    department (value) {
+      return (this.departments.find(d => d.id === value) || {}).name
     },
-    fetchUser() {
+    fetchUser () {
       this.$http.get(`people/${this.$route.params.user}`)
             .then(response => response.json())
             .then(user => this.$set(this, 'user', user))
             .catch(() => {
               // TODO: Redirect to 404!
-            });
+            })
     },
-    ...mapActions('school', ['getDepartments']),
+    ...mapActions('school', ['getDepartments'])
   },
   watch: {
-    $route: 'fetchUser',
-  },
-};
+    $route: 'fetchUser'
+  }
+}
 </script>
 
 <style lang="scss">

@@ -298,116 +298,116 @@
 </template>
 
 <script lang="babel">
-import first from 'lodash/first';
-import toNumber from 'lodash/toNumber';
-import isNaN from 'lodash/isNaN';
-import moment from 'moment';
-import { mapGetters, mapActions } from 'vuex';
+import first from 'lodash/first'
+import toNumber from 'lodash/toNumber'
+import isNaN from 'lodash/isNaN'
+import moment from 'moment'
+import { mapGetters, mapActions } from 'vuex'
 
-import { getters, actions } from '../../vuex/meta';
-import { WindowBox, LoadingPlaceholder } from '../../components';
+import { getters, actions } from '../../vuex/meta'
+import { WindowBox, LoadingPlaceholder } from '../../components'
 
 export default {
   name: 'StudentProfile',
-  data() {
+  data () {
     return {
       errors: null,
-      remote: null,
-    };
+      remote: null
+    }
   },
   computed: {
-    student() {
-      const local = this.local || {};
-      const remote = this.remote;
+    student () {
+      const local = this.local || {}
+      const remote = this.remote
 
-      if (remote) return remote;
+      if (remote) return remote
 
-      return local;
+      return local
     },
-    local() {
-      const students = this.students;
-      const uid = this.$route.params.student;
+    local () {
+      const students = this.students
+      const uid = this.$route.params.student
 
-      return first(students.filter(student => student.uid === uid));
+      return first(students.filter(student => student.uid === uid))
     },
-    loading() {
-      return this.remote === null && this.errors === null;
+    loading () {
+      return this.remote === null && this.errors === null
     },
-    success() {
-      return this.remote !== null;
+    success () {
+      return this.remote !== null
     },
-    department() {
-      const departments = this.departments;
-      const id = this.student.department_id;
+    department () {
+      const departments = this.departments
+      const id = this.student.department_id
 
-      return first(departments.filter(d => d.id === id)) || {};
+      return first(departments.filter(d => d.id === id)) || {}
     },
-    discipline() {
-      const disciplines = this.disciplines;
-      const id = this.student.discipline_id;
+    discipline () {
+      const disciplines = this.disciplines
+      const id = this.student.discipline_id
 
-      return first(disciplines.filter(d => d.id === id)) || {};
+      return first(disciplines.filter(d => d.id === id)) || {}
     },
     ...mapGetters({
       students: getters.students,
       departments: getters.departments,
-      disciplines: getters.disciplines,
-    }),
+      disciplines: getters.disciplines
+    })
   },
   components: { WindowBox, LoadingPlaceholder },
-  created() {
+  created () {
     if (this.departments.length === 0) {
-      this.getDepartments();
+      this.getDepartments()
     }
 
     if (this.disciplines.length === 0) {
-      this.getDisciplines();
+      this.getDisciplines()
     }
 
-    this.getStudent();
+    this.getStudent()
   },
   filters: {
-    currency(value) {
-      const amount = toNumber(value);
+    currency (value) {
+      const amount = toNumber(value)
 
-      if (isNaN(amount)) return '₹ 0';
+      if (isNaN(amount)) return '₹ 0'
 
-      return `₹ ${amount}`;
+      return `₹ ${amount}`
     },
-    dateForHumans(value) {
-      return moment(value).format('D MMMM YYYY');
-    },
+    dateForHumans (value) {
+      return moment(value).format('D MMMM YYYY')
+    }
   },
   methods: {
-    getStudent() {
-      const id = this.$route.params.student;
+    getStudent () {
+      const id = this.$route.params.student
 
-      this.remote = this.errors = null;
+      this.remote = this.errors = null
 
       this.$http.get(`people/students/${id}`)
           .then(response => response.json())
           .then((result) => {
-            this.remote = result;
+            this.remote = result
           })
           .catch((response) => {
             response.json()
                 .then((result) => {
-                  this.errors = result.message;
+                  this.errors = result.message
                 })
                 .catch(() => {
-                  this.errors = 'Retry. There was some error apprehending response from server.';
-                });
-          });
+                  this.errors = 'Retry. There was some error apprehending response from server.'
+                })
+          })
     },
     ...mapActions({
       getDepartments: actions.getDepartments,
-      getDisciplines: actions.getDisciplines,
-    }),
+      getDisciplines: actions.getDisciplines
+    })
   },
   watch: {
-    $route: 'getStudent',
-  },
-};
+    $route: 'getStudent'
+  }
+}
 </script>
 
 <style lang="scss" scoped>

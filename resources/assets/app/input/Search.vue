@@ -48,198 +48,198 @@
 </template>
 
 <script lang="babel">
-import Sifter from 'sifter';
-import debounce from 'lodash/debounce';
+import Sifter from 'sifter'
+import debounce from 'lodash/debounce'
 
-import input from './mixins/input';
-import SearchOption from './SearchOption.vue';
+import input from './mixins/input'
+import SearchOption from './SearchOption.vue'
 
 export default {
   props: {
     suggestions: {
       required: true,
-      type: Array,
+      type: Array
     },
     sortFields: {
       type: Array,
-      default: () => [],
+      default: () => []
     },
     searchFields: {
       type: Array,
-      default: () => ['name'],
+      default: () => ['name']
     },
     limit: {
       type: Number,
-      default: 15,
+      default: 15
     },
     component: {
       type: String,
-      default: 'search-option',
-    },
+      default: 'search-option'
+    }
   },
-  data() {
+  data () {
     return {
       index: null,
       isOpen: false,
       skipClose: false,
       selected: [],
-      pendingSearches: 0,
-    };
+      pendingSearches: 0
+    }
   },
   components: { SearchOption },
   computed: {
-    searchable() {
-      const suggestions = this.suggestions;
+    searchable () {
+      const suggestions = this.suggestions
 
-      return new Sifter(suggestions || []);
+      return new Sifter(suggestions || [])
     },
-    options() {
-      const value = this.value;
-      const searchable = this.searchable;
-      const fields = this.searchFields;
-      const sort = this.sortFields;
-      const limit = this.limit;
-      const selected = this.selected;
+    options () {
+      const value = this.value
+      const searchable = this.searchable
+      const fields = this.searchFields
+      const sort = this.sortFields
+      const limit = this.limit
+      const selected = this.selected
 
       const results = searchable.search(value, {
         fields,
         sort,
         limit,
-        sort_empty: [{ field: 'name', direction: 'asc' }],
-      });
+        sort_empty: [{ field: 'name', direction: 'asc' }]
+      })
 
       return results.items
               .map(({ id }) => this.suggestions[id])
-              .filter(option => selected.indexOf(option) < 0);
+              .filter(option => selected.indexOf(option) < 0)
     },
-    noResults() {
-      const options = this.options;
-      const value = this.value;
+    noResults () {
+      const options = this.options
+      const value = this.value
 
-      return value.trim().length > 0 && options.length === 0;
+      return value.trim().length > 0 && options.length === 0
     },
-    searchHelpText() {
-      const search = this.search;
-      const help = this.searchHelp;
-      const placeholder = this.placeholderText;
+    searchHelpText () {
+      const search = this.search
+      const help = this.searchHelp
+      const placeholder = this.placeholderText
 
       if (search) {
-        return placeholder;
+        return placeholder
       }
 
-      return help || 'Start typing...';
+      return help || 'Start typing...'
     },
-    suggesting() {
-      return this.pendingSearches > 0;
-    },
+    suggesting () {
+      return this.pendingSearches > 0
+    }
   },
   methods: {
-    onEnter() {
+    onEnter () {
       if (this.index in this.options) {
-        this.select(this.options[this.index]);
-        return;
+        this.select(this.options[this.index])
+        return
       }
 
-      this.$emit('search', this.input);
+      this.$emit('search', this.input)
     },
-    onClick(option) {
-      this.select(option);
+    onClick (option) {
+      this.select(option)
     },
-    onEsc() {
+    onEsc () {
       if (this.$refs.input) {
-        this.$refs.input.blur();
+        this.$refs.input.blur()
       }
-      this.close();
+      this.close()
     },
-    onUp() {
+    onUp () {
       if (this.index === null) {
-        this.index = this.options.length - 1;
+        this.index = this.options.length - 1
       } else if (this.index > 0) {
-        this.index = this.index - 1;
+        this.index = this.index - 1
       }
 
-      this.scrollIntoView();
+      this.scrollIntoView()
     },
-    onDown() {
+    onDown () {
       if (this.index === null) {
-        this.index = 0;
+        this.index = 0
       } else if (this.index < (this.options.length - 1)) {
-        this.index = this.index + 1;
+        this.index = this.index + 1
       }
-      this.scrollIntoView();
+      this.scrollIntoView()
     },
-    onInput(event) {
-      this.$emit('input', event.target.value);
+    onInput (event) {
+      this.$emit('input', event.target.value)
       this.$emit('suggest', {
         value: event.target.value,
         start: () => {
-          this.pendingSearches += 1;
+          this.pendingSearches += 1
         },
         end: () => {
           if (this.pendingSearches > 0) {
-            this.pendingSearches -= 1;
+            this.pendingSearches -= 1
           }
-        },
-      });
+        }
+      })
     },
-    onBlur: debounce(function onBlur() {
-      this.close();
+    onBlur: debounce(function onBlur () {
+      this.close()
     }, 300),
-    scrollIntoView() {
+    scrollIntoView () {
       try {
         this.$refs.options
                 .children[this.index]
-                .scrollIntoViewIfNeeded();
+                .scrollIntoViewIfNeeded()
       } catch (e) {
-        this.$debug(e);
+        this.$debug(e)
       }
     },
-    clickAway(e) {
+    clickAway (e) {
       if (!this.$refs.body.contains(e.target)) {
-        this.close();
+        this.close()
       }
     },
-    close() {
+    close () {
       if (this.skipClose) {
-        this.skipClose = false;
-        return;
+        this.skipClose = false
+        return
       }
 
-      this.index = null;
-      this.isOpen = false;
+      this.index = null
+      this.isOpen = false
     },
-    open() {
-      if (this.isOpen) return;
+    open () {
+      if (this.isOpen) return
 
-      this.isOpen = true;
+      this.isOpen = true
 
       this.$nextTick(() => {
         if (this.$refs.input) {
-          this.$refs.input.focus();
+          this.$refs.input.focus()
         }
-      });
+      })
     },
-    select(option) {
-      if (!option) return;
+    select (option) {
+      if (!option) return
 
       if (this.selected.indexOf(option) < 0) {
-        this.selected.push(option);
-        this.$emit('select', option);
+        this.selected.push(option)
+        this.$emit('select', option)
       }
     },
-    unselect(option) {
-      const index = this.selected.indexOf(option);
-      if (index > -1) this.selected.splice(index, 1);
-    },
+    unselect (option) {
+      const index = this.selected.indexOf(option)
+      if (index > -1) this.selected.splice(index, 1)
+    }
   },
   mixins: [input],
-  created() {
-    this.$on('unselect', item => this.unselect(item));
+  created () {
+    this.$on('unselect', item => this.unselect(item))
   },
-  destroyed() {
-    document.body.removeEventListener('click', this.clickAway, false);
-  },
-};
+  destroyed () {
+    document.body.removeEventListener('click', this.clickAway, false)
+  }
+}
 </script>
 
 <style lang="scss" scoped>
