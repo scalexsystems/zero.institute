@@ -69,8 +69,6 @@ class CourseRepository extends Repository
             $course->year_id = (int) $attributes['year_id'];
         }
 
-        \Log::debug($course->getAttributes());
-
         $status = $course->save();
 
         if ($status) {

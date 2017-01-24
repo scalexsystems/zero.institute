@@ -25,6 +25,8 @@ class CourseController extends Controller
     {
         $this->authorize('index', Course::class);
 
+        $request->query->set('with', ['photo', 'sessions', 'instructors', 'prerequisites', 'active_sessions', 'future_sessions']);
+
         $courses = repository(Course::class)->with(['photo', 'sessions', 'instructors', 'prerequisites']);
 
         if ($request->has('q')) {
@@ -33,7 +35,7 @@ class CourseController extends Controller
             $courses->pushCriteria(new OrderBy('name'));
         }
 
-        return $courses->simplePaginate();
+        return $courses->paginate();
     }
 
     /*

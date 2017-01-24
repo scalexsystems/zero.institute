@@ -11,16 +11,16 @@ class CourseTransformer extends Transformer
         'department',
         'discipline',
         'instructors',
-        'sessions',
         'session',
         'semester',
+        'prerequisites',
     ];
 
     protected $defaultIncludes = [
+        'sessions',
         'active_sessions',
         'future_sessions',
         'instructors',
-        'prerequisites',
     ];
 
     public function show(Course $course)

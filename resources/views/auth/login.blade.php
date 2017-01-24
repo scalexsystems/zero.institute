@@ -5,7 +5,7 @@
         <div class="wrapper-auth">
             <div class="card card-auth">
                 <div class="card-block card-block-auth">
-                    <h3 class="p-b-1">{{ trans('app::login.heading') }}</h3>
+                    <h3 class="pb-3">{{ trans('app::login.heading') }}</h3>
                     <form class="form-horizontal" role="form" method="POST" action="{{ url('/login') }}">
                         {{ csrf_field() }}
 

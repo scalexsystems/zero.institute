@@ -24,7 +24,7 @@
             [
                     'csrfToken' => csrf_token(),
                     'message' => session('message'),
-                    'user' => transform(current_user()),
+                    'user' => (new \Scalex\Zero\Services\UserService)->currentTransformed(),
 
                     'broadcast' => config('broadcasting.front.'.config('broadcasting.default')),
             ]); ?>

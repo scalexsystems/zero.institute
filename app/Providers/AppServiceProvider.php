@@ -61,7 +61,7 @@ class AppServiceProvider extends ServiceProvider
         Event::listen('kernel.handled', function () {
             if (config('app.debug')) {
                 foreach ($this->logs as $log) {
-                    // Log::debug('DB QUERY', $log);
+                    Log::debug('DB QUERY', $log);
                 }
             } else {
                 Log::info('DB QUERIES', $this->logs);

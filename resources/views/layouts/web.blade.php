@@ -15,8 +15,6 @@
     {{--Analytics--}}
     @include('web.partials.analytics')
 
-    {{--CSRF Token--}}
-    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     {{--Scripts--}}
     <script>
@@ -30,12 +28,15 @@
     {{--Styles--}}
     <link href="{{ mix('/css/web.css') }}" rel="stylesheet">
 
+    {{--CSRF Token--}}
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     @yield('in-head')
 </head>
 <body>
-@yield('before-body')
-@yield('content')
-<script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-@yield('after-body')
+    @yield('before-body')
+    @yield('content')
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    @yield('after-body')
 </body>
 </html>
