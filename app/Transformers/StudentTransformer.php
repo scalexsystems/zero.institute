@@ -57,7 +57,7 @@ class StudentTransformer extends Transformer
 
     public function includeUser(Student $student)
     {
-        return $this->item($student->user);
+        return $student->user ? $this->item($student->user) : $this->null();
     }
 
     public function index(Student $student)
