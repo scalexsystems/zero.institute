@@ -122,8 +122,6 @@ module.exports.module = {
   ]
 }
 
-module.exports.plugins = (module.exports.plugins || []).concat(extractAppCss)
-
 if (Mix.cssPreprocessor) {
   Mix[Mix.cssPreprocessor].forEach(toCompile => {
     const extractPlugin = new plugins.ExtractTextPlugin(
@@ -197,7 +195,7 @@ module.exports.performance = {
  |
  */
 
-module.exports.devtool = Mix.isProduction ? false : 'inline-source-map'
+module.exports.devtool = Mix.isProduction ? '#source-map' : '#inline-source-map'
 
 /*
  |--------------------------------------------------------------------------
@@ -246,8 +244,6 @@ module.exports.plugins = (module.exports.plugins || []).concat([
     filename: 'mix-manifest.json',
     transform: Mix.manifest.transform
   }),
-
-  new plugins.ExtractTextPlugin(Mix.isProduction ? '/css/[name].[contenthash].css' : '/css/[name].css'),
 
   new plugins.WebpackMd5HashPlugin(),
 
