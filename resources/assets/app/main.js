@@ -18,14 +18,14 @@ import apps from './options/apps'
  * code may be modified to fit the specific needs of your application.
  */
 window.$ = window.jQuery = require('jquery')
-window.io = require('socket.io-client')
 window.Tether = require('tether')
+window.io = require('socket.io-client')
 require('bootstrap')
 
 window.Vue = Vue
 window.Laravel = window.Laravel || {}
 
-Vue.use(VueDebug, { debug: true })
+Vue.use(VueDebug, { debug: process.env.NODE_ENV !== 'production' })
 Vue.use(VueResource)
 Vue.http.options.root = '/api'
 

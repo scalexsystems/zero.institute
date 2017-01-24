@@ -100,7 +100,8 @@ module.exports.module = {
       test: /\.(png|jpg|gif|svg)$/,
       loader: 'file-loader',
       options: {
-        name: '/img/[name].[ext]?[hash]'
+        name: 'img/[path][name].[ext]?[hash]',
+        publicPath: '/'
       }
     },
 
@@ -138,6 +139,10 @@ if (Mix.cssPreprocessor) {
   })
 }
 
+module.exports.plugins = (module.exports.plugins || []).concat(new plugins.ExtractTextPlugin({
+  filename: (Mix.isProduction ? '/css/[name].[contenthash].css' : '/css/[name].css')
+}))
+
 /*
  |--------------------------------------------------------------------------
  | Resolve
@@ -166,14 +171,16 @@ module.exports.resolve = {
  */
 
 module.exports.stats = {
-  hash: false,
-  version: false,
+  hash: true,
+  version: true,
   timings: true,
-  children: false,
+  children: true,
   errors: true
 }
 
-module.exports.performance = { hints: false }
+module.exports.performance = {
+  hints: false
+}
 
 /*
  |--------------------------------------------------------------------------
@@ -242,6 +249,7 @@ module.exports.plugins = (module.exports.plugins || []).concat([
 
   new webpack.LoaderOptionsPlugin({
     minimize: Mix.inProduction,
+    debug: false,
     options: {
       postcss: [
         require('autoprefixer')
@@ -305,16 +313,23 @@ if (Mix.inProduction) {
     }),
 
     new webpack.optimize.UglifyJsPlugin({
-      sourceMap: true,
+      debug: false,
+      beautify: false,
+      mangle: {
+          screw_ie8: true,
+          keep_fnames: true
+      },
       compress: {
-        warnings: false
-      }
+          screw_ie8: true,
+          warnings: false
+      },
+      comments: false
     }),
 
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
       minChunks: function (module, count) {
-            // any required modules inside node_modules are extracted to vendor
+        // any required modules inside node_modules are extracted to vendor
         return (
               module.resource &&
               /\.js$/.test(module.resource) &&

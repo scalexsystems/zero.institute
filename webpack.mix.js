@@ -13,18 +13,11 @@ Mix.vueExtract = !(Mix.hmr || ['production', 'development'].indexOf(process.env.
  | file for your application, as well as bundling up your JS files.
  |
  */
-const output = new Mix.File('public/css/app.css').parsePath()
 
 mix.js('resources/assets/app/main.js', 'public/js/app.js')
   .sass('resources/assets/sass/web.scss', 'public/css/web.css')
   .version()
   .disableNotifications()
-  .webpackConfig({
-    plugins: (Mix.vueExtract
-      ? []
-      : [new plugins.ExtractTextPlugin(Mix.cssOutput({ output }))]
-    )
-  })
 
 // Full API
 // mix.js(src, output);
