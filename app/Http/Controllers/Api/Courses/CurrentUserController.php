@@ -24,6 +24,7 @@ class CurrentUserController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
+        $request->query->set('with', ['sessions', 'instructors', 'prerequisites', 'active_sessions', 'future_sessions']);
         $request->query->add(['with' => 'session']);
 
         if ($user->person instanceof Teacher or $user->person instanceof Student) {

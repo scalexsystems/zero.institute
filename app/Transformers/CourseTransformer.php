@@ -14,13 +14,13 @@ class CourseTransformer extends Transformer
         'sessions',
         'session',
         'semester',
-    ];
-
-    protected $defaultIncludes = [
         'active_sessions',
         'future_sessions',
         'instructors',
         'prerequisites',
+    ];
+
+    protected $defaultIncludes = [
     ];
 
     public function show(Course $course)
