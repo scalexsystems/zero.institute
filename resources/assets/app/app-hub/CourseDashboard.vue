@@ -35,7 +35,7 @@
     <modal :show="showCourse" @hide="course = null">
       <div class="card card-block" v-if="course">
         <div class="card-title text-primary course-title">{{ course.name }}</div>
-        <div class="small">
+        <div class="course-description">
           {{ department }} &centerdot; {{ discipline }} &centerdot; {{ course.year_text }} &centerdot; {{ semester }}
         </div>
 
@@ -133,10 +133,14 @@ export default {
 
 <style lang="scss" scoped>
 @import '../styles/variables';
+@import '../styles/methods';
 
 .course-title {
-    font-size: 1.28571rem;
+    font-size: rem(18px);
     margin: 0;
+}
+.course-description {
+    font-size: rem(14px);
 }
 
 

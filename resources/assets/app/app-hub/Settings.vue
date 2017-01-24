@@ -69,11 +69,6 @@ export default {
           path: 'course-management'
         },
         {
-          title: 'Institute webmail domain',
-          text: 'Set intitute website',
-          path: '/webmail-domain'
-        },
-        {
           title: 'Institute Details',
           text: 'Enter institute details',
           path: 'institute-details'
