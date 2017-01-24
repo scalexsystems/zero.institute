@@ -48,7 +48,7 @@
           </div>
         </div>
 
-        <div v-if="course.prerequisites.data.length">
+        <div v-if="course.prerequisites && course.prerequisites.data &&  course.prerequisites.data.length">
           <div class="text-muted pt-2">
             Course Prerequisites
           </div>
