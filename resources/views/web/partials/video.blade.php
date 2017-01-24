@@ -25,7 +25,6 @@
             <span itemprop="name">Scalex Zero</span><br>
             <link itemprop="contentUrl" href="https://www.youtube.com/watch?v=iV7idUln3_E">
             <time itemprop="duration" content="PT00H00M55S">00:00:55</time><br>
-            <img itemprop="thumbnailUrl" src="https://img.youtube.com/vi/BVZ1_QtQBk4/0.jpg" alt="Scalex Zero"><br>
             <span itemprop="uploadDate">2016-08-17</span><br>
             <span itemprop="description">Scalex Zero is a web and mobile enabled platform to assist institutions providing higher education in administrative activities.</span>
           </span>

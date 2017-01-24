@@ -72,12 +72,19 @@ class InvitationMailer implements ShouldQueue
 
             $emails = $emails->diff($duplicates);
 
-            $users = $this->createUsers($emails);
+            try {
+                \DB::beginTransaction();
+                $users = $this->createUsers($emails);
 
-            $users->each(function ($user) {
-                Mail::to($user->email)->send(new InvitationMail($user, $this->admin));
-                \Log::debug($user->email);
-            });
+                $users->each(function ($user) {
+                    Mail::to($user->email)->send(new InvitationMail($user, $this->admin));
+                });
+                \DB::commit();
+            } catch (\Exception $e) {
+                \DB::rollback();
+
+                throw $e;
+            }
         });
     }
 
@@ -89,20 +96,23 @@ class InvitationMailer implements ShouldQueue
             return [
                 'name' => $email,
                 'email' => $email,
-                'school_id' => $this->schoolId,
+                'school_id' => 1,// $this->schoolId,
                 'password' => bcrypt(str_random(32)),
                 'created_at' => $timestamp,
                 'updated_at' => $timestamp,
             ];
         })->toArray());
 
-        $persons = $this->createRelated($emails);
+        $persons = $this->createRelated($emails)->keyBy('uid');
+
         $users = User::whereIn('email', $emails->toArray())->get();
 
         $users->load('school');
 
         $users->each(function ($user) use ($persons) {
-            $user->person()->save($persons->get($user->email));
+            $user->person()->associate($persons->get($user->email));
+
+            $user->save();
         });
 
         return $users;
@@ -116,39 +126,45 @@ class InvitationMailer implements ShouldQueue
             Teacher::insert($emails->map(function ($email) use ($timestamp) {
                 return [
                     'uid' => $email,
+                    'first_name' => $email,
                     'school_id' => $this->schoolId,
                     'created_at' => $timestamp,
                     'updated_at' => $timestamp,
                 ];
             })->toArray());
 
-            return  Teacher::whereIn('uid', $emails->toArray())->get()->keyBy('uid');
+            return  Teacher::whereIn('uid', $emails->toArray())->get();
         }
 
         if ($this->type === 'student') {
             Student::insert($emails->map(function ($email) use ($timestamp) {
                 return [
                     'uid' => $email,
+                    'first_name' => $email,
                     'school_id' => $this->schoolId,
                     'created_at' => $timestamp,
                     'updated_at' => $timestamp,
                 ];
             })->toArray());
 
-            return  Student::whereIn('uid', $emails->toArray())->get()->keyBy('uid');
+            return  Student::whereIn('uid', $emails->toArray())->get();
         }
 
         if ($this->type === 'employee') {
             Employee::insert($emails->map(function ($email) use ($timestamp) {
                 return [
                     'uid' => $email,
+                    'first_name' => $email,
                     'school_id' => $this->schoolId,
                     'created_at' => $timestamp,
                     'updated_at' => $timestamp,
                 ];
             })->toArray());
 
-            return  Employee::whereIn('uid', $emails->toArray())->get()->keyBy('uid');
+            return  Employee::whereIn('uid', $emails->toArray())->get();
         }
+
+        throw new \Exception("Unknown User Type");
+
     }
 }
