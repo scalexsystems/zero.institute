@@ -190,7 +190,6 @@ export default {
     onInfinite (fromInfinite = true) {
       const infinite = {
         loaded: () => this.$refs.infinite.$emit('$InfiniteLoading:loaded'),
-        complete: () => this.$refs.infinite.$emit('$InfiniteLoading:complete'),
         reset: () => this.$refs.infinite.$emit('$InfiniteLoading:reset')
       }
 
@@ -200,11 +199,7 @@ export default {
               .then(response => response.json())
               .then((result) => {
                 set(this.members, result.data, this.ids)
-                if (isLastRecord(result)) {
-                  infinite.complete()
-                } else {
-                  infinite.loaded()
-                }
+                infinite.complete()
               })
               .catch(() => infinite.complete())
     },
