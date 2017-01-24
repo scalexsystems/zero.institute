@@ -199,9 +199,9 @@ export default {
               .then(response => response.json())
               .then((result) => {
                 set(this.members, result.data, this.ids)
-                infinite.complete()
+                infinite.loaded()
               })
-              .catch(() => infinite.complete())
+              .catch(() => infinite.loaded())
     },
     setGroup () {
       if (this.group) {
