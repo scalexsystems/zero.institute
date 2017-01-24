@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" viewBox="0 0 42 42" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <circle id="f" cx="21" cy="21" r="21"/>
+    <path id="a" d="M12.3640849,32.0180455 C12.7131143,30.4939503 14.2674324,29.258427 15.8275305,29.258427 L25.7005594,29.258427 C27.2643381,29.258427 28.8171714,30.5035388 29.164005,32.0180455 L31.4579139,42.0347812 C31.8069434,43.5588764 30.8234974,44.7943997 29.266836,44.7943997 L12.2612539,44.7943997 C10.7021255,44.7943997 9.72334235,43.5492879 10.070176,42.0347812 L12.3640849,32.0180455 Z"/>
+    <mask id="h" width="21.529" height="15.536" x="0" y="0" fill="white">
+      <use xlink:href="#a"/>
+    </mask>
+    <rect id="b" width="6.135" height="13.685" x="25.011" y="29.73" rx="2.831"/>
+    <mask id="i" width="6.135" height="13.685" x="0" y="0" fill="white">
+      <use xlink:href="#b"/>
+    </mask>
+    <rect id="c" width="9.438" height="5.191" x="4.247" y="13.213" rx=".944"/>
+    <mask id="j" width="9.438" height="5.191" x="0" y="0" fill="white">
+      <use xlink:href="#c"/>
+    </mask>
+    <rect id="d" width="7.551" height="5.191" x="5.191" rx=".944"/>
+    <mask id="k" width="7.551" height="5.191" x="0" y="0" fill="white">
+      <use xlink:href="#d"/>
+    </mask>
+    <rect id="e" width="17.933" height="15.101" y="1.888" rx="3.775"/>
+    <mask id="l" width="17.933" height="15.101" x="0" y="0" fill="white">
+      <use xlink:href="#e"/>
+    </mask>
+  </defs>
+  <g fill="none" fill-rule="evenodd">
+    <mask id="g" fill="white">
+      <use xlink:href="#f"/>
+    </mask>
+    <use fill="#212F3E" xlink:href="#f"/>
+    <use fill="#4384F5" stroke="#3171E2" stroke-width="1.888" mask="url(#h)" xlink:href="#a"/>
+    <use fill="#4384F5" stroke="#3171E2" stroke-width="1.888" mask="url(#i)" xlink:href="#b" transform="rotate(-15 28.079 36.573)"/>
+    <g transform="translate(11.798 11.326)">
+      <use fill="#F4CD3B" stroke="#D8B140" stroke-width="1.888" mask="url(#j)" xlink:href="#c"/>
+      <use fill="#F4CD3B" stroke="#D8B140" stroke-width="1.888" mask="url(#k)" xlink:href="#d"/>
+      <use fill="#F4CD3B" stroke="#D8B140" stroke-width="1.888" mask="url(#l)" xlink:href="#e"/>
+      <g fill="#3D3D3D" transform="translate(5.663 7.55)">
+        <circle cx="1.18" cy="1.18" r="1.18"/>
+        <circle cx="5.427" cy="1.18" r="1.18"/>
+      </g>
+      <g fill="#B4912E" transform="translate(1.888 11.798)">
+        <rect width=".472" height=".472"/>
+        <rect width=".472" height=".472" x=".472" y=".944"/>
+        <rect width=".472" height=".472" x=".944"/>
+        <rect width=".472" height=".472" x="1.416" y=".944"/>
+        <rect width=".472" height=".472" x="1.888"/>
+        <rect width=".472" height=".472" x="2.36" y=".944"/>
+        <rect width=".472" height=".472" x="2.831"/>
+        <rect width=".472" height=".472" x="3.303" y=".944"/>
+        <rect width=".472" height=".472" x="4.247" y=".944"/>
+        <rect width=".472" height=".472" x="10.854" y=".944"/>
+        <rect width=".472" height=".472" x="11.326"/>
+        <rect width=".472" height=".472" x="11.798" y=".944"/>
+        <rect width=".472" height=".472" x="12.27"/>
+        <rect width=".472" height=".472" x="12.742" y=".944"/>
+        <rect width=".472" height=".472" x="13.213"/>
+        <rect width=".472" height=".472" x="13.685" y=".944"/>
+        <rect width=".472" height=".472" x=".944" y="1.888"/>
+        <rect width=".472" height=".472" x="1.888" y="1.888"/>
+        <rect width=".472" height=".472" x="2.831" y="1.888"/>
+        <rect width=".472" height=".472" x="3.775" y="1.888"/>
+        <rect width=".472" height=".472" x="4.719" y="1.888"/>
+        <rect width=".472" height=".472" x="10.382" y="1.888"/>
+        <rect width=".472" height=".472" x="11.326" y="1.888"/>
+        <rect width=".472" height=".472" x="12.27" y="1.888"/>
+        <rect width=".472" height=".472" x="13.213" y="1.888"/>
+        <rect width=".472" height=".472" x="1.416" y="2.831"/>
+        <rect width=".472" height=".472" x="2.36" y="2.831"/>
+        <rect width=".472" height=".472" x="3.303" y="2.831"/>
+        <rect width=".472" height=".472" x="4.247" y="2.831"/>
+        <rect width=".472" height=".472" x="5.191" y="2.831"/>
+        <rect width=".472" height=".472" x="6.135" y="2.831"/>
+        <rect width=".472" height=".472" x="7.079" y="2.831"/>
+        <rect width=".472" height=".472" x="8.022" y="2.831"/>
+        <rect width=".472" height=".472" x="8.966" y="2.831"/>
+        <rect width=".472" height=".472" x="9.91" y="2.831"/>
+        <rect width=".472" height=".472" x="10.854" y="2.831"/>
+        <rect width=".472" height=".472" x="11.798" y="2.831"/>
+        <rect width=".472" height=".472" x="12.742" y="2.831"/>
+        <rect width=".472" height=".472" x="14.157"/>
+      </g>
+      <path stroke="#3D3D3D" stroke-width=".5" d="M4.71910112 7.45070497C4.71910112 7.45070497 5.68734638 5.60961034 6.90951984 6.28291178M13.0443513 7.45070497C13.0443513 7.45070497 12.076106 5.60961034 10.8539326 6.28291178"/>
+      <path stroke="#3D3D3D" stroke-width=".944" d="M6.60674157,12.2846154 C6.60674157,12.2846154 8.49438202,13.2159702 9.43820225,13.2134782 C10.3820225,13.2109861 12.2696629,12.2696629 12.2696629,12.2696629"/>
+    </g>
+  </g>
+</svg>

@@ -118,74 +118,74 @@
 </template>
 
 <script lang="babel">
-import { WindowBox } from '../components';
+import { WindowBox } from '../components'
 export default {
   components: { WindowBox },
-  created() {
+  created () {
     if (!this.checkStats()) {
-      this.updateStats();
+      this.updateStats()
     }
   },
-  data() {
+  data () {
     return {
       stats: {
         student: 0,
         teacher: 0,
-        employee: 0,
+        employee: 0
       },
       requests: {
         student: { count: 0, count_text: '0 requests pending' },
         teacher: { count: 0, count_text: '0 requests pending' },
-        employee: { count: 0, count_text: '0 requests pending' },
+        employee: { count: 0, count_text: '0 requests pending' }
+      }
+    }
+  },
+  computed: {
+    stages: () => [
+      {
+        name: 'Digital Profiles',
+        desc: 'Create Profiles for Students and Employees.',
+        completed: true
       },
-     };
-    },
-   computed: {
-     stages: () => [
-       {
-         name: 'Digital Profiles',
-          desc: 'Create Profiles for Students and Employees.',
-          completed: true,
-        },
-        {
-          name: 'Academia',
-          desc: 'Courses and discussion hub.',
-          completed: true,
-        },
-        {
-          name: 'Attendance',
-          desc: 'Student attendance via mobile app.',
-        },
-        {
-          name: 'Institute Events',
-          desc: 'Add and share institute events.',
-        },
-        {
-          name: 'Registrations and Finances',
-          desc: 'Semester Registration and fees.',
-        },
-      ],
+      {
+        name: 'Academia',
+        desc: 'Courses and discussion hub.',
+        completed: true
       },
-   methods: {
-    updateStats() {
+      {
+        name: 'Attendance',
+        desc: 'Student attendance via mobile app.'
+      },
+      {
+        name: 'Institute Events',
+        desc: 'Add and share institute events.'
+      },
+      {
+        name: 'Registrations and Finances',
+        desc: 'Semester Registration and fees.'
+      }
+    ]
+  },
+  methods: {
+    updateStats () {
       this.$http.get('people/stats')
      .then(response => response.json())
      .then((result) => {
-       this.stats = result.accounts;
+       this.stats = result.accounts
        this.request.map((request, key) => ({
-       count: result.requests[key],
-         count_text: `${result.requests[key]} requests pending`,
+         count: result.requests[key],
+         count_text: `${result.requests[key]} requests pending`
        }),
-       );
-      })
-     .catch(response => response);
-     },
-    checkStats() {
-      const empty = Object.keys(this.stats).filter(stat => this.stats[stat] === 0);
-      return Object.keys(empty).length === 0;
+       )
+     })
+     .catch(response => response)
     },
-  },
-};
+    checkStats () {
+      const empty = Object.keys(this.stats).filter(stat => this.stats[stat] === 0)
+      return Object.keys(empty).length === 0
+    }
+  }
+}
 
 </script>
 

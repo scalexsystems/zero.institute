@@ -70,6 +70,8 @@ module.exports.output = Mix.output()
  |
  */
 
+const extractAppCss = new plugins.ExtractTextPlugin(process.env.NODE_ENV === 'production' ? '/css/[name].[contenthash].css' : '/css/[name].css')
+
 module.exports.module = {
   rules: [
     {
@@ -78,7 +80,7 @@ module.exports.module = {
       options: {
         loaders: {
           js: 'babel-loader' + Mix.babelConfig(),
-          scss: Mix.vueExtract ? 'vue-style-loader!css-loader!sass-loader' : plugins.ExtractTextPlugin.extract({
+          scss: Mix.vueExtract ? 'vue-style-loader!css-loader!sass-loader' : extractAppCss.extract({
             loader: 'css-loader!sass-loader',
             fallbackLoader: 'vue-style-loader'
           })
@@ -97,15 +99,20 @@ module.exports.module = {
     },
 
     {
-      test: /\.(png|jpg|gif|svg)$/,
+      test (filename) {
+        if (/fontawesome-webfont/.test(filename)) return false
+
+        return /\.(png|jpg|gif|svg)$/.test(filename)
+      },
       loader: 'file-loader',
       options: {
-        name: '/img/[name].[ext]?[hash]'
+        name: 'img/[path][name].[ext]?[hash]',
+        publicPath: '/'
       }
     },
 
     {
-      test: /\.(woff2?|ttf|eot|otf)$/,
+      test: /(fontawesome-webfont\.svg$)|\.(woff2?|ttf|eot|otf)$/,
       loader: 'file-loader',
       options: {
         name: '/fonts/[name].[ext]?[hash]',
@@ -114,6 +121,8 @@ module.exports.module = {
     }
   ]
 }
+
+module.exports.plugins = (module.exports.plugins || []).concat(extractAppCss)
 
 if (Mix.cssPreprocessor) {
   Mix[Mix.cssPreprocessor].forEach(toCompile => {
@@ -166,14 +175,16 @@ module.exports.resolve = {
  */
 
 module.exports.stats = {
-  hash: false,
-  version: false,
+  hash: true,
+  version: true,
   timings: true,
-  children: false,
+  children: true,
   errors: true
 }
 
-module.exports.performance = { hints: false }
+module.exports.performance = {
+  hints: false
+}
 
 /*
  |--------------------------------------------------------------------------
@@ -242,6 +253,7 @@ module.exports.plugins = (module.exports.plugins || []).concat([
 
   new webpack.LoaderOptionsPlugin({
     minimize: Mix.inProduction,
+    debug: false,
     options: {
       postcss: [
         require('autoprefixer')
@@ -305,16 +317,23 @@ if (Mix.inProduction) {
     }),
 
     new webpack.optimize.UglifyJsPlugin({
-      sourceMap: true,
+      debug: false,
+      beautify: false,
+      mangle: {
+          screw_ie8: true,
+          keep_fnames: true
+      },
       compress: {
-        warnings: false
-      }
+          screw_ie8: true,
+          warnings: false
+      },
+      comments: false
     }),
 
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
       minChunks: function (module, count) {
-            // any required modules inside node_modules are extracted to vendor
+        // any required modules inside node_modules are extracted to vendor
         return (
               module.resource &&
               /\.js$/.test(module.resource) &&
