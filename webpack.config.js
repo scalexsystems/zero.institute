@@ -70,7 +70,7 @@ module.exports.output = Mix.output()
  |
  */
 
-const extractAppCss = new plugins.ExtractTextPlugin(process.env.NODE_ENV === 'production' ? '/css/[name].[contenthash].css' : '/css/[name].css')
+const extractAppCss = new plugins.ExtractTextPlugin(process.env.NODE_ENV === 'production' ? '/css/app.[contenthash].css' : '/css/app.css')
 
 module.exports.module = {
   rules: [
@@ -242,8 +242,22 @@ module.exports.plugins = (module.exports.plugins || []).concat([
 
   new plugins.StatsWriterPlugin({
     filename: 'mix-manifest.json',
-    transform: Mix.manifest.transform
+    transform (stats) {
+      const flattenedPaths = [].concat.apply([], Object.values(stats.assetsByChunkName));
+
+      const manifest = flattenedPaths.reduce((manifest, path) => {
+          let original = path.replace(/\.([^\.]+)(\..+)/, '$2');
+
+          manifest[original] = path;
+
+          return manifest;
+      }, {});
+
+      return JSON.stringify(manifest, null, 2);
+    }
   }),
+
+  extractAppCss,
 
   new plugins.WebpackMd5HashPlugin(),
 
