@@ -88,7 +88,7 @@ class EmployeeRepository extends Repository
         }
     }
 
-    public function getRules(array $attributes, Model $model = null): array
+    public function getRules(array $attributes = [], Model $model = null): array
     {
         $data = parent::getRules($attributes, $model);
         $data['uid'] .= current_user()->school_id;
