@@ -4031,19 +4031,19 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/znck/transformer.git",
-                "reference": "efda47bb01199ac10f6fb0d8802a619339e1ebc8"
+                "reference": "3e9e8a7b64446215a10bd17dc56c49c13c3f5f01"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/znck/transformer/zipball/efda47bb01199ac10f6fb0d8802a619339e1ebc8",
-                "reference": "efda47bb01199ac10f6fb0d8802a619339e1ebc8",
+                "url": "https://api.github.com/repos/znck/transformer/zipball/3e9e8a7b64446215a10bd17dc56c49c13c3f5f01",
+                "reference": "3e9e8a7b64446215a10bd17dc56c49c13c3f5f01",
                 "shasum": ""
             },
             "require": {
                 "illuminate/console": "^5.3",
                 "illuminate/database": "^5.3",
                 "illuminate/support": "^5.3",
-                "league/fractal": "^0.14.0"
+                "league/fractal": "^0.14"
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^1.12",
@@ -4080,7 +4080,7 @@
                 "repositories",
                 "transformer"
             ],
-            "time": "2016-12-05 12:38:17"
+            "time": "2017-01-24 11:09:06"
         },
         {
             "name": "znck/trust",
