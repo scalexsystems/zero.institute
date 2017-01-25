@@ -54,7 +54,7 @@
           <div class="row">
             <div class="col-xs-12 col-lg-6" v-for="(member, index) of members">
               <item-card :item="member"
-                         @open="openMemberProfile(member, index)"></item-card>
+                         @open="openProfile(member, index)"></item-card>
             </div>
 
             <infinite-scroll class="col-xs-12" :on-infinite="onInfinite" no-results:="" ref="infinite"></infinite-scroll>
@@ -172,6 +172,9 @@ export default {
 
     profileUpdated (src) {
       this.updatePhoto({ groupId: this.group.id, photo: src })
+    },
+    openProfile (member) {
+      this.$router.push({ name: 'hub.user-preview', params: { user: member.id }})
     }
   },
   watch: {
