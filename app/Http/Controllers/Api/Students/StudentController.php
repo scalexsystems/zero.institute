@@ -38,6 +38,14 @@ class StudentController extends Controller
         return $student;
     }
 
+    public function update(Request $request, Student $student) {
+        $this->authorize($student);
+        $data = $request->all();
+        $data['uid'] = $student->uid;
+        repository(Student::class)->update($student, $data);
+        $this->accepted();
+    }
+
     public function invite(Request $request)
     {
         $this->authorize('invite', Student::class);

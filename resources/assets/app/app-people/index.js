@@ -4,6 +4,8 @@ import StudentSearch from './student/Search.vue'
 import StudentResults from './student/Results.vue'
 import StudentProfile from './student/Profile.vue'
 
+import ProfileEdit from './student/ProfileEdit.vue'
+
 import TeacherSearch from './teacher/Search.vue'
 import TeacherResults from './teacher/Results.vue'
 import TeacherProfile from './teacher/Profile.vue'
@@ -37,6 +39,11 @@ export default function (Vue, { routes }) {
       name: 'student.profile',
       path: '/people/students/:student',
       component: StudentProfile
+    },
+    {
+      name: 'student.profile.edit',
+      path: '/people/students/:student/edit',
+      component: ProfileEdit
     },
     {
       name: 'teacher',
