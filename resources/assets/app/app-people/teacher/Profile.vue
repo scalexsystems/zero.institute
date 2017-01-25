@@ -118,21 +118,20 @@
                     <div class="col-xs-6 col-md-4">
                         <div class="teacher-field">
                             <div class="label">Address</div>
-                            <div class="value">{{ teacher.address ? teacher.address.address_line1 + ', ' +
-                                teacher.address.address_line2 : '' }}
+                            <div class="value">{{ address }}
                             </div>
                         </div>
                     </div>
                     <div class="col-xs-6 col-md-4">
                         <div class="teacher-field">
                             <div class="label">Landmark</div>
-                            <div class="value">{{ teacher.address.landmark }}</div>
+                            <div class="value">{{ teacher.address ? teacher.address.landmark : '' }}</div>
                         </div>
                     </div>
                     <div class="col-xs-6 col-md-4">
                         <div class="teacher-field">
                             <div class="label">City</div>
-                            <div class="value">{{ teacher.address.city ? teacher.address.city.name + ', ' +
+                            <div class="value">{{ teacher.address && teacher.address.city ? teacher.address.city.name + ', ' +
                                 teacher.address.city.state.name : '' }}
                             </div>
                         </div>
@@ -140,19 +139,19 @@
                     <div class="col-xs-6 col-md-4">
                         <div class="teacher-field">
                             <div class="label">PIN Code</div>
-                            <div class="value">{{ teacher.address.pin_code }}</div>
+                            <div class="value">{{ teacher.address ? teacher.address.pin_code : '' }}</div>
                         </div>
                     </div>
                     <div class="col-xs-6 col-md-4">
                         <div class="teacher-field">
                             <div class="label">Email</div>
-                            <div class="value">{{ teacher.address.email }}</div>
+                            <div class="value">{{ teacher.address ? teacher.address.email : ''}}</div>
                         </div>
                     </div>
                     <div class="col-xs-6 col-md-4">
                         <div class="teacher-field">
                             <div class="label">Phone</div>
-                            <div class="value">{{ teacher.address.phone }}</div>
+                            <div class="value">{{ teacher.address ? teacher.address.phone : '' }}</div>
                         </div>
                     </div>
                 </div>
@@ -266,6 +265,9 @@ export default {
 
       return first(departments.filter(d => d.id === id)) || {}
     },
+    address() {
+      return this.student.address.length ? (this.student.address.addressline1 + this.student.address.addressline2) : '';
+    },
     ...mapGetters({
       teachers: getters.teachers,
       departments: getters.departments
@@ -300,6 +302,7 @@ export default {
       this.$http.get(`people/teachers/${id}`)
           .then(response => response.json())
           .then((result) => {
+            debugger;
             this.remote = result
           })
           .catch((response) => {
