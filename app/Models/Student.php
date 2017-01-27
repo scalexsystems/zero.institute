@@ -4,6 +4,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Scalex\Zero\Contracts\Database\BelongsToSchool;
 use Scalex\Zero\Contracts\Person;
 use Scalex\Zero\Database\BaseModel;
+use Scalex\Zero\Models\Course\Session;
 use Scalex\Zero\Models\Geo\Address;
 use Scalex\Zero\User;
 
@@ -159,7 +160,7 @@ class Student extends BaseModel implements Person, BelongsToSchool
 
     public function sessions()
     {
-        return $this->belongsToMany(Session::class);
+        return $this->belongsToMany(Session::class, 'course_session_student');
     }
 
     public function getRouteKeyName()
