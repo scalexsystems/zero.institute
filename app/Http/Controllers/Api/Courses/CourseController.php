@@ -86,6 +86,8 @@ class CourseController extends Controller
     {
         $this->authorize('update', $course);
 
+        $this->validate($request, ['instructors' => 'required'], ['instructors.required' => 'Course instructor is required.']);
+
         repository($course)->update($course, $request->all());
 
         $course->fresh('instructors');

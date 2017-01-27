@@ -49,7 +49,7 @@
           <div class="col-xs-12 col-lg-8 offset-lg-2">
             <div class="row">
               <div class="col-xs-12">
-                <input-search title="Course Instructor" ref="instructor"
+                <input-search title="Course Instructor" ref="instructor" :feedback="errors.instructors"
                   subtitle="Course Instructor will be notified. He/she can collaborate with students."
                   v-model="qi" v-bind="{ suggestions: teachers }" @suggest="findInstructor"
                               @select="addInstructor"></input-search>

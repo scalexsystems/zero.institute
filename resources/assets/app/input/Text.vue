@@ -8,7 +8,7 @@
          :described-by="helpId" :name="identifier" :value="value" :placeholder="placeholder"
          @input="$emit('input', $event.target.value)">
 
-  <div class="form-control-feedback" v-if="is(feedback)">{{ feedback }}</div>
+  <div class="form-control-feedback" v-if="is(feedback)">{{ f(feedback) }}</div>
   <small :id="helpId" class="form-text text-muted" v-if="is(subtitle)">{{ subtitle }}</small>
 </div>
 </template>
