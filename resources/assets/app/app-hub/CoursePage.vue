@@ -43,7 +43,7 @@ export default {
         return course.session.group.id
       }
 
-      return undefined
+      return -1
     },
     ...mapGetters('hub', ['courses'])
   },
