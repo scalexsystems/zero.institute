@@ -149,35 +149,34 @@ class StudentRepository extends Repository
 
     public function updating(Student $student, array $attributes)
     {
-        $attributes = array_except($attributes, ['uid', 'date_of_birth', 'date_of_admission']);
+        $attributes = array_except($attributes, ['date_of_birth', 'date_of_admission']);
         $student->fill($attributes);
 
         // Start Transaction.
-        $this->startTransaction();
+//        $this->startTransaction();
 
-        if (array_has($attributes, 'address') && !empty($student->address)) {
-            repository(Address::class)
-                ->update($student->address, $attributes['address']);
+        if (array_has($attributes, 'address') && !empty($attributes['address'])) {
+            if (isset($student->address)) {
+                repository(Address::class)
+                    ->update($student->address, $attributes['address']);
+
+            } else {
+                $student->address()->associate(repository(Address::class)->create(array_get($attributes, 'address', [])));
+            }
         }
         if (array_has($attributes, 'department_id')) {
             $student->department()->associate(find($attributes, 'department_id'));
+
+
         }
         if (array_has($attributes, 'discipline_id')) {
             $student->discipline()->associate(find($attributes, 'discipline_id'));
         }
-        if (array_has($attributes, 'photo_id')) {
-            attach_attachment($student, 'profilePhoto', find($attributes, 'photo_id', Attachment::class));
-        }
-        if (array_has($attributes, 'father_id')) {
-            $student->father()->associate(find($attributes, 'father_id', Guardian::class));
-        }
-        if (array_has($attributes, 'mother_id')) {
-            $student->mother()->associate(find($attributes, 'mother_id', Guardian::class));
-        }
+//        if (array_has($attributes, 'photo_id')) {
+//            attach_attachment($student, 'profilePhoto', find($attributes, 'photo_id', Attachment::class));
+//        }
 
         $student->bio = $this->getBio($student);
-
-        dd($student->exists);
         return $student->update();
     }
 
