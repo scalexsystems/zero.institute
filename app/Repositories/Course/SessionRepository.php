@@ -53,8 +53,6 @@ class SessionRepository extends Repository
         $group->type = 'course';
         $group->save();
 
-        $group->addMembers($instructor->user->id);
-
         $session->group()->associate($group);
 
         $status = $session->save();
