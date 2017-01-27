@@ -15,7 +15,7 @@ class TeacherTransformer extends Transformer
             'photo' => attach_url($teacher->profilePhoto) ?? asset('img/placeholder-64.jpg'),
             'has_account' => !is_null($teacher->user),
             'user_id' => $teacher->user->getKey(),
-            'department_id' => (int)$teacher->department_id,
+            'department_id' => (int) $teacher->department_id,
 
             // Basic Information.
             'email' => (string)($teacher->user->email ?? $teacher->address->email),
@@ -68,7 +68,7 @@ class TeacherTransformer extends Transformer
             'name' => (string)$teacher->name,
             'bio' => (string)$teacher->bio,
             'photo' => attach_url($teacher->profilePhoto) ?? asset('img/placeholder-64.jpg'),
-            'department_id' => $teacher->department_id,
+            'department_id' => (int) $teacher->department_id,
         ];
     }
 

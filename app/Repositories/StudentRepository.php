@@ -84,14 +84,6 @@ class StudentRepository extends Repository
         }
     }
 
-    public function getRules(array $attributes = [], Model $model = null): array
-    {
-        $data = parent::getRules($attributes, $model);
-        $data['uid'] .= current_user()->school_id;
-
-        return $data;
-    }
-
     /**
      * @param array $rules
      * @param array $attributes
@@ -108,12 +100,18 @@ class StudentRepository extends Repository
                 'father' => repository(Guardian::class)->getRules($attributes, $student->father),
             ]);
 
+        if (!$student->isDirty('uid')) {
+            unset($rules['uid']);
+        }
+
         return array_only($rules, array_keys($attributes));
     }
 
     public function getCreateRules(array $attributes)
     {
         $guardianRules = repository(Guardian::class)->getRules($attributes);
+
+        $this->rules['uid'] .= current_user()->school_id;
 
         return $this->rules + array_dot(
             [
@@ -151,12 +149,13 @@ class StudentRepository extends Repository
 
     public function updating(Student $student, array $attributes)
     {
+        $attributes = array_except($attributes, ['uid', 'date_of_birth', 'date_of_admission']);
         $student->fill($attributes);
 
         // Start Transaction.
         $this->startTransaction();
 
-        if (array_has($attributes, 'address')) {
+        if (array_has($attributes, 'address') && !empty($student->address)) {
             repository(Address::class)
                 ->update($student->address, $attributes['address']);
         }
@@ -178,6 +177,7 @@ class StudentRepository extends Repository
 
         $student->bio = $this->getBio($student);
 
+        dd($student->exists);
         return $student->update();
     }
 

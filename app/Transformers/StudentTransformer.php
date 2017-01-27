@@ -83,19 +83,19 @@ class StudentTransformer extends Transformer
 
     public function includeFather(Student $student)
     {
-        return allow(
+        return $student->father ? allow(
             'read-parent', $student,
             $this->item($student->father, transformer($student->father)),
             $this->null()
-        );
+        ) : $this->null();
     }
 
     public function includeMother(Student $student)
     {
-        return allow(
+        return $student->mother ? allow(
             'read-parent', $student,
             $this->item($student->mother, transformer($student->mother)),
             $this->null()
-        );
+        ) : $this->null();
     }
 }
