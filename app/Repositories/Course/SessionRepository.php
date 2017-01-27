@@ -98,5 +98,7 @@ class SessionRepository extends Repository
         $newEnrollments = array_values(array_diff($students, $enrolled));
 
         $session->students()->attach($newEnrollments);
+
+        $session->group->addMembers($newEnrollments);
     }
 }
