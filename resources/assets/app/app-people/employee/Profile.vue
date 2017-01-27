@@ -118,21 +118,20 @@
                     <div class="col-xs-6 col-md-4">
                         <div class="employee-field">
                             <div class="label">Address</div>
-                            <div class="value">{{ employee.address ? employee.address.address_line1 + ', ' +
-                                employee.address.address_line2 : '' }}
+                            <div class="value">{{ address }}
                             </div>
                         </div>
                     </div>
                     <div class="col-xs-6 col-md-4">
                         <div class="employee-field">
                             <div class="label">Landmark</div>
-                            <div class="value">{{ employee.address.landmark }}</div>
+                            <div class="value">{{ employee.address ? employee.address.landmark : ''}}</div>
                         </div>
                     </div>
                     <div class="col-xs-6 col-md-4">
                         <div class="employee-field">
                             <div class="label">City</div>
-                            <div class="value">{{ employee.address.city ? employee.address.city.name + ', ' +
+                            <div class="value">{{ employee.address && employee.address.city ? employee.address.city.name + ', ' +
                                 employee.address.city.state.name : '' }}
                             </div>
                         </div>
@@ -140,19 +139,19 @@
                     <div class="col-xs-6 col-md-4">
                         <div class="employee-field">
                             <div class="label">PIN Code</div>
-                            <div class="value">{{ employee.address.pin_code }}</div>
+                            <div class="value">{{ employee.address ? employee.address.pin_code : '' }}</div>
                         </div>
                     </div>
                     <div class="col-xs-6 col-md-4">
                         <div class="employee-field">
                             <div class="label">Email</div>
-                            <div class="value">{{ employee.address.email }}</div>
+                            <div class="value">{{ employee.address ? employee.address.email : '' }}</div>
                         </div>
                     </div>
                     <div class="col-xs-6 col-md-4">
                         <div class="employee-field">
                             <div class="label">Phone</div>
-                            <div class="value">{{ employee.address.phone }}</div>
+                            <div class="value">{{ employee.address ? employee.address.phone : '' }}</div>
                         </div>
                     </div>
                 </div>
@@ -265,6 +264,9 @@ export default {
       const id = this.employee.department_id
 
       return first(departments.filter(d => d.id === id)) || {}
+    },
+    address() {
+      return this.student.address.length ? (this.student.address.addressline1 + this.student.address.addressline2) : '';
     },
     ...mapGetters({
       employees: getters.employees,

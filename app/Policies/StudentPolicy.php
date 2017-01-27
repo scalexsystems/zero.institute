@@ -20,6 +20,11 @@ class StudentPolicy extends AbstractPolicy
         return trust($user)->to(Action::VIEW_STUDENT) or $this->isHimself($user, $student);
     }
 
+    public function update(User $user, Student $student)
+    {
+        return trust($user)->to(Action::UPDATE_STUDENT) or $this->isHimself($user, $student);
+    }
+
     public function readAddress(User $user, Student $student)
     {
         return $this->view($user, $student);

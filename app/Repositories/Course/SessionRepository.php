@@ -53,6 +53,8 @@ class SessionRepository extends Repository
         $group->type = 'course';
         $group->save();
 
+        $group->addMembers($instructor->user->id);
+
         $session->group()->associate($group);
 
         $status = $session->save();
@@ -97,6 +99,6 @@ class SessionRepository extends Repository
 
         $newEnrollments = array_values(array_diff($students, $enrolled));
 
-        return $session->students()->attach($newEnrollments);
+        $session->students()->attach($newEnrollments);
     }
 }

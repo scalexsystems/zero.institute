@@ -17,12 +17,14 @@ class Action
     const VIEW_TEACHER = 'people.teacher.read';
     const VIEW_EMPLOYEE = 'people.employee.read';
 
+    const UPDATE_STUDENT = 'people.student.update';
+
     const INVITE_STUDENT = 'people.student.invite';
     const INVITE_TEACHER = 'people.teacher.invite';
+
     const INVITE_EMPLOYEE = 'people.employee.invite';
 
     // -- @next --
-
     /*
      * @model \Scalex\Zero\Models\Course
      */

@@ -124,21 +124,20 @@
                     <div class="col-xs-6 col-md-4">
                         <div class="student-field">
                             <div class="label">Address</div>
-                            <div class="value">{{ student.address ? student.address.address_line1 + ', ' +
-                                student.address.address_line2 : '' }}
+                            <div class="value">{{ address }}
                             </div>
                         </div>
                     </div>
                     <div class="col-xs-6 col-md-4">
                         <div class="student-field">
                             <div class="label">Landmark</div>
-                            <div class="value">{{ student.address.landmark }}</div>
+                            <div class="value">{{ student.address ? student.address.landmark : ''}}</div>
                         </div>
                     </div>
                     <div class="col-xs-6 col-md-4">
                         <div class="student-field">
                             <div class="label">City</div>
-                            <div class="value">{{ student.address.city ? student.address.city.name + ', ' +
+                            <div class="value">{{ student.address && student.address.city ? student.address.city.name + ', ' +
                                 student.address.city.state.name : '' }}
                             </div>
                         </div>
@@ -146,19 +145,19 @@
                     <div class="col-xs-6 col-md-4">
                         <div class="student-field">
                             <div class="label">PIN Code</div>
-                            <div class="value">{{ student.address.pin_code }}</div>
+                            <div class="value">{{ student.address ? student.address.pin_code : ''}}</div>
                         </div>
                     </div>
                     <div class="col-xs-6 col-md-4">
                         <div class="student-field">
                             <div class="label">Email</div>
-                            <div class="value">{{ student.address.email }}</div>
+                            <div class="value">{{ student.address ? student.address.email : '' }}</div>
                         </div>
                     </div>
                     <div class="col-xs-6 col-md-4">
                         <div class="student-field">
                             <div class="label">Phone</div>
-                            <div class="value">{{ student.address.phone }}</div>
+                            <div class="value">{{ student.address ? student.address.phone : ''}}</div>
                         </div>
                     </div>
                 </div>
@@ -169,31 +168,31 @@
                     <div class="col-xs-6 col-md-4">
                         <div class="student-field">
                             <div class="label">Father's Name</div>
-                            <div class="value">{{ student.father.name }}</div>
+                            <div class="value">{{ student.father ? student.father.name : ''}}</div>
                         </div>
                     </div>
                     <div class="col-xs-6 col-md-4">
                         <div class="student-field">
                             <div class="label">Father's Phone</div>
-                            <div class="value">{{ student.father.phone }}</div>
+                            <div class="value">{{ student.father ? student.father.phone : '' }}</div>
                         </div>
                     </div>
                     <div class="col-xs-6 col-md-4">
                         <div class="student-field">
                             <div class="label">Father's Profession</div>
-                            <div class="value">{{ student.father.profession }}</div>
+                            <div class="value">{{ student.father ? student.father.profession : ''}}</div>
                         </div>
                     </div>
                     <div class="col-xs-6 col-md-4">
                         <div class="student-field">
                             <div class="label">Father's Profession</div>
-                            <div class="value">{{ student.father.profession }}</div>
+                            <div class="value">{{ student.father ? student.father.profession : ''}}</div>
                         </div>
                     </div>
                     <div class="col-xs-6 col-md-4">
                         <div class="student-field">
                             <div class="label">Father's Currency</div>
-                            <div class="value">{{ student.father.currency | currency }}</div>
+                            <div class="value">{{ student.father ? student.father.currency : '' | currency }}</div>
                         </div>
                     </div>
                 </div>
@@ -204,31 +203,31 @@
                     <div class="col-xs-6 col-md-4">
                         <div class="student-field">
                             <div class="label">Mother's Name</div>
-                            <div class="value">{{ student.mother.name }}</div>
+                            <div class="value">{{ student.mother ? student.mother.name : '' }}</div>
                         </div>
                     </div>
                     <div class="col-xs-6 col-md-4">
                         <div class="student-field">
                             <div class="label">Mother's Phone</div>
-                            <div class="value">{{ student.mother.phone }}</div>
+                            <div class="value">{{ student.mother ? student.mother.phone : '' }}</div>
                         </div>
                     </div>
                     <div class="col-xs-6 col-md-4">
                         <div class="student-field">
                             <div class="label">Mother's Profession</div>
-                            <div class="value">{{ student.mother.profession }}</div>
+                            <div class="value">{{ student.mother ? student.mother.profession : '' }}</div>
                         </div>
                     </div>
                     <div class="col-xs-6 col-md-4">
                         <div class="student-field">
                             <div class="label">Mother's Profession</div>
-                            <div class="value">{{ student.mother.profession }}</div>
+                            <div class="value">{{ student.mother ? student.mother.profession : '' }}</div>
                         </div>
                     </div>
                     <div class="col-xs-6 col-md-4">
                         <div class="student-field">
                             <div class="label">Mother's Currency</div>
-                            <div class="value">{{ student.mother.currency | currency }}</div>
+                            <div class="value">{{ student.mother ? student.mother.currency : '' | currency  }}</div>
                         </div>
                     </div>
                 </div>
@@ -347,6 +346,9 @@ export default {
       const id = this.student.discipline_id
 
       return first(disciplines.filter(d => d.id === id)) || {}
+    },
+    address() {
+       return this.student.address.length ? (this.student.address.addressline1 + this.student.address.addressline2) : '';
     },
     ...mapGetters({
       students: getters.students,

@@ -17,7 +17,7 @@ class StudentTransformer extends Transformer
             'user_id' => $student->user->getKey(),
 
             // Basic Information.
-            'email' => (string)($student->user->email ?? $student->address->email),
+            'email' => (string)($student->user->email ?? $student->user->email),
             'first_name' => (string)$student->first_name,
             'middle_name' => (string)$student->middle_name,
             'last_name' => (string)$student->last_name,
@@ -74,28 +74,28 @@ class StudentTransformer extends Transformer
 
     public function includeAddress(Student $student)
     {
-        return allow(
+        return $student->address ? allow(
             'read-address', $student,
-            $this->item($student->address, transformer($student->address)),
+            $this->item($student->address),
             $this->null()
-        );
+        ) : $this->null();
     }
 
     public function includeFather(Student $student)
     {
-        return allow(
+        return $student->father ? allow(
             'read-parent', $student,
             $this->item($student->father, transformer($student->father)),
             $this->null()
-        );
+        ) : $this->null();
     }
 
     public function includeMother(Student $student)
     {
-        return allow(
+        return $student->mother ? allow(
             'read-parent', $student,
             $this->item($student->mother, transformer($student->mother)),
             $this->null()
-        );
+        ) : $this->null();
     }
 }

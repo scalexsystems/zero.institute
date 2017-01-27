@@ -21,7 +21,7 @@ Route::put('/me', 'Users\CurrentUserController@update');
 Route::get('/me/dashboard', 'Users\DashboardController@index');
 
 // Students
-Route::resource('/people/students', 'Students\StudentController', ['only' => ['index', 'show']]);
+Route::resource('/people/students', 'Students\StudentController', ['only' => ['index', 'show', 'update']]);
 Route::post('/people/students/invite', 'Students\StudentController@invite');
 
 // Teachers
