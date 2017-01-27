@@ -1,4 +1,6 @@
-import isString from 'lodash/isString'
+function isString (any) {
+  return typeof any === 'string' || any instanceof Array
+}
 
 export default {
   props: {
@@ -54,6 +56,11 @@ export default {
     }
   },
   methods: {
-    is: isString
+    is: isString,
+    f (any) {
+      if (any instanceof Array) return any.join(' ')
+
+      return any
+    }
   }
 }
