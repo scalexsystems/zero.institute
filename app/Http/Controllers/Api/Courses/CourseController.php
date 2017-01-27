@@ -99,7 +99,7 @@ class CourseController extends Controller
 
         if ($teacher and $session) {
             repository(Session::class)->update($session, [ 'instructor_id' => $teacher->getKey() ]);
-        } elseif ($teacher) {
+        } elseif ($teacher and !$session) {
             repository(Session::class)->create([
                 'course_id' => $course->getKey(),
                 'instructor_id' => $teacher->getKey(),

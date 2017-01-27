@@ -135,7 +135,7 @@ export default {
           })
     },
     sendMessageReadReceipt ({ commit, rootState }, { userId, message }) {
-      if (message.sender_id === rootState.user.user.id) {
+      if (message.sender_id === rootState.user.id) {
         commit('READ_MESSAGE', { userId, message })
 
         return
