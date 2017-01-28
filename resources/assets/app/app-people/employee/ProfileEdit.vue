@@ -1,5 +1,5 @@
 <template>
-    <window-box title="Teacher Profile" subtitle="Edit profile here...">
+    <window-box title="Student Profile" subtitle="Edit profile here...">
         <template slot="header">
             <div>
                 <a role="button" @click.prevent="updateProfile" class="btn btn-secondary">
@@ -14,10 +14,10 @@
                 <div class="col-xs-12 col-lg-4 text-xs-center">
                     <div class="card" ref="sidebar">
                         <photo-holder class="profile-photo "
-                                      :dest="`people/teachers/${id}/photo`"
+                                      :dest="`people/employees/${id}/photo`"
                                       @uploaded="profileUpdated">
                         </photo-holder>
-                        <img class="card-img-top teacher-photo" :src="teacher.photo">
+                        <img class="card-img-top employee-photo" :src="employee.photo">
                     </div>
                 </div>
 
@@ -32,51 +32,51 @@
                         <div class="card-block">
                             <div class="row">
                                 <div class="col-xs-6 col-md-6">
-                                    <div class="teacher-field">
-                                        <input-text title="First Name" v-model="teacher.first_name"></input-text>
+                                    <div class="employee-field">
+                                        <input-text title="First Name" v-model="employee.first_name"></input-text>
                                     </div>
                                 </div>
                                 <div class="col-xs-6 col-md-6">
-                                    <div class="teacher-field">
-                                        <input-text title="Last Name" v-model="teacher.last_name"></input-text>
+                                    <div class="employee-field">
+                                        <input-text title="Last Name" v-model="employee.last_name"></input-text>
                                     </div>
                                 </div>
                                 <div class="col-xs-6 col-md-4">
-                                    <div class="teacher-field">
-                                        <input-radio title="Gender" v-model="teacher.gender" :options="genders"></input-radio>
+                                    <div class="employee-field">
+                                        <input-radio title="Gender" v-model="employee.gender" :options="genders"></input-radio>
                                     </div>
                                 </div>
-                                <div class="teacher-field">
+                                <div class="employee-field">
                                     <input-text title="Date of Birth" v-model="dob"></input-text>
 
                                 </div>
 
                                 <div class="col-xs-6 col-md-4">
-                                    <div class="teacher-field">
-                                        <input-text title="Category" v-model="teacher.category"></input-text>
+                                    <div class="employee-field">
+                                        <input-text title="Category" v-model="employee.category"></input-text>
 
                                     </div>
                                 </div>
                                 <div class="col-xs-6 col-md-4">
-                                    <div class="teacher-field">
-                                        <input-text title="AADHAR ID" v-model="teacher.govt_id"></input-text>
+                                    <div class="employee-field">
+                                        <input-text title="AADHAR ID" v-model="employee.govt_id"></input-text>
                                     </div>
                                 </div>
                                 <div class="col-xs-6 col-md-4">
-                                    <div class="teacher-field">
-                                        <input-text title="Passport" v-model="teacher.passport"></input-text>
+                                    <div class="employee-field">
+                                        <input-text title="Passport" v-model="employee.passport"></input-text>
 
                                     </div>
                                 </div>
                                 <div class="col-xs-6 col-md-4">
-                                    <div class="teacher-field">
-                                        <input-text title="Religion" v-model="teacher.religion"></input-text>
+                                    <div class="employee-field">
+                                        <input-text title="Religion" v-model="employee.religion"></input-text>
 
                                     </div>
                                 </div>
                                 <div class="col-xs-6 col-md-4">
-                                    <div class="teacher-field">
-                                        <input-text title="Mother Tongue" v-model="teacher.language"></input-text>
+                                    <div class="employee-field">
+                                        <input-text title="Mother Tongue" v-model="employee.language"></input-text>
                                     </div>
                                 </div>
                             </div>
@@ -90,19 +90,24 @@
                         <div class="card-block">
                             <div class="row">
                                 <div class="col-xs-6 col-md-4">
-                                    <div class="teacher-field">
-                                        <input-text title="Teacher UID (Roll Number)" v-model="teacher.uid"></input-text>
+                                    <div class="employee-field">
+                                        <input-text title="Student UID (Roll Number)" v-model="employee.uid"></input-text>
                                     </div>
                                 </div>
                                 <div class="col-xs-6 col-md-4">
-                                    <div class="teacher-field">
+                                    <div class="employee-field">
                                         <input-text title="Date of Joining" v-model="doj"></input-text>
                                     </div>
                                 </div>
                                 <div class="col-xs-6 col-md-4">
-                                    <div class="teacher-field">
-                                        <input-select title="Department" v-model.number="teacher.department_id" :options="departments"></input-select>
+                                    <div class="employee-field">
+                                        <input-select title="Department" v-model.number="employee.department_id" :options="departments"></input-select>
 
+                                    </div>
+                                </div>
+                                <div class="col-xs-6 col-md-4">
+                                    <div class="employee-field">
+                                        <input-select title="Discipline" v-model.number="employee.discipline_id" :options="disciplines"></input-select>
                                     </div>
                                 </div>
                             </div>
@@ -116,42 +121,42 @@
                         <div class="card-block">
                             <div class="row">
                                 <div class="col-xs-6 col-md-4">
-                                    <div class="teacher-field">
-                                        <input-text title="Address Line 1" v-model="teacher.address.address_line1" ></input-text>
+                                    <div class="employee-field">
+                                        <input-text title="Address Line 1" v-model="employee.address.address_line1" ></input-text>
                                     </div>
                                 </div>
                                 <div class="col-xs-6 col-md-4">
-                                    <div class="teacher-field">
-                                        <input-text title="Address Line 2" v-model="teacher.address.address_line2" ></input-text>
+                                    <div class="employee-field">
+                                        <input-text title="Address Line 2" v-model="employee.address.address_line2" ></input-text>
                                     </div>
                                 </div>
                                 <div class="col-xs-6 col-md-4">
-                                    <div class="teacher-field">
-                                        <input-text title="landmark" v-model="teacher.address.landmark"></input-text>
+                                    <div class="employee-field">
+                                        <input-text title="landmark" v-model="employee.address.landmark"></input-text>
 
                                     </div>
                                 </div>
                                 <div class="col-xs-6 col-md-4">
-                                    <div class="teacher-field">
-                                        <input-select title="City" v-model.number="teacher.address.city_id" :options="cities"></input-select>
+                                    <div class="employee-field">
+                                        <input-select title="City" v-model.number="employee.address.city_id" :options="cities"></input-select>
 
 
                                     </div>
                                 </div>
                                 <div class="col-xs-6 col-md-4">
-                                    <div class="teacher-field">
-                                        <input-text title="PIN Code" v-model="teacher.address.pin_code"></input-text>
+                                    <div class="employee-field">
+                                        <input-text title="PIN Code" v-model="employee.address.pin_code"></input-text>
 
                                     </div>
                                 </div>
                                 <div class="col-xs-6 col-md-4">
-                                    <div class="teacher-field">
-                                        <input-text title="Email" v-model="teacher.email"></input-text>
+                                    <div class="employee-field">
+                                        <input-text title="Email" v-model="employee.email"></input-text>
                                     </div>
                                 </div>
                                 <div class="col-xs-6 col-md-4">
-                                    <div class="teacher-field">
-                                        <input-text title="Phone" v-model="teacher.address.phone"></input-text>
+                                    <div class="employee-field">
+                                        <input-text title="Phone" v-model="employee.address.phone"></input-text>
                                     </div>
                                 </div>
                             </div>
@@ -177,7 +182,7 @@
     import { WindowBox, LoadingPlaceholder, PhotoHolder } from '../../components'
 
     export default {
-        name: 'TeacherProfileEdit',
+        name: 'StudentProfileEdit',
         data () {
             return {
                 errors: null,
@@ -191,7 +196,7 @@
                     female: 'Female',
                 };
             },
-            teacher () {
+            employee () {
                 const local = this.local || {}
                 const remote = this.remote
 
@@ -200,10 +205,10 @@
                 return local
             },
             local () {
-                const teachers = this.teachers;
-                const uid = this.$route.params.teacher
+                const employees = this.employees
+                const uid = this.$route.params.employee
 
-                return first(teachers.filter(teacher => teacher.uid === uid))
+                return first(employees.filter(student => student.uid === uid))
             },
             loading () {
                 return this.remote === null && this.errors === null
@@ -213,22 +218,23 @@
             },
             department () {
                 const departments = clone(this.departments)
-                const id = this.teacher.department_id
+                const id = this.employee.department_id
 
                 return first(departments.filter(d => d.id === id)) || {}
             },
             dob() {
-                return moment(this.teacher.date_of_birth).format('D MMMM YYYY')
+                return moment(this.employee.date_of_birth).format('D MMMM YYYY')
             },
             doj() {
-                return moment(this.teacher.date_of_joining).format('D MMMM YYYY');
+                return moment(this.employee.date_of_joining).format('D MMMM YYYY');
             },
             id() {
-                return this.$route.params.teacher;
+                return this.$route.params.employee;
             },
             ...mapGetters({
-                teachers: getters.teachers,
+                employees: getters.employees,
                 departments: getters.departments,
+                disciplines: getters.disciplines,
                 cities: getters.cities,
             })
         },
@@ -238,11 +244,15 @@
                 this.getDepartments()
             }
 
+            if (this.disciplines.length === 0) {
+                this.getDisciplines()
+            }
+
             if(this.cities.length == 0 ) {
                 this.getCities();
             }
 
-            this.getTeacher()
+            this.getStudent()
         },
         filters: {
             currency (value) {
@@ -257,12 +267,12 @@
             }
         },
         methods: {
-            getTeacher() {
-                const id = this.$route.params.teacher
+            getEmployee () {
+                const id = this.$route.params.employee
 
                 this.remote = this.errors = null
 
-                this.$http.get(`people/teachers/${id}`)
+                this.$http.get(`people/employees/${id}`)
                         .then(response => response.json())
                         .then((result) => {
                             this.remote = clone(result);
@@ -287,11 +297,11 @@
                         })
             },
             updateProfile() {
-                const id = this.$route.params.teacher;
-                const teacher = clone(this.teacher);
-                const payload = this.sanitizeInput(teacher);
+                const id = this.$route.params.employees;
+                const student = clone(this.employee);
+                const payload = this.sanitizeInput(student);
 
-                this.$http.put(`people/teachers/${id}`, payload )
+                this.$http.put(`people/employees/${id}`, payload )
                         .then((result) =>{
                             this.$router.go(-1);
                         })
@@ -305,17 +315,18 @@
                 return input;
             },
             profileUpdated(src, response) {
-                this.teacher.photo_id = response.body.id;
-                this.teacher.photo = response.body.path;
+                this.employee.photo_id = response.body.id;
+                this.employee.photo = response.body.path;
 
             },
             ...mapActions({
                 getDepartments: actions.getDepartments,
+                getDisciplines: actions.getDisciplines,
                 getCities: actions.getCities,
             })
         },
         watch: {
-            $route: 'getTeacher'
+            $route: 'getStudent'
         }
     }
 </script>
@@ -326,10 +337,10 @@
     .card-header {
         padding: 1.25rem;
     }
-    .teacher-photo {
+    .employee-photo {
         width: 100%;
     }
-    .teacher-field {
+    .employee-field {
         margin-bottom: 2rem;
         .label {
             font-size: .75rem;

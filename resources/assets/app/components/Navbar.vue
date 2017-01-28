@@ -36,7 +36,7 @@
             </form>
           </div>
            <div class="dropdown-item" href="#">
-           <router-link :to="{ name: `${user.type}.profile`}"> View Profile </router-link>
+           <!--<router-link :to="{ name: `${user.type}.profile`}" :params="{user.type: user.person.uid} "> View Profile </router-link>-->
            </div>
 
         </div>

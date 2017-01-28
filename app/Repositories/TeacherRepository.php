@@ -150,40 +150,37 @@ class TeacherRepository extends Repository
 
     public function updating(Teacher $teacher, array $attributes)
     {
-        {
-            $attributes = array_except($attributes, ['date_of_birth', 'date_of_admission']);
-            $teacher->fill($attributes);
+        $attributes = array_except($attributes, ['date_of_birth', 'date_of_admission']);
+        $teacher->fill($attributes);
 
-            // Start Transaction.
+        // Start Transaction.
 //        $this->startTransaction();
 
-            if (array_has($attributes, 'address') && !empty($attributes['address'])) {
-                if (isset($teacher->address)) {
-                    repository(Address::class)
-                        ->update($teacher->address, $attributes['address']);
+        if (array_has($attributes, 'address') && !empty($attributes['address'])) {
+            if (isset($teacher->address)) {
+                repository(Address::class)
+                    ->update($teacher->address, $attributes['address']);
 
-                } else {
-                    $teacher->address()->associate(repository(Address::class)->create(array_get($attributes, 'address', [])));
-                }
+            } else {
+                $teacher->address()->associate(repository(Address::class)->create(array_get($attributes, 'address', [])));
             }
-            if (array_has($attributes, 'department_id')) {
-                $teacher->department()->associate(find($attributes, 'department_id'));
+        }
+        if (array_has($attributes, 'department_id')) {
+            $teacher->department()->associate(find($attributes, 'department_id'));
 
 
-            }
-            if (array_has($attributes, 'photo_id')) {
-                attach_attachment($teacher, 'profilePhoto', find($attributes, 'photo_id', Attachment::class));
-            }
-
-            $teacher->bio = $this->getBio($teacher);
-            return $teacher->update();
+        }
+        if (array_has($attributes, 'photo_id')) {
+            attach_attachment($teacher, 'profilePhoto', find($attributes, 'photo_id', Attachment::class));
         }
 
+        $teacher->bio = $this->getBio($teacher);
+        return $teacher->update();
     }
 
     public function getBio(Teacher $teacher)
     {
-        return $teacher->job_title.' ・ '
-               .($teacher->department->short_name ?? $teacher->department->name);
+        return $teacher->job_title . ' ・ '
+        . ($teacher->department->short_name ?? $teacher->department->name);
     }
 }

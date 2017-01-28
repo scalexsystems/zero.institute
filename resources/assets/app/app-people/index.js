@@ -6,6 +6,7 @@ import StudentProfile from './student/Profile.vue'
 
 import StudentProfileEdit from './student/ProfileEdit.vue'
 import TeacherProfileEdit from './teacher/ProfileEdit.vue'
+import EmployeeProfileEdit from './employee/ProfileEdit.vue'
 
 import TeacherSearch from './teacher/Search.vue'
 import TeacherResults from './teacher/Results.vue'
@@ -53,7 +54,7 @@ export default function (Vue, { routes }) {
     },
     {
       name: 'teacher.profile.edit',
-      path: '/people/teachers/:student/edit',
+      path: '/people/teachers/:teacher/edit',
       component: TeacherProfileEdit
     },
     {
@@ -70,6 +71,11 @@ export default function (Vue, { routes }) {
       name: 'employee',
       path: '/people/employees',
       component: EmployeeSearch
+    },
+    {
+      name: 'employee.profile.edit',
+      path: '/people/employees/:employee/edit',
+      component: EmployeeProfileEdit,
     },
     {
       name: 'employee.find',
