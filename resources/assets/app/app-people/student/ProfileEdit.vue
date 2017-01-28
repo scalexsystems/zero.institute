@@ -42,12 +42,12 @@
                                 <input-radio title="Gender" v-model="student.gender" :options="genders"></input-radio>
                             </div>
                         </div>
-                        <div class="col-xs-6 col-md-4">
                             <div class="student-field">
                                 <input-text title="Date of Birth" v-model="dob" :options="genders"></input-text>
 
                             </div>
 
+                        <div class="col-xs-6 col-md-4">
                             <div class="student-field">
                                 <input-text title="Category" v-model="student.category"></input-text>
 
@@ -135,7 +135,7 @@
                         </div>
                         <div class="col-xs-6 col-md-4">
                             <div class="student-field">
-                            <input-select title="Cities" v-model.number="student.address.city_id" :options="cities"></input-select>
+                            <input-select title="City" v-model.number="student.address.city_id" :options="cities"></input-select>
 
 
                             </div>
@@ -172,10 +172,7 @@
 </template>
 
 <script lang="babel">
-import first from 'lodash/first'
-import toNumber from 'lodash/toNumber'
-import isNaN from 'lodash/isNaN'
-import clone from 'lodash/clone'
+import { first, toNumber, isNaN, clone, pickBy } from 'lodash'
 import moment from 'moment'
 import { mapGetters, mapActions } from 'vuex'
 
@@ -188,7 +185,6 @@ export default {
     return {
       errors: null,
       remote: null,
-      cities: [],
     };
   },
   computed: {
@@ -236,7 +232,8 @@ export default {
     ...mapGetters({
         students: getters.students,
         departments: getters.departments,
-        disciplines: getters.disciplines
+        disciplines: getters.disciplines,
+        cities: getters.cities,
     })
 },
 components: { WindowBox, LoadingPlaceholder },
@@ -247,6 +244,10 @@ created () {
 
     if (this.disciplines.length === 0) {
         this.getDisciplines()
+    }
+
+    if(this.cities.length == 0 ) {
+        this.getCities();
     }
 
     this.getStudent()
@@ -286,34 +287,37 @@ methods: {
                 .catch((response) => {
                     response.json()
                             .then((result) => {
-                                this.errors = result.message
+                                this.errors = result.message;
                             })
                             .catch(() => {
                                 this.errors = 'Retry. There was some error apprehending response from server.'
                             })
                 })
     },
-    getCities() {
-        this.$http.get('geo/cities')
-          .then(response => response.json())
-          .then(result => {
-              this.cities = result;
-          })
-          .catch(response => response);
-    },
     updateProfile() {
       const id = this.$route.params.student;
-      const { uid, ...student} = clone(this.student);
-      this.$http.put(`people/students/${id}`, student )
+      const student = clone(this.student);
+      debugger;
+      const payload = this.sanitizeInput(student);
+
+      this.$http.put(`people/students/${id}`, payload )
        .then(response => response.json())
        .then(() =>{
-             this.$router.go(-1);
-               })
-             .catch(response => response);
+         this.$router.go(-1);
+       })
+       .catch(response => response);
+    },
+    sanitizeInput(input) {
+      Object.keys(input).forEach(k =>
+                    (input[k] && typeof input[k] === 'object') && this.sanitizeInput(input[k]) ||
+                    (!input[k] && input[k] !== undefined) && delete input[k]
+        );
+      return input;
     },
     ...mapActions({
         getDepartments: actions.getDepartments,
-        getDisciplines: actions.getDisciplines
+        getDisciplines: actions.getDisciplines,
+        getCities: actions.getCities,
     })
 },
 watch: {

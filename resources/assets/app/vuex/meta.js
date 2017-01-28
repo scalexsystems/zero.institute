@@ -17,6 +17,7 @@ export const types = {
   ADD_SEMESTER: 'school/ADD_SEMESTER',
   UPDATE_SEMESTER: 'school/UPDATE_SEMESTER',
   SET_SCHOOL: 'school/SET_SCHOOL',
+  ADD_CITIES: 'school/ADD_CITIES',
 
   SET_USER: 'SET_USER'
 }
@@ -39,7 +40,8 @@ export const actions = {
   addSemester: 'school/addSemester',
   updateSemester: 'school/updateSemester',
   getUser: 'getUser',
-  getSchool: 'school/getSchool'
+  getSchool: 'school/getSchool',
+  getCities: 'school/getCities',
 }
 
 export const getters = {
@@ -56,5 +58,6 @@ export const getters = {
   departmentsByType: 'school/departmentsByType',
   departmentCount: 'school/departmentCount',
   user: 'user',
-  school: 'school/school'
+  school: 'school/school',
+  cities: 'school/cities',
 }
