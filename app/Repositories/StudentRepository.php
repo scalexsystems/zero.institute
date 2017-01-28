@@ -34,7 +34,7 @@ class StudentRepository extends Repository
      */
     protected $rules = [
         // Basic Information.
-        'photo_id' => 'nullable|exists:documents,id',
+        'photo_id' => 'nullable|exists:attachments,id',
         'first_name' => 'required|max:255',
         'middle_name' => 'nullable|max:255',
         'last_name' => 'required|max:255',
@@ -172,9 +172,9 @@ class StudentRepository extends Repository
         if (array_has($attributes, 'discipline_id')) {
             $student->discipline()->associate(find($attributes, 'discipline_id'));
         }
-//        if (array_has($attributes, 'photo_id')) {
-//            attach_attachment($student, 'profilePhoto', find($attributes, 'photo_id', Attachment::class));
-//        }
+        if (array_has($attributes, 'photo_id')) {
+            attach_attachment($student, 'profilePhoto', find($attributes, 'photo_id', Attachment::class));
+        }
 
         $student->bio = $this->getBio($student);
         return $student->update();

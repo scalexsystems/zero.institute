@@ -20,6 +20,16 @@ class TeacherPolicy extends AbstractPolicy
         return trust($user)->to(Action::VIEW_TEACHER) or $this->isHimself($user, $teacher);
     }
 
+    public function update(User $user, Teacher $teacher)
+    {
+        return trust($user)->to(Action::VIEW_TEACHER) or $this->isHimself($user, $teacher);
+    }
+
+    public function updatePhoto(User $user, Teacher $teacher)
+    {
+        return trust($user)->to(Action::VIEW_TEACHER) or $this->isHimself($user, $teacher);
+    }
+
     public function readAddress(User $user, Teacher $teacher)
     {
         return $this->view($user, $teacher);

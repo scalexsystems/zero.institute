@@ -1,5 +1,5 @@
 <template>
-<window-box title="Student Profile" subtitle="See profile here...">
+<window-box title="Student Profile" subtitle="Edit profile here...">
 <template slot="header">
 <div>
     <a role="button" @click.prevent="updateProfile" class="btn btn-secondary">
@@ -13,6 +13,10 @@
     <div class="row">
       <div class="col-xs-12 col-lg-4 text-xs-center">
         <div class="card" ref="sidebar">
+            <photo-holder class="profile-photo "
+                          :dest="`people/students/${id}/photo`"
+                          @uploaded="profileUpdated">
+            </photo-holder>
             <img class="card-img-top student-photo" :src="student.photo">
             </div>
         </div>
@@ -43,7 +47,7 @@
                             </div>
                         </div>
                             <div class="student-field">
-                                <input-text title="Date of Birth" v-model="dob" :options="genders"></input-text>
+                                <input-text title="Date of Birth" v-model="dob"></input-text>
 
                             </div>
 
@@ -92,8 +96,7 @@
                         </div>
                         <div class="col-xs-6 col-md-4">
                             <div class="student-field">
-                                <div class="label">Date of Admission</div>
-                                <div class="value">{{ student.date_of_admission | dateForHumans }}</div>
+                                <input-text title="Date of Joining" v-model="doj"></input-text>
                             </div>
                         </div>
                         <div class="col-xs-6 col-md-4">
@@ -148,7 +151,7 @@
                         </div>
                         <div class="col-xs-6 col-md-4">
                             <div class="student-field">
-                                <input-text title="Email" v-model="student.address.email"></input-text>
+                                <input-text title="Email" v-model="student.email"></input-text>
                             </div>
                         </div>
                         <div class="col-xs-6 col-md-4">
@@ -175,9 +178,8 @@
 import { first, toNumber, isNaN, clone, pickBy } from 'lodash'
 import moment from 'moment'
 import { mapGetters, mapActions } from 'vuex'
-
 import { getters, actions } from '../../vuex/meta'
-import { WindowBox, LoadingPlaceholder,  } from '../../components'
+import { WindowBox, LoadingPlaceholder, PhotoHolder } from '../../components'
 
 export default {
   name: 'StudentProfileEdit',
@@ -229,6 +231,12 @@ export default {
     dob() {
       return moment(this.student.date_of_birth).format('D MMMM YYYY')
     },
+    doj() {
+      return moment(this.student.date_of_joining).format('D MMMM YYYY');
+    },
+    id() {
+      return this.$route.params.student;
+    },
     ...mapGetters({
         students: getters.students,
         departments: getters.departments,
@@ -236,7 +244,7 @@ export default {
         cities: getters.cities,
     })
 },
-components: { WindowBox, LoadingPlaceholder },
+components: { WindowBox, LoadingPlaceholder, PhotoHolder },
 created () {
     if (this.departments.length === 0) {
         this.getDepartments()
@@ -297,12 +305,10 @@ methods: {
     updateProfile() {
       const id = this.$route.params.student;
       const student = clone(this.student);
-      debugger;
       const payload = this.sanitizeInput(student);
 
       this.$http.put(`people/students/${id}`, payload )
-       .then(response => response.json())
-       .then(() =>{
+       .then((result) =>{
          this.$router.go(-1);
        })
        .catch(response => response);
@@ -313,6 +319,11 @@ methods: {
                     (!input[k] && input[k] !== undefined) && delete input[k]
         );
       return input;
+    },
+    profileUpdated(src, response) {
+       this.student.photo_id = response.body.id;
+       this.student.photo = response.body.path;
+
     },
     ...mapActions({
         getDepartments: actions.getDepartments,
@@ -327,6 +338,8 @@ watch: {
 </script>
 
 <style lang="scss" scoped>
+@import "../../styles/methods";
+
 .card-header {
 padding: 1.25rem;
 }
@@ -339,6 +352,10 @@ margin-bottom: 2rem;
     font-size: .75rem;
     color: #b3b3b3;
 }
+}
+
+.profile-photo-uploader.overlay {
+ top: rem(200px);
 }
 
 .value:empty:before {

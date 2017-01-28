@@ -38,6 +38,14 @@ class TeacherController extends Controller
         return $teacher;
     }
 
+    public function update(Request $request, Teacher $teacher) {
+        $this->authorize($teacher);
+        $data = $request->all();
+        repository(Teacher::class)->update($teacher, $data);
+        $this->accepted();
+    }
+
+
     public function invite(Request $request)
     {
         $this->authorize('invite', Teacher::class);
