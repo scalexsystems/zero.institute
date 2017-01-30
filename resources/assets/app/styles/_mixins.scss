@@ -1,4 +1,4 @@
-@import 'node_modules/bootstrap/scss/mixins';
+@import '~bootstrap/scss/mixins';
 
 @mixin match-parent($offset: $navbar-height) {
   height: calc(100vh - #{$offset});

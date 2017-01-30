@@ -13,11 +13,11 @@
             <div class="row">
                 <div class="col-xs-12 col-lg-4 text-xs-center">
                     <div class="card" ref="sidebar">
-                        <photo-holder class="profile-photo "
+                        <photo-holder class="profile-photo" style="width: 100%; padding-bottom: 100%;"
                                       :dest="`people/teachers/${id}/photo`"
                                       @uploaded="profileUpdated">
+                          <img class="teacher-photo" :src="teacher.photo">
                         </photo-holder>
-                        <img class="card-img-top teacher-photo" :src="teacher.photo">
                     </div>
                 </div>
 
@@ -47,7 +47,7 @@
                                     </div>
                                 </div>
                                 <div class="teacher-field">
-                                    <input-text title="Date of Birth" v-model="dob"></input-text>
+                                    <input-text title="Date of Birth" placeholder="DD/MM/YYYY" v-model="dob"></input-text>
 
                                 </div>
 
@@ -96,7 +96,7 @@
                                 </div>
                                 <div class="col-xs-6 col-md-4">
                                     <div class="teacher-field">
-                                        <input-text title="Date of Joining" v-model="doj"></input-text>
+                                        <input-text title="Date of Joining" placeholder="DD/MM/YYYY" v-model="doj"></input-text>
                                     </div>
                                 </div>
                                 <div class="col-xs-6 col-md-4">
@@ -217,11 +217,29 @@
 
                 return first(departments.filter(d => d.id === id)) || {}
             },
-            dob() {
-                return moment(this.teacher.date_of_birth).format('D MMMM YYYY')
+            dob: {
+              get () {
+                return this.teacher.date_of_birth ? moment(this.teacher.date_of_birth).format('DD/MM/YYYY') : ''
+              },
+              set (value) {
+                const date = moment(value, 'DD/MM/YYYY', true)
+
+                if (date.isValid()) {
+                  this.teacher.date_of_birth = date.toISOString()
+                }
+              }
             },
-            doj() {
-                return moment(this.teacher.date_of_joining).format('D MMMM YYYY');
+            doj: {
+              get () {
+                return this.teacher.date_of_joining ? moment(this.teacher.date_of_joining).format('DD/MM/YYYY') : ''
+              },
+              set (value) {
+                const date = moment(value, 'DD/MM/YYYY', true)
+
+                if (date.isValid()) {
+                  this.teacher.date_of_joining = date.toISOString()
+                }
+              }
             },
             id() {
                 return this.$route.params.teacher;
