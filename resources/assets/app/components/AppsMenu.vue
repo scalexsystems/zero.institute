@@ -66,7 +66,7 @@ export default {
         apps.splice(2, 0, { name: 'Settings', icon: settings, link: '/hub/settings' })
       }
 
-      if(user.type == 'employee') {
+      if(user.permissions && user.permissions.people) {
         apps.splice(1, 0, {name: 'People', icon: people, link: '/people'});
       }
 
