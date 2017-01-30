@@ -144,7 +144,7 @@ class Handler extends ExceptionHandler
 
     public function report(Exception $e)
     {
-        if ($this->shouldntReport($e)) {
+        if ($this->shouldReport($e) and app()->environment('production')) {
             app('sentry')->captureException($e);
         }
 

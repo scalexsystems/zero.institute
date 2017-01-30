@@ -11,6 +11,8 @@ import App from './App.vue'
 import store from './vuex/store'
 import routerOptions from './options/router'
 import apps from './options/apps'
+import Raven from 'raven-js'
+import RavenVue from 'raven-js/plugins/vue'
 
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
@@ -25,9 +27,17 @@ require('bootstrap')
 window.Vue = Vue
 window.Laravel = window.Laravel || {}
 
+if (process.env.NODE_ENV === 'production') {
+  Raven
+    .config('https://0e3651de5e1d425da8e296428b4795ea@sentry.io/131049')
+    .addPlugin(RavenVue, Vue)
+    .install()
+}
+
 Vue.use(VueDebug, { debug: process.env.NODE_ENV !== 'production' })
 Vue.use(VueResource)
 Vue.http.options.root = '/api'
+
 
 if ('csrfToken' in window.Laravel) {
   Vue.http.headers.common['X-CSRF-Token'] = window.Laravel.csrfToken
@@ -52,3 +62,4 @@ new Vue({
   store,
   router
 }).$mount('#app')
+
