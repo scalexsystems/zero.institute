@@ -50,7 +50,6 @@
                                 <input-text title="Date of Birth" v-model="dob"></input-text>
 
                             </div>
-
                         <div class="col-xs-6 col-md-4">
                             <div class="student-field">
                                 <input-text title="Category" v-model="student.category"></input-text>
@@ -139,19 +138,15 @@
                         <div class="col-xs-6 col-md-4">
                             <div class="student-field">
                             <input-select title="City" v-model.number="student.address.city_id" :options="cities"></input-select>
-
-
                             </div>
                         </div>
                         <div class="col-xs-6 col-md-4">
                             <div class="student-field">
                                 <input-text title="PIN Code" v-model="student.address.pin_code"></input-text>
-
                             </div>
                         </div>
                         <div class="col-xs-6 col-md-4">
-                            <div class="student-field">
-                                <input-text title="Email" v-model="student.email"></input-text>
+                            <div class="student-field">                                <input-text title="Email" v-model="student.email"></input-text>
                             </div>
                         </div>
                         <div class="col-xs-6 col-md-4">
@@ -162,7 +157,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
         <div class="col-xs-12 col-lg-8" v-if="!loading && !success">
             <div class="card card-block text-xs-center card-outline-danger text-danger">
@@ -257,7 +251,6 @@ created () {
     if(this.cities.length == 0 ) {
         this.getCities();
     }
-
     this.getStudent()
 },
 filters: {

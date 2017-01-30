@@ -153,7 +153,7 @@ class StudentRepository extends Repository
         $student->fill($attributes);
 
         // Start Transaction.
-//        $this->startTransaction();
+        $this->startTransaction();
 
         if (array_has($attributes, 'address') && !empty($attributes['address'])) {
             if (isset($student->address)) {
@@ -177,6 +177,7 @@ class StudentRepository extends Repository
         }
 
         $student->bio = $this->getBio($student);
+
         return $student->update();
     }
 
