@@ -290,7 +290,7 @@ export default {
       return `₹ ${amount}`
     },
     dateForHumans (value) {
-      return moment(value).format('D MMMM YYYY')
+      return value ? moment(value).format('D MMMM YYYY') : '';
     }
   },
   methods: {
