@@ -1,6 +1,5 @@
 <?php namespace Scalex\Zero\Repositories;
 
-use Illuminate\Database\Eloquent\Model;
 use Scalex\Zero\Criteria\OfSchool;
 use Scalex\Zero\Models\Attachment;
 use Scalex\Zero\Models\Employee;
@@ -90,14 +89,6 @@ class EmployeeRepository extends Repository
         }
     }
 
-    public function getRules(array $attributes = [], Model $model = null): array
-    {
-        $data = parent::getRules($attributes, $model);
-        $data['uid'] .= current_user()->school_id;
-
-        return $data;
-    }
-
     /**
      * @param array $rules
      * @param array $attributes
@@ -112,11 +103,15 @@ class EmployeeRepository extends Repository
                 'address' => repository(Address::class)->getRules($attributes, $employee->address),
             ]);
 
+        $rules['uid'] ='required|unique:teachers,uid,'.$employee->uid.',id,school_id,'.current_user()->school_id;
+
         return array_only($rules, array_keys($attributes));
     }
 
     public function getCreateRules(array $attributes)
     {
+        $this->rules['uid'] = 'required|unique:teachers,uid,NULL,id,school_id,'.current_user()->school_id;
+
         return $this->rules + array_dot(
             [
                 'address' => repository(Address::class)->getRules($attributes),
@@ -126,9 +121,6 @@ class EmployeeRepository extends Repository
     public function creating(Employee $employee, array $attributes)
     {
         $employee->fill($attributes);
-
-        // Start Transaction.
-        $this->startTransaction();
 
         $employee->address()->associate(repository(Address::class)->create(array_get($attributes, 'address', [])));
         $employee->department()->associate(find($attributes, 'department_id'));
@@ -150,9 +142,6 @@ class EmployeeRepository extends Repository
     {
         $attributes = array_except($attributes, ['date_of_birth', 'date_of_admission']);
         $employee->fill($attributes);
-
-        // Start Transaction.
-//        $this->startTransaction();
 
         if (array_has($attributes, 'address') && !empty($attributes['address'])) {
             if (isset($employee->address)) {
@@ -178,7 +167,6 @@ class EmployeeRepository extends Repository
 
     public function getBio(Employee $employee)
     {
-        return $employee->job_title.' ・ '
-               .($employee->department->short_name ?? $employee->department->name);
+        return '';
     }
 }

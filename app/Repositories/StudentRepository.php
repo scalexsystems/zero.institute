@@ -1,12 +1,11 @@
 <?php namespace Scalex\Zero\Repositories;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Scalex\Zero\Criteria\OfSchool;
 use Scalex\Zero\Models\Attachment;
 use Scalex\Zero\Models\Geo\Address;
-use Scalex\Zero\Models\School;
 use Scalex\Zero\Models\Guardian;
+use Scalex\Zero\Models\School;
 use Scalex\Zero\Models\Student;
 use Znck\Repositories\Repository;
 
@@ -100,9 +99,7 @@ class StudentRepository extends Repository
                 'father' => repository(Guardian::class)->getRules($attributes, $student->father),
             ]);
 
-        if (!$student->isDirty('uid')) {
-            unset($rules['uid']);
-        }
+        $rules['uid'] = 'required|unique:teachers,uid,'.$student->uid.',id,school_id,'.current_user()->school_id;
 
         return array_only($rules, array_keys($attributes));
     }
@@ -111,7 +108,7 @@ class StudentRepository extends Repository
     {
         $guardianRules = repository(Guardian::class)->getRules($attributes);
 
-        $this->rules['uid'] .= current_user()->school_id;
+        $this->rules['uid'] = 'required|unique:teachers,uid,NULL,id,school_id,'.current_user()->school_id;
 
         return $this->rules + array_dot(
             [
@@ -124,9 +121,6 @@ class StudentRepository extends Repository
     public function creating(Student $student, array $attributes)
     {
         $student->fill($attributes);
-
-        // Start Transaction.
-        $this->startTransaction();
 
         $student->address()->associate(repository(Address::class)->create(array_get($attributes, 'address', [])));
         $student->department()->associate(find($attributes, 'department_id'));
@@ -151,9 +145,6 @@ class StudentRepository extends Repository
     {
         $attributes = array_except($attributes, ['date_of_birth', 'date_of_admission']);
         $student->fill($attributes);
-
-        // Start Transaction.
-        $this->startTransaction();
 
         if (array_has($attributes, 'address') && !empty($attributes['address'])) {
             if (isset($student->address)) {
@@ -183,9 +174,7 @@ class StudentRepository extends Repository
 
     public function getBio(Student $student)
     {
-        return 'Student ・ '
-               .($student->department->short_name ?? $student->department->name).' '
-               .$student->date_of_admission->year;
+        return '';
     }
 
     public function filterBySchool($students, School $school): Collection

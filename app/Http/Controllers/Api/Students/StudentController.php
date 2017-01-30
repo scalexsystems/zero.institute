@@ -28,9 +28,8 @@ class StudentController extends Controller
         return $students->simplePaginate();
     }
 
-    public function show(Request $request, $student)
+    public function show(Request $request, Student $student)
     {
-        $student = repository(Student::class)->findBy('uid', $student);
         $this->authorize($student);
 
         $request->query->set('with', ['profilePhoto', 'address', 'father', 'mother']);
