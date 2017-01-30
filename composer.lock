@@ -3716,7 +3716,7 @@
             "authors": [
                 {
                     "name": "Mohamed Said",
-                    "email": "theMohamedSaid@gmail.com"
+                    "email": "themohamedsaid@gmail.com"
                 }
             ],
             "description": "Adds a 'preview' mail driver for testing emails in laravel.",
@@ -3833,12 +3833,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/znck/attach.git",
-                "reference": "754fdc48605fd386c08841996206c7f7c4767d5a"
+                "reference": "18f1de689a9f01e9e177d47e993a71e9bdb1ace2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/znck/attach/zipball/754fdc48605fd386c08841996206c7f7c4767d5a",
-                "reference": "754fdc48605fd386c08841996206c7f7c4767d5a",
+                "url": "https://api.github.com/repos/znck/attach/zipball/18f1de689a9f01e9e177d47e993a71e9bdb1ace2",
+                "reference": "18f1de689a9f01e9e177d47e993a71e9bdb1ace2",
                 "shasum": ""
             },
             "require": {
@@ -3884,7 +3884,7 @@
                 "attach",
                 "znck"
             ],
-            "time": "2016-12-19 11:26:00"
+            "time": "2017-01-30 16:57:15"
         },
         {
             "name": "znck/cities",
