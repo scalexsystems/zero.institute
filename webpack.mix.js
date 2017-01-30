@@ -1,4 +1,4 @@
-const { mix, config, plugins } = require('laravel-mix')
+const { mix, config } = require('laravel-mix')
 const Mix = config
 
 Mix.vueExtract = !(Mix.hmr || ['production', 'development'].indexOf(process.env.NODE_ENV) > -1)
@@ -17,6 +17,7 @@ Mix.vueExtract = !(Mix.hmr || ['production', 'development'].indexOf(process.env.
 mix.js('resources/assets/app/main.js', 'public/js/app.js')
   .sass('resources/assets/sass/web.scss', 'public/css/web.css')
   .version()
+  .sourceMaps()
   .disableNotifications()
 
 // Full API
