@@ -41,7 +41,6 @@ class StudentController extends Controller
     public function update(Request $request, Student $student) {
         $this->authorize($student);
         $data = $request->all();
-        $data['uid'] = $student->uid;
         repository(Student::class)->update($student, $data);
         $this->accepted();
     }

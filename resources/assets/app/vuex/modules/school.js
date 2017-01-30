@@ -28,7 +28,8 @@ export default {
     departments: [],
     disciplines: [],
     semesters: [],
-    courses: []
+    courses: [],
+    cities: [],
   },
   getters: {
     employees (state) {
@@ -77,6 +78,9 @@ export default {
     },
     school (state) {
       return state.school
+    },
+    cities (state) {
+      return state.cities
     }
   },
   mutations: {
@@ -141,6 +145,9 @@ export default {
     },
     SET_SCHOOL (state, { school }) {
       state.school = school
+    },
+    ADD_CITIES (state, { cities }) {
+      state.cities = cities;
     }
   },
   actions: {
@@ -270,6 +277,14 @@ export default {
         .then((school) => {
           commit('SET_SCHOOL', { school })
         })
-    }
+    },
+    getCities({ commit }) {
+      Vue.http.get('geo/cities')
+        .then(response => response.json())
+        .then(result => {
+          commit('ADD_CITIES', { cities: result.data })
+        })
+        .catch(response => response);
+    },
   }
 }

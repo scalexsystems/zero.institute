@@ -1,5 +1,5 @@
 <template>
-<window-box title="Student Profile" subtitle="See profile here...">
+<window-box title="Student Profile" subtitle="Edit profile here...">
 <template slot="header">
 <div>
     <a role="button" @click.prevent="updateProfile" class="btn btn-secondary">
@@ -13,6 +13,10 @@
     <div class="row">
       <div class="col-xs-12 col-lg-4 text-xs-center">
         <div class="card" ref="sidebar">
+            <photo-holder class="profile-photo "
+                          :dest="`people/students/${id}/photo`"
+                          @uploaded="profileUpdated">
+            </photo-holder>
             <img class="card-img-top student-photo" :src="student.photo">
             </div>
         </div>
@@ -27,9 +31,14 @@
                 </h5>
                 <div class="card-block">
                     <div class="row">
-                        <div class="col-xs-6 col-md-4">
+                        <div class="col-xs-6 col-md-6">
                             <div class="student-field">
-                                <input-text title="Name" v-model="student.name"></input-text>
+                                <input-text title="First Name" v-model="student.first_name"></input-text>
+                            </div>
+                        </div>
+                        <div class="col-xs-6 col-md-6">
+                            <div class="student-field">
+                                <input-text title="Last Name" v-model="student.last_name"></input-text>
                             </div>
                         </div>
                         <div class="col-xs-6 col-md-4">
@@ -37,12 +46,10 @@
                                 <input-radio title="Gender" v-model="student.gender" :options="genders"></input-radio>
                             </div>
                         </div>
-                        <div class="col-xs-6 col-md-4">
                             <div class="student-field">
-                                <div class="label">Date of Birth</div>
-                                <div class="value">{{ student.date_of_birth | dateForHumans }}</div>
+                                <input-text title="Date of Birth" v-model="dob"></input-text>
+
                             </div>
-                        </div>
                         <div class="col-xs-6 col-md-4">
                             <div class="student-field">
                                 <input-text title="Category" v-model="student.category"></input-text>
@@ -88,19 +95,18 @@
                         </div>
                         <div class="col-xs-6 col-md-4">
                             <div class="student-field">
-                                <div class="label">Date of Admission</div>
-                                <div class="value">{{ student.date_of_admission | dateForHumans }}</div>
+                                <input-text title="Date of Joining" v-model="doj"></input-text>
                             </div>
                         </div>
                         <div class="col-xs-6 col-md-4">
                             <div class="student-field">
-                                <input-text title="Department" v-model="department.name"></input-text>
+                                <input-select title="Department" v-model.number="student.department_id" :options="departments"></input-select>
 
                             </div>
                         </div>
                         <div class="col-xs-6 col-md-4">
                             <div class="student-field">
-                                <input-text title="Discipline" v-model="discipline.name"></input-text>
+                                <input-select title="Discipline" v-model.number="student.discipline_id" :options="disciplines"></input-select>
                             </div>
                         </div>
                     </div>
@@ -115,9 +121,12 @@
                     <div class="row">
                         <div class="col-xs-6 col-md-4">
                             <div class="student-field">
-                                <div class="label">Address</div>
-                                <div class="value">{{ }}
-                                </div>
+                                <input-text title="Address Line 1" v-model="student.address.address_line1" ></input-text>
+                            </div>
+                        </div>
+                        <div class="col-xs-6 col-md-4">
+                            <div class="student-field">
+                                <input-text title="Address Line 2" v-model="student.address.address_line2" ></input-text>
                             </div>
                         </div>
                         <div class="col-xs-6 col-md-4">
@@ -128,136 +137,21 @@
                         </div>
                         <div class="col-xs-6 col-md-4">
                             <div class="student-field">
-                                <div class="label">City</div>
-                                <input-text title="city" v-model="student.address.city"></input-text>
-
+                            <input-select title="City" v-model.number="student.address.city_id" :options="cities"></input-select>
                             </div>
                         </div>
                         <div class="col-xs-6 col-md-4">
                             <div class="student-field">
                                 <input-text title="PIN Code" v-model="student.address.pin_code"></input-text>
-
                             </div>
                         </div>
                         <div class="col-xs-6 col-md-4">
-                            <div class="student-field">
-                                <input-text title="Email" v-model="student.address.email"></input-text>
+                            <div class="student-field">                                <input-text title="Email" v-model="student.email"></input-text>
                             </div>
                         </div>
                         <div class="col-xs-6 col-md-4">
                             <div class="student-field">
                                 <input-text title="Phone" v-model="student.address.phone"></input-text>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <hr class="box-sep">
-                <div class="card-block">
-                    <div class="row">
-                        <div class="col-xs-6 col-md-4">
-                            <div class="student-field">
-                                <input-text title="Father's Name" v-model="student.father.name"></input-text>
-
-                            </div>
-                        </div>
-                        <div class="col-xs-6 col-md-4">
-                            <div class="student-field">
-                                <input-text title="Father's Phone" v-model="student.father.phone"></input-text>
-
-                            </div>
-                        </div>
-                        <div class="col-xs-6 col-md-4">
-                            <div class="student-field">
-                                <input-text title="Father's Profession" v-model="student.father.profession"></input-text>
-
-                            </div>
-                        </div>
-                        <div class="col-xs-6 col-md-4">
-                            <div class="student-field">
-                                <input-text title="Father's Currency" v-model="student.father.currency"></input-text>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <hr class="box-sep">
-                <div class="card-block">
-                    <div class="row">
-                        <div class="col-xs-6 col-md-4">
-                            <div class="student-field">
-                                <input-text title="Mother's Name" v-model="student.mother.name"></input-text>
-
-                            </div>
-                        </div>
-                        <div class="col-xs-6 col-md-4">
-                            <div class="student-field">
-                                <input-text title="Mother's Phone" v-model="student.mother.phone"></input-text>
-
-                            </div>
-                        </div>
-                        <div class="col-xs-6 col-md-4">
-                            <div class="student-field">
-                                <input-text title="Mother's Profession" v-model="student.mother.profession"></input-text>
-
-                            </div>
-                        </div>
-                        <div class="col-xs-6 col-md-4">
-                            <div class="student-field">
-                                <input-text title="Mother's Currency" v-model="student.mother.currency"></input-text>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card">
-                <h5 class="card-header bg-white">
-                    Medical Information
-                </h5>
-                <div class="card-block">
-                    <div class="row">
-                        <div class="col-xs-6 col-md-4">
-                            <div class="student-field">
-                                <input-text title="Blood Group" v-model="student.blood_group"></input-text>
-
-                            </div>
-                        </div>
-                        <div class="col-xs-6 col-md-4">
-                            <div class="student-field">
-                                <input-text title="Disability" v-model="student.disability"></input-text>
-
-                            </div>
-                        </div>
-                        <div class="col-xs-6 col-md-4">
-                            <div class="student-field">
-                                <input-text title="Major Disease" v-model="student.disease"></input-text>
-
-                            </div>
-                        </div>
-                        <div class="col-xs-6 col-md-4">
-                            <div class="student-field">
-                                <input-text title="Allergy" v-model="student.allergy"></input-text>
-
-                            </div>
-                        </div>
-                        <div class="col-xs-6 col-md-4">
-                            <div class="student-field">
-                                <input-text title="Body Marks / Identification Marks" v-model="student.body_marks"></input-text>
-
-                            </div>
-                        </div>
-                        <div class="col-xs-6 col-md-4">
-                            <div class="student-field">
-                                <input-text title="Food Habit" v-model="student.food_habit"></input-text>
-
-                            </div>
-                        </div>
-                        <div class="col-xs-12">
-                            <div class="student-field">
-                                <div class="label">Additional Remarks</div>
-                                <textarea title="Phone" v-model="student.address.phone"></textarea>
-
                             </div>
                         </div>
                     </div>
@@ -275,15 +169,11 @@
 </template>
 
 <script lang="babel">
-import first from 'lodash/first'
-import toNumber from 'lodash/toNumber'
-import isNaN from 'lodash/isNaN'
-import clone from 'lodash/clone'
+import { first, toNumber, isNaN, clone, pickBy } from 'lodash'
 import moment from 'moment'
 import { mapGetters, mapActions } from 'vuex'
-
 import { getters, actions } from '../../vuex/meta'
-import { WindowBox, LoadingPlaceholder,  } from '../../components'
+import { WindowBox, LoadingPlaceholder, PhotoHolder } from '../../components'
 
 export default {
   name: 'StudentProfileEdit',
@@ -321,7 +211,7 @@ export default {
         return this.remote !== null
     },
     department () {
-        const departments = this.departments
+        const departments = clone(this.departments)
         const id = this.student.department_id
 
         return first(departments.filter(d => d.id === id)) || {}
@@ -332,14 +222,23 @@ export default {
 
         return first(disciplines.filter(d => d.id === id)) || {}
     },
-
+    dob() {
+      return moment(this.student.date_of_birth).format('D MMMM YYYY')
+    },
+    doj() {
+      return moment(this.student.date_of_joining).format('D MMMM YYYY');
+    },
+    id() {
+      return this.$route.params.student;
+    },
     ...mapGetters({
         students: getters.students,
         departments: getters.departments,
-        disciplines: getters.disciplines
+        disciplines: getters.disciplines,
+        cities: getters.cities,
     })
 },
-components: { WindowBox, LoadingPlaceholder },
+components: { WindowBox, LoadingPlaceholder, PhotoHolder },
 created () {
     if (this.departments.length === 0) {
         this.getDepartments()
@@ -349,6 +248,9 @@ created () {
         this.getDisciplines()
     }
 
+    if(this.cities.length == 0 ) {
+        this.getCities();
+    }
     this.getStudent()
 },
 filters: {
@@ -372,12 +274,21 @@ methods: {
         this.$http.get(`people/students/${id}`)
                 .then(response => response.json())
                 .then((result) => {
-                    this.remote = result
+                    this.remote = clone(result);
+                    this.remote.address = {
+                        'address_line1' : '',
+                        'address_line2' : '',
+                        'landmark' : '',
+                        'city' : '',
+                        'pin_code' : '',
+                        'email' : '',
+                        'phone' : '',
+                    };
                 })
                 .catch((response) => {
                     response.json()
                             .then((result) => {
-                                this.errors = result.message
+                                this.errors = result.message;
                             })
                             .catch(() => {
                                 this.errors = 'Retry. There was some error apprehending response from server.'
@@ -386,17 +297,31 @@ methods: {
     },
     updateProfile() {
       const id = this.$route.params.student;
-      const { uid, ...student} = clone(this.student);
-      this.$http.put(`people/students/${id}`, student )
-       .then(response => response.json())
-       .then(() =>{
-             this.$router.go(-1);
-               })
-             .catch(response => response);
+      const student = clone(this.student);
+      const payload = this.sanitizeInput(student);
+
+      this.$http.put(`people/students/${id}`, payload )
+       .then((result) =>{
+         this.$router.go(-1);
+       })
+       .catch(response => response);
+    },
+    sanitizeInput(input) {
+      Object.keys(input).forEach(k =>
+                    (input[k] && typeof input[k] === 'object') && this.sanitizeInput(input[k]) ||
+                    (!input[k] && input[k] !== undefined) && delete input[k]
+        );
+      return input;
+    },
+    profileUpdated(src, response) {
+       this.student.photo_id = response.body.id;
+       this.student.photo = response.body.path;
+
     },
     ...mapActions({
         getDepartments: actions.getDepartments,
-        getDisciplines: actions.getDisciplines
+        getDisciplines: actions.getDisciplines,
+        getCities: actions.getCities,
     })
 },
 watch: {
@@ -406,6 +331,8 @@ watch: {
 </script>
 
 <style lang="scss" scoped>
+@import "../../styles/methods";
+
 .card-header {
 padding: 1.25rem;
 }
@@ -418,6 +345,10 @@ margin-bottom: 2rem;
     font-size: .75rem;
     color: #b3b3b3;
 }
+}
+
+.profile-photo-uploader.overlay {
+ top: rem(200px);
 }
 
 .value:empty:before {

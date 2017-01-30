@@ -2,7 +2,9 @@
 
 use Illuminate\Database\Eloquent\Model;
 use Scalex\Zero\Criteria\OfSchool;
+use Scalex\Zero\Models\Attachment;
 use Scalex\Zero\Models\Employee;
+use Scalex\Zero\Models\Geo\Address;
 use Znck\Repositories\Repository;
 
 /**
@@ -146,26 +148,31 @@ class EmployeeRepository extends Repository
 
     public function updating(Employee $employee, array $attributes)
     {
+        $attributes = array_except($attributes, ['date_of_birth', 'date_of_admission']);
         $employee->fill($attributes);
 
         // Start Transaction.
-        $this->startTransaction();
+//        $this->startTransaction();
 
-        if (array_has($attributes, 'address')) {
-            $employee->address()
-                     ->associate(
-                         repository(Address::class)
-                             ->update($employee->address, array_get($attributes, 'address'))
-                     );
+        if (array_has($attributes, 'address') && !empty($attributes['address'])) {
+            if (isset($employee->address)) {
+                repository(Address::class)
+                    ->update($employee->address, $attributes['address']);
+
+            } else {
+                $employee->address()->associate(repository(Address::class)->create(array_get($attributes, 'address', [])));
+            }
         }
         if (array_has($attributes, 'department_id')) {
             $employee->department()->associate(find($attributes, 'department_id'));
+
+
         }
         if (array_has($attributes, 'photo_id')) {
             attach_attachment($employee, 'profilePhoto', find($attributes, 'photo_id', Attachment::class));
         }
-        $employee->bio = $this->getBio($employee);
 
+        $employee->bio = $this->getBio($employee);
         return $employee->update();
     }
 

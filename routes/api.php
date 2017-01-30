@@ -23,14 +23,19 @@ Route::get('/me/dashboard', 'Users\DashboardController@index');
 // Students
 Route::resource('/people/students', 'Students\StudentController', ['only' => ['index', 'show', 'update']]);
 Route::post('/people/students/invite', 'Students\StudentController@invite');
+Route::post('/people/students/{uid}/photo', 'Students\PhotoController@store');
 
 // Teachers
-Route::resource('/people/teachers', 'Teachers\TeacherController', ['only' => ['index', 'show']]);
+Route::resource('/people/teachers', 'Teachers\TeacherController', ['only' => ['index', 'show', 'update']]);
 Route::post('/people/teachers/invite', 'Teachers\TeacherController@invite');
+Route::post('/people/teachers/{uid}/photo', 'Teachers\PhotoController@store');
+
 
 // Employees
-Route::resource('/people/employees', 'Employees\EmployeeController', ['only' => ['index', 'show']]);
+Route::resource('/people/employees', 'Employees\EmployeeController', ['only' => ['index', 'show', 'update']]);
 Route::post('/people/employees/invite', 'Employees\EmployeeController@invite');
+Route::post('/people/employees/{uid}/photo', 'Employees\PhotoController@store');
+
 
 // People
 Route::get('/people', 'PeopleController@index');
