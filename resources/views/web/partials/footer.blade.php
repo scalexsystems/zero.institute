@@ -73,8 +73,8 @@
               Phone: <span itemprop="telephone">8473994808</span>
           </span>
         </small>
-        <div>
-          Powered by <img src="{{ asset('algolia.svg') }}" style="width:50px">
+        <div class="pt-1">
+          <small class="text-muted">Search powered by</small> <img src="{{ asset('/img/web/algolia.svg') }}" style="width:50px">
         </div>
       </div>
     </div>
