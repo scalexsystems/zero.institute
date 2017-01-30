@@ -1,15 +1,23 @@
-/node_modules
+## Laravel
 /public/storage
+/Homestead.json
+/Homestead.yaml
+/.env
+/.env.backup
+/public/hot
+
+## Vendor Files
+/node_modules
 /vendor
 /.idea
-Homestead.json
-Homestead.yaml
-.env
-.env.backup
-hot
+
+## Logs & Caches
 npm-debug.log
-/tests/reports
 .php_cs.cache
+
+## Test Outputs
+/tests/reports
+/tests/unit/dist
 
 ## FORCE ADD ON PRODUCTION BUILD
 /public/js

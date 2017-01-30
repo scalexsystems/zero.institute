@@ -86,6 +86,11 @@ module.exports.module = {
           })
         },
 
+        cssModules: {
+          localIdentName: '[path][name]---[local]---[hash:base64:5]',
+          camelCase: true
+        },
+
         postcss: [
           require('autoprefixer')
         ]

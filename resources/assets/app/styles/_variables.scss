@@ -1,8 +1,6 @@
-/*
- |
- | Bootstrap v4.0.0-alpha.4 configuration.
- |
- */
+//
+// Bootstrap v4 configuration.
+// 
 
 $grid-gutter-width: 20px !default;
 
@@ -42,13 +40,11 @@ $btn-primary-border: $btn-primary-bg;
 
 $input-color: #333;
 
-@import 'node_modules/bootstrap/scss/variables';
+@import '~bootstrap/scss/variables';
 
-/*
- |
- | Font Awesome configuration.
- |
- */
+//
+// Font Awesome configuration.
+//
 $fa-font-path: '/fonts' !default;
 
 $navbar-height: 46px;
