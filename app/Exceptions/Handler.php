@@ -116,7 +116,7 @@ class Handler extends ExceptionHandler
             'trace' => FlattenException::create($e)->toArray(),
         ];
 
-        Log::error('UNKNOWN EXCEPTION: '.get_class($e), $context);
+        Log::error('UNKNOWN EXCEPTION: ' . get_class($e), $context);
 
         if (config('app.debug')) {
             $response += ['debug' => $context];
@@ -140,5 +140,14 @@ class Handler extends ExceptionHandler
             ],
             422
         );
+    }
+
+    public function report(Exception $e)
+    {
+        if ($this->shouldntReport($e)) {
+            app('sentry')->captureException($e);
+        }
+
+        parent::report($e);
     }
 }

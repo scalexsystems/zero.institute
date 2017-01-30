@@ -2,9 +2,9 @@
 
 namespace Scalex\Zero\Http\Controllers;
 
-use Cache;
+use Illuminate\Support\Facades\Cache;
 use Carbon\Carbon;
-use DB;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Scalex\Zero\Events\School\InvitationRequest;
 
@@ -33,7 +33,10 @@ class HomeController extends Controller
             return $this->app();
         }
 
-        $count = 0;
+        $count = Cache::rememberForever('requests.count', function () {
+                       return DB::connection('sqlite')
+                                 ->table('requests')->count();
+        });
 
         return view('web.home', compact('count'));
     }

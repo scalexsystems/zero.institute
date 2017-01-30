@@ -167,4 +167,12 @@ class Student extends BaseModel implements Person, BelongsToSchool
     {
         return 'uid';
     }
+
+    public function setDateOfAdmissionAttribute($value) {
+        $this->attributes['date_of_admission'] = Carbon::parse($value);
+    }
+
+    public function setDateOfBirthAttribute($value) {
+        $this->attributes['date_of_birth'] = Carbon::parse($value);
+    }
 }

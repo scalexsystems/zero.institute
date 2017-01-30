@@ -28,9 +28,8 @@ class TeacherController extends Controller
         return $teachers->simplePaginate();
     }
 
-    public function show(Request $request, $teacher)
+    public function show(Request $request, Teacher $teacher)
     {
-        $teacher = repository(Teacher::class)->findBy('uid', $teacher);
         $this->authorize($teacher);
 
         $request->query->set('with', ['profilePhoto', 'address']);
