@@ -58,13 +58,16 @@ export default {
       const user = this.user
       const apps = [
         { name: 'Hub', icon: hub, link: '/' },
-        { name: 'People', icon: people, link: '/people' },
         { name: 'Academics', icon: academics, link: '/academics', locked: true },
         { name: 'Finances', icon: finances, link: '/finances', locked: true }
       ]
 
       if (user.permissions && user.permissions.settings) {
         apps.splice(2, 0, { name: 'Settings', icon: settings, link: '/hub/settings' })
+      }
+
+      if(user.type == 'employee') {
+        apps.splice(1, 0, {name: 'People', icon: people, link: '/people'});
       }
 
       return apps
