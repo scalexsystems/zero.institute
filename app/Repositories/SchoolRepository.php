@@ -32,13 +32,13 @@ class SchoolRepository extends Repository
     protected $rules = [
         'name' => 'required|max:255',
         'slug' => 'required|min:4|max:255|alphadash|reserved|unique:schools',
-        'address_id' => 'required|uuid|exists:addresses,id',
+        'address_id' => 'required|exists:addresses,id',
         'email' => 'required|email',
         'phone' => 'required|phone',
         'fax' => 'nullable|phone',
         'university' => 'required|max:255',
         'institute_type' => 'required|max:255',
-        'logo_id' => 'nullable|uuid|exists:documents,id',
+        'logo_id' => 'nullable|exists:attachments,id',
         'verified' => 'nullable|boolean',
     ];
 

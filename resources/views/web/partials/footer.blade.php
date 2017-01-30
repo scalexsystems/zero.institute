@@ -38,7 +38,6 @@
                   </span>
                 </a>
               </li>
-              <li class="nav-item"><a href="https://zero.school/" class="nav-link" target="_blank">Zero School</a></li>
             </ul>
           </div>
           <div class="col-xs-4">
@@ -74,6 +73,9 @@
               Phone: <span itemprop="telephone">8473994808</span>
           </span>
         </small>
+        <div>
+          Powered by <img src="{{ asset('algolia.svg') }}" style="width:50px">
+        </div>
       </div>
     </div>
   </div>
