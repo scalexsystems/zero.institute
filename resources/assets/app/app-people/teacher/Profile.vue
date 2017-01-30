@@ -307,7 +307,6 @@ export default {
       this.$http.get(`people/teachers/${id}`)
           .then(response => response.json())
           .then((result) => {
-            debugger;
             this.remote = result
           })
           .catch((response) => {

@@ -111,7 +111,8 @@ class CreateSchoolCommand extends Command
                     'email' => $input['email'],
                 ]
             );
-            $user->password = $inputs[$key]['password'] = str_random(8);
+            $inputs[$key]['password'] = str_random(8);
+            $user->password = bcrypt($inputs[$key]['password']);
             $user->school()->associate($school);
 
             if (!$user->save()) {
@@ -122,6 +123,7 @@ class CreateSchoolCommand extends Command
             $person = $input['type'] === 'Teacher' ? new Teacher() : new Employee();
             $person->first_name = $input['name'];
             $person->school_id = $school->getKey();
+            $person->uid = $input['email'];
             $person->save();
             $user->person()->associate($person);
             $user->save();
