@@ -122,14 +122,19 @@ export default {
       this.onInfinite()
     }),
     onInfinite () {
+      if (!this.group) {
+        this.$refs.infinite.$emit('$InfiniteLoading:loaded')
+        return
+      }
+
       this.$http.get(`groups/${this.group.id}/members`, { params: { q: this.q, page: this.page + 1 }})
-              .then(response => response.json())
-              .then((result) => {
-                pushIf(this.members, result.data, this.ids)
-                this.page = result._meta.pagination.current_page
-                this.$refs.infinite.$emit('$InfiniteLoading:loaded')
-              })
-              .catch(() => this.$refs.infinite.$emit('$InfiniteLoading:loaded'))
+            .then(response => response.json())
+            .then((result) => {
+              pushIf(this.members, result.data, this.ids)
+              this.page = result._meta.pagination.current_page
+              this.$refs.infinite.$emit('$InfiniteLoading:loaded')
+            })
+            .catch(() => this.$refs.infinite.$emit('$InfiniteLoading:loaded'))
     },
     findGroup () {
       const id = int(this.$route.params.group)

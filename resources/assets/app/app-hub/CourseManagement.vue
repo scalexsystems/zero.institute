@@ -131,6 +131,9 @@ export default{
         this.message = undefined
       }
     },
+    openMemberProfile(manager) {
+      this.$router.push(`people/${manager._type}/${manager.uid}`)
+    },
     ...mapActions('school', ['getTeachers'])
   }
 }
