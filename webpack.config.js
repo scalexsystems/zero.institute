@@ -377,4 +377,4 @@ Mix.finalize(module.exports)
  |
  */
 
-module.exports.devtool = Mix.inProduction ? 'hidden-source-map' : '#inline-source-map'
+module.exports.devtool = Mix.inProduction ? '#source-map' : '#inline-source-map'

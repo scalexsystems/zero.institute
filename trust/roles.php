@@ -18,6 +18,6 @@ return [
     'course-manager' => [
         'name' => 'Course Manager',
         'description' => 'add courses and assign teachers/coordinator',
-        'permissions' => [],
+        'permissions' => ['course.*'],
     ],
 ];
