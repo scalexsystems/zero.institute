@@ -17,7 +17,10 @@ class Action
     const VIEW_TEACHER = 'people.teacher.read';
     const VIEW_EMPLOYEE = 'people.employee.read';
 
+    //TODO:: update permissions file
     const UPDATE_STUDENT = 'people.student.update';
+    const UPDATE_TEACHER = 'people.teacher.update';
+    const UPDATE_EMPLOYEE = 'people.employee.update';
 
     const INVITE_STUDENT = 'people.student.invite';
     const INVITE_TEACHER = 'people.teacher.invite';

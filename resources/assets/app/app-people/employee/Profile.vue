@@ -1,6 +1,11 @@
 <template>
 <window-box title="Employee Profile" subtitle="See profile here...">
-  <div class="container my-1">
+    <template slot="header">
+        <router-link :to="{ name: 'employee.profile.edit' }" class="btn btn-secondary">
+            <i class="fa fa-fw fa-pencil" v-tooltip="'Edit Profile'"></i> <span class="hidden-md-down">Edit Profile </span></router-link>
+    </template>
+
+    <div class="container my-1">
       <div class="row">
           <div class="col-xs-12 col-lg-4 text-xs-center">
             <div class="card" ref="sidebar">
@@ -266,7 +271,7 @@ export default {
       return first(departments.filter(d => d.id === id)) || {}
     },
     address() {
-      return this.student.address.length ? (this.student.address.addressline1 + this.student.address.addressline2) : '';
+      return this.employee.address.length ? (this.employee.address.addressline1 + this.employee.address.addressline2) : '';
     },
     ...mapGetters({
       employees: getters.employees,
@@ -284,7 +289,7 @@ export default {
   filters: {
     currency (value) {
       const amount = toNumber(value)
-
+profile
       if (isNaN(amount)) return '₹ 0'
 
       return `₹ ${amount}`
