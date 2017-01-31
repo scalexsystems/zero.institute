@@ -316,7 +316,6 @@ methods: {
       const id = this.$route.params.student;
       const student = clone(this.student);
       const payload = this.sanitizeInput(student);
-debugger;
 
         this.$http.put(`people/students/${id}`, payload )
        .then(() => {
