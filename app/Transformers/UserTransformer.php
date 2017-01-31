@@ -36,7 +36,7 @@ class UserTransformer extends Transformer
                 'verified' => is_null($user->verification_token),
                 'approved' => (bool) $user->approved,
                 'permissions' => [
-                    'courses' => trust($user)->to(Action::UPDATE_COURSE),
+                    'courses' => trust($user)->is('course-manager'),
                     'settings' => trust($user)->to(Action::UPDATE_SCHOOL),
                 ],
             ], []);
