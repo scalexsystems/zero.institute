@@ -1,5 +1,5 @@
 <template>
-    <window-box title="Student Profile" subtitle="Edit profile here...">
+    <window-box title="Employee Profile" subtitle="Edit profile here...">
         <template slot="header">
             <div>
                 <a role="button" @click.prevent="updateProfile" class="btn btn-secondary">
@@ -91,7 +91,7 @@
                             <div class="row">
                                 <div class="col-xs-6 col-md-4">
                                     <div class="employee-field">
-                                        <input-text title="Student UID (Roll Number)" v-model="employee.uid"></input-text>
+                                        <input-text title="Employee UID (Roll Number)" v-model="employee.uid"></input-text>
                                     </div>
                                 </div>
                                 <div class="col-xs-6 col-md-4">
@@ -182,7 +182,7 @@
     import { WindowBox, LoadingPlaceholder, PhotoHolder } from '../../components'
 
     export default {
-        name: 'StudentProfileEdit',
+        name: 'EmployeeProfileEdit',
         data () {
             return {
                 errors: null,
@@ -224,7 +224,7 @@
             },
             dob: {
               get () {
-                return this.student.date_of_birth ? moment(this.student.date_of_birth).format('DD/MM/YYYY') : ''
+                return this.employee.date_of_birth ? moment(this.employee.date_of_birth).format('DD/MM/YYYY') : ''
               },
               set (value) {
                 const date = moment(value, 'DD/MM/YYYY', true)
@@ -235,12 +235,12 @@
             },
             doj: {
               get () {
-               return this.student.date_of_joining ? moment(this.student.date_of_joining).format('DD/MM/YYYY') : ''
+               return this.employee.date_of_joining ? moment(this.employee.date_of_joining).format('DD/MM/YYYY') : ''
               },
               set (value) {
                 const date = moment(value, 'DD/MM/YYYY', true)
                 if (date.isValid()) {
-                this.student.date_of_joining = date.toISOString()
+                this.employee.date_of_joining = date.toISOString()
                 }
               }
             },
@@ -268,7 +268,7 @@
                 this.getCities();
             }
 
-            this.getStudent()
+            this.getEmployee()
         },
         filters: {
             currency (value) {
@@ -313,15 +313,20 @@
                         })
             },
             updateProfile() {
-                const id = this.$route.params.employees;
+                const id = this.$route.params.employee;
                 const student = clone(this.employee);
                 const payload = this.sanitizeInput(student);
 
                 this.$http.put(`people/employees/${id}`, payload )
-                        .then((result) =>{
-                            this.$router.go(-1);
-                        })
-                        .catch(response => response);
+                .then(() => {
+                    const name = ''.concat(this.employee.first_name, ' ', this.remote.middle_name,  ' ', this.employee.last_name);
+                    this.editUser({
+                    photo: this.employee.photo,
+                    name,
+                })
+                this.$router.go(-1);
+            })
+            .catch(response => response);
             },
             sanitizeInput(input) {
                 Object.keys(input).forEach(k =>
@@ -339,10 +344,11 @@
                 getDepartments: actions.getDepartments,
                 getDisciplines: actions.getDisciplines,
                 getCities: actions.getCities,
+                editUser: actions.editUser,
             })
         },
         watch: {
-            $route: 'getStudent'
+            $route: 'getEmployee'
         }
     }
 </script>

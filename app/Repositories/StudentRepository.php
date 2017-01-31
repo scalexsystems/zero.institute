@@ -7,6 +7,7 @@ use Scalex\Zero\Models\Geo\Address;
 use Scalex\Zero\Models\Guardian;
 use Scalex\Zero\Models\School;
 use Scalex\Zero\Models\Student;
+use Scalex\Zero\User;
 use Znck\Repositories\Repository;
 
 /**
@@ -143,7 +144,6 @@ class StudentRepository extends Repository
 
     public function updating(Student $student, array $attributes)
     {
-        $attributes = array_except($attributes, ['date_of_birth', 'date_of_admission']);
         $student->fill($attributes);
 
         if (array_has($attributes, 'address') && !empty($attributes['address'])) {
@@ -166,6 +166,16 @@ class StudentRepository extends Repository
         if (array_has($attributes, 'photo_id')) {
             attach_attachment($student, 'profilePhoto', find($attributes, 'photo_id', Attachment::class));
         }
+
+        $userAttributes = [
+            'photo_id' => data_get($attributes, 'photo_id'),
+            'name' => str_replace('  ', ' ',
+                data_get($attributes, 'first_name') . ' ' .
+                data_get($attributes, 'middle_name') . ' ' .
+                data_get($attributes, 'last_name')
+            ),
+        ];
+        repository(User::class)->update($student->user, $userAttributes);
 
         $student->bio = $this->getBio($student);
 

@@ -5,6 +5,7 @@ use Scalex\Zero\Criteria\OfSchool;
 use Scalex\Zero\Models\Attachment;
 use Scalex\Zero\Models\Geo\Address;
 use Scalex\Zero\Models\Teacher;
+use Scalex\Zero\User;
 use Znck\Repositories\Repository;
 
 /**
@@ -106,7 +107,7 @@ class TeacherRepository extends Repository
                 'address' => repository(Address::class)->getRules($attributes, $teacher->address),
             ]);
 
-        $rules['uid'] = 'required|unique:teachers,uid,'.$teacher->id.',id,school_id,'.current_user()->school_id;
+        $rules['uid'] = 'required|unique:teachers,uid,' . $teacher->id . ',id,school_id,' . current_user()->school_id;
 
         return array_only($rules, array_keys($attributes));
     }
@@ -164,6 +165,15 @@ class TeacherRepository extends Repository
         }
 
         $teacher->bio = $this->getBio($teacher);
+        $userAttributes = [
+            'photo_id' => data_get($attributes, 'photo_id'),
+            'name' => str_replace('  ', ' ',
+                data_get($attributes, 'first_name') . ' ' .
+                data_get($attributes, 'middle_name') . ' ' .
+                data_get($attributes, 'last_name')
+            ),
+        ];
+        repository(User::class)->update($teacher->user, $userAttributes);
 
         return $teacher->update();
     }

@@ -22,7 +22,7 @@ class TeacherPolicy extends AbstractPolicy
 
     public function update(User $user, Teacher $teacher)
     {
-        return trust($user)->to(Action::VIEW_TEACHER) or $this->isHimself($user, $teacher);
+        return trust($user)->to(Action::UPDATE_TEACHER) or $this->isHimself($user, $teacher);
     }
 
     public function updatePhoto(User $user, Teacher $teacher)
