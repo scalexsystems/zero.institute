@@ -20,7 +20,7 @@
                <div class="name">{{ name }}</div>
                <div class="school text-capitalize"> {{ userType }} </div>
              </div>
-            <img class="navbar-user-photo" width="28" height="28" src="../assets/person.jpg">
+            <img class="navbar-user-photo" width="28" height="28" :src="user.photo">
            </div>
         </a>
         <div class="dropdown-menu dropdown-menu-right user-menu-dropdown" aria-labelledby="navbar-toggler">

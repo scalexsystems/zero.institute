@@ -29,7 +29,7 @@
           <div class="col-xs-12 col-lg-8" v-if="success">
             <div class="card">
               <h5 class="card-header bg-white">
-                Person Information
+                Personal Information
               </h5>
               <div class="card-block">
                 <div class="row">
