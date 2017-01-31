@@ -79,10 +79,8 @@ class TeacherTransformer extends Transformer
 
     public function includeAddress(Teacher $teacher)
     {
-        return allow(
-            'read-address', $teacher,
-            $this->item($teacher->address, transformer($teacher->address)),
-            $this->null()
+        return $this->item(
+            allow('read-address', $teacher, $teacher->address)
         );
     }
 }

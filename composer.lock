@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e8c844de16d03cd98312a78f02899683",
-    "content-hash": "eeb858d0e454440731d4b99c3c90fd20",
+    "hash": "058fb8ed3218cc48a6bd8b1f22b2b016",
+    "content-hash": "1b842108b499aafa3c734602e4193016",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -2569,6 +2569,121 @@
             "time": "2016-12-22 14:09:01"
         },
         {
+            "name": "sentry/sentry",
+            "version": "1.6.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/getsentry/sentry-php.git",
+                "reference": "7656110b7577c4239b5c76a5c2d67261b0122ca0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/getsentry/sentry-php/zipball/7656110b7577c4239b5c76a5c2d67261b0122ca0",
+                "reference": "7656110b7577c4239b5c76a5c2d67261b0122ca0",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "php": ">=5.2.4"
+            },
+            "conflict": {
+                "raven/raven": "*"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^1.8.0",
+                "monolog/monolog": "*",
+                "phpunit/phpunit": "^4.8 || ^5.0"
+            },
+            "suggest": {
+                "monolog/monolog": "Automatically capture Monolog events as breadcrumbs"
+            },
+            "bin": [
+                "bin/sentry"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.6.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Raven_": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "David Cramer",
+                    "email": "dcramer@gmail.com"
+                }
+            ],
+            "description": "A PHP client for Sentry (http://getsentry.com)",
+            "homepage": "http://getsentry.com",
+            "keywords": [
+                "log",
+                "logging"
+            ],
+            "time": "2016-12-14 21:57:27"
+        },
+        {
+            "name": "sentry/sentry-laravel",
+            "version": "0.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/getsentry/sentry-laravel.git",
+                "reference": "d6f3f58fc80ab5f2dc66863328d821bce479196b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/getsentry/sentry-laravel/zipball/d6f3f58fc80ab5f2dc66863328d821bce479196b",
+                "reference": "d6f3f58fc80ab5f2dc66863328d821bce479196b",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "4.*|5.*",
+                "php": ">=5.2.4",
+                "sentry/sentry": ">=1.6.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^1.8.0",
+                "phpunit/phpunit": "^4.6.6"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.6.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Sentry\\SentryLaravel\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "David Cramer",
+                    "email": "dcramer@gmail.com"
+                }
+            ],
+            "description": "Laravel integration for Sentry (https://sentry.io)",
+            "homepage": "https://sentry.io",
+            "keywords": [
+                "errors",
+                "laravel",
+                "logging",
+                "sentry"
+            ],
+            "time": "2017-01-24 20:49:59"
+        },
+        {
             "name": "swiftmailer/swiftmailer",
             "version": "v5.4.5",
             "source": {
@@ -3718,12 +3833,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/znck/attach.git",
-                "reference": "754fdc48605fd386c08841996206c7f7c4767d5a"
+                "reference": "18f1de689a9f01e9e177d47e993a71e9bdb1ace2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/znck/attach/zipball/754fdc48605fd386c08841996206c7f7c4767d5a",
-                "reference": "754fdc48605fd386c08841996206c7f7c4767d5a",
+                "url": "https://api.github.com/repos/znck/attach/zipball/18f1de689a9f01e9e177d47e993a71e9bdb1ace2",
+                "reference": "18f1de689a9f01e9e177d47e993a71e9bdb1ace2",
                 "shasum": ""
             },
             "require": {
@@ -3769,7 +3884,7 @@
                 "attach",
                 "znck"
             ],
-            "time": "2016-12-19 11:26:00"
+            "time": "2017-01-30 16:57:15"
         },
         {
             "name": "znck/cities",
@@ -3926,12 +4041,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/znck/repository.git",
-                "reference": "c908f7a0d0237823cd591e96fa7e877d56c72059"
+                "reference": "9f4518a61703497de84886f365a029e0e0480df0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/znck/repository/zipball/c908f7a0d0237823cd591e96fa7e877d56c72059",
-                "reference": "c908f7a0d0237823cd591e96fa7e877d56c72059",
+                "url": "https://api.github.com/repos/znck/repository/zipball/9f4518a61703497de84886f365a029e0e0480df0",
+                "reference": "9f4518a61703497de84886f365a029e0e0480df0",
                 "shasum": ""
             },
             "require": {
@@ -3975,7 +4090,7 @@
                 "repositories",
                 "repository"
             ],
-            "time": "2017-01-24 10:38:54"
+            "time": "2017-01-26 12:34:16"
         },
         {
             "name": "znck/states",
@@ -4031,12 +4146,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/znck/transformer.git",
-                "reference": "3e9e8a7b64446215a10bd17dc56c49c13c3f5f01"
+                "reference": "b0cd77107d13153ad0c00933a7c1929742620138"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/znck/transformer/zipball/3e9e8a7b64446215a10bd17dc56c49c13c3f5f01",
-                "reference": "3e9e8a7b64446215a10bd17dc56c49c13c3f5f01",
+                "url": "https://api.github.com/repos/znck/transformer/zipball/b0cd77107d13153ad0c00933a7c1929742620138",
+                "reference": "b0cd77107d13153ad0c00933a7c1929742620138",
                 "shasum": ""
             },
             "require": {
@@ -4080,7 +4195,7 @@
                 "repositories",
                 "transformer"
             ],
-            "time": "2017-01-24 11:09:06"
+            "time": "2017-01-30 04:37:21"
         },
         {
             "name": "znck/trust",

@@ -35,9 +35,13 @@ class StudentPolicy extends AbstractPolicy
         return $this->view($user, $student);
     }
 
+    public function updatePhoto(User $user, Student $student)
+    {
+        return trust($user)->to(Action::UPDATE_STUDENT) or $this->isHimself($user, $student);
+    }
+
     public function invite(User $user)
     {
-        return true;
         return trust($user)->to(Action::INVITE_STUDENT);
     }
 }

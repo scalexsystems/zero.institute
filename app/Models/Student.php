@@ -1,5 +1,6 @@
 <?php namespace Scalex\Zero\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Scalex\Zero\Contracts\Database\BelongsToSchool;
 use Scalex\Zero\Contracts\Person;
@@ -166,5 +167,13 @@ class Student extends BaseModel implements Person, BelongsToSchool
     public function getRouteKeyName()
     {
         return 'uid';
+    }
+
+    public function setDateOfAdmissionAttribute($value) {
+        $this->attributes['date_of_admission'] = Carbon::parse($value);
+    }
+
+    public function setDateOfBirthAttribute($value) {
+        $this->attributes['date_of_birth'] = Carbon::parse($value);
     }
 }

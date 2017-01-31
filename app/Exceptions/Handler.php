@@ -39,6 +39,15 @@ class Handler extends ExceptionHandler
     ];
 
     /**
+     * @param \Exception $e
+     */
+    protected function sentryCapture(Exception $e) {
+        if (app()->environment('production') and $this->shouldReport($e)) {
+            app('sentry')->captureException($e);
+        }
+    }
+
+    /**
      * Convert an authentication exception into an unauthenticated response.
      *
      * @param  \Illuminate\Http\Request $request
@@ -116,7 +125,9 @@ class Handler extends ExceptionHandler
             'trace' => FlattenException::create($e)->toArray(),
         ];
 
-        Log::error('UNKNOWN EXCEPTION: '.get_class($e), $context);
+        Log::error('UNKNOWN EXCEPTION: ' . get_class($e), $context);
+        $this->sentryCapture($e);
+
 
         if (config('app.debug')) {
             $response += ['debug' => $context];
@@ -140,5 +151,12 @@ class Handler extends ExceptionHandler
             ],
             422
         );
+    }
+
+    public function report(Exception $e)
+    {
+        $this->sentryCapture($e);
+
+        parent::report($e);
     }
 }

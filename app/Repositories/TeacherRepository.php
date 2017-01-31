@@ -2,9 +2,9 @@
 
 use Illuminate\Database\Eloquent\Model;
 use Scalex\Zero\Criteria\OfSchool;
-use Scalex\Zero\Models\Teacher;
-use Scalex\Zero\Models\Geo\Address;
 use Scalex\Zero\Models\Attachment;
+use Scalex\Zero\Models\Geo\Address;
+use Scalex\Zero\Models\Teacher;
 use Znck\Repositories\Repository;
 
 /**
@@ -31,7 +31,7 @@ class TeacherRepository extends Repository
      */
     protected $rules = [
         // Basic Information
-        'photo_id' => 'nullable|exists:documents,id',
+        'photo_id' => 'nullable|exists:attachments,id',
         'first_name' => 'required|max:255',
         'middle_name' => 'nullable|max:255',
         'last_name' => 'required|max:255',
@@ -46,7 +46,7 @@ class TeacherRepository extends Repository
         'govt_id' => 'nullable|max:255',
 
         // Related to School
-        'uid' => 'required|unique:teachers,uid,NULL,id,school_id,',
+        'uid' => '',
         'date_of_joining' => 'nullable|date',
         'job_title' => 'nullable|max:255',
         'department_id' => 'required|exists:departments,id',
@@ -91,14 +91,6 @@ class TeacherRepository extends Repository
         }
     }
 
-    public function getRules(array $attributes = [], Model $model = null): array
-    {
-        $data = parent::getRules($attributes, $model);
-        // $data['uid'] = current_user()->school_id;
-
-        return $data;
-    }
-
 
     /**
      * @param array $rules
@@ -114,23 +106,26 @@ class TeacherRepository extends Repository
                 'address' => repository(Address::class)->getRules($attributes, $teacher->address),
             ]);
 
+        $rules['uid'] = 'required|unique:teachers,uid,'.$teacher->id.',id,school_id,'.current_user()->school_id;
+
         return array_only($rules, array_keys($attributes));
     }
 
     public function getCreateRules(array $attributes)
     {
-        return $this->rules + array_dot(
+        $rules = $this->rules + array_dot(
             [
                 'address' => repository(Address::class)->getRules($attributes),
             ]);
+
+        $rules['uid'] = 'required|unique:teachers,uid,NULL,id,school_id,'.current_user()->school_id;
+
+        return $rules;
     }
 
     public function creating(Teacher $teacher, array $attributes)
     {
         $teacher->fill($attributes);
-
-        // Start Transaction.
-        $this->startTransaction();
 
         $teacher->address()->associate(repository(Address::class)->create(array_get($attributes, 'address', [])));
         $teacher->department()->associate(find($attributes, 'department_id'));
@@ -152,21 +147,20 @@ class TeacherRepository extends Repository
     {
         $teacher->fill($attributes);
 
-        // Start Transaction.
-        $this->startTransaction();
-
-        if (array_has($attributes, 'address')) {
-            $teacher->address()
-                    ->associate(
-                        repository(Address::class)
-                            ->update($teacher->address, array_get($attributes, 'address'))
-                    );
-        }
         if (array_has($attributes, 'department_id')) {
             $teacher->department()->associate(find($attributes, 'department_id'));
         }
         if (array_has($attributes, 'photo_id')) {
             attach_attachment($teacher, 'profilePhoto', find($attributes, 'photo_id', Attachment::class));
+        }
+        if (array_has($attributes, 'address') && !empty($attributes['address'])) {
+            if (isset($teacher->address)) {
+                repository(Address::class)
+                    ->update($teacher->address, $attributes['address']);
+
+            } else {
+                $teacher->address()->associate(repository(Address::class)->create(array_get($attributes, 'address', [])));
+            }
         }
 
         $teacher->bio = $this->getBio($teacher);
@@ -176,7 +170,6 @@ class TeacherRepository extends Repository
 
     public function getBio(Teacher $teacher)
     {
-        return $teacher->job_title.' ・ '
-               .($teacher->department->short_name ?? $teacher->department->name);
+        return '';
     }
 }

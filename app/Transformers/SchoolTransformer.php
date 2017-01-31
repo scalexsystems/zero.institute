@@ -49,7 +49,7 @@ class SchoolTransformer extends Transformer
      */
     protected function logo(School $school)
     {
-        return ($school->relationLoaded('logo') and $school->logo)
+        return ($school->has('logo') and $school->logo)
             ? attach_url($school->logo)
             : asset('img/placeholder-64.jpg');
     }

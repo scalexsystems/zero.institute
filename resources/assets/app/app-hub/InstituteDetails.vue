@@ -130,7 +130,9 @@ export default{
         })
     },
     logoUpdated (src, response) {
-      this.institute.push({ logo_id: response.body.id })
+      this.institute.logo = response.body.path;
+      this.institute.logo_id = response.body.id;
+
     }
   }
 }

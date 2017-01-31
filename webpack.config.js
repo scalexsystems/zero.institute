@@ -70,7 +70,7 @@ module.exports.output = Mix.output()
  |
  */
 
-const extractAppCss = new plugins.ExtractTextPlugin(process.env.NODE_ENV === 'production' ? '/css/app.[contenthash].css' : '/css/app.css')
+const extractAppCss = new plugins.ExtractTextPlugin(Mix.inProduction ? '/css/app.[contenthash].css' : '/css/app.css')
 
 module.exports.module = {
   rules: [
@@ -93,7 +93,8 @@ module.exports.module = {
 
         postcss: [
           require('autoprefixer')
-        ]
+        ],
+        sourceMaps: true
       }
     },
 
@@ -188,19 +189,6 @@ module.exports.stats = {
 module.exports.performance = {
   hints: false
 }
-
-/*
- |--------------------------------------------------------------------------
- | Devtool
- |--------------------------------------------------------------------------
- |
- | Sourcemaps allow us to access our original source code within the
- | browser, even if we're serving a bundled script or stylesheet.
- | You may activate sourcemaps, by adding Mix.sourceMaps().
- |
- */
-
-module.exports.devtool = Mix.isProduction ? '#source-map' : '#inline-source-map'
 
 /*
  |--------------------------------------------------------------------------
@@ -335,14 +323,16 @@ if (Mix.inProduction) {
       debug: false,
       beautify: false,
       mangle: {
-          screw_ie8: true,
-          keep_fnames: true
+          screw_ie8: true
       },
       compress: {
           screw_ie8: true,
           warnings: false
       },
-      comments: false
+      output: {
+        comments: false
+      },
+      sourceMap: true
     }),
 
     new webpack.optimize.CommonsChunkPlugin({
@@ -379,3 +369,17 @@ if (Mix.inProduction) {
  |
  */
 Mix.finalize(module.exports)
+
+
+/*
+ |--------------------------------------------------------------------------
+ | Devtool
+ |--------------------------------------------------------------------------
+ |
+ | Sourcemaps allow us to access our original source code within the
+ | browser, even if we're serving a bundled script or stylesheet.
+ | You may activate sourcemaps, by adding Mix.sourceMaps().
+ |
+ */
+
+module.exports.devtool = Mix.inProduction ? '#source-map' : '#inline-source-map'

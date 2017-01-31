@@ -33,6 +33,6 @@ class Session extends Model
 
     public function students()
     {
-        return $this->belongsToMany(Student::class, 'course_session_student');
+        return $this->belongsToMany(Student::class, 'course_session_student')->withTimestamps();
     }
 }

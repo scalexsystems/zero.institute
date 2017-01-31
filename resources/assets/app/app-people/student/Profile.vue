@@ -1,5 +1,9 @@
 <template>
 <window-box title="Student Profile" subtitle="See profile here...">
+   <template slot="header">
+       <router-link :to="{ name: 'student.profile.edit' }" class="btn btn-secondary">
+           <i class="fa fa-fw fa-pencil" v-tooltip="'Edit Profile'"></i> <span class="hidden-md-down">Edit Profile </span></router-link>
+   </template>
   <div class="container my-1">
       <div class="row">
           <div class="col-xs-12 col-lg-4 text-xs-center">
@@ -377,7 +381,7 @@ export default {
       return `₹ ${amount}`
     },
     dateForHumans (value) {
-      return moment(value).format('D MMMM YYYY')
+      return value ? moment(value).format('D MMMM YYYY') : '';
     }
   },
   methods: {

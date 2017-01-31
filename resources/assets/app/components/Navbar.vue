@@ -28,13 +28,18 @@
             <div class="name">{{ name }}</div>
             <div class="school">{{ schoolName }}</div>
           </div>
+            <div class="dropdown-item">
+                <router-link :to="{ name: `${user.type}.profile`, params: params }" class="nav-link"  style="color: inherit;"> View Profile </router-link>
+            </div>
           <div class="dropdown-divider"></div>
-          <div class="dropdown-item" href="#">
+          <div class="dropdown-item">
             <form method="POST" action="/logout">
               <input type="hidden" name="_token" :value="token">
               <input type="submit" class="user-logout-button" value="Logout">
             </form>
           </div>
+
+
         </div>
       </div>
     </div>
@@ -59,6 +64,9 @@ export default {
   computed: {
     schoolName () {
       return this.school.name
+    },
+    params() {
+        return { [this.user.type]: this.user.person.uid }
     },
     name () {
       const user = this.user

@@ -31,7 +31,7 @@ class AddressRepository extends Repository
         'landmark' => 'nullable|max:255',
         'city_id' => 'bail|required|exists:cities,id',
         'pin_code' => 'required|digits:6',
-        'phone' => 'required|phone',
+        'phone' => 'required',
         'email' => 'nullable|email',
     ];
 }
