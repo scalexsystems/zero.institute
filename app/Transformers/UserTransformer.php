@@ -37,6 +37,7 @@ class UserTransformer extends Transformer
                 'approved' => (bool) $user->approved,
                 'permissions' => [
                     'courses' => trust($user)->to(Action::UPDATE_COURSE),
+                    'people' => trust($user)->is('admin'),
                     'settings' => trust($user)->to(Action::UPDATE_SCHOOL),
                 ],
             ], []);
