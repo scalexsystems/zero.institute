@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-async function json (response) {
+async function format (response) {
   if (/(text|application)\/json/i.test(response.headers.get('Content-Type'))) {
     return await response.json()
   }
@@ -8,46 +8,41 @@ async function json (response) {
   return response
 }
 
-async function wrap (request) {
-  try {
-    const response = await request
-
-    return json(response)
-  } catch (error) {
-
-  }
+async function process (response) {
 }
 
 export default {
   async any (method, ...args) {
+    const shouldThrow = (args[0] === true)
+
+    if (shouldThrow) args.shift()
+
     try {
-      const response = await Vue.http[method](...args)
+      const response = await Vue.http[method].apply(Vue.http, args)
 
-      return json(response)
+      return format(response)
     } catch (error) {
-      if (error.status >= 422) {
-        return json(error)
-      }
+      error = await process(error)
 
-      return error
+      if (shouldThrow) throw error
     }
   },
 
   get (...args) {
     return this.any('get', ...args)
-  }
+  },
 
   put (...args) {
     return this.any('put', ...args)
-  }
+  },
 
   post (...args) {
     return this.any('post', ...args)
-  }
+  },
 
   patch (...args) {
     return this.any('patch', ...args)
-  }
+  },
 
   delete (...args) {
     return this.any('delete', ...args)

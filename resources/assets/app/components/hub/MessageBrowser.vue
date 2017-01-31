@@ -1,7 +1,7 @@
 <template>
   <div :class="[ $style.messageBrowser ]">
     <modal :open="photos !== null" @close="cursor = -1" wrapper="d-flex flex-row">
-      <photo-browser :photos="photos" class="flex-auto fullscreen" @end="next" @start="prev"></photo-broser>
+      <photo-browser :photos="photos" class="flex-auto fullscreen" @end="next" @start="prev"></photo-browser>
     </modal>
 
     <message v-for="(message, index) in messages" :key="message"

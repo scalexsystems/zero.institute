@@ -19,6 +19,18 @@ export const each = (any, cb) => {
   }
 }
 
+export function isObject (any) {
+  return any !== null && typeof (any) === 'object'
+}
+
+export function isArray (any) {
+  return isObject(any) && any instanceof Array
+}
+
+export function toArray (any) {
+  return isArray(any) ? any : [any]
+}
+
 // NOTICE: UNSAFE with unsafe strings; only use on previously-escaped ones!
 // export const unescapeHtml = (escapedString) => {
 //   const div = document.createElement('div')
