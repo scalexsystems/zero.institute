@@ -324,7 +324,14 @@
                     photo: this.employee.photo,
                     name,
                 })
-                this.$router.go(-1);
+                if(this.remote.uid !== id) {
+                    this.$router.push({
+                        name: 'employee.profile',
+                        params: { employee: this.remote.uid }
+                    });
+                } else {
+                  this.$router.go(-1);
+                }
             })
             .catch(response => response);
             },

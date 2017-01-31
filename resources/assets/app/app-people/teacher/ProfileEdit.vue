@@ -316,7 +316,14 @@
                     photo: this.teacher.photo,
                     name,
                 })
-                this.$router.go(-1);
+                if (this.remote.uid !== id) {
+                    this.$router.push({
+                        name: 'student.profile',
+                        params: { student: this.remote.uid }
+                    });
+                } else {
+                    this.$router.go(-1);
+                }
             })
             .catch(response => response);
             },

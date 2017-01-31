@@ -316,16 +316,24 @@ methods: {
       const id = this.$route.params.student;
       const student = clone(this.student);
       const payload = this.sanitizeInput(student);
+debugger;
 
-      this.$http.put(`people/students/${id}`, payload )
+        this.$http.put(`people/students/${id}`, payload )
        .then(() => {
          const name = ''.concat(this.student.first_name, ' ', this.remote.middle_name,  ' ', this.student.last_name);
           this.editUser({
           photo: this.student.photo,
           name,
       })
-        this.$router.go(-1);
-       })
+           if(this.remote.uid !== id) {
+            this.$router.push({
+                name: 'student.profile',
+                params: { student: this.remote.uid }
+            });
+        } else {
+            this.$router.go(-1);
+        }
+    })
        .catch(response => response);
     },
     sanitizeInput(input) {

@@ -16,7 +16,10 @@ export default new Vuex.Store({
   mutations: {
     SET_USER (state, user) {
       state.user = user
-    }
+    },
+    UPDATE_USER(state,  data ) {
+      Object.assign(state.user, data);
+    },
   },
   getters: {
     user (state) {
@@ -33,7 +36,10 @@ export default new Vuex.Store({
             return result
           })
           .catch(response => response)
-    }
+    },
+    editUser({ commit }, data ) {
+      commit('UPDATE_USER', data );
+    },
   },
 
   modules: { app, school },
