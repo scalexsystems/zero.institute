@@ -1,5 +1,5 @@
 <template>
-<window-box title="Student Profile" subtitle="Edit profile here...">
+<window-box title="Student Profile" subtitle="Edit Your Personal Information, Contact Information, Medical Information">
 <template slot="header">
 <div>
     <a role="button" @click.prevent="updateProfile" class="btn btn-secondary">
