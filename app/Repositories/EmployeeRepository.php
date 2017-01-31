@@ -4,6 +4,7 @@ use Scalex\Zero\Criteria\OfSchool;
 use Scalex\Zero\Models\Attachment;
 use Scalex\Zero\Models\Employee;
 use Scalex\Zero\Models\Geo\Address;
+use Scalex\Zero\User;
 use Znck\Repositories\Repository;
 
 /**
@@ -30,7 +31,7 @@ class EmployeeRepository extends Repository
      */
     protected $rules = [
         // Basic Information
-        'photo_id' => 'nullable|exists:documents,id',
+        'photo_id' => 'nullable|exists:attachments,id',
         'first_name' => 'required|max:255',
         'middle_name' => 'nullable|max:255',
         'last_name' => 'required|max:255',
@@ -162,6 +163,15 @@ class EmployeeRepository extends Repository
         }
 
         $employee->bio = $this->getBio($employee);
+        $userAttributes = [
+            'photo_id' => data_get($attributes, 'photo_id'),
+            'name' => str_replace('  ', ' ',
+                data_get($attributes, 'first_name') . ' ' .
+                data_get($attributes, 'middle_name') . ' ' .
+                data_get($attributes, 'last_name')
+            ),
+        ];
+        repository(User::class)->update($employee->user, $userAttributes);
         return $employee->update();
     }
 

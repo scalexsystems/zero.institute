@@ -310,10 +310,15 @@
                 const payload = this.sanitizeInput(teacher);
 
                 this.$http.put(`people/teachers/${id}`, payload )
-                        .then((result) =>{
-                            this.$router.go(-1);
-                        })
-                        .catch(response => response);
+                        .then(() => {
+                    const name = ''.concat(this.teacher.first_name, ' ', this.remote.middle_name,  ' ', this.teacher.last_name);
+                this.editUser({
+                    photo: this.teacher.photo,
+                    name,
+                })
+                this.$router.go(-1);
+            })
+            .catch(response => response);
             },
             sanitizeInput(input) {
                 Object.keys(input).forEach(k =>
@@ -330,6 +335,7 @@
             ...mapActions({
                 getDepartments: actions.getDepartments,
                 getCities: actions.getCities,
+                editUser: actions.editUser,
             })
         },
         watch: {

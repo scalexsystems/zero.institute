@@ -300,6 +300,7 @@ methods: {
                         'email' : '',
                         'phone' : '',
                     };
+
                 })
                 .catch((response) => {
                     response.json()
@@ -317,8 +318,13 @@ methods: {
       const payload = this.sanitizeInput(student);
 
       this.$http.put(`people/students/${id}`, payload )
-       .then((result) =>{
-         this.$router.go(-1);
+       .then(() => {
+         const name = ''.concat(this.student.first_name, ' ', this.remote.middle_name,  ' ', this.student.last_name);
+          this.editUser({
+          photo: this.student.photo,
+          name,
+      })
+        this.$router.go(-1);
        })
        .catch(response => response);
     },
@@ -338,6 +344,7 @@ methods: {
         getDepartments: actions.getDepartments,
         getDisciplines: actions.getDisciplines,
         getCities: actions.getCities,
+        editUser: actions.editUser,
     })
 },
 watch: {
