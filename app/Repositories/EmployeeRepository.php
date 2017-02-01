@@ -104,14 +104,14 @@ class EmployeeRepository extends Repository
                 'address' => repository(Address::class)->getRules($attributes, $employee->address),
             ]);
 
-        $rules['uid'] ='required|unique:teachers,uid,'.$employee->uid.',id,school_id,'.current_user()->school_id;
+        $rules['uid'] ='required|unique:employees,uid,'.$employee->id.',id,school_id,'.current_user()->school_id;
 
         return array_only($rules, array_keys($attributes));
     }
 
     public function getCreateRules(array $attributes)
     {
-        $this->rules['uid'] = 'required|unique:teachers,uid,NULL,id,school_id,'.current_user()->school_id;
+        $this->rules['uid'] = 'required|unique:employees,uid,NULL,id,school_id,'.current_user()->school_id;
 
         return $this->rules + array_dot(
             [

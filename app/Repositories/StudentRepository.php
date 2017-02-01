@@ -100,7 +100,7 @@ class StudentRepository extends Repository
                 'father' => repository(Guardian::class)->getRules($attributes, $student->father),
             ]);
 
-        $rules['uid'] = 'required|unique:teachers,uid,'.$student->uid.',id,school_id,'.current_user()->school_id;
+        $rules['uid'] = 'required|unique:students,uid,'.$student->id.',id,school_id,'.current_user()->school_id;
 
         return array_only($rules, array_keys($attributes));
     }
@@ -109,7 +109,7 @@ class StudentRepository extends Repository
     {
         $guardianRules = repository(Guardian::class)->getRules($attributes);
 
-        $this->rules['uid'] = 'required|unique:teachers,uid,NULL,id,school_id,'.current_user()->school_id;
+        $this->rules['uid'] = 'required|unique:students,uid,NULL,id,school_id,'.current_user()->school_id;
 
         return $this->rules + array_dot(
             [
