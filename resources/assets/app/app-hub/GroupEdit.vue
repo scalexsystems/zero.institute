@@ -15,7 +15,7 @@
       <div class="col-xs-12 col-lg-8 offset-lg-2">
         <input-text title="Name of the group" required v-model="values.name" :feedback="errors.name"></input-text>
       </div>
-      <div class="col-xs-12 col-lg-8 offset-lg-2">
+      <div class="col-xs-12 col-lg-8 offset-lg-2" v-if="!isCourse">
         <input-radio title="Group Type" required v-model="values.type" :options="groupTypes"
                      :feedback="errors.type"></input-radio>
       </div>
@@ -81,6 +81,10 @@ export default {
       const group = groups[index]
 
       return group
+    },
+    isCourse() {
+      const group = this.group;
+     return group ? group.type === 'course' : false;
     },
     ...mapGetters(['user']),
     ...mapGetters({
