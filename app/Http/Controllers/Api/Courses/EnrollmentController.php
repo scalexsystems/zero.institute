@@ -14,7 +14,7 @@ class EnrollmentController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api,web');
-        }
+    }
 
     /**
      * Get list of enrolled students in the course.
