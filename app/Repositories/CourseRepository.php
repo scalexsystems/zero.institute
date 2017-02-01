@@ -4,6 +4,7 @@ namespace Scalex\Zero\Repositories;
 
 use Scalex\Zero\Models\Group;
 use Scalex\Zero\Models\Course;
+use Scalex\Zero\Models\Student;
 use Scalex\Zero\Models\Teacher;
 use Scalex\Zero\Models\Attachment;
 use Scalex\Zero\Models\Course\Constraint;
