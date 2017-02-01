@@ -152,11 +152,7 @@ export default {
         .then(response => response.json())
         .then((result) => {
           set(this.students, result.data)
-          if (isLastRecord(result)) {
-            actions.complete()
-          } else {
-            actions.loaded()
-          }
+          actions.loaded();
         })
         .catch(() => actions.complete())
     },
