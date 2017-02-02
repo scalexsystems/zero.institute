@@ -1,4 +1,4 @@
-<?php namespace Scalex\Zero\Criteria;
+<?php namespace Scalex\Zero\Criteria\Message\Direct;
 
 use Illuminate\Database\Query\JoinClause;
 use Scalex\Zero\User;
@@ -17,6 +17,15 @@ class UserHasSentMessageTo implements Criteria
         $this->user = $user;
     }
 
+    /**
+     * Find users who has send a message to or received a message from the provided user.
+     * And sort users according to time elapsed since last message.
+     *
+     * @param \Illuminate\Database\Query\Builder $query
+     * @param \Znck\Repositories\Contracts\Repository $repository
+     *
+     * @return void
+     */
     public function apply($query, Repository $repository)
     {
         $query->join('messages', function (JoinClause $join) {
@@ -30,6 +39,7 @@ class UserHasSentMessageTo implements Criteria
                      ->where('messages.sender_id', $this->user->getKey());
             })->orderBy('messages.created_at', 'desc');
         });
+
         $query->select('users.*')->groupBy('users.id');
     }
 }

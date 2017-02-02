@@ -1,4 +1,4 @@
-<?php namespace Scalex\Zero\Events;
+<?php namespace Scalex\Zero\Events\Message;
 
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
@@ -17,23 +17,22 @@ class NewMessage implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct(Message $message)
-    {
+    public function __construct(Message $message) {
         $this->message = $message;
     }
 
-    public function broadcastWith()
-    {
-        return ['read_at' => null, 'unread' => true] + transform($this->message);
+    public function broadcastWith() {
+        return transform($this->message);
     }
 
     /**
      * Get the channels the event should broadcast on.
      *
-     * @return Channel|array
+     * @return \Illuminate\Broadcasting\PresenceChannel|\Illuminate\Broadcasting\PrivateChannel
      */
-    public function broadcastOn()
-    {
-        return $this->message->receiver->getChannel();
+    public function broadcastOn() {
+        return is_null($this->message->intended_for) ?
+            $this->message->receiver->getChannel() :
+            $this->message->intended->getChannel();
     }
 }

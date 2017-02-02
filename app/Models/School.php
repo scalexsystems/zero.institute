@@ -47,4 +47,14 @@ class School extends BaseModel
     {
         return $this->belongsTo(Attachment::class);
     }
+
+    public function getChannelName() : string
+    {
+        return $this->getMorphClass().'-'.$this->getKey();
+    }
+
+    public function getChannel()
+    {
+        return new PresenceChannel($this->getChannelName());
+    }
 }

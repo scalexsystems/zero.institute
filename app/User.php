@@ -11,14 +11,12 @@ use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 use Scalex\Zero\Contracts\Communication\ReceivesMessage;
-use Scalex\Zero\Contracts\Communication\SendsMessage;
 use Scalex\Zero\Contracts\Database\BelongsToSchool;
-use Scalex\Zero\Models\Attachment;
 use Scalex\Zero\Database\BaseModel;
+use Scalex\Zero\Models\Attachment;
 use Scalex\Zero\Models\Group;
-use Scalex\Zero\Models\Message;
+use Scalex\Zero\Models\Role;
 use Scalex\Zero\Models\School;
-use Scalex\Zero\Others\LastMessageAt;
 use Znck\Trust\Contracts\Permissible as PermissibleContract;
 use Znck\Trust\Traits\Permissible;
 
@@ -63,7 +61,23 @@ class User extends BaseModel implements
         return $this->belongsTo(School::class);
     }
 
+    /**
+     * User photo. (@property \Scalex\Zero\Models\Attachment $photo)
+     *
+     * @deprecated in v0.4.0. TODO: Remove in v0.5+.
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function profilePhoto()
+    {
+        return $this->photo();
+    }
+
+    /**
+     * User photo. (@property \Scalex\Zero\Models\Attachment $photo)
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function photo()
     {
         return $this->belongsTo(Attachment::class, 'photo_id');
     }
@@ -88,13 +102,8 @@ class User extends BaseModel implements
         return new PrivateChannel($this->getChannelName());
     }
 
-    public function lastMessageAt()
-    {
-        return new LastMessageAt((new Message())->newQuery(), $this);
-    }
-
     public function roles()
     {
-        return $this->belongsToMany(Models\Role::class)->withTimestamps()->withPivot('school_id');
+        return $this->belongsToMany(Role::class)->withTimestamps()->withPivot('school_id');
     }
 }

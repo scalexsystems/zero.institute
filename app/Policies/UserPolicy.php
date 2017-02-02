@@ -9,9 +9,9 @@ class UserPolicy extends AbstractPolicy
         return $user->getKey() === $resource->getKey();
     }
 
-    public function readAccount(User $user, User $resource)
+    public function uploadFile(User $user)
     {
-        return $user->getKey() === $resource->getKey();
+        return true;
     }
 
     public function isAdmin(User $user)
