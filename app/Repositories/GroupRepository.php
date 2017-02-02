@@ -30,7 +30,7 @@ class GroupRepository extends Repository
      */
     protected $rules = [
         'name' => 'required|max:60',
-        'type' => 'required|in:public,private',
+        'type' => 'required-if:courses,null|in:public,private',
         'school_id' => 'required|exists:schools,id',
         'owner_id' => 'required|exists:users,id',
     ];
@@ -55,7 +55,9 @@ class GroupRepository extends Repository
 
     public function updating(Group $group, array $attributes)
     {
+
         $group->fill($attributes);
+
 
         if (array_has($attributes, 'type')) {
             $group->private = hash_equals('private', $attributes['type']);

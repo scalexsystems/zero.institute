@@ -1,6 +1,6 @@
 <template>
-    <window-box title="Teacher Profile" subtitle="Edit profile here...">
-        <template slot="header">
+<window-box :title="`Edit ${title} Profile`" subtitle="Edit your Personal Information, Contact Information, Medical Information">
+    <template slot="header">
             <div>
                 <a role="button" @click.prevent="updateProfile" class="btn btn-secondary">
                     <i class="fa fa-fw fa-save hidden-lg-up" v-tooltip:bottom="'Update Course'"></i> Update Profile
@@ -244,10 +244,14 @@
             id() {
                 return this.$route.params.teacher;
             },
+            title () {
+              return (this.user.permissions && this.user.permissions.settings) ? 'Administrator' : 'Teacher';
+            },
             ...mapGetters({
                 teachers: getters.teachers,
                 departments: getters.departments,
                 cities: getters.cities,
+                user: getters.user,
             })
         },
         components: { WindowBox, LoadingPlaceholder, PhotoHolder },
@@ -316,7 +320,14 @@
                     photo: this.teacher.photo,
                     name,
                 })
-                this.$router.go(-1);
+                if (this.remote.uid !== id) {
+                    this.$router.push({
+                        name: 'student.profile',
+                        params: { student: this.remote.uid }
+                    });
+                } else {
+                    this.$router.go(-1);
+                }
             })
             .catch(response => response);
             },

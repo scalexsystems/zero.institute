@@ -36,7 +36,7 @@
                       <div class="col-xs-12 col-lg-6" v-for="(manager, index) of addedManagers">
                           <item-card :item="manager"
                                      @open="openMemberProfile(manager, index)">
-                              <div class="person-card-bio" v-if="!manager.bio"> Profile not updated </div>
+                              <div class="person-card-bio" v-if="!manager.department_id"> Profile not updated </div>
                           </item-card>
                       </div>
                   </div>
@@ -50,7 +50,7 @@
                       <div class="col-xs-12 col-lg-6" v-for="(manager, index) of managers">
                           <item-card :item="manager"
                                      @open="openMemberProfile(manager, index)">
-                              <div class="person-card-bio" v-if="!manager.bio"> Profile not updated </div>
+                              <div class="person-card-bio" v-if="!manager.department_id"> Profile not updated </div>
                           </item-card>
                       </div>
                   </div>

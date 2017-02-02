@@ -19,7 +19,8 @@ export const types = {
   SET_SCHOOL: 'school/SET_SCHOOL',
   ADD_CITIES: 'school/ADD_CITIES',
 
-  SET_USER: 'SET_USER'
+  SET_USER: 'SET_USER',
+  UPDATE_USER: 'UPDATE_USER',
 }
 
 export const actions = {
@@ -42,6 +43,7 @@ export const actions = {
   getUser: 'getUser',
   getSchool: 'school/getSchool',
   getCities: 'school/getCities',
+  editUser: 'editUser',
 }
 
 export const getters = {

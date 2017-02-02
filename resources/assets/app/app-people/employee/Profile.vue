@@ -1,5 +1,5 @@
 <template>
-<window-box title="Employee Profile" subtitle="See profile here...">
+<window-box :title="`${title} Profile`" subtitle="Personal Information, Contact Information, Medical Information">
     <template slot="header">
         <router-link :to="{ name: 'employee.profile.edit' }" class="btn btn-secondary">
             <i class="fa fa-fw fa-pencil" v-tooltip="'Edit Profile'"></i> <span class="hidden-md-down">Edit Profile </span></router-link>
@@ -30,7 +30,7 @@
           <div class="col-xs-12 col-lg-8" v-if="success">
             <div class="card">
               <h5 class="card-header bg-white">
-                Person Information
+                Personal Information
               </h5>
               <div class="card-block">
                 <div class="row">
@@ -273,9 +273,13 @@ export default {
     address() {
       return this.employee.address.length ? (this.employee.address.addressline1 + this.employee.address.addressline2) : '';
     },
+    title () {
+      return (this.user.permissions && this.user.permissions.settings) ? 'Administrator' : 'Employee' ;
+    },
     ...mapGetters({
       employees: getters.employees,
-      departments: getters.departments
+      departments: getters.departments,
+      user: getters.user,
     })
   },
   components: { WindowBox, LoadingPlaceholder },

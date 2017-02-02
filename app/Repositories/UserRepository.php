@@ -29,7 +29,7 @@ class UserRepository extends Repository
         'name' => 'nullable|max:255',
         'email' => 'required|email|max:255|unique:users',
         'password' => 'required|min:6|max:60',
-        'photo_id' => 'nullable|exists:documents,id',
+        'photo_id' => 'nullable|exists:attachments,id',
         'school_id' => 'required|exists:schools,id',
     ];
 

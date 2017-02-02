@@ -1,5 +1,5 @@
 <template>
-<window-box title="Student Profile" subtitle="Edit profile here...">
+<window-box title="Student Profile" subtitle="Edit Your Personal Information, Contact Information, Medical Information">
 <template slot="header">
 <div>
     <a role="button" @click.prevent="updateProfile" class="btn btn-secondary">
@@ -317,15 +317,22 @@ methods: {
       const student = clone(this.student);
       const payload = this.sanitizeInput(student);
 
-      this.$http.put(`people/students/${id}`, payload )
+        this.$http.put(`people/students/${id}`, payload )
        .then(() => {
          const name = ''.concat(this.student.first_name, ' ', this.remote.middle_name,  ' ', this.student.last_name);
           this.editUser({
           photo: this.student.photo,
           name,
       })
-        this.$router.go(-1);
-       })
+           if(this.remote.uid !== id) {
+            this.$router.push({
+                name: 'student.profile',
+                params: { student: this.remote.uid }
+            });
+        } else {
+            this.$router.go(-1);
+        }
+    })
        .catch(response => response);
     },
     sanitizeInput(input) {
