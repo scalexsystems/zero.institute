@@ -1,9 +1,13 @@
 <?php namespace Scalex\Zero\Repositories;
 
+use Carbon\Carbon;
+use Illuminate\Http\UploadedFile;
+use Ramsey\Uuid\Uuid;
 use Scalex\Zero\Criteria\OfSchool;
 use Scalex\Zero\Models\Attachment;
 use Scalex\Zero\Models\Group;
 use Scalex\Zero\User;
+use Znck\Attach\Builder;
 use Znck\Repositories\Repository;
 
 /**
@@ -31,53 +35,181 @@ class GroupRepository extends Repository
     protected $rules = [
         'name' => 'required|max:60',
         'type' => 'required|in:public,private',
-        'school_id' => 'required|exists:schools,id',
-        'owner_id' => 'required|exists:users,id',
     ];
 
-    public function boot()
-    {
-        $this->pushCriteria(new OfSchool(current_user()->school));
+    /**
+     * Add default criteria.
+     */
+    public function boot() {
+        if ($user = current_user()) {
+            $this->pushCriteria(new OfSchool($user->school));
+        }
     }
 
-    public function creating(Group $group, array $attributes)
-    {
-        $group->fill($attributes);
+    /**
+     * Update group photo.
+     *
+     * @param \Scalex\Zero\Models\Group $group
+     * @param Attachment $photo
+     *
+     * @return \Scalex\Zero\Models\Group
+     */
+    public function updatePhoto(Group $group, UploadedFile $file, User $user) {
+        $photo = $this->uploadProfilePhoto($group, $file, $user);
 
-        $group->private = hash_equals('private', $attributes['type']);
+        $group->photo()->associate($photo);
 
-        $group->owner()->associate(find($attributes, 'owner_id', User::class));
-        $group->school()->associate(find($attributes, 'school_id'));
-        $group->profilePhoto()->associate(find($attributes, 'photo_id', Attachment::class));
+        $this->onUpdate($group->update());
 
-        return $group->save();
+        return $group;
     }
 
-    public function updating(Group $group, array $attributes)
-    {
-        $group->fill($attributes);
+    /**
+     * Create a group and add members.
+     *
+     * @param \Scalex\Zero\User $user
+     * @param array $attributes
+     * @param array $members
+     *
+     * @return \Scalex\Zero\Models\Group
+     */
+    public function createWithMembers(User $user, array $attributes, array $members) {
+        $this->validateWith($attributes);
 
-        if (array_has($attributes, 'type')) {
-            $group->private = hash_equals('private', $attributes['type']);
-        }
+        $group = new Group($attributes);
 
-        if (array_has($attributes, 'photo_id')) {
-            attach_attachment($group, 'profilePhoto', find($attributes, 'photo_id', Attachment::class));
-        }
+        $group->school()->associate($user->school);
+        $group->owner()->associate($user);
 
-        if (array_has($attributes, ['addedMembers'])) {
-            $group->addMembers(data_get($attributes, 'addedMembers'));
-        }
+        $this->onCreate($group->save());
 
-        if (array_has($attributes, ['addedMembers'])) {
-            $group->removeMembers(data_get($attributes, 'removedMembers'));
-        }
+        $group->addMembers($members);
 
-        return $group->update();
+        return $group;
     }
 
-    public function deleting(Group $group)
-    {
-        return $group->delete();
+    /**
+     * Get members of a group.
+     *
+     * @param \Scalex\Zero\Models\Group $group
+     * @param string|null $query
+     *
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
+    public function members(Group $group, string $query = null) {
+        $query = $group->members()->getQuery();
+
+        $query->with('person', 'profilePhoto')->orderBy('name');
+
+        return $query->paginate();
+    }
+
+    /**
+     * Get groups of a user.
+     *
+     * @param \Scalex\Zero\User $user
+     *
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
+    public function groupsFor(User $user) {
+        $query = $user->groups()->getQuery();
+
+        $query->with('person', 'photo')->orderBy('name');
+
+        return $query->paginate();
+    }
+
+    /**
+     * Upload attachment to group.
+     *
+     * @param \Scalex\Zero\Models\Group $group
+     * @param \Illuminate\Http\UploadedFile $file
+     * @param \Scalex\Zero\User $user
+     * @param array $attributes
+     *
+     * @return \Scalex\Zero\Models\Attachment
+     */
+    public function uploadAttachment(Group $group, UploadedFile $file, User $user, array $attributes = []) {
+        return $this->upload($group, $file, $user, $attributes, false);
+    }
+
+    /**
+     * Upload group photo.
+     *
+     * @param \Scalex\Zero\Models\Group $group
+     * @param \Illuminate\Http\UploadedFile $file
+     * @param \Scalex\Zero\User $user
+     * @param array $attributes
+     *
+     * @return \Scalex\Zero\Models\Attachment
+     */
+    public function uploadProfilePhoto(Group $group, UploadedFile $file, User $user, array $attributes = []) {
+        return $this->upload($group, $file, $user, $attributes, true);
+    }
+
+    /**
+     * Attachment upload path.
+     *
+     * @param \Scalex\Zero\Models\Group $group
+     *
+     * @return string
+     */
+    protected function getAttachmentUploadPath(Group $group) {
+        $date = Carbon::now()->format('Y-m-d');
+
+        if ($group->school_id) {
+            return "schools/{$group->school_id}/groups/attachments/${date}/{$group->id}";
+        }
+
+        return "groups/attachments/${date}/{$group->id}";
+    }
+
+    /**
+     * Group photo upload path.
+     *
+     * @param \Scalex\Zero\Models\Group $group
+     *
+     * @return string
+     */
+    protected function getPhotoUploadPath(Group $group) {
+        if ($group->school_id) {
+            return "schools/{$group->school_id}/groups/photo/{$group->id}";
+        }
+
+        return "groups/photo/{$group->id}";
+    }
+
+    /**
+     * Upload file to group.
+     *
+     * @param \Scalex\Zero\Models\Group $group
+     * @param \Illuminate\Http\UploadedFile $file
+     * @param \Scalex\Zero\User $user
+     * @param array $attributes
+     * @param bool $isGroupPhoto
+     *
+     * @return \Scalex\Zero\Models\Attachment
+     */
+    protected function upload(Group $group, UploadedFile $file, User $user, array $attributes,
+        bool $isGroupPhoto): Attachment {
+        $this->validateWith(compact('file'), ['file' => 'required|file']);
+
+        $attributes['path'] = $isGroupPhoto ? $this->getPhotoUploadPath($group) : $this->getAttachmentUploadPath($group);
+        $attributes['slug'] = $attributes['slug'] ?? Uuid::uuid4();
+
+        $uploader = Builder::makeFromFile($file);
+
+        if (preg_match('^image\/.*', $file->getMimeType())) {
+            $uploader->resize(4096)->resize(450, 'preview');
+        }
+
+        $attachment = $uploader->upload($attributes)->getAttachment();
+
+        $attachment->owner()->associate($user);
+        $attachment->related()->associate($group);
+
+        $this->onCreate($attachment->save());
+
+        return $attachment;
     }
 }

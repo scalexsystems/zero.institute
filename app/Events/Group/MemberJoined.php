@@ -2,52 +2,22 @@
 
 namespace Scalex\Zero\Events\Group;
 
-use Illuminate\Broadcasting\Channel;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Support\Collection;
 use Scalex\Zero\Models\Group;
 
-class MemberJoined implements ShouldBroadcast
+class MemberJoined extends AbstractGroupEvent
 {
-    use InteractsWithSockets, SerializesModels;
-
     public $members;
-
-    protected $group;
 
     /**
      * MemberJoined constructor.
      *
-     * @param array|Model $ids
      * @param \Scalex\Zero\Models\Group $group
+     * @param \Illuminate\Support\Collection $members
      */
-    public function __construct($ids, Group $group)
-    {
-        if ($ids instanceof Model) {
-            $this->members = (array)$ids->getKey();
-        }
-        $this->group = $group;
-    }
+    public function __construct(Group $group, Collection $members) {
+        parent::__construct($group);
 
-    /**
-     * Get the channels the event should broadcast on.
-     *
-     * @return Channel|array
-     */
-    public function broadcastOn()
-    {
-        return new PresenceChannel($this->group->getChannelName());
-    }
-
-    /**
-     * @return \Scalex\Zero\Models\Group
-     */
-    public function getGroup(): \Scalex\Zero\Models\Group
-    {
-        return $this->group;
+        $this->members = $members;
     }
 }

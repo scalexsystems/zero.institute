@@ -6,35 +6,39 @@ use Scalex\Zero\Events\Group\MemberJoined;
 use Scalex\Zero\Events\Group\MemberLeft;
 use Scalex\Zero\Http\Controllers\Controller;
 use Scalex\Zero\Models\Group;
+use Scalex\Zero\Repositories\GroupRepository;
 
 class CurrentUserController extends Controller
 {
+    /**
+     * Add auth middleware to all routes.
+     */
     public function __construct()
     {
         $this->middleware('auth:api,web');
     }
 
     /**
-     * List joined groups.
+     * Get groups of current user.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \Scalex\Zero\Repositories\GroupRepository $repository
+     *
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function index(Request $request)
+    public function index(Request $request, GroupRepository $repository)
     {
-        $user = $request->user();
-
-        if ($request->has('q') and is_numeric($q = $request->query('q'))) {
-            $groups = Group::with('profilePhoto', 'lastMessageAt')->where('id', $q)->get();
-
-            if ($groups->first()->isMember($user)) {
-                return $groups;
-            }
-        }
-
-        $groups = $user->groups()->orderBy('name')->paginate();
-        $groups->getCollection()->load('profilePhoto', 'lastMessageAt');
-
-        return $groups;
+        return $repository->groupsFor($request->user());
     }
 
+    /**
+     * Get group by ID.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \Scalex\Zero\Models\Group $group
+     *
+     * @return \Scalex\Zero\Models\Group
+     */
     public function show(Request $request, Group $group)
     {
         if (!$group->isMember($request->user())) {
@@ -45,43 +49,44 @@ class CurrentUserController extends Controller
     }
 
     /**
-     * Join group.
+     * Join the group.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \Scalex\Zero\Models\Group $group
+     *
+     * @return \Scalex\Zero\Models\Group
      */
-    public function store(Group $group)
+    public function store(Request $request, Group $group)
     {
         $this->authorize('join', $group);
 
-        $user = current_user();
+        $members = $group->addMembers($request->user());
 
-        if ($group->isMember($user)) {
-            abort(400, 'You are already member of this group.');
+        if (count($members)) {
+            event(new MemberJoined($group, $members));
         }
 
-        $result = $group->addMembers([$user->getKey()]);
-        if (count($result['ids'])) {
-            event(new MemberJoined($user, $group));
-        } else {
-            abort(400, 'You are not allowed to join this group.');
-        }
         return $group;
     }
 
     /**
-     * Leave group.
+     * Leave the group.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \Scalex\Zero\Models\Group $group
+     *
+     * @return \Scalex\Zero\Models\Group
      */
-    public function delete(Group $group)
+    public function delete(Request $request, Group $group)
     {
         $this->authorize('leave', $group);
 
-        $user = current_user();
+        $members = $group->removeMembers($request->user());
 
-        $result = $group->removeMembers([$user->getKey()]);
-        if (count($result['ids'])) {
-            event(new MemberLeft($user, $group));
-        } else {
-            abort(400, 'You cannot leave this group.');
+        if (count($members)) {
+            event(new MemberLeft($group, $members));
         }
 
-        return $this->accepted();
+        return $group;
     }
 }

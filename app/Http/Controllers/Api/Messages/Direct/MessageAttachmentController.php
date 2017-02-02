@@ -1,4 +1,4 @@
-<?php namespace Scalex\Zero\Http\Controllers\Api\Messages;
+<?php namespace Scalex\Zero\Http\Controllers\Api\Messages\Direct;
 
 use Ramsey\Uuid\Uuid;
 use Znck\Attach\Builder;
