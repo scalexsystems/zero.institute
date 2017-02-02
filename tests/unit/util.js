@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import store from 'app/vuex/store'
+import store from 'app/vuex'
 
 export function createVM (context, component) {
   if (!context.DOM) {

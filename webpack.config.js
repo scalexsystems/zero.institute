@@ -57,7 +57,11 @@ if (Mix.js.vendor) {
  |
  */
 
-module.exports.output = Mix.output()
+module.exports.output = {
+  path: Mix.hmr ? '/' : Mix.publicPath,
+  filename: Mix.inProduction ? '[name].[hash].js' : '[name].js',
+  publicPath: Mix.hmr ? 'http://localhost:8080/' : './'
+}
 
 /*
  |--------------------------------------------------------------------------

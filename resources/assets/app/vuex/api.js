@@ -25,6 +25,8 @@ export default {
       error = await process(error)
 
       if (shouldThrow) throw error
+
+      return {}
     }
   },
 

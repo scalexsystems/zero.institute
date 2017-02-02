@@ -6,7 +6,7 @@ import { isObject, toArray } from '../util'
  * @return {boolean}
  */
 export function ID_COMPARE (a, b) {
-  return a.id === b.id
+  return a && b && a.id === b.id
 }
 
 /**
@@ -38,6 +38,8 @@ export function binarySearch (haystack, needle) {
 }
 
 export function binarySearchIndex (haystack, needle) {
+  needle = isObject(needle) ? needle : { id: needle }
+
   const index = binarySearch(haystack, needle)
 
   if (ID_COMPARE(haystack[index], needle)) {
@@ -58,7 +60,7 @@ export function binarySearchFind(haystack, needle) {
 export function keepLocals (newValue, oldValue) {
   if (!isObject(oldValue) || !isObject(newValue)) return newValue
 
-  const keys = Object.keys(oldValue).filter(key => /^\$/.match(key))
+  const keys = Object.keys(oldValue).filter(key => /^\$/.test(key))
 
   for (let i = 0; i < keys.length; i += 1) {
     const key = keys[i]

@@ -110,6 +110,7 @@ $layout-box-bg: white !default;
 $zindex-layout-box: 100 !default;
 
 .container {
+  background: white;
   border: 1px solid $border-color;
 
   @include match-parent();

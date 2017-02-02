@@ -17,6 +17,13 @@ class MessageIntendedFor implements Criteria
         $this->user = $user;
     }
 
+    /**
+     * Get messages intended for the user.
+     *
+     * @param \Illuminate\Database\Query\Builder $query
+     * @param \Znck\Repositories\Contracts\Repository $repository
+     * @return void
+     */
     public function apply($query, Repository $repository)
     {
         if (!is_null($this->user)) {

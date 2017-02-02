@@ -18,6 +18,14 @@ class MessageBeforeTimestamp implements Criteria
         $this->timestamp = $timestamp;
     }
 
+    /**
+     * Get messages before given timestamp.
+     *
+     * @param \Illuminate\Database\Query\Builder $model
+     * @param \Znck\Repositories\Contracts\Repository $repository
+     *
+     * @return void
+     */
     public function apply($model, Repository $repository) {
         $model->where('created_at', '<', Carbon::createFromTimestamp($this->timestamp));
     }

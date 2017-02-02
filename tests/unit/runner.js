@@ -46,6 +46,7 @@ exports.module.rules = [
     loader: 'vue-loader',
     options: {
       loaders: {
+        js: 'babel-loader',
         scss: 'vue-style-loader!css-loader!sass-loader',
       },
 
@@ -56,6 +57,11 @@ exports.module.rules = [
 
       postcss: [require('postcss-cssnext')()]
     }
+  },
+  {
+    test: /.js$/,
+    loader: 'babel-loader',
+    exclude: /node_modules/
   },
   {
     test (filename) {

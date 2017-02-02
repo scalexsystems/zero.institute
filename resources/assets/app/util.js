@@ -31,6 +31,9 @@ export function toArray (any) {
   return isArray(any) ? any : [any]
 }
 
+export function toInt (any) {
+  return parseInt(any, 10)
+}
 // NOTICE: UNSAFE with unsafe strings; only use on previously-escaped ones!
 // export const unescapeHtml = (escapedString) => {
 //   const div = document.createElement('div')

@@ -1,18 +1,24 @@
 <template>
-  <div :class="[ $style.messageBrowser ]">
+  <div class="c-hub-message-browser">
     <modal :open="photos !== null" @close="cursor = -1" wrapper="d-flex flex-row">
       <photo-browser :photos="photos" class="flex-auto fullscreen" @end="next" @start="prev"></photo-browser>
     </modal>
 
-    <message v-for="(message, index) in messages" :key="message"
-      v-bind="{ message, continued: message.$continued === true }"
-      @preview="(payload) => preview(message, index, payload)">
+    <div class="c-hub-message-browser-container">
+      <message v-for="(message, index) in messages" :key="message"
+               v-bind="{ message, continued: message.$continued === true }"
+               @preview="(payload) => preview(message, index, payload)"></message>
+
+      <infinite-loader @load="any => $emit('load', any)"></infinite-loader>
+    </div>
   </div>
 </template>
 
-<script>
+<script lang="babel">
+import { isArray } from '../../util'
 import Message from './message'
 import PhotoBrowser from './PhotoBrowser.vue'
+import InfiniteLoader from '../shared/InfiniteLoader.vue'
 
 export default {
   name: 'MessageBrowser',
@@ -53,7 +59,7 @@ export default {
     preview (message, index, payload) {
       console.log(payload);
 
-      if (payload instanceof Array) {
+      if (isArray(payload)) {
         this.previewPhotos(message, index)
       }
 
@@ -87,10 +93,6 @@ export default {
     }
   },
 
-  components: { Message, PhotoBrowser }
+  components: { Message, PhotoBrowser, InfiniteLoader }
 }
 </script>
-
-<style lang="scss" module>
-.message-browser {}
-</style>

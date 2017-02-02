@@ -9,20 +9,20 @@ import List from './List.vue'
 export default {
   computed: {
     items () {
-      return this.users.map(user => ({
-        text: user.name,
-        photo: user.photo,
+      return this.groups.map(group => ({
+        text: group.name,
+        photo: group.photo,
         type: 'rounded-circle',
-        class: 'sidebar-list-item-user',
-        hasExtra: user.unread > 0,
-        extra: user.unread,
-        route: { name: 'user.messages', params: { id: user.id } }
+        class: 'sidebar-list-item-group',
+        hasExtra: group.unread > 0,
+        extra: group.unread,
+        route: { name: 'group.messages', params: { id: group.id } }
       }))
     },
-    ...mapGetters('messages/users', ['users'])
+    ...mapGetters('messages/groups', ['groups'])
   },
 
-  methods: mapActions('messages/users', ['index']),
+  methods: mapActions('messages/groups', ['index']),
 
   created () {
     this.index()
@@ -33,7 +33,7 @@ export default {
 </script>
 
 <style lang="scss">
-.card.sidebar-list-item-user {
+.card.sidebar-list-item-group {
   background: transparent;
   border-color: transparent;
 }

@@ -1,11 +1,13 @@
 <template>
-  <router-link tag="div" :to="route" class="c-sidebar-button card d-flex flex-row" role="button">
-    <img v-if="photo" class="mr-2" :class="[$style.photo, type]" :src="photo">
-    <div :class="[$style.main]" class="d-flex align-items-center flex-auto">
+  <router-link :to="route" class="c-sidebar-button card d-flex flex-row" role="button">
+    <img v-if="photo" class="mr-2 photo" :class="[type]" :src="photo">
+    <div class="d-flex align-items-center flex-auto main">
       <slot></slot>
     </div>
-    <div v-if="hasExtra" :class="[$style.extra]" class="d-flex align-items-center">
-      <slot name="extra"></slot>
+    <div v-if="hasExtra" class="d-flex align-items-center extra">
+      <slot name="extra">
+        <span class="badge badge-default">{{ extra }}</span>
+      </slot>
     </div>
   </router-link>
 </template>
@@ -18,6 +20,7 @@ export default {
     photo: String,
     type: String,
     hasExtra: Boolean,
+    extra: String,
     route: {
       type: [Object, String],
       required: true
@@ -32,24 +35,30 @@ export default {
 .c-sidebar-button {
   padding: to-rem(6px);
   overflow: hidden;
-}
-</style>
+  color: inherit;
 
-<style lang="scss" module>
-@import '../../styles/methods';
+  &:active, &:hover, &:focus {
+    color: inherit;
+    text-decoration: none;
+  }
 
-.photo {
-  width: to-rem(28px);
-  height: to-rem(28px);
-  object-fit: cover;
-  overflow: hidden;
-}
+  .notification {
+    color: $brand-primary;
+  }
 
-.main {
-  height: to-rem(28px);
+  .photo {
+    width: to-rem(28px);
+    height: to-rem(28px);
+    object-fit: cover;
+    overflow: hidden;
+  }
 
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  .main {
+    height: to-rem(28px);
+
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
 }
 </style>
