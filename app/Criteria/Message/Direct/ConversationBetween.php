@@ -1,10 +1,10 @@
-<?php namespace Scalex\Zero\Criteria;
+<?php namespace Scalex\Zero\Criteria\Message\Direct;
 
 use Scalex\Zero\User;
 use Znck\Repositories\Contracts\Criteria;
 use Znck\Repositories\Contracts\Repository;
 
-class MessageBetween implements Criteria
+class ConversationBetween implements Criteria
 {
     /**
      * @var \Scalex\Zero\User
@@ -24,14 +24,11 @@ class MessageBetween implements Criteria
     public function apply($query, Repository $repository)
     {
         $query->where(function ($query) {
-            /** @var \Illuminate\Database\Query\Builder $query */
             $query->where(function ($query) {
-                /** @var \Illuminate\Database\Query\Builder $query */
                 $query->where('receiver_id', $this->one->getKey())
                       ->where('receiver_type', $this->one->getMorphClass())
                       ->where('sender_id', $this->other->getKey());
             })->orWhere(function ($query) {
-                /** @var \Illuminate\Database\Query\Builder $query */
                 $query->where('receiver_id', $this->other->getKey())
                       ->where('receiver_type', $this->other->getMorphClass())
                       ->where('sender_id', $this->one->getKey());

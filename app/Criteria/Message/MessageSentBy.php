@@ -1,4 +1,4 @@
-<?php namespace Scalex\Zero\Criteria;
+<?php namespace Scalex\Zero\Criteria\Message;
 
 use Scalex\Zero\User;
 use Znck\Repositories\Contracts\Criteria;

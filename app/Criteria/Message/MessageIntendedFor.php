@@ -1,5 +1,6 @@
-<?php namespace Scalex\Zero\Criteria;
+<?php namespace Scalex\Zero\Criteria\Message;
 
+use Illuminate\Database\Query\Builder;
 use Scalex\Zero\User;
 use Znck\Repositories\Contracts\Criteria;
 use Znck\Repositories\Contracts\Repository;
@@ -19,8 +20,7 @@ class MessageIntendedFor implements Criteria
     public function apply($query, Repository $repository)
     {
         if (!is_null($this->user)) {
-            $query->where(function ($query) {
-                /** @var \Illuminate\Database\Query\Builder $query */
+            $query->where(function (Builder $query) {
                 $query->orWhere('intended_for', $this->user->getKey())
                       ->orWhereNull('intended_for');
             });

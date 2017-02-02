@@ -10,6 +10,35 @@ namespace {
     }
 }
 
+namespace Znck\Attach {
+    class Builder
+    {
+        /**
+         * @param array $attr
+         *
+         * @return \Znck\Attach\Contracts\Uploader
+         */
+        public function upload ($attr) {}
+
+        /**
+         * @param $size
+         * @param $name
+         *
+         * @return $this
+         */
+        public function resize($size, $name=null) {}
+    }
+}
+
+namespace Znck\Attach\Contracts {
+    class Uploader {
+        /**
+         * @return \Scalex\Zero\Models\Attachment
+         */
+        public function getAttachment() {}
+    }
+}
+
 namespace Scalex\Zero {
 
     use Scalex\Zero\Models\Message;
@@ -20,7 +49,7 @@ namespace Scalex\Zero {
      * @package Scalex\Zero
      * @property string $other_email
      * @property string $other_verification_token
-     * @property-read Message|null $lastMessageAt
+     * @property-read Message|null $lastMessage
      */
     class User extends \Eloquent
     {

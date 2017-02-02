@@ -75,11 +75,12 @@ Route::post(    '/groups/{group}/attachment', 'Groups\MessageAttachmentControlle
 Route::resource('/groups', 'Groups\GroupController', $resource);
 
 // - Direct Messages
-Route::get('/messages/direct/{user}', 'Messages\CurrentUserController@messages');
-Route::post('/messages/direct/{user}/attachment', 'Messages\FileController@store');
+Route::post('/messages/direct/{user}', 'Messages\Direct\MessageController@store');
+Route::get('/messages/direct/{user}/messages', 'Messages\Direct\MessageController@index');
+Route::post('/messages/direct/{user}/attachment', 'Messages\Direct\MessageAttachmentController@store');
 
 // - Messages
-Route::post('/messages', 'Messages\MessageController@store');
+Route::put( '/messages/read', 'Messages\MessageController@readAll');
 Route::put( '/messages/{message}/read', 'Messages\MessageController@read');
 
 // - User Context
