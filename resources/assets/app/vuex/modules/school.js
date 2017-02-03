@@ -278,8 +278,8 @@ export default {
           commit('SET_SCHOOL', { school })
         })
     },
-    getCities({ commit }) {
-      Vue.http.get('geo/cities')
+    getCities({ commit }, params = {}) {
+      Vue.http.get('geo/cities', { params} )
         .then(response => response.json())
         .then(result => {
           commit('ADD_CITIES', { cities: result.data })
