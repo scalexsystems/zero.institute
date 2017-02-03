@@ -33,6 +33,6 @@ class InvitationRequest implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('zero:invitations');
+        return new PrivateChannel('zero-invitations');
     }
 }
