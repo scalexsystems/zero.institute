@@ -1,4 +1,7 @@
 @extends('layouts.web')
+@section('in-head')
+    @include('web.partials.drift')
+@endsection
 
 @section('content')
     @include('web.partials.header')
