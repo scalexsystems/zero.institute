@@ -116,7 +116,7 @@ class GroupRepository extends Repository
     public function groupsFor(User $user) {
         $query = $user->groups()->getQuery();
 
-        $query->with('person', 'photo')->orderBy('name');
+        $query->with('photo')->orderBy('name');
 
         return $query->paginate();
     }

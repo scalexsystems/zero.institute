@@ -104,7 +104,7 @@ class GroupController extends Controller
         $this->authorize('delete', $group);
 
         if ($group->isOfType('course')) {
-            abort(401, 'Course group cannot be deleted.');
+            abort(400, 'Course group cannot be deleted.');
         }
 
         $repository->delete($group);

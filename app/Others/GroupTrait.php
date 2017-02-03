@@ -109,11 +109,10 @@ trait GroupTrait
             }
 
             if ($first instanceof User) {
-                return collect($any->pluck('id'));
+                return collect($any->getKey());
             }
         }
 
-        (new Dumper())->dump($any);
         throw new InvalidArgumentException('Unexpected member type ('.get_class($any).') for group.');
     }
 
