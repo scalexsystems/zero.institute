@@ -6,39 +6,24 @@
 @import '~perfect-scrollbar/src/css/main';
 @import '~bootstrap-for-vue/dist/bootstrap-for-vue.css';
 
+.container > .row {
+  margin-left: 0!important;
+  margin-right: 0!important;
+}
+
 html {
   font-size: 14px;
 }
 
+.btn.btn-link {
+  &:focus {
+    outline: none;
+  }
+  text-decoration: none;
+}
+
 .flex-auto {
   flex: 1;
-}
-// Move to ./styles/utilities/_flex.scss
-.fl {
-  display: flex;
-  flex-direction: row;
-
-  &.fl-ver {
-    flex-direction: column;
-  }
-
-  &.fl-in {
-    justify-content: center;
-    align-items: center;
-
-    &:before, &:after {
-      content: '';
-      display: block;
-    }
-  }
-
-  .fl-auto {
-    flex: 1;
-  }
-
-  &.fl-middle {
-    align-items: center;
-  }
 }
 
 [role=button] {
@@ -48,4 +33,12 @@ html {
 // Move to ./styles/utilities/_colors.scss
 .bg-white {
   background-color: white;
+}
+
+.form-group[required] {
+  .form-control-label:after, legend:after {
+    content: '*';
+    padding-left: .15rem;
+    color: $brand-danger;
+  }
 }

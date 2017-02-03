@@ -1,5 +1,9 @@
 <template>
-<list :items="items"></list>
+<list :items="items">
+  <router-link :to="{ name: 'group.index' }" class="text-muted btn btn-block btn-link text-left">
+    <icon type="plus-square-o"></icon> Join a group
+  </router-link>
+</list>
 </template>
 
 <script lang="babel">

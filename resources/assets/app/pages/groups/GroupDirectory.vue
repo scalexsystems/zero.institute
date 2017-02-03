@@ -1,9 +1,19 @@
 <template>
-<container-window title="Groups" subtitle="Join or create groups" :back="true">
-  <searchable-list v-model="query" @search="onSearch" @load="onLoad" ref="list">
-    <div class="row">
+<container-window title="Groups" subtitle="Join or create groups" :back="true" @back="$router.go(-1)">
+  <template slot="buttons">
+  <router-link :to="{ name: 'group.create' }" class="btn btn-primary"
+               role="button">Create Group
+  </router-link>
+  </template>
+
+
+  <searchable-list v-model="query" placeholder="Start typing..." ref="list"
+                   @search="onSearch" @load="onLoad">
+    <div class="row my-3">
       <div class="col-12 col-lg-6" v-for="group in groups" :key="group">
-        <group-card :group="group"></group-card>
+        <group-card :group="group" role="button"
+                    @click="$router.push({ name: 'group.show', params: { id: group.id } })"
+        ></group-card>
       </div>
     </div>
   </searchable-list>

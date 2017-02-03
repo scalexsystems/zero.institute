@@ -1,8 +1,8 @@
 <template>
 <div class="container c-shared-searchable-list">
   <div class="row">
-    <div class="col-12 col-lg-8 offset-lg-2">
-      <search @input="onInput" v-bind="{ value, placeholder }"></search>
+    <div class="col-12 col-lg-8 offset-lg-2 mt-3">
+      <search class="form-control-lg" @input="onInput" v-bind="{ value, placeholder }"></search>
     </div>
 
     <div class="col-12 col-lg-8 offset-lg-2">

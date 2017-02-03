@@ -4,12 +4,17 @@ export default [
   {
     name: 'group.index',
     path: '/hub/messages/groups',
-    component: require('../pages/messages/GroupDirectory.vue'),
+    component: require('../pages/groups/GroupDirectory.vue'),
+  },
+  {
+    name: 'group.create',
+    path: '/hub/messages/groups/create',
+    component: require('../pages/groups/GroupCreate.vue'),
   },
   {
     name: 'group.messages',
     path: '/hub/messages/groups/:id',
-    components: require('../pages/messages/Group.vue'),
+    component: require('../pages/groups/GroupMessages.vue'),
     props: route => ({
       id: toInt(route.params.id)
     })

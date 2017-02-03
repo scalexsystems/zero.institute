@@ -6,8 +6,12 @@
     </div>
 
     <div class="col-12 col-lg-10">
-      <container v-bind="{ title, subtitle, back, photo, hasFooter }">
+      <container v-bind="{ title, subtitle, back, photo, hasFooter }"
+                 @action="any => $emit('action', any)"
+                 @back="any => $emit('back', any)">
+        <template slot="buttons"><slot name="buttons"></slot></template>
         <slot></slot>
+        <template slot="footer"><slot name="footer"></slot></template>
       </container>
     </div>
   </div>

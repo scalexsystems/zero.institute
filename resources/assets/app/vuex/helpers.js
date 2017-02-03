@@ -87,3 +87,11 @@ export function insert (target, items) {
 
   return target
 }
+
+export function remove (target, item) {
+  const index = binarySearchIndex(target, item)
+
+  if (index > -1) target.splice(index, 1)
+
+  return target
+}

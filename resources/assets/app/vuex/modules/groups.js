@@ -1,18 +1,16 @@
 import http from '../api'
-import { insert, binarySearchFind } from '../helpers'
+import { insert, remove, binarySearchFind } from '../helpers'
 
 const actions = {
   /**
    * Search or list groups
    */
   async index ({ dispatch }, { page = 1, query, type } = {}) {
-    const data = await http.get('groups', { params: { page, q: query, type } })
+    const { groups, meta } = await http.get('groups', { params: { page, q: query, type } })
 
-    console.log(data)
+    if (groups) await dispatch('addToStore', groups)
 
-    if ('groups' in data) await dispatch('addToStore', data.groups)
-
-    return data
+    return { groups, meta }
   },
 
   /**
@@ -37,7 +35,8 @@ const actions = {
 
       return { group }
     } catch (error) {
-      return { error }
+
+      return error
     }
   },
 
@@ -52,8 +51,44 @@ const actions = {
 
       return { group }
     } catch (error) {
-      return { error }
+
+      return error
     }
+  },
+
+  /**
+   * Delete group.
+   */
+  async delete ({ dispatch }, { id }) {
+    try {
+      await http.delete(true, `groups/${id}`)
+
+      await dispatch('removeFromStore', { id })
+    } catch (e) {
+      // NOTE: Error is already handled. Try/Catch is required as DELETE does not respond with body.
+    }
+  },
+
+  /**
+   * Fetch members.
+   *
+   * NOTE: Members are not stored in store.
+   */
+  async members ({}, { id }) {
+    const { users } = await http.get(`groups/${id}/members`)
+
+    return users
+  },
+
+  /**
+   * Join a group.
+   */
+  async join ({ dispatch }, { id }) {
+    const { group } = await http.get(`group/${id}/join`)
+
+    if (group) dispatch('addToStore', group)
+
+    return group
   },
 
   // ------- LOCAL ACTIONS ---------
@@ -61,6 +96,10 @@ const actions = {
     if (groups) commit('INSERT', groups)
 
     return groups
+  },
+
+  async removeFromStore ({ commit }, id) {
+    commit('REMOVE', id)
   }
 }
 
@@ -77,6 +116,10 @@ const state = () => ({
 const mutations = {
   INSERT (state, groups) {
     insert(state.groups, groups)
+  },
+
+  REMOVE (state, id) {
+    remove(state.groups, id)
   }
 }
 
