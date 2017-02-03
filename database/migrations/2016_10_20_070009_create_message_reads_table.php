@@ -11,9 +11,12 @@ class CreateMessageReadsTable extends Migration
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         Schema::create('message_reads', function (Blueprint $table) {
+            if (config('database.default') === 'memory') {
+                $table->bigIncrements('id');
+            }
+
             $table->unsignedInteger('message_id');
             $table->unsignedInteger('user_id');
             $table->timestamp('read_at');
@@ -25,8 +28,7 @@ class CreateMessageReadsTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         Schema::dropIfExists('message_reads');
     }
 }

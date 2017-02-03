@@ -13,6 +13,8 @@ class AddColumnsToMessageReadsTable extends Migration
     public function up()
     {
         Schema::table('message_reads', function (Blueprint $table) {
+            if (config('database.default') === 'memory') return;
+
             $table->bigIncrements('id');
         });
     }
