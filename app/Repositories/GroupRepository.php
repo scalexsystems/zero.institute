@@ -3,6 +3,7 @@
 use Carbon\Carbon;
 use Illuminate\Http\UploadedFile;
 use Ramsey\Uuid\Uuid;
+use Request;
 use Scalex\Zero\Criteria\OfSchool;
 use Scalex\Zero\Models\Attachment;
 use Scalex\Zero\Models\Group;
@@ -34,14 +35,15 @@ class GroupRepository extends Repository
      */
     protected $rules = [
         'name' => 'required|max:60',
-        'type' => 'required|in:public,private',
+        'private' => 'nullable|bool',
+        'description' => 'nullable',
     ];
 
     /**
      * Add default criteria.
      */
     public function boot() {
-        if ($user = current_user()) {
+        if ($user = Request::user()) {
             $this->pushCriteria(new OfSchool($user->school));
         }
     }

@@ -1,6 +1,7 @@
 <?php namespace Scalex\Zero\Http\Controllers\Api\Groups;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Debug\Dumper;
 use Scalex\Zero\Events\Group\MemberJoined;
 use Scalex\Zero\Events\Group\MemberLeft;
 use Scalex\Zero\Http\Controllers\Controller;
@@ -44,6 +45,7 @@ class MemberController extends Controller
     public function store(Group $group, Request $request)
     {
         $this->authorize('add-members', $group);
+        $this->validate($request, ['members' => 'required']);
 
         $members = $group->addMembers($request->input('members'));
 
@@ -65,8 +67,13 @@ class MemberController extends Controller
     public function destroy(Group $group, Request $request)
     {
         $this->authorize('remove-members', $group);
+        $this->validate($request, ['members' => 'required']);
 
-        $members = $group->removeMembers($request->get('members'));
+        $ids = collect($request->get('members'))->filter(function ($id) use ($group) {
+            return (int) $id !== (int) $group->owner_id;
+        })->toArray();
+
+        $members = $group->removeMembers($ids);
 
         if (count($members)) {
             event(new MemberLeft($group, $members));

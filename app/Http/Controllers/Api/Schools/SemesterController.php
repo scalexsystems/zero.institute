@@ -15,7 +15,7 @@ class SemesterController extends Controller
     public function index(Request $request)
     {
         return cache()->rememberForever(
-            schoolify('semesters'),
+            schoolScopeCacheKey('semesters'),
             function () use ($request) {
                 return $this->getPeopleCount($request);
             }

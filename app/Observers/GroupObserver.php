@@ -1,6 +1,7 @@
 <?php namespace Scalex\Zero\Observers;
 
 use Scalex\Zero\Events\Group\GroupCreated;
+use Scalex\Zero\Events\Group\GroupDeleted;
 use Scalex\Zero\Events\Group\GroupUpdated;
 use Scalex\Zero\Models\Group;
 
@@ -15,21 +16,6 @@ class GroupObserver
         if (! $group->isMember($group->owner)) {
             $group->addMembers($group->owner);
         }
-
-        event(new GroupCreated($group));
-    }
-
-    /**
-     * Updated hook.
-     *
-     * @param \Scalex\Zero\Models\Group $group
-     */
-    public function update(Group $group) {
-        if (! $group->isMember($group->owner)) {
-            $group->addMembers($group->owner);
-        }
-
-        event(new GroupUpdated($group));
     }
 
     /**

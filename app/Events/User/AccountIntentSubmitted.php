@@ -34,6 +34,6 @@ class AccountIntentSubmitted implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel(schoolify('accounts'));
+        return new PrivateChannel(schoolScopeCacheKey('accounts'));
     }
 }

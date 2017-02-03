@@ -26,8 +26,8 @@ class UserEventSubscriber
 
     public function onNewAccountRequest(AccountIntentSubmitted $event)
     {
-        cache()->forget(schoolify('stats.accounts'));
-        cache()->forget(schoolify('stats.incomplete'));
+        cache()->forget(schoolScopeCacheKey('stats.accounts'));
+        cache()->forget(schoolScopeCacheKey('stats.incomplete'));
     }
 
     /**

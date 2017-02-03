@@ -15,7 +15,7 @@ class DepartmentController extends Controller
     public function index(Request $request)
     {
         return cache()->rememberForever(
-            schoolify('departments'),
+            schoolScopeCacheKey('departments'),
             function () use ($request) {
                 return $this->getPeopleCount($request);
             }

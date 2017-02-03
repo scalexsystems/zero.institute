@@ -46,6 +46,6 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Passport::routes();
-        Passport::pruneRevokedTokens();
+        Passport::pruneRevokedTokens(); // TODO: Fix this!
     }
 }

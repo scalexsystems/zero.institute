@@ -32,7 +32,7 @@ class UserTransformer extends Transformer
 
     public function includePerson(User $user) {
         if ($user->person) {
-            return transformer(User::class)->setIndexing(false)->transform($user);
+            return $this->item($user->person, transformer($user->person)->setIndexing(false));
         }
 
         return $this->null();

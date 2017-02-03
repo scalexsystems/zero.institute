@@ -1,7 +1,9 @@
 <?php namespace Scalex\Zero\Policies;
 
+use Illuminate\Support\Debug\Dumper;
 use Scalex\Zero\Models\Group;
 use Scalex\Zero\User;
+use Symfony\Component\Debug\Debug;
 
 class GroupPolicy extends AbstractPolicy
 {
@@ -212,8 +214,8 @@ class GroupPolicy extends AbstractPolicy
      * @return bool
      */
     protected function isPublic(Group $group) {
-        return ! $group->private and (
-            is_null($group->school_id) or $group->school_id === (int) $this->getUser()->school_id
+        return !$group->private and (
+            is_null($group->school_id) or (int) $group->school_id === (int) $this->getUser()->school_id
         );
     }
 }

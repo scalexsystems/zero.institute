@@ -1,5 +1,6 @@
 <?php namespace Scalex\Zero\Models;
 
+use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Scalex\Zero\Database\BaseModel;
 use Scalex\Zero\Models\Geo\Address;

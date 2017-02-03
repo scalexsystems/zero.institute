@@ -66,7 +66,7 @@ class PeopleController extends Controller
         // FIXME: Move to other controller.
 
         return [
-            'requests' => cache()->rememberForever(schoolify('stats.accounts'), function () {
+            'requests' => cache()->rememberForever(schoolScopeCacheKey('stats.accounts'), function () {
                 $q = ['tag' => 'account', 'locked' => true];
 
                 return [
@@ -75,12 +75,12 @@ class PeopleController extends Controller
                     'employee' => repository(Intent::class)->pushCriteria(new FilterIntents($q + ['type' => 'employee']))->count(),
                 ];
             }),
-            'incomplete' => cache()->rememberForever(schoolify('stats.incomplete'), function () {
+            'incomplete' => cache()->rememberForever(schoolScopeCacheKey('stats.incomplete'), function () {
                 $q = ['tag' => 'account', 'locked' => false];
 
                 return repository(Intent::class)->pushCriteria(new FilterIntents($q))->count();
             }),
-            'accounts' => cache()->rememberForever(schoolify('stats.people'), function () {
+            'accounts' => cache()->rememberForever(schoolScopeCacheKey('stats.people'), function () {
                 return [
                     'student' => repository(Student::class)->count(),
                     'teacher' => repository(Teacher::class)->count(),

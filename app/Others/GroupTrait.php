@@ -1,13 +1,22 @@
 <?php namespace Scalex\Zero\Others;
 
-use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Debug\Dumper;
 use InvalidArgumentException;
+use Scalex\Zero\User;
 
 trait GroupTrait
 {
     protected $isMemberCache = [];
+
+    public function isOfType(string $type) {
+        if (is_null($this->type)) {
+            return false;
+        }
+
+        return hash_equals($this->type, $type);
+    }
 
     /**
      * Is user an admin?
@@ -16,8 +25,7 @@ trait GroupTrait
      *
      * @return bool
      */
-    public function isAdmin(User $member)
-    {
+    public function isAdmin(User $member) {
         return false;
     }
 
@@ -28,8 +36,7 @@ trait GroupTrait
      *
      * @return bool
      */
-    public function isMember(User $member)
-    {
+    public function isMember(User $member) {
         if (!isset($this->isMemberCache[$member->getKey()])) {
             $this->checkMembers($member);
         }
@@ -44,8 +51,7 @@ trait GroupTrait
      *
      * @return Collection
      */
-    public function addMembers($users)
-    {
+    public function addMembers($users) {
         $users = $this->filterNonMembers($users);
 
         $this->members()->attach($users->toArray());
@@ -61,9 +67,12 @@ trait GroupTrait
      *
      * @return Collection
      */
-    public function removeMembers($users)
-    {
+    public function removeMembers($users) {
         $users = $this->filterMembers($users);
+
+        if (!count($users)) {
+            return $users;
+        }
 
         $this->members()->detach($users->toArray());
         $this->fireModelEvent('membersRemoved');
@@ -78,14 +87,34 @@ trait GroupTrait
      *
      * @return \Illuminate\Support\Collection
      */
-    protected function normalizeMembers ($any) {
-        if ($any instanceof User) return collect($any->getKey());
-        if ($any instanceof \Illuminate\Database\Eloquent\Collection) return collect($any->modelKeys());
-        if ($any instanceof Collection and is_int($any->first())) return collect($any);
-        if (is_array($any) and is_int(array_first($any))) return collect($any);
-        if (is_int($any)) return collect($any);
+    protected function normalizeMembers($any) {
+        if ($any instanceof User) {
+            return collect($any->getKey());
+        }
+        if ($any instanceof \Illuminate\Database\Eloquent\Collection) {
+            return collect($any->modelKeys());
+        }
+        if (is_int($any)) {
+            return collect($any);
+        }
+        if (is_array($any) or $any instanceof Collection) {
+            if (count($any) === 0) {
+                return collect();
+            }
 
-        throw new InvalidArgumentException('Unexpected member type for group.');
+            $first = array_first($any);
+
+            if (is_int($first)) {
+                return collect($any);
+            }
+
+            if ($first instanceof User) {
+                return collect($any->pluck('id'));
+            }
+        }
+
+        (new Dumper())->dump($any);
+        throw new InvalidArgumentException('Unexpected member type ('.get_class($any).') for group.');
     }
 
     /**
@@ -95,11 +124,11 @@ trait GroupTrait
      *
      * @return \Illuminate\Support\Collection
      */
-    public function filter($users)
-    {
+    public function filter($users) {
         $users = $this->normalizeMembers($users);
+
         $new = $users->filter(function ($id) {
-            return !isset($this->isMemberCache);
+            return !isset($this->isMemberCache[$id]);
         });
 
         $this->checkMembers($new);
@@ -117,7 +146,7 @@ trait GroupTrait
      * @return \Illuminate\Support\Collection
      */
     public function filterMembers($users) {
-        return collect($this->filter($users)->get('members'));
+        return collect($this->filter($users)->get('member'));
     }
 
     /**
@@ -128,7 +157,7 @@ trait GroupTrait
      * @return \Illuminate\Support\Collection
      */
     public function filterNonMembers($users) {
-        return collect($this->filter($users)->get('nonmembers'));
+        return collect($this->filter($users)->get('nonmember'));
     }
 
     /**
@@ -138,7 +167,7 @@ trait GroupTrait
      *
      * @return \Illuminate\Support\Collection
      */
-    protected function checkMembers ($users) {
+    protected function checkMembers($users) {
         $users = $this->normalizeMembers($users);
 
         $result = $this->newBaseQueryBuilder()

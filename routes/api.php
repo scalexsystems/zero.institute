@@ -63,8 +63,10 @@ Route::resource('intents', 'Users\IntentController', $resource);
 
 // - Groups
 Route::get(     '/groups/{group}/members', 'Groups\MemberController@index');
-Route::post(    '/groups/{group}/members/add', 'Groups\MemberController@store');
-Route::delete(  '/groups/{group}/members/remove', 'Groups\MemberController@destroy');
+Route::post(    '/groups/{group}/members/add', 'Groups\MemberController@store');/* @deprecated TODO: Remove this. */
+Route::post(    '/groups/{group}/members', 'Groups\MemberController@store');
+Route::delete(  '/groups/{group}/members/remove', 'Groups\MemberController@destroy');/* @deprecated TODO: Remove this. */
+Route::delete(  '/groups/{group}/members', 'Groups\MemberController@destroy');
 Route::get(     '/groups/{group}/messages', 'Groups\MessageController@index');
 Route::post(    '/groups/{group}/messages', 'Groups\MessageController@store');
 Route::post(    '/groups/{group}/photo', 'Groups\ProfilePhotoController@store');

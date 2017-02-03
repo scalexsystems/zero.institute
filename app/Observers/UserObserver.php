@@ -6,14 +6,13 @@ use Scalex\Zero\User;
 
 class UserObserver
 {
-    public function created(User $user)
-    {
-        Mail::to($user)
-            ->queue(
-                new EmailVerificationMail(
-                    $user->name,
-                    url('/account/email/verify/'.$user->verification_token)
-                )
-            );
+    public function created(User $user) {
+//        Mail::to($user)
+//            ->queue(
+//                new EmailVerificationMail(
+//                    $user->name,
+//                    url('/account/email/verify/'.$user->verification_token)
+//                )
+//            );
     }
 }

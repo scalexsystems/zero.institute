@@ -76,26 +76,15 @@ class AppServiceProvider extends ServiceProvider
 
     protected function registerObservers()
     {
-        if (\App::runningInConsole()) {
-            return;
-        }
-
         User::observe(Observers\UserObserver::class);
-
-        /**
-         * School
-         */
-        Models\School::observe(Observers\SchoolObserver::class);
-        Models\Discipline::observe(Observers\DisciplineObserver::class);
         Models\Department::observe(Observers\DepartmentObserver::class);
-
-        /**
-         * People
-         */
-        Models\Student::observe(Observers\StudentObserver::class);
+        Models\Discipline::observe(Observers\DisciplineObserver::class);
         Models\Employee::observe(Observers\EmployeeObserver::class);
-        Models\Teacher::observe(Observers\TeacherObserver::class);
+        Models\Group::observe(Observers\GroupObserver::class);
+        Models\School::observe(Observers\SchoolObserver::class);
         Models\Semester::observe(Observers\SemesterObserver::class);
+        Models\Student::observe(Observers\StudentObserver::class);
+        Models\Teacher::observe(Observers\TeacherObserver::class);
     }
 
     protected function registerRelationMap()

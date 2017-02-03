@@ -4,16 +4,16 @@ class SemesterObserver
 {
     public function created()
     {
-        cache()->forget(schoolify('semesters'));
+        cache()->forget(schoolScopeCacheKey('semesters'));
     }
 
     public function deleted()
     {
-        cache()->forget(schoolify('semesters'));
+        cache()->forget(schoolScopeCacheKey('semesters'));
     }
 
     public function updated()
     {
-        cache()->forget(schoolify('semesters'));
+        cache()->forget(schoolScopeCacheKey('semesters'));
     }
 }

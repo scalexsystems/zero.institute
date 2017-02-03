@@ -15,7 +15,7 @@ class DisciplineController extends Controller
     public function index(Request $request)
     {
         return cache()->rememberForever(
-            schoolify('disciplines'),
+            schoolScopeCacheKey('disciplines'),
             function () use ($request) {
                 return $this->getPeopleCount($request);
             }
