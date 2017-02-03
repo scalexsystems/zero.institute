@@ -133,7 +133,10 @@
                                 </div>
                                 <div class="col-xs-6 col-md-4">
                                     <div class="teacher-field">
-                                        <input-select title="City" v-model.number="teacher.address.city_id" :options="cities"></input-select>
+                                        <input-search title="City"
+                                                      v-model="q" v-bind="{ suggestions: cities }" @suggest="suggestCity"
+                                                      @select="selectCity"></input-search>
+
 
 
                                     </div>
@@ -170,7 +173,7 @@
 </template>
 
 <script lang="babel">
-    import { first, toNumber, isNaN, clone, pickBy } from 'lodash'
+    import { first, toNumber, isNaN, clone, pickBy, throttle } from 'lodash'
     import moment from 'moment'
     import { mapGetters, mapActions } from 'vuex'
     import { getters, actions } from '../../vuex/meta'
@@ -182,6 +185,7 @@
             return {
                 errors: null,
                 remote: null,
+                q: '',
             };
         },
         computed: {
@@ -341,7 +345,13 @@
             profileUpdated(src, response) {
                 this.teacher.photo_id = response.body.id;
                 this.teacher.photo = response.body.path;
-
+            },
+            suggestCity: throttle(function suggestCity ({ value, start, end }) {
+                start()
+                this.getCities({ q: value }).then(end)
+            }, 400),
+            selectCity(city) {
+                this.student.city = city;
             },
             ...mapActions({
                 getDepartments: actions.getDepartments,
