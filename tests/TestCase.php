@@ -43,12 +43,16 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
         Znck\Trust\Models\Permission::create(['slug' => $permission, 'name' => $permission]);
 
         $user->grantPermission($permission);
+
+        return $this;
     }
 
     public function seeResources(string $type, array $ids) {
         $actual = collect(collect((array)$this->decodeResponseJson())->get($type))->pluck('id')->toArray();
 
         $this->assertEquals(Arr::sortRecursive($actual), Arr::sortRecursive($ids));
+
+        return $this;
     }
 
     /**

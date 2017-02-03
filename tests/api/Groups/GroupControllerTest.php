@@ -190,4 +190,11 @@ class GroupControllerTest extends \TestCase
         $this->actingAs($this->getUser())->delete('/api/groups/'.$group->id)
              ->assertResponseStatus(401);
     }
+
+    public function test_delete_cannot_delete_course_type_group() {
+        $group = $this->createCourseGroup();
+
+        $this->actingAs($group->owner)->delete('/api/groups/'.$group->id)
+             ->assertResponseStatus(400);
+    }
 }
