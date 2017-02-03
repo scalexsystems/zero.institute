@@ -49,7 +49,7 @@ export default {
   },
   methods: {
     openTitle () {
-      this.$router.push({ name: 'acad.course-preview', params: { course: this.course.id }})
+      this.$router.push({ name: 'hub.group-preview', params: { group: this.context.id }})
     },
     fetchCourse (id) {
       const index = this.courses.findIndex(course => course.id === id)
