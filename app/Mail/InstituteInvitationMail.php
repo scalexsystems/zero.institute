@@ -34,7 +34,7 @@ class InstituteInvitationMail extends Mailable
     public function build()
     {
         return $this->subject($this->email)
-            ->view('emails.invitation.text')
+            ->view('emails.invitation.html')
             ->with([
                 'name' => $this->instituteName,
                 'email' => $this->email,
