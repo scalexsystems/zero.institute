@@ -36,7 +36,16 @@ class UserRepository extends Repository
         'school_id' => 'required|exists:schools,id',
     ];
 
-    // TODO: Try to remove this function.
+    /**
+     * TODO: Try to remove this function.
+     *
+     * @param \Scalex\Zero\User $user
+     * @param array $attributes
+     *
+     * @deprecated
+     *
+     * @return bool
+     */
     public function creating(User $user, array $attributes)
     {
         $user->fill(array_only($attributes, ['name', 'email']));
@@ -61,7 +70,18 @@ class UserRepository extends Repository
         return $user->save();
     }
 
-    // TODO: Try to remove this function.
+
+    /**
+     * TODO: Try to remove this function.
+     *
+     * @param \Scalex\Zero\User $user
+     * @param array $attributes
+     * @param array $options
+     *
+     * @deprecated
+     *
+     * @return bool
+     */
     public function updating(User $user, array $attributes, array $options = [])
     {
         if (array_has($attributes, 'email')) {
@@ -102,6 +122,14 @@ class UserRepository extends Repository
         return $this->upload($user, $file, $attributes, 'messages');
     }
 
+    /**
+     * Prepare upload path for user.
+     *
+     * @param \Scalex\Zero\User $user
+     * @param string $directory
+     *
+     * @return string
+     */
     protected function getUploadPath(User $user, string $directory): string
     {
         return "schools/{$user->school_id}/users/{$user->id}/${directory}";

@@ -1,6 +1,7 @@
 <?php namespace Scalex\Zero\Transformers;
 
 use Gate;
+use Request;
 use Scalex\Zero\User;
 use Znck\Transformers\Transformer;
 
@@ -26,7 +27,7 @@ class UserTransformer extends Transformer
 
     public function me(User $user)
     {
-        if ($current = current_user() and $user->getKey() === $current->getKey()) {
+        if ($current = Request::user() and $user->getKey() === $current->getKey()) {
             return ['permission' => $user->getPermissionNames()];
         }
 

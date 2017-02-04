@@ -1,7 +1,7 @@
 <?php namespace Scalex\Zero\Http\Controllers\Api\Messages;
 
 use Illuminate\Http\Request;
-use Scalex\Zero\Criteria\Message\Direct\UserHasSentMessageTo;
+use Scalex\Zero\Criteria\Message\Direct\HaveConversationWith;
 use Scalex\Zero\Http\Controllers\Controller;
 use Scalex\Zero\Http\Requests;
 use Scalex\Zero\Repositories\UserRepository;
@@ -27,8 +27,8 @@ class CurrentUserController extends Controller
     {
         $request->query->set('with', 'person');
 
-        return $repository->with(['person', 'photo', 'lastMessage'])
-                          ->pushCriteria(new UserHasSentMessageTo($request->user()))
+        return $repository->with(['person', 'photo'])
+                          ->pushCriteria(new HaveConversationWith($request->user()))
                           ->paginate();
     }
 
@@ -41,6 +41,8 @@ class CurrentUserController extends Controller
      */
     public function show(User $user, UserTransformer $transformer)
     {
-        return $transformer->setIndexing(false)->transform($user);
+        // TODO: Move root resource property to Transformer.
+        // return $transformer->setIndexing(false)->transform($user);
+        return $user;
     }
 }

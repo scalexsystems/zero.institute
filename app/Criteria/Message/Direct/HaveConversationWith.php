@@ -5,7 +5,7 @@ use Scalex\Zero\User;
 use Znck\Repositories\Contracts\Criteria;
 use Znck\Repositories\Contracts\Repository;
 
-class UserHasSentMessageTo implements Criteria
+class HaveConversationWith implements Criteria
 {
     /**
      * @var \Scalex\Zero\User
