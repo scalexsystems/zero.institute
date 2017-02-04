@@ -27,7 +27,7 @@ class TeacherObserver
     /**
      * @param \Scalex\Zero\Models\Teacher $teacher
      */
-    protected function forgetStatsCache(Teacher $teacher):void
+    protected function forgetStatsCache(Teacher $teacher)
     {
         $this->manager->driver()->forget(
             schoolScopeCacheKey('stats.people', $teacher->school_id)

@@ -27,7 +27,7 @@ class EmployeeObserver
     /**
      * @param \Scalex\Zero\Models\Employee $employee
      */
-    protected function forgetStatsCache(Employee $employee):void
+    protected function forgetStatsCache(Employee $employee)
     {
         $this->manager->driver()->forget(
             schoolScopeCacheKey('stats.people', $employee->school_id)
