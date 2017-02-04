@@ -1,6 +1,7 @@
 <?php namespace Scalex\Zero\Http\Controllers\Api\Groups;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Debug\Dumper;
 use Scalex\Zero\Criteria\Message\MessageBeforeTimestamp;
 use Scalex\Zero\Criteria\Message\MessageIntendedFor;
 use Scalex\Zero\Criteria\Message\MessageSentTo;
@@ -17,8 +18,7 @@ class MessageController extends Controller
     /**
      * Add auth middleware to all routes.
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->middleware('auth:api,web');
     }
 
@@ -30,17 +30,17 @@ class MessageController extends Controller
      *
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function index(Group $group, Request $request)
-    {
+    public function index(Group $group, Request $request, MessageRepository $repository) {
         $this->authorize('view-messages', $group);
 
-        return repository(Message::class)
+        $messages = $repository
             ->pushCriteria(new MessageSentTo($group))
-            ->pushCriteria(new MessageIntendedFor($request->user()))
             ->pushCriteria(new MessageBeforeTimestamp($request->input('timestamp', time())))
             ->pushCriteria(new OrderBy('id', 'desc'))
-            ->with(['attachments', 'sender', 'userReadAt'])
+            ->with(['attachments', 'sender'])
             ->paginate();
+
+        return $repository->loadMessageStatesFor($messages, $request->user());
     }
 
     /**
@@ -52,8 +52,7 @@ class MessageController extends Controller
      *
      * @return \Scalex\Zero\Models\Message
      */
-    public function store(Group $group, Request $request, MessageRepository $repository)
-    {
+    public function store(Group $group, Request $request, MessageRepository $repository) {
         $this->authorize('send-message', $group);
 
         $message = $repository->createWithGroup($group, $request->all(), $request->user());

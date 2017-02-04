@@ -2,6 +2,10 @@
 
 namespace Test\Api\Groups;
 
+use Scalex\Zero\Contracts\Communication\ReceivesMessage;
+use Scalex\Zero\Models\Group;
+use Scalex\Zero\Models\Message;
+
 trait GroupTestsHelper
 {
 
@@ -44,8 +48,7 @@ trait GroupTestsHelper
      *
      * @return \Scalex\Zero\Models\Group|\Illuminate\Database\Eloquent\Collection
      */
-    protected function createGroupWithMembers(array $attributes = [], $count = 2)
-    {
+    protected function createGroupWithMembers(array $attributes = [], $count = 2) {
         $group = $this->createGroup($attributes);
         $users = $this->createUser(['school_id' => $this->getSchool()->id], $count);
 
@@ -68,5 +71,25 @@ trait GroupTestsHelper
         ];
 
         return factory(\Scalex\Zero\Models\Group::class, $count)->create($attributes);
+    }
+
+    /**
+     * Send messages to the receiver.
+     *
+     * @param \Scalex\Zero\Models\Group $group
+     * @param int $count
+     *
+     * @return \Scalex\Zero\Models\Message|\Illuminate\Database\Eloquent\Collection
+     */
+    protected function sendMessageTo(Group $group, $count = 1) {
+        $message = factory(Message::class, $count)->create([
+                                                               'receiver_type' => $group->getMorphClass(),
+                                                               'receiver_id' => $group->getKey(),
+                                                           ]);
+        $group->addMembers(collect($message)->map(function (Message $message) {
+            return $message->sender->id;
+        }));
+
+        return $message;
     }
 }

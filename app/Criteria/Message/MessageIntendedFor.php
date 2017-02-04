@@ -27,7 +27,7 @@ class MessageIntendedFor implements Criteria
     public function apply($query, Repository $repository)
     {
         if (!is_null($this->user)) {
-            $query->where(function (Builder $query) {
+            $query->where(function ($query) {
                 $query->orWhere('intended_for', $this->user->getKey())
                       ->orWhereNull('intended_for');
             });

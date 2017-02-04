@@ -3,6 +3,7 @@
 use Carbon\Carbon;
 use DB;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Debug\Dumper;
 use Scalex\Zero\Contracts\Communication\ReceivesMessage;
 use Scalex\Zero\Criteria\Attachment\OwnedBy;
 use Scalex\Zero\Events\Messages\MessageRead;
@@ -130,8 +131,32 @@ class MessageRepository extends Repository
             ->pushCriteria(new OwnedBy($sender))
             ->findMany($attributes['attachments']);
 
-        $message->attachments()->saveMany($attachments);
+        if (count($attachments)) {
+            $message->attachments()->saveMany($attachments);
+        }
 
         return $message;
+    }
+
+    /**
+     * Load message states.
+     *
+     * @param \Illuminate\Contracts\Pagination\LengthAwarePaginator $messages
+     * @param \Scalex\Zero\User $user
+     *
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
+    public function loadMessageStatesFor($messages, User $user) {
+        $ids = $messages->getCollection()->modelKeys();
+        $states = Message\MessageState::whereUserId($user->getKey())
+                                      ->whereIn('message_id', $ids)->get()->keyBy('message_id');
+
+        foreach ($messages->getCollection() as $message) {
+            if ($states->has($message->getKey())) {
+                $message->setRelation('state', collect($states->get($message->getKey())));
+            }
+        }
+
+        return $messages;
     }
 }

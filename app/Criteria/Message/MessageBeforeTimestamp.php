@@ -27,6 +27,6 @@ class MessageBeforeTimestamp implements Criteria
      * @return void
      */
     public function apply($model, Repository $repository) {
-        $model->where('created_at', '<', Carbon::createFromTimestamp($this->timestamp));
+        $model->where('created_at', '<=', Carbon::createFromTimestamp($this->timestamp));
     }
 }

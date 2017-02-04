@@ -204,6 +204,6 @@ if (!function_exists('iso_date')) {
             return $date->toIso8601String();
         }
 
-        return (string)$date;
+        return $date;
     }
 }

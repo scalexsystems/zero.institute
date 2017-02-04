@@ -18,8 +18,7 @@ class MessageTransformer extends Transformer
      *
      * @return array
      */
-    public function index(Message $message)
-    {
+    public function index(Message $message) {
         $readAt = $this->getReadAt($message);
 
         return [
@@ -39,8 +38,7 @@ class MessageTransformer extends Transformer
      *
      * @return array
      */
-    public function show(Message $message)
-    {
+    public function show(Message $message) {
         return $this->index($message);
     }
 
@@ -51,8 +49,7 @@ class MessageTransformer extends Transformer
      *
      * @return mixed
      */
-    public function includeSender(Message $message)
-    {
+    public function includeSender(Message $message) {
         return $this->item($message->sender);
     }
 
@@ -63,8 +60,7 @@ class MessageTransformer extends Transformer
      *
      * @return mixed
      */
-    public function includeReceiver(Message $message)
-    {
+    public function includeReceiver(Message $message) {
         return $this->item($message->receiver);
     }
 
@@ -75,8 +71,7 @@ class MessageTransformer extends Transformer
      *
      * @return mixed
      */
-    public function includeAttachments(Message $message)
-    {
+    public function includeAttachments(Message $message) {
         return $this->collection($message->attachments);
     }
 
@@ -87,10 +82,9 @@ class MessageTransformer extends Transformer
      *
      * @return \Carbon\Carbon|mixed|null
      */
-    protected function getReadAt(Message $message)
-    {
-        if ($user = current_user()) {
-            $state = $message->readAt($user);
+    protected function getReadAt(Message $message) {
+        if ($message->relationLoaded('states')) {
+            $state = $message->states->first();
 
             return $state ? $state->read_at : null;
         }
