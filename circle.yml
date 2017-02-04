@@ -21,6 +21,7 @@ test:
   override:
     - composer lint -- --using-cache=no --path-mode=intersection `git diff --name-only --diff-filter=ACMRTUXB $COMMIT_RANGE`
     # - composer test:unit
+    - php artisan key:generate
     - composer test:api
     # - yarn prod -- --bail
     - git diff --name-only --diff-filter=ACMRTUXB $COMMIT_RANGE| grep -E '\.(js|vue)$' | xargs yarn run eslint -- --ext .js,.vue
