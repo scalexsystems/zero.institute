@@ -1,5 +1,6 @@
 <?php namespace Scalex\Zero\Transformers;
 
+use Request;
 use Scalex\Zero\Models\Group;
 use Scalex\Zero\User;
 use Znck\Transformers\Transformer;
@@ -29,7 +30,7 @@ class GroupTransformer extends Transformer
      */
     public function index(Group $group)
     {
-        if ($user = current_user()) {
+        if ($user = Request::user()) {
             return $this->indexPartial($group) + $this->me($group, $user);
         }
 
