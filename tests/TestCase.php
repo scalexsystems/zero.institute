@@ -95,7 +95,7 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
     }
 
     public function getSomeFile($name = 'foo.txt', $contents = null) {
-        $path = Faker\Factory::create()->file('/tmp/');
+        $path = Faker\Factory::create()->image('/tmp');
 
         return new UploadedFile($path, $name, null, null, null, true);
     }

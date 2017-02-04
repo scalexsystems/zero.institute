@@ -49,7 +49,7 @@ class ProfilePhotoController extends Controller
     public function destroy(Request $request, Group $group, GroupRepository $repository) {
         $this->authorize('remove-profile-photo', $group);
 
-        $repository->update($group, ['photo_id' => null]);
+        $repository->removePhoto($group);
 
         return $this->accepted();
     }

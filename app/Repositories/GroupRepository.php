@@ -219,6 +219,12 @@ class GroupRepository extends Repository
         return $attachment;
     }
 
+    public function removePhoto(Group $group) {
+        $group->photo()->dissociate();
+
+        $this->onUpdate($group->update());
+    }
+
     protected function isImage(UploadedFile $file) {
         return in_array($file->guessExtension(), ['jpeg', 'png', 'gif', 'bmp', 'tiff']);
     }
