@@ -75,6 +75,8 @@
     "test:e2e": "phpunit --testsuite e2e",
     "test:unit": "phpunit --testsuite unit --coverage-html tests/reports/unit/phpunit",
 
+    "test:api:cover": "composer test:api -- --coverage-html tests/reports/unit/phpunit",
+
     "test": [
       "composer lint",
       "composer test:unit",
