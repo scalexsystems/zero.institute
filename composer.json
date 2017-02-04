@@ -14,30 +14,29 @@
     "laravel/scout": "^1.1",
     "laravel/socialite": "^2.0",
     "league/fractal": "^0.14.0",
-    "barryvdh/laravel-ide-helper": "^2.2",
     "znck/attach": "dev-master",
     "znck/extend": "dev-master",
     "znck/cities": "dev-master",
     "znck/repository": "dev-master",
     "znck/transformer": "dev-master",
     "znck/trust": "dev-master",
-    "tamayo/laravel-scout-elastic": "^1.0",
-    "themsaid/laravel-mail-preview": "^1.2",
     "algolia/algoliasearch-client-php": "^1.10",
     "pusher/pusher-php-server": "^2.6",
     "pda/pheanstalk": "^3.1",
     "predis/predis": "^1.1",
-    "rap2hpoutre/laravel-log-viewer": "^0.8.0",
     "sentry/sentry-laravel": "^0.6.0"
   },
   "require-dev": {
+    "barryvdh/laravel-ide-helper": "^2.2",
+    "themsaid/laravel-mail-preview": "^1.2",
     "fzaninotto/faker": "~1.4",
     "mockery/mockery": "0.9.*",
     "phpunit/phpunit": "~5.0",
     "symfony/css-selector": "3.1.*",
     "symfony/dom-crawler": "3.1.*",
     "doctrine/dbal": "^2.5",
-    "friendsofphp/php-cs-fixer": "^2.0"
+    "friendsofphp/php-cs-fixer": "^2.0",
+    "mmieluch/laravel-vfs-provider": "^1.0"
   },
   "autoload": {
     "classmap": [

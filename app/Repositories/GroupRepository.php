@@ -8,6 +8,7 @@ use Scalex\Zero\Criteria\OfSchool;
 use Scalex\Zero\Models\Attachment;
 use Scalex\Zero\Models\Group;
 use Scalex\Zero\User;
+use Symfony\Component\HttpFoundation\File\Exception\UploadException;
 use Znck\Attach\Builder;
 use Znck\Repositories\Repository;
 
@@ -194,14 +195,17 @@ class GroupRepository extends Repository
      */
     protected function upload(Group $group, UploadedFile $file, User $user, array $attributes,
         bool $isGroupPhoto): Attachment {
-        $this->validateWith(compact('file'), ['file' => 'required|file']);
+
+        if (!$file->isValid()) {
+            throw new UploadException('Invalid file.');
+        }
 
         $attributes['path'] = $isGroupPhoto ? $this->getPhotoUploadPath($group) : $this->getAttachmentUploadPath($group);
         $attributes['slug'] = $attributes['slug'] ?? Uuid::uuid4();
 
         $uploader = Builder::makeFromFile($file);
 
-        if (preg_match('^image\/.*', $file->getMimeType())) {
+        if ($this->isImage($file)) {
             $uploader->resize(4096)->resize(450, 'preview');
         }
 
@@ -213,5 +217,9 @@ class GroupRepository extends Repository
         $this->onCreate($attachment->save());
 
         return $attachment;
+    }
+
+    protected function isImage(UploadedFile $file) {
+        return in_array($file->guessExtension(), ['jpeg', 'png', 'gif', 'bmp', 'tiff']);
     }
 }

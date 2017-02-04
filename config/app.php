@@ -175,25 +175,18 @@ return [
         Znck\States\StatesServiceProvider::class,
         Znck\Transformers\TransformerServiceProvider::class,
         Znck\Trust\TrustServiceProvider::class,
-        Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class,
         Sentry\SentryLaravel\SentryLaravelServiceProvider::class,
 
         /*
          * Development Service Providers...
          */
-         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
-        // Themsaid\MailPreview\MailPreviewServiceProvider::class,
-        // ScoutEngines\Postgres\PostgresEngineServiceProvider::class,
 
-        /*
-         * Application Service Providers...
-         */
         Scalex\Zero\Providers\AppServiceProvider::class,
         Scalex\Zero\Providers\AuthServiceProvider::class,
         Scalex\Zero\Providers\BroadcastServiceProvider::class,
         Scalex\Zero\Providers\EventServiceProvider::class,
         Scalex\Zero\Providers\RouteServiceProvider::class,
-
+        Scalex\Zero\Providers\DevelopmentServiceProvider::class,
     ],
 
     /*

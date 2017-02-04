@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
 
 abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
@@ -83,5 +84,19 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
         $user->save();
 
         return $user;
+    }
+
+    public function postFile($uri, $files = [], $data = [], $headers = []) {
+        $server = $this->transformHeadersToServerVars($headers);
+
+        $this->call('POST', $uri, $data, [], $files, $server);
+
+        return $this;
+    }
+
+    public function getSomeFile($name = 'foo.txt', $contents = null) {
+        $path = Faker\Factory::create()->file('/tmp/');
+
+        return new UploadedFile($path, $name, null, null, null, true);
     }
 }
