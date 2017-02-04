@@ -1,11 +1,11 @@
 <?php namespace Test\Api\Messages;
 
 use Scalex\Zero\Events\Messages\MessageRead;
-use Test\Api\Groups\GroupTestsHelper;
+use Test\Api\Groups\MessagingTestHelper;
 
 class MessageControllerTest extends \TestCase
 {
-    use GroupTestsHelper;
+    use MessagingTestHelper;
 
     public function test_read_can_mark_a_message_as_read() {
         $group = $this->createPublicGroup();

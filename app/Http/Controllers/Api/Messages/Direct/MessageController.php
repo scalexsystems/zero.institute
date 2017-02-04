@@ -32,6 +32,8 @@ class MessageController extends Controller
      */
     public function index(Request $request, User $user)
     {
+        $this->authorize('view-conversation', $user);
+
         return repository(Message::class)
             ->pushCriteria(new ConversationBetween($user, $request->user()))
             ->pushCriteria(new MessageBeforeTimestamp($request->input('timestamp', time())))
@@ -55,7 +57,7 @@ class MessageController extends Controller
 
         $message = $repository->createWithUser($user, $request->all(), $request->user());
 
-        event(new NewMessage($message));
+        broadcast(new NewMessage($message));
 
         return $message;
     }

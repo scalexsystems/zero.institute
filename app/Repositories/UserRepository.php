@@ -43,7 +43,6 @@ class UserRepository extends Repository
      * @param array $attributes
      *
      * @deprecated
-     *
      * @return bool
      */
     public function creating(User $user, array $attributes)
@@ -79,7 +78,6 @@ class UserRepository extends Repository
      * @param array $options
      *
      * @deprecated
-     *
      * @return bool
      */
     public function updating(User $user, array $attributes, array $options = [])
@@ -145,7 +143,8 @@ class UserRepository extends Repository
      *
      * @return \Scalex\Zero\Models\Attachment
      */
-    public function upload(User $user, UploadedFile $file, array $attributes = [], string $directory = 'attachments'): Attachment
+    public function upload(User $user, UploadedFile $file, array $attributes = [],
+                           string $directory = 'attachments'): Attachment
     {
         $this->validateWith(compact('file'), ['file' => 'required|file']);
 
@@ -154,7 +153,7 @@ class UserRepository extends Repository
 
         $uploader = Builder::makeFromFile($file);
 
-        if (preg_match('^image\/.*', $file->getMimeType())) {
+        if ($this->isImage($file)) {
             $uploader->resize(4096)->resize(450, 'preview');
         }
 
@@ -166,5 +165,10 @@ class UserRepository extends Repository
         $this->onCreate($attachment->save());
 
         return $attachment;
+    }
+
+    protected function isImage(UploadedFile $file)
+    {
+        return in_array($file->guessExtension(), ['jpeg', 'png', 'gif', 'bmp', 'tiff']);
     }
 }

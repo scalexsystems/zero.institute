@@ -4,7 +4,7 @@ use Scalex\Zero\Events\Message\NewMessage;
 
 class MessageControllerTest extends \TestCase
 {
-    use GroupTestsHelper;
+    use MessagingTestHelper;
 
     public function test_index_can_get_group_messages()
     {

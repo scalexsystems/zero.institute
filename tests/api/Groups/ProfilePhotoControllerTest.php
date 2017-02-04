@@ -4,7 +4,7 @@ namespace Test\Api\Groups;
 
 class ProfilePhotoControllerTest extends \TestCase
 {
-    use GroupTestsHelper;
+    use MessagingTestHelper;
 
     public function test_store_can_update_group_photo()
     {

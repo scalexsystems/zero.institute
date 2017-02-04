@@ -27,7 +27,7 @@ class MessageAttachmentController extends Controller
      */
     public function store(Request $request, UserRepository $repository)
     {
-        $this->authorize('upload-file');
+        $this->authorize('upload-file', User::class);
 
         return $repository->uploadMessageAttachment($request->user(), $request->file('file'), $request->except('file'));
     }

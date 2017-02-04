@@ -7,7 +7,7 @@ use Scalex\Zero\Contracts\Communication\ReceivesMessage;
 use Scalex\Zero\Models\Group;
 use Scalex\Zero\Models\Message;
 
-trait GroupTestsHelper
+trait MessagingTestHelper
 {
 
     /**

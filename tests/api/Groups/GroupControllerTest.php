@@ -9,7 +9,7 @@ use Scalex\Zero\Models\Group;
 
 class GroupControllerTest extends \TestCase
 {
-    use GroupTestsHelper;
+    use MessagingTestHelper;
 
     public function test_index_api_format()
     {

@@ -77,8 +77,8 @@ Route::post('/groups/{group}/attachment', 'Groups\MessageAttachmentController@st
 Route::resource('/groups', 'Groups\GroupController', $resource);
 
 // - Direct Messages
-Route::post('/messages/direct/{user}', 'Messages\Direct\MessageController@store');
 Route::get('/messages/direct/{user}/messages', 'Messages\Direct\MessageController@index');
+Route::post('/messages/direct/{user}/messages', 'Messages\Direct\MessageController@store');
 Route::post('/messages/direct/{user}/attachment', 'Messages\Direct\MessageAttachmentController@store');
 
 // - Messages

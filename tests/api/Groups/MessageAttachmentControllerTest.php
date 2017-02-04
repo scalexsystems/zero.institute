@@ -2,7 +2,7 @@
 
 class MessageAttachmentControllerTest extends \TestCase
 {
-    use GroupTestsHelper;
+    use MessagingTestHelper;
 
     public function test_store_can_upload_files_to_group()
     {

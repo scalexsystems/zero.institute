@@ -8,7 +8,7 @@ use Scalex\Zero\Models\Group;
 
 class MemberControllerTest extends \TestCase
 {
-    use GroupTestsHelper;
+    use MessagingTestHelper;
 
     public function test_index_api_structure()
     {

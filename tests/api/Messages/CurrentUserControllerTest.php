@@ -1,10 +1,10 @@
 <?php namespace Test\Api\Messages;
 
-use Test\Api\Groups\GroupTestsHelper;
+use Test\Api\Groups\MessagingTestHelper;
 
 class CurrentUserControllerTest extends \TestCase
 {
-    use GroupTestsHelper;
+    use MessagingTestHelper;
 
     public function test_index_can_get_conversation_users()
     {

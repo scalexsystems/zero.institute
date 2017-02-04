@@ -6,7 +6,7 @@ use Scalex\Zero\Models\Group;
 
 class CurrentUserControllerTest extends \TestCase
 {
-    use GroupTestsHelper;
+    use MessagingTestHelper;
 
     public function test_index_can_get_groups_user()
     {
