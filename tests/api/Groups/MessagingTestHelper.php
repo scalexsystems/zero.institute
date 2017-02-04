@@ -17,7 +17,8 @@ trait MessagingTestHelper
      *
      * @return \Illuminate\Database\Eloquent\Collection|\Scalex\Zero\Models\Group
      */
-    protected function createPrivateGroup($count = 1) {
+    protected function createPrivateGroup($count = 1)
+    {
         return $this->createGroup(['private' => true], $count);
     }
 
@@ -28,7 +29,8 @@ trait MessagingTestHelper
      *
      * @return \Illuminate\Database\Eloquent\Collection|\Scalex\Zero\Models\Group
      */
-    protected function createPublicGroup($count = 1) {
+    protected function createPublicGroup($count = 1)
+    {
         return $this->createGroup(['private' => false], $count);
     }
 
@@ -39,7 +41,8 @@ trait MessagingTestHelper
      *
      * @return \Illuminate\Database\Eloquent\Collection|\Scalex\Zero\Models\Group
      */
-    protected function createCourseGroup($count = 1) {
+    protected function createCourseGroup($count = 1)
+    {
         return $this->createGroup(['type' => 'course', 'private' => true], $count);
     }
 
@@ -49,7 +52,8 @@ trait MessagingTestHelper
      *
      * @return \Scalex\Zero\Models\Group|\Illuminate\Database\Eloquent\Collection
      */
-    protected function createGroupWithMembers(array $attributes = [], $count = 2) {
+    protected function createGroupWithMembers(array $attributes = [], $count = 2)
+    {
         $group = $this->createGroup($attributes);
         $users = $this->createUser(['school_id' => $this->getSchool()->id], $count);
 
@@ -66,7 +70,8 @@ trait MessagingTestHelper
      *
      * @return \Scalex\Zero\Models\Group|\Illuminate\Database\Eloquent\Collection
      */
-    protected function createGroup($attributes, $count = 1) {
+    protected function createGroup($attributes, $count = 1)
+    {
         $attributes += [
             'school_id' => $this->getSchool()->id,
         ];
@@ -82,7 +87,8 @@ trait MessagingTestHelper
      *
      * @return \Scalex\Zero\Models\Message|\Illuminate\Database\Eloquent\Collection
      */
-    protected function sendMessageTo(ReceivesMessage $receiver, $count = 1) {
+    protected function sendMessageTo(ReceivesMessage $receiver, $count = 1)
+    {
         $message = factory(Message::class, $count)
             ->create([
                          'receiver_type' => $receiver->getMorphClass(),

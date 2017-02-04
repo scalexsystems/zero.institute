@@ -16,7 +16,8 @@ class MessageController extends Controller
     /**
      * Add auth middleware to all routes.
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('auth:api,web');
     }
 
@@ -27,7 +28,8 @@ class MessageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function read(Request $request, Message $message, MessageRepository $repository) {
+    public function read(Request $request, Message $message, MessageRepository $repository)
+    {
         $this->authorize('read', $message);
 
         $state = $repository->read($message, $request->user());
@@ -45,7 +47,8 @@ class MessageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function readAll(Request $request, MessageRepository $repository) {
+    public function readAll(Request $request, MessageRepository $repository)
+    {
         $this->validate($request, ['messages' => 'required']);
 
         $messages = $repository->with('receiver')->findMany((array)$request->input('messages'));
