@@ -36,9 +36,7 @@ class MessageRead
      */
     public function broadcastWith()
     {
-        return collect($this->state)->map(function (MessageState $state) {
-            return $state->toArray();
-        })->toArray();
+        return transform($this->state, null, null, true);
     }
 
     /**
