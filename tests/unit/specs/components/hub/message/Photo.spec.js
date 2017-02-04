@@ -26,10 +26,10 @@ describe('components/hub/message/Attachment.vue', function () {
       received_at: '2017-01-27T17:26:45.810Z',
       sender: {
         name: 'Rahul Kadyan',
-        photo: IMAGE,
+        photo: IMAGE
       },
       attachments: [
-        { extension: 'png', links: { preview: 'http://unsplash.it/360/240' } }
+        { extension: 'png', links: { preview: 'http://unsplash.it/360/240' }}
       ]
     }, this)
 
@@ -44,11 +44,11 @@ describe('components/hub/message/Attachment.vue', function () {
       received_at: '2017-01-27T17:26:45.810Z',
       sender: {
         name: 'Rahul Kadyan',
-        photo: IMAGE,
+        photo: IMAGE
       },
       attachments: [
-        { extension: 'png', links: { preview: 'http://unsplash.it/360/240' } },
-        { extension: 'png', links: { preview: 'http://unsplash.it/360/240?random' } }
+        { extension: 'png', links: { preview: 'http://unsplash.it/360/240' }},
+        { extension: 'png', links: { preview: 'http://unsplash.it/360/240?random' }}
       ]
     }, this)
 
@@ -65,7 +65,7 @@ describe('components/hub/message/Attachment.vue', function () {
       received_at: '2017-01-27T17:26:45.810Z',
       sender: {
         name: 'Rahul Kadyan',
-        photo: IMAGE,
+        photo: IMAGE
       },
       attachments: [
         { extension: 'pdf', title: 'A sample PDF', size: 1242 }
@@ -82,7 +82,7 @@ describe('components/hub/message/Attachment.vue', function () {
       received_at: '2017-01-27T17:26:45.810Z',
       sender: {
         name: 'Rahul Kadyan',
-        photo: IMAGE,
+        photo: IMAGE
       },
       attachments: [
         { extension: 'pdf', title: 'A sample PDF', size: 1242 },
@@ -102,11 +102,11 @@ describe('components/hub/message/Attachment.vue', function () {
       received_at: '2017-01-27T17:26:45.810Z',
       sender: {
         name: 'Rahul Kadyan',
-        photo: IMAGE,
+        photo: IMAGE
       },
       attachments: [
         { extension: 'pdf', title: 'A sample PDF', size: 1242 },
-        { extension: 'png', links: { preview: 'http://unsplash.it/360/240' } }
+        { extension: 'png', links: { preview: 'http://unsplash.it/360/240' }}
       ]
     }, this)
 
@@ -120,15 +120,15 @@ describe('components/hub/message/Attachment.vue', function () {
       received_at: '2017-01-27T17:26:45.810Z',
       sender: {
         name: 'Rahul Kadyan',
-        photo: IMAGE,
+        photo: IMAGE
       },
       attachments: [
         { extension: 'pdf', title: 'A sample PDF', size: 1242 },
-        { extension: 'png', links: { preview: 'http://unsplash.it/360/240' } },
+        { extension: 'png', links: { preview: 'http://unsplash.it/360/240' }},
         { extension: 'doc', title: 'A sample DOC', size: 10242 },
-        { extension: 'png', links: { preview: 'http://unsplash.it/360/240' } },
+        { extension: 'png', links: { preview: 'http://unsplash.it/360/240' }},
         { extension: 'ppt', title: 'A sample PPT', size: 12242 },
-        { extension: 'png', links: { preview: 'http://unsplash.it/360/240' } },
+        { extension: 'png', links: { preview: 'http://unsplash.it/360/240' }},
         { extension: 'txt', title: 'A sample TXT', size: 242 }
       ]
     }, this)

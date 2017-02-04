@@ -24,7 +24,7 @@ describe('components/hub/message/MessageHeader.vue', function () {
       sender: {
         name: 'Rahul Kadyan'
       },
-      received_at: '2017-01-27T17:26:45.810Z',
+      received_at: '2017-01-27T17:26:45.810Z'
     }, this)
   })
 
@@ -34,7 +34,7 @@ describe('components/hub/message/MessageHeader.vue', function () {
         name: 'Rahul Kadyan'
       },
       $status: { sending: true },
-      received_at: '2017-01-27T17:26:45.810Z',
+      received_at: '2017-01-27T17:26:45.810Z'
     }, this)
 
 
@@ -47,7 +47,7 @@ describe('components/hub/message/MessageHeader.vue', function () {
         name: 'Rahul Kadyan'
       },
       $status: { failed: true, message: 'Network unavailable.' },
-      received_at: '2017-01-27T17:26:45.810Z',
+      received_at: '2017-01-27T17:26:45.810Z'
     }, this)
 
     vm.$el.should.have.class('failed')

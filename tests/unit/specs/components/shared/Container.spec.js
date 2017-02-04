@@ -8,7 +8,7 @@ function render (template, context, data = {}) {
       return {
         title: 'Foo Bar',
         subtitle: 'The subtitle',
-        back: true,
+        back: true
       }
     },
     components: { Container }
@@ -17,8 +17,7 @@ function render (template, context, data = {}) {
 
 
 describe('components/shared/Container.vue', function () {
-
-  it ('should render correctly', function () {
+  it('should render correctly', function () {
     const vm = render(
       `<container v-bind="{ title: title, subtitle: subtitle, back: back }">
         This is in container body!
@@ -28,7 +27,7 @@ describe('components/shared/Container.vue', function () {
     // --
   })
 
-  it ('should render with footer & buttons in header', function () {
+  it('should render with footer & buttons in header', function () {
     const vm = render(
       `<container v-bind="{ title: title, subtitle: subtitle, back: back, hasFooter: true }">
        <template slot="buttons">
@@ -44,7 +43,7 @@ describe('components/shared/Container.vue', function () {
     // --
   })
 
-  it ('should render with scrollable content', function () {
+  it('should render with scrollable content', function () {
     const vm = render(
       `<container v-bind="{ title: title, subtitle: subtitle, back: back, hasFooter: true }">
         <p>This is in container body!</p>

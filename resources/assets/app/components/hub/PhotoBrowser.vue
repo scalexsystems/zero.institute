@@ -38,8 +38,8 @@ export default {
 
   computed: {
     photo () {
-      const photos = this.photos;
-      const cursor = this.cursor;
+      const photos = this.photos
+      const cursor = this.cursor
 
       return photos[cursor]
     },

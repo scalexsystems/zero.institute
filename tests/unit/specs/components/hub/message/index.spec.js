@@ -26,7 +26,7 @@ describe('components/hub/message', function () {
       received_at: '2017-01-27T17:26:45.810Z',
       sender: {
         name: 'Rahul Kadyan',
-        photo: IMAGE,
+        photo: IMAGE
       }
     }, this)
 
@@ -42,13 +42,13 @@ describe('components/hub/message', function () {
       <message v-bind="{ message: message, continued: true }"></message>
       </div>
       `, {
-      content: 'This is just a foo message.',
-      received_at: '2017-01-27T17:26:45.810Z',
-      sender: {
-        name: 'Rahul Kadyan',
-        photo: IMAGE,
-      }
-    }, this)
+        content: 'This is just a foo message.',
+        received_at: '2017-01-27T17:26:45.810Z',
+        sender: {
+          name: 'Rahul Kadyan',
+          photo: IMAGE
+        }
+      }, this)
 
     // vm.$el.should.have.class('c-hub-message-text')
     vm.$('.content').should.have.text('This is just a foo message.')
@@ -62,16 +62,16 @@ describe('components/hub/message', function () {
       <message v-bind="{ message: message, continued: true }"></message>
       </div>
       `, {
-      content: 'This is just a foo message.',
-      received_at: '2017-01-27T17:26:45.810Z',
-      sender: {
-        name: 'Rahul Kadyan',
-        photo: IMAGE,
-      },
-      $status: {
-        sending: true
-      }
-    }, this)
+        content: 'This is just a foo message.',
+        received_at: '2017-01-27T17:26:45.810Z',
+        sender: {
+          name: 'Rahul Kadyan',
+          photo: IMAGE
+        },
+        $status: {
+          sending: true
+        }
+      }, this)
 
     // vm.$el.should.have.class('c-hub-message-text')
     vm.$('.content').should.have.text('This is just a foo message.')
@@ -83,15 +83,15 @@ describe('components/hub/message', function () {
       received_at: '2017-01-27T17:26:45.810Z',
       sender: {
         name: 'Rahul Kadyan',
-        photo: IMAGE,
+        photo: IMAGE
       },
       attachments: [
         { extension: 'pdf', title: 'A sample PDF', size: 1242 },
-        { extension: 'png', links: { preview: 'http://unsplash.it/360/240' } },
+        { extension: 'png', links: { preview: 'http://unsplash.it/360/240' }},
         { extension: 'doc', title: 'A sample DOC', size: 10242 },
-        { extension: 'png', links: { preview: 'http://unsplash.it/360/240' } },
+        { extension: 'png', links: { preview: 'http://unsplash.it/360/240' }},
         { extension: 'ppt', title: 'A sample PPT', size: 12242 },
-        { extension: 'png', links: { preview: 'http://unsplash.it/360/240' } },
+        { extension: 'png', links: { preview: 'http://unsplash.it/360/240' }},
         { extension: 'txt', title: 'A sample TXT', size: 242 }
       ]
     }, this)

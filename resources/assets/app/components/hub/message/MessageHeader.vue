@@ -19,7 +19,7 @@ export default {
   props: {
     message: {
       type: Object,
-      required: true,
+      required: true
     },
     continued: {
       type: Boolean,

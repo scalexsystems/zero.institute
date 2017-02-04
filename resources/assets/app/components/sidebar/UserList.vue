@@ -16,7 +16,7 @@ export default {
         class: 'sidebar-list-item-user',
         hasExtra: user.unread > 0,
         extra: user.unread,
-        route: { name: 'user.messages', params: { id: user.id } }
+        route: { name: 'user.messages', params: { id: user.id }}
       }))
     },
     ...mapGetters('messages/users', ['users'])

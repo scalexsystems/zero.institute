@@ -6,7 +6,7 @@ const actions = {
    * Search or list groups
    */
   async index ({ dispatch }, { page = 1, query, type } = {}) {
-    const { groups, meta } = await http.get('groups', { params: { page, q: query, type } })
+    const { groups, meta } = await http.get('groups', { params: { page, q: query, type }})
 
     if (groups) await dispatch('addToStore', groups)
 
@@ -35,7 +35,6 @@ const actions = {
 
       return { group }
     } catch (error) {
-
       return error
     }
   },
@@ -51,7 +50,6 @@ const actions = {
 
       return { group }
     } catch (error) {
-
       return error
     }
   },

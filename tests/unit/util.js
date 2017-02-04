@@ -14,8 +14,8 @@ export function createVM (context, component) {
     const app = new Vue({
       el: context.DOM,
       store,
-      data() {
-        return {show: false}
+      data () {
+        return { show: false }
       },
       template: `
         <div id="${context.DOM.id}" class="test-component-container">
@@ -23,8 +23,8 @@ export function createVM (context, component) {
             <div class="test-output" v-show="show"><test-case></test-case></div>
         </div>`,
       components: {
-        TestCase: component,
-      },
+        TestCase: component
+      }
     })
 
     const vm = app.$children[0]

@@ -13,8 +13,7 @@ function render (template, data, context) {
 
 
 describe('components/shared/container/HeaderDefault.vue', function () {
-
-  it ('should render correctly', function () {
+  it('should render correctly', function () {
     const vm = render(
       `<header-default v-bind="{ title: title, subtitle: subtitle }"></header-default>`,
       { title: 'Foo Title', subtitle: 'Foo Subtitle' },
@@ -25,7 +24,7 @@ describe('components/shared/container/HeaderDefault.vue', function () {
     // --
   })
 
-  it ('should render with back button', function () {
+  it('should render with back button', function () {
     const vm = render(
       `<header-default v-bind="{ title: title, subtitle: subtitle, back: true }"></header-default>`,
       { title: 'Foo Title', subtitle: 'Foo Subtitle' },
@@ -36,7 +35,7 @@ describe('components/shared/container/HeaderDefault.vue', function () {
     // --
   })
 
-  it ('should render with photo', function () {
+  it('should render with photo', function () {
     const vm = render(
       `<header-default v-bind="{ title: title, subtitle: subtitle, photo: 'http://unsplash.it/200/300' }"></header-default>`,
       { title: 'Foo Title', subtitle: 'Foo Subtitle' },
@@ -46,5 +45,4 @@ describe('components/shared/container/HeaderDefault.vue', function () {
 
     // --
   })
-
 })

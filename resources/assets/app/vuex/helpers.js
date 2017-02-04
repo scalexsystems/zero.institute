@@ -49,7 +49,7 @@ export function binarySearchIndex (haystack, needle) {
   return -1
 }
 
-export function binarySearchFind(haystack, needle) {
+export function binarySearchFind (haystack, needle) {
   needle = isObject(needle) ? needle : { id: needle }
 
   const index = binarySearchIndex(haystack, needle)

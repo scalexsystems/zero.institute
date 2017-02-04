@@ -43,7 +43,7 @@ export default {
     // Scrollable
     scroll: {
       type: Boolean,
-      default: true,
+      default: true
     },
     scrollSelector: {
       type: String,
@@ -79,7 +79,7 @@ export default {
      * @return void
      */
     removeBars () {
-      if (! this.scroll) return
+      if (!this.scroll) return
 
       const el = this.$el.querySelector(this.scrollSelector)
 

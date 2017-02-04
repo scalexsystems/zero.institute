@@ -57,7 +57,7 @@ export default {
 
   methods: {
     preview (message, index, payload) {
-      console.log(payload);
+      console.log(payload)
 
       if (isArray(payload)) {
         this.previewPhotos(message, index)

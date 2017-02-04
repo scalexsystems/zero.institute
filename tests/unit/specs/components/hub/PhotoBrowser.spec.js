@@ -24,7 +24,7 @@ function render (template, context) {
 }
 
 describe('components/hub/PhotoBrowser.vue', function () {
-  it ('should render correctly', function () {
+  it('should render correctly', function () {
     const vm = render(`
       <photo-browser :photos="photos"></photo-browser>
       `, this)

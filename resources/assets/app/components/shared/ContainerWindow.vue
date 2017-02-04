@@ -32,7 +32,7 @@ export default {
     photo: String,
 
     // Footer
-    hasFooter: Boolean,
+    hasFooter: Boolean
   },
 
   components: { Sidebar }

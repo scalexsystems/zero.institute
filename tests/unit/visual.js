@@ -31,7 +31,7 @@ beforeEach(function () {
 
 afterEach(function () {
   const tests = document.querySelectorAll('.test')
-  const test = tests[tests.length -1]
+  const test = tests[tests.length - 1]
 
   if (!test) return
 

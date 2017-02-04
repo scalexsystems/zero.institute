@@ -15,7 +15,7 @@ function render (template, context) {
     data () {
       return {
         sender: {
-          photo: IMAGE,
+          photo: IMAGE
         }
       }
     }

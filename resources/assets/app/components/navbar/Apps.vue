@@ -34,8 +34,8 @@ export default {
       return APPS.filter(app => !app.permission || permissions[app.permission] === true)
     },
 
-    permissions() {
-      return {'app.people': true}
+    permissions () {
+      return { 'app.people': true }
     }
   }
 }

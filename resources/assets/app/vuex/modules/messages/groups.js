@@ -6,7 +6,7 @@ import { TIMESTAMP, prepare as prepareGroup, dateChangesAt } from './helpers'
 
 const actions = {
   async index ({ dispatch }, page = 1) {
-    const { groups, meta } = await http.get('me/groups', { params: { page } })
+    const { groups, meta } = await http.get('me/groups', { params: { page }})
 
     if (groups) await dispatch('addToStore', groups)
 
@@ -21,7 +21,7 @@ const actions = {
     return group
   },
 
-  async fetchMessages ({ dispatch }, { group, params = {} }) {
+  async fetchMessages ({ dispatch }, { group, params = {}}) {
     const options = {
       params: {
         before: TIMESTAMP,
@@ -30,7 +30,7 @@ const actions = {
       }
     }
 
-    const { messages, meta} = http.get(`me/groups/${group.id}/messages`, options)
+    const { messages, meta } = http.get(`me/groups/${group.id}/messages`, options)
 
     if (messages) {
       const payload = {
@@ -45,31 +45,30 @@ const actions = {
     return { messages, meta }
   },
 
-  async send({ dispatch, commit, rootState }, { id, content, extras, errors }) {
+  async send ({ dispatch, commit, rootState }, { id, content, extras, errors }) {
     const message = {
       id: Date.now(),
       content,
       sender: rootState.user,
-      $status: { sending: true, attachment: errors },
+      $status: { sending: true, attachment: errors }
     }
 
     await dispatch('addMessageToGroup', { id, message })
 
     try {
-      const payload = await http.post(true, `groups/${id}/messages`, { content, ...extras})
+      const payload = await http.post(true, `groups/${id}/messages`, { content, ...extras })
 
       commit('MESSAGE_SENT', { id, message, payload })
 
       return { message: payload }
     } catch (error) {
-
       commit('MESSAGE_FAILED', { id, message, error })
 
       return { error }
     }
   },
 
-  async read({ commit }, { id, messages }) {
+  async read ({ commit }, { id, messages }) {
     const response = await http.put(`groups/${id}/messages/read`, { ids: messages.map(message => message.id) })
 
     if (!response) {
@@ -82,7 +81,7 @@ const actions = {
     commit('INSERT', toArray(groups).map(group => prepareGroup(group)))
   },
 
-  async addMessageToGroup({ dispatch, commit, state }, { id, messages, page, _isRetry }) {
+  async addMessageToGroup ({ dispatch, commit, state }, { id, messages, page, _isRetry }) {
     const group = binarySearchFind(state.groups, id)
 
     if (group) {
@@ -98,7 +97,7 @@ const actions = {
     // Find group
     await dispatch('find', groupId)
     // Retry
-    await dispatch('addMessageToGroup',{ groupId, messages, _isRetry: true })
+    await dispatch('addMessageToGroup', { groupId, messages, _isRetry: true })
   }
 }
 
@@ -111,9 +110,9 @@ const getters = {
 
   courses: state => state.groups.filter(group => group.type === 'course'),
 
-  groupById: state => (id => state.groups.find(group => group.id === id)),
+  groupById: state => id => state.groups.find(group => group.id === id),
 
-  unreadByGroupId: state => (id => state.unread[id]),
+  unreadByGroupId: state => id => state.unread[id],
 
   messagesByGroupId (state, getters) {
     return (id) => {
@@ -123,10 +122,10 @@ const getters = {
         const prev = i > 0 ? messages[i - 1] : null
         const current = group.$messages[i]
         const $dateChanges = dateChangesAt(current, prev)
-        const $continued = prev // Not first message
-            && !$dateChanges // Not first message of the day
-            && current.attachments.length === 0 // Has no attachments
-            && current.sender.id === prev.sender.id // From same sender
+        const $continued = prev && // Not first message
+            !$dateChanges && // Not first message of the day
+            current.attachments.length === 0 && // Has no attachments
+            current.sender.id === prev.sender.id // From same sender
 
         messages.push({
           $continued,
@@ -158,7 +157,7 @@ const state = () => ({
    * @type {Object.<int,int>}
    */
   unread: {
-    $total: 0,
+    $total: 0
   }
 })
 

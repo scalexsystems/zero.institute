@@ -18,6 +18,6 @@ export default {
   name: 'TextMessage',
 
   components: { MessageHeader, SenderPhoto },
-  mixins: [ mixin ]
+  mixins: [mixin]
 }
 </script>

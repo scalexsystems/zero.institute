@@ -20,7 +20,7 @@ export default {
         class: 'sidebar-list-item-group',
         hasExtra: group.unread > 0,
         extra: group.unread,
-        route: { name: 'group.messages', params: { id: group.id } }
+        route: { name: 'group.messages', params: { id: group.id }}
       }))
     },
     ...mapGetters('messages/groups', ['groups'])

@@ -11,7 +11,7 @@ export function prepare (any) {
 }
 
 export function dateChangesAt (a, b) {
-  return ! moment(a.received_at).isSame(moment(b.received_at), 'day')
+  return !moment(a.received_at).isSame(moment(b.received_at), 'day')
 }
 
 export const TIMESTAMP = Date.now()

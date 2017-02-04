@@ -27,7 +27,7 @@ describe('components/hub/message/Continued.vue', function () {
       received_at: '2017-01-27T17:26:45.810Z',
       sender: {
         name: 'Rahul Kadyan',
-        photo: IMAGE,
+        photo: IMAGE
       }
     }, this)
 
@@ -41,7 +41,7 @@ describe('components/hub/message/Continued.vue', function () {
       received_at: '2017-01-27T17:26:45.810Z',
       sender: {
         name: 'Rahul Kadyan',
-        photo: IMAGE,
+        photo: IMAGE
       },
       $status: {
         sending: true
@@ -59,7 +59,7 @@ describe('components/hub/message/Continued.vue', function () {
       received_at: '2017-01-27T17:26:45.810Z',
       sender: {
         name: 'Rahul Kadyan',
-        photo: IMAGE,
+        photo: IMAGE
       },
       $status: {
         failed: true,

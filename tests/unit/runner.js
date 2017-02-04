@@ -47,12 +47,12 @@ exports.module.rules = [
     options: {
       loaders: {
         js: 'babel-loader',
-        scss: 'vue-style-loader!css-loader!sass-loader',
+        scss: 'vue-style-loader!css-loader!sass-loader'
       },
 
       cssModules: {
         localIdentName: '[name]_[local]',
-        camelCase: true,
+        camelCase: true
       },
 
       postcss: [require('postcss-cssnext')()]
