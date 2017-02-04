@@ -6,7 +6,8 @@ class MessageControllerTest extends \TestCase
 {
     use GroupTestsHelper;
 
-    public function test_index_can_get_group_messages() {
+    public function test_index_can_get_group_messages()
+    {
         $group = $this->createPublicGroup();
 
         $group->addMembers($this->getUser());
@@ -20,7 +21,8 @@ class MessageControllerTest extends \TestCase
              ->seeResources('messages', $messages->modelKeys());
     }
 
-    public function test_index_cannot_serve_group_messages_to_non_members() {
+    public function test_index_cannot_serve_group_messages_to_non_members()
+    {
         $group = $this->createPublicGroup();
 
         $this->sendMessageTo($group, 2);
@@ -30,7 +32,8 @@ class MessageControllerTest extends \TestCase
              ->assertResponseStatus(401);
     }
 
-    public function test_store_can_send_message() {
+    public function test_store_can_send_message()
+    {
         $group = $this->createPublicGroup();
 
         $group->addMembers($this->getUser());
@@ -42,7 +45,8 @@ class MessageControllerTest extends \TestCase
         $this->seeInDatabase('messages', ['content' => 'foo']);
     }
 
-    public function test_store_cannot_send_message_for_non_member() {
+    public function test_store_cannot_send_message_for_non_member()
+    {
         $group = $this->createPublicGroup();
 
         $this->doesntExpectEvents(NewMessage::class);

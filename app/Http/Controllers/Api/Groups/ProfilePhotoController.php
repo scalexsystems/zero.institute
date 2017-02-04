@@ -14,7 +14,8 @@ class ProfilePhotoController extends Controller
     /**
      * Add auth middleware to all routes.
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('auth:api,web');
     }
 
@@ -27,7 +28,8 @@ class ProfilePhotoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Group $group, GroupRepository $repository) {
+    public function store(Request $request, Group $group, GroupRepository $repository)
+    {
         $this->authorize('update-profile-photo', $group);
 
         $this->validate($request, ['photo' => 'required|image|max:10240']);
@@ -46,7 +48,8 @@ class ProfilePhotoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, Group $group, GroupRepository $repository) {
+    public function destroy(Request $request, Group $group, GroupRepository $repository)
+    {
         $this->authorize('remove-profile-photo', $group);
 
         $repository->removePhoto($group);

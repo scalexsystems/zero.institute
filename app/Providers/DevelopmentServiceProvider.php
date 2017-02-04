@@ -12,7 +12,8 @@ class DevelopmentServiceProvider extends AggregateServiceProvider
         '\Mmieluch\LaravelVfsProvider\LaravelVfsServiceProvider',
     ];
 
-    public function register() {
+    public function register()
+    {
         // Don't load in production env.
         if (!hash_equals('production', $this->app->environment())) {
             parent::register();

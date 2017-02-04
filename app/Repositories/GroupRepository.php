@@ -43,7 +43,8 @@ class GroupRepository extends Repository
     /**
      * Add default criteria.
      */
-    public function boot() {
+    public function boot()
+    {
         if ($user = Request::user()) {
             $this->pushCriteria(new OfSchool($user->school));
         }
@@ -57,7 +58,8 @@ class GroupRepository extends Repository
      *
      * @return \Scalex\Zero\Models\Group
      */
-    public function updatePhoto(Group $group, UploadedFile $file, User $user) {
+    public function updatePhoto(Group $group, UploadedFile $file, User $user)
+    {
         $photo = $this->uploadProfilePhoto($group, $file, $user);
 
         $group->photo()->associate($photo);
@@ -76,7 +78,8 @@ class GroupRepository extends Repository
      *
      * @return \Scalex\Zero\Models\Group
      */
-    public function createWithMembers(User $user, array $attributes, array $members) {
+    public function createWithMembers(User $user, array $attributes, array $members)
+    {
         $this->validateWith($attributes);
 
         $group = new Group($attributes);
@@ -99,7 +102,8 @@ class GroupRepository extends Repository
      *
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function members(Group $group, string $query = null) {
+    public function members(Group $group, string $query = null)
+    {
         $query = $group->members()->getQuery();
 
         $query->with('person', 'profilePhoto')->orderBy('name');
@@ -114,7 +118,8 @@ class GroupRepository extends Repository
      *
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function groupsFor(User $user) {
+    public function groupsFor(User $user)
+    {
         $query = $user->groups()->getQuery();
 
         $query->with('photo')->orderBy('name');
@@ -132,7 +137,8 @@ class GroupRepository extends Repository
      *
      * @return \Scalex\Zero\Models\Attachment
      */
-    public function uploadAttachment(Group $group, UploadedFile $file, User $user, array $attributes = []) {
+    public function uploadAttachment(Group $group, UploadedFile $file, User $user, array $attributes = [])
+    {
         return $this->upload($group, $file, $user, $attributes, false);
     }
 
@@ -146,7 +152,8 @@ class GroupRepository extends Repository
      *
      * @return \Scalex\Zero\Models\Attachment
      */
-    public function uploadProfilePhoto(Group $group, UploadedFile $file, User $user, array $attributes = []) {
+    public function uploadProfilePhoto(Group $group, UploadedFile $file, User $user, array $attributes = [])
+    {
         return $this->upload($group, $file, $user, $attributes, true);
     }
 
@@ -157,7 +164,8 @@ class GroupRepository extends Repository
      *
      * @return string
      */
-    protected function getAttachmentUploadPath(Group $group) {
+    protected function getAttachmentUploadPath(Group $group)
+    {
         $date = Carbon::now()->format('Y-m-d');
 
         if ($group->school_id) {
@@ -174,7 +182,8 @@ class GroupRepository extends Repository
      *
      * @return string
      */
-    protected function getPhotoUploadPath(Group $group) {
+    protected function getPhotoUploadPath(Group $group)
+    {
         if ($group->school_id) {
             return "schools/{$group->school_id}/groups/photo/{$group->id}";
         }
@@ -194,8 +203,8 @@ class GroupRepository extends Repository
      * @return \Scalex\Zero\Models\Attachment
      */
     protected function upload(Group $group, UploadedFile $file, User $user, array $attributes,
-        bool $isGroupPhoto): Attachment {
-
+        bool $isGroupPhoto): Attachment
+    {
         if (!$file->isValid()) {
             throw new UploadException('Invalid file.');
         }
@@ -219,13 +228,15 @@ class GroupRepository extends Repository
         return $attachment;
     }
 
-    public function removePhoto(Group $group) {
+    public function removePhoto(Group $group)
+    {
         $group->photo()->dissociate();
 
         $this->onUpdate($group->update());
     }
 
-    protected function isImage(UploadedFile $file) {
+    protected function isImage(UploadedFile $file)
+    {
         return in_array($file->guessExtension(), ['jpeg', 'png', 'gif', 'bmp', 'tiff']);
     }
 }

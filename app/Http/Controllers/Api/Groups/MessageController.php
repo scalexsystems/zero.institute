@@ -18,7 +18,8 @@ class MessageController extends Controller
     /**
      * Add auth middleware to all routes.
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('auth:api,web');
     }
 
@@ -30,7 +31,8 @@ class MessageController extends Controller
      *
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function index(Group $group, Request $request, MessageRepository $repository) {
+    public function index(Group $group, Request $request, MessageRepository $repository)
+    {
         $this->authorize('view-messages', $group);
 
         $messages = $repository
@@ -52,7 +54,8 @@ class MessageController extends Controller
      *
      * @return \Scalex\Zero\Models\Message
      */
-    public function store(Group $group, Request $request, MessageRepository $repository) {
+    public function store(Group $group, Request $request, MessageRepository $repository)
+    {
         $this->authorize('send-message', $group);
 
         $message = $repository->createWithGroup($group, $request->all(), $request->user());

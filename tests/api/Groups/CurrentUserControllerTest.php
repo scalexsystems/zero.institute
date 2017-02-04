@@ -8,7 +8,8 @@ class CurrentUserControllerTest extends \TestCase
 {
     use GroupTestsHelper;
 
-    public function test_index_can_get_groups_user() {
+    public function test_index_can_get_groups_user()
+    {
         $groups = $this->createPublicGroup(2);
         $groups->each(function (Group $group) {
             $group->addMembers($this->getUser());
@@ -20,7 +21,8 @@ class CurrentUserControllerTest extends \TestCase
              ->seeJsonStructure(['groups']);
     }
 
-    public function test_show_can_get_a_group_for_user() {
+    public function test_show_can_get_a_group_for_user()
+    {
         $group = $this->createPublicGroup();
         $group->addMembers($this->getUser());
 

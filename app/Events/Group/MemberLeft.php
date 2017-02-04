@@ -15,10 +15,10 @@ class MemberLeft extends AbstractGroupEvent
      * @param \Scalex\Zero\Models\Group $group
      * @param \Illuminate\Support\Collection $members
      */
-    public function __construct(Group $group, Collection $members) {
+    public function __construct(Group $group, Collection $members)
+    {
         parent::__construct($group);
 
         $this->members = $members;
     }
-
 }

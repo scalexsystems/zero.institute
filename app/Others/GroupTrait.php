@@ -10,7 +10,8 @@ trait GroupTrait
 {
     protected $isMemberCache = [];
 
-    public function isOfType(string $type) {
+    public function isOfType(string $type)
+    {
         if (is_null($this->type)) {
             return false;
         }
@@ -25,7 +26,8 @@ trait GroupTrait
      *
      * @return bool
      */
-    public function isAdmin(User $member) {
+    public function isAdmin(User $member)
+    {
         return false;
     }
 
@@ -36,7 +38,8 @@ trait GroupTrait
      *
      * @return bool
      */
-    public function isMember(User $member) {
+    public function isMember(User $member)
+    {
         if (!isset($this->isMemberCache[$member->getKey()])) {
             $this->checkMembers($member);
         }
@@ -51,7 +54,8 @@ trait GroupTrait
      *
      * @return Collection
      */
-    public function addMembers($users) {
+    public function addMembers($users)
+    {
         $users = $this->filterNonMembers($users);
 
         $this->members()->attach($users->toArray());
@@ -67,7 +71,8 @@ trait GroupTrait
      *
      * @return Collection
      */
-    public function removeMembers($users) {
+    public function removeMembers($users)
+    {
         $users = $this->filterMembers($users);
 
         if (!count($users)) {
@@ -87,7 +92,8 @@ trait GroupTrait
      *
      * @return \Illuminate\Support\Collection
      */
-    protected function normalizeMembers($any) {
+    protected function normalizeMembers($any)
+    {
         if ($any instanceof User) {
             return collect($any->getKey());
         }
@@ -123,7 +129,8 @@ trait GroupTrait
      *
      * @return \Illuminate\Support\Collection
      */
-    public function filter($users) {
+    public function filter($users)
+    {
         $users = $this->normalizeMembers($users);
 
         $new = $users->filter(function ($id) {
@@ -144,7 +151,8 @@ trait GroupTrait
      *
      * @return \Illuminate\Support\Collection
      */
-    public function filterMembers($users) {
+    public function filterMembers($users)
+    {
         return collect($this->filter($users)->get('member'));
     }
 
@@ -155,7 +163,8 @@ trait GroupTrait
      *
      * @return \Illuminate\Support\Collection
      */
-    public function filterNonMembers($users) {
+    public function filterNonMembers($users)
+    {
         return collect($this->filter($users)->get('nonmember'));
     }
 
@@ -166,7 +175,8 @@ trait GroupTrait
      *
      * @return \Illuminate\Support\Collection
      */
-    protected function checkMembers($users) {
+    protected function checkMembers($users)
+    {
         $users = $this->normalizeMembers($users);
 
         $result = $this->newBaseQueryBuilder()

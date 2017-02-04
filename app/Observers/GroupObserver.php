@@ -12,7 +12,8 @@ class GroupObserver
      *
      * @param \Scalex\Zero\Models\Group $group
      */
-    public function created(Group $group) {
+    public function created(Group $group)
+    {
         if (! $group->isMember($group->owner)) {
             $group->addMembers($group->owner);
         }
@@ -23,7 +24,8 @@ class GroupObserver
      *
      * @param \Scalex\Zero\Models\Group $group
      */
-    public function membersAdded(Group $group) {
+    public function membersAdded(Group $group)
+    {
         $group->count_members = $group->members()->count();
 
         $group->save();
@@ -34,7 +36,8 @@ class GroupObserver
      *
      * @param \Scalex\Zero\Models\Group $group
      */
-    public function membersRemoved(Group $group) {
+    public function membersRemoved(Group $group)
+    {
         $group->count_members = $group->members()->count();
 
         $group->save();

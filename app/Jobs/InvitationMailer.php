@@ -165,6 +165,5 @@ class InvitationMailer implements ShouldQueue
         }
 
         throw new \Exception("Unknown User Type");
-
     }
 }

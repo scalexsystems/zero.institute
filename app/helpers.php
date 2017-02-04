@@ -19,7 +19,8 @@ if (!function_exists('mix')) {
      *
      * @return string
      */
-    function mix($path, $manifest = false, $shouldHotReload = false) {
+    function mix($path, $manifest = false, $shouldHotReload = false)
+    {
         if (!$manifest) {
             static $manifest;
         }
@@ -59,7 +60,8 @@ if (!function_exists('find')) {
      * @deprecated
      * @return \Illuminate\Database\Eloquent\Model|null
      */
-    function find(array $attributes, string $key, string $class = null) {
+    function find(array $attributes, string $key, string $class = null)
+    {
         if ($useId = Str::endsWith($key, '_id')) {
             $key = preg_replace('/_id$/', '', $key);
         }
@@ -100,7 +102,8 @@ if (!function_exists('verify_school')) {
      * @deprecated
      * @return bool
      */
-    function verify_school($model, School $school = null) {
+    function verify_school($model, School $school = null)
+    {
         if ($model instanceof BelongsToSchool) {
             if (!is_null($school)) {
                 return (int)$school->getKey() === (int)$model->school_id;
@@ -119,7 +122,8 @@ if (!function_exists('morph_model')) {
      *
      * @return string
      */
-    function morph_model($model, $map = false, $invertedMap = false) {
+    function morph_model($model, $map = false, $invertedMap = false)
+    {
         $model = $model instanceof Model ? get_class($model) : (string)$model;
 
         if (!$map) {
@@ -151,7 +155,8 @@ if (!function_exists('current_user')) {
      * @deprecated
      * @return \Illuminate\Contracts\Auth\Authenticatable|\Scalex\Zero\User
      */
-    function current_user() {
+    function current_user()
+    {
         return Request::user();
     }
 }
@@ -166,7 +171,8 @@ if (!function_exists('allow')) {
      * @deprecated
      * @return null
      */
-    function allow(string $what, $who, $resource, $default = null) {
+    function allow(string $what, $who, $resource, $default = null)
+    {
         return Gate::allows($what, $who) ? $resource : $default;
     }
 }
@@ -179,7 +185,8 @@ if (!function_exists('attach_attachment')) {
      *
      * @deprecated
      */
-    function attach_attachment(Model $related, string $relation = null, Attachment $attachment) {
+    function attach_attachment(Model $related, string $relation = null, Attachment $attachment)
+    {
         if (is_string($relation)) {
             $related->$relation()->associate($attachment);
         }
@@ -191,7 +198,8 @@ if (!function_exists('attach_attachment')) {
 }
 
 if (!function_exists('schoolScopeCacheKey')) {
-    function schoolScopeCacheKey(string $key, $school = null) {
+    function schoolScopeCacheKey(string $key, $school = null)
+    {
         $school = $school ?? Request::user()->school_id;
 
         return "school:{$school}.{$key}";
@@ -199,7 +207,8 @@ if (!function_exists('schoolScopeCacheKey')) {
 }
 
 if (!function_exists('iso_date')) {
-    function iso_date($date) {
+    function iso_date($date)
+    {
         if ($date instanceof \Carbon\Carbon) {
             return $date->toIso8601String();
         }

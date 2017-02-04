@@ -152,11 +152,13 @@ class Employee extends BaseModel implements BelongsToSchool, Person
         return 'uid';
     }
 
-    public function setDateOfJoiningAttribute($value) {
+    public function setDateOfJoiningAttribute($value)
+    {
         $this->attributes['date_of_joining'] = Carbon::parse($value);
     }
 
-    public function setDateOfBirthAttribute($value) {
+    public function setDateOfBirthAttribute($value)
+    {
         $this->attributes['date_of_birth'] = Carbon::parse($value);
     }
 }

@@ -13,11 +13,13 @@ class OwnedBy implements Criteria
      *
      * @param $user
      */
-    public function __construct(User $user) {
+    public function __construct(User $user)
+    {
         $this->user = $user;
     }
 
-    public function apply($model, Repository $repository) {
+    public function apply($model, Repository $repository)
+    {
         $model->where('owner_id', $this->user->getKey());
     }
 }

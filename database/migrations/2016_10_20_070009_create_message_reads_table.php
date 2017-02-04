@@ -11,7 +11,8 @@ class CreateMessageReadsTable extends Migration
      *
      * @return void
      */
-    public function up() {
+    public function up()
+    {
         Schema::create('message_reads', function (Blueprint $table) {
             if (config('database.default') === 'memory') {
                 $table->bigIncrements('id');
@@ -28,7 +29,8 @@ class CreateMessageReadsTable extends Migration
      *
      * @return void
      */
-    public function down() {
+    public function down()
+    {
         Schema::dropIfExists('message_reads');
     }
 }

@@ -12,11 +12,13 @@ class PrivateGroup implements Criteria
      *
      * @param $value
      */
-    public function __construct($value = true) {
+    public function __construct($value = true)
+    {
         $this->value = $value;
     }
 
-    public function apply($query, Repository $repository) {
+    public function apply($query, Repository $repository)
+    {
         $query->where('private', $this->value);
     }
 }

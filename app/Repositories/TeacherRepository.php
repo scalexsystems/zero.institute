@@ -157,7 +157,6 @@ class TeacherRepository extends Repository
             if (isset($teacher->address)) {
                 repository(Address::class)
                     ->update($teacher->address, $attributes['address']);
-
             } else {
                 $teacher->address()->associate(repository(Address::class)->create(array_get($attributes, 'address', [])));
             }

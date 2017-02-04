@@ -23,7 +23,8 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
      *
      * @return \Illuminate\Foundation\Application
      */
-    public function createApplication() {
+    public function createApplication()
+    {
         $app = require __DIR__.'/../bootstrap/app.php';
 
         $app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();
@@ -36,11 +37,13 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
      *
      * @return \Scalex\Zero\User
      */
-    public function createUser($attributes = [], $count = 1) {
+    public function createUser($attributes = [], $count = 1)
+    {
         return factory(Scalex\Zero\User::class, $count)->create($attributes);
     }
 
-    public function givePermissionTo(Scalex\Zero\User $user, string $permission) {
+    public function givePermissionTo(Scalex\Zero\User $user, string $permission)
+    {
         Znck\Trust\Models\Permission::create(['slug' => $permission, 'name' => $permission]);
 
         $user->grantPermission($permission);
@@ -48,7 +51,8 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
         return $this;
     }
 
-    public function seeResources(string $type, array $ids) {
+    public function seeResources(string $type, array $ids)
+    {
         $actual = collect(collect((array)$this->decodeResponseJson())->get($type))->pluck('id')->toArray();
 
         $this->assertEquals(Arr::sortRecursive($actual), Arr::sortRecursive($ids));
@@ -61,7 +65,8 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
      *
      * @return mixed|\Scalex\Zero\Models\School
      */
-    public function getSchool() {
+    public function getSchool()
+    {
         return $this->getUser()->school;
     }
 
@@ -70,11 +75,13 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
      *
      * @return \Scalex\Zero\User
      */
-    public function getUser() {
+    public function getUser()
+    {
         return $this->anUser ?? ($this->anUser = $this->createUser());
     }
 
-    public function getUserWithPerson(string $type = 'student') {
+    public function getUserWithPerson(string $type = 'student')
+    {
         $user = $this->getUser();
 
         $person = factory(morph_model($type))->create(['school_id' => $this->getSchool()->id]);
@@ -86,7 +93,8 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
         return $user;
     }
 
-    public function postFile($uri, $files = [], $data = [], $headers = []) {
+    public function postFile($uri, $files = [], $data = [], $headers = [])
+    {
         $server = $this->transformHeadersToServerVars($headers);
 
         $this->call('POST', $uri, $data, [], $files, $server);
@@ -94,7 +102,8 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
         return $this;
     }
 
-    public function getSomeFile($name = 'foo.txt', $contents = null) {
+    public function getSomeFile($name = 'foo.txt', $contents = null)
+    {
         $path = Faker\Factory::create()->image('/tmp');
 
         return new UploadedFile($path, $name, null, null, null, true);

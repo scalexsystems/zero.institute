@@ -17,11 +17,13 @@ class NewMessage implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct(Message $message) {
+    public function __construct(Message $message)
+    {
         $this->message = $message;
     }
 
-    public function broadcastWith() {
+    public function broadcastWith()
+    {
         return transform($this->message);
     }
 
@@ -30,7 +32,8 @@ class NewMessage implements ShouldBroadcast
      *
      * @return \Illuminate\Broadcasting\PresenceChannel|\Illuminate\Broadcasting\PrivateChannel
      */
-    public function broadcastOn() {
+    public function broadcastOn()
+    {
         return is_null($this->message->intended_for) ?
             $this->message->receiver->getChannel() :
             $this->message->intended->getChannel();

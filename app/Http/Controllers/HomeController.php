@@ -34,7 +34,7 @@ class HomeController extends Controller
         }
 
         $count = Cache::rememberForever('requests.count', function () {
-                       return DB::connection('sqlite')
+            return DB::connection('sqlite')
                                  ->table('requests')->count();
         });
 

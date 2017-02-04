@@ -10,23 +10,28 @@ class DisciplineObserver
      */
     protected $manager;
 
-    public function __construct(CacheManager $manager) {
+    public function __construct(CacheManager $manager)
+    {
         $this->manager = $manager;
     }
 
-    public function created(Discipline $discipline) {
+    public function created(Discipline $discipline)
+    {
         $this->forgetCached($discipline);
     }
 
-    public function updated(Discipline $discipline) {
+    public function updated(Discipline $discipline)
+    {
         $this->forgetCached($discipline);
     }
 
-    public function deleted(Discipline $discipline) {
+    public function deleted(Discipline $discipline)
+    {
         $this->forgetCached($discipline);
     }
 
-    protected function forgetCached(Discipline $discipline) {
+    protected function forgetCached(Discipline $discipline)
+    {
         $this->manager->driver()->forget(
             schoolScopeCacheKey('disciplines', $discipline->school_id)
         );

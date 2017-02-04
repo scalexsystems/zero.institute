@@ -13,7 +13,8 @@ class GroupTransformer extends Transformer
      *
      * @return array
      */
-    public function show(Group $group) {
+    public function show(Group $group)
+    {
         return $this->index($group) + [
             'owner' => transform($group->owner),
         ];
@@ -26,7 +27,8 @@ class GroupTransformer extends Transformer
      *
      * @return array
      */
-    public function index(Group $group) {
+    public function index(Group $group)
+    {
         if ($user = current_user()) {
             return $this->indexPartial($group) + $this->me($group, $user);
         }
@@ -42,7 +44,8 @@ class GroupTransformer extends Transformer
      *
      * @return array
      */
-    public function me(Group $group, User $user) {
+    public function me(Group $group, User $user)
+    {
         return [
             'is_member' => $user and $group->isMember($user),
             'is_admin' => $user and (int)$group->owner_id === (int)$user->id,
@@ -56,7 +59,8 @@ class GroupTransformer extends Transformer
      *
      * @return array
      */
-    protected function indexPartial(Group $group):array {
+    protected function indexPartial(Group $group):array
+    {
         return [
             'name' => (string)$group->name,
             'description' => (string)$group->description,

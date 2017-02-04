@@ -37,7 +37,8 @@ class StudentController extends Controller
         return $student;
     }
 
-    public function update(Request $request, Student $student) {
+    public function update(Request $request, Student $student)
+    {
         $this->authorize($student);
         $data = $request->all();
         repository(Student::class)->update($student, $data);

@@ -15,7 +15,8 @@ class GroupPolicy extends AbstractPolicy
      *
      * @return bool
      */
-    public function view(User $user, Group $group) {
+    public function view(User $user, Group $group)
+    {
         return $this->isPublic($group) or $group->isMember($user);
     }
 
@@ -26,7 +27,8 @@ class GroupPolicy extends AbstractPolicy
      *
      * @return bool
      */
-    public function create(User $user) {
+    public function create(User $user)
+    {
         // Anyone can create a group.
         return !is_null($user->person_id);
     }
@@ -39,7 +41,8 @@ class GroupPolicy extends AbstractPolicy
      *
      * @return bool
      */
-    public function update(User $user, Group $group) {
+    public function update(User $user, Group $group)
+    {
         return $this->isOwner($group);
     }
 
@@ -51,7 +54,8 @@ class GroupPolicy extends AbstractPolicy
      *
      * @return bool
      */
-    public function delete(User $user, Group $group) {
+    public function delete(User $user, Group $group)
+    {
         return $this->isOwner($group);
     }
 
@@ -63,7 +67,8 @@ class GroupPolicy extends AbstractPolicy
      *
      * @return bool
      */
-    public function viewMembers(User $user, Group $group) {
+    public function viewMembers(User $user, Group $group)
+    {
         return $this->isPublic($group) or $group->isMember($user);
     }
 
@@ -75,7 +80,8 @@ class GroupPolicy extends AbstractPolicy
      *
      * @return bool
      */
-    public function addMembers(User $user, Group $group) {
+    public function addMembers(User $user, Group $group)
+    {
         return $this->isOwner($group);
     }
 
@@ -87,7 +93,8 @@ class GroupPolicy extends AbstractPolicy
      *
      * @return bool
      */
-    public function removeMembers(User $user, Group $group) {
+    public function removeMembers(User $user, Group $group)
+    {
         return $this->isOwner($group);
     }
 
@@ -99,7 +106,8 @@ class GroupPolicy extends AbstractPolicy
      *
      * @return bool
      */
-    public function viewMessages(User $user, Group $group) {
+    public function viewMessages(User $user, Group $group)
+    {
         return $group->isMember($user);
     }
 
@@ -111,7 +119,8 @@ class GroupPolicy extends AbstractPolicy
      *
      * @return bool
      */
-    public function sendMessage(User $user, Group $group) {
+    public function sendMessage(User $user, Group $group)
+    {
         return $group->isMember($user);
     }
 
@@ -123,7 +132,8 @@ class GroupPolicy extends AbstractPolicy
      *
      * @return bool
      */
-    public function updateProfilePhoto(User $user, Group $group) {
+    public function updateProfilePhoto(User $user, Group $group)
+    {
         return $this->isOwner($group);
     }
 
@@ -135,7 +145,8 @@ class GroupPolicy extends AbstractPolicy
      *
      * @return bool
      */
-    public function removeProfilePhoto(User $user, Group $group) {
+    public function removeProfilePhoto(User $user, Group $group)
+    {
         return $this->isOwner($group);
     }
 
@@ -147,7 +158,8 @@ class GroupPolicy extends AbstractPolicy
      *
      * @return bool
      */
-    public function uploadFileIn(User $user, Group $group) {
+    public function uploadFileIn(User $user, Group $group)
+    {
         return $group->isMember($user);
     }
 
@@ -159,7 +171,8 @@ class GroupPolicy extends AbstractPolicy
      *
      * @return bool
      */
-    public function join(User $user, Group $group) {
+    public function join(User $user, Group $group)
+    {
         return $this->isPublic($group);
     }
 
@@ -171,7 +184,8 @@ class GroupPolicy extends AbstractPolicy
      *
      * @return bool
      */
-    public function leave(User $user, Group $group) {
+    public function leave(User $user, Group $group)
+    {
         if ($this->isOwner($group)) {
             return false;
         }
@@ -191,7 +205,8 @@ class GroupPolicy extends AbstractPolicy
      *
      * @return bool
      */
-    public function readMessages(User $user, Group $group) {
+    public function readMessages(User $user, Group $group)
+    {
         return $group->isMember($user);
     }
 
@@ -202,7 +217,8 @@ class GroupPolicy extends AbstractPolicy
      *
      * @return bool
      */
-    protected function isOwner(Group $group) {
+    protected function isOwner(Group $group)
+    {
         return $this->getUser()->getKey() === (int) $group->owner_id;
     }
 
@@ -213,7 +229,8 @@ class GroupPolicy extends AbstractPolicy
      *
      * @return bool
      */
-    protected function isPublic(Group $group) {
+    protected function isPublic(Group $group)
+    {
         return !$group->private and (
             is_null($group->school_id) or (int) $group->school_id === (int) $this->getUser()->school_id
         );

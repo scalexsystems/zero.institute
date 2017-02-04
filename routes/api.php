@@ -62,18 +62,18 @@ Route::resource('intents', 'Users\IntentController', $resource);
 //======================================================================================//
 
 // - Groups
-Route::get(     '/groups/{group}/members', 'Groups\MemberController@index');
-Route::post(    '/groups/{group}/members/add', 'Groups\MemberController@store');/* @deprecated TODO: Remove this. */
-Route::post(    '/groups/{group}/members', 'Groups\MemberController@store');
-Route::delete(  '/groups/{group}/members/remove', 'Groups\MemberController@destroy');/* @deprecated TODO: Remove this. */
-Route::delete(  '/groups/{group}/members', 'Groups\MemberController@destroy');
-Route::get(     '/groups/{group}/messages', 'Groups\MessageController@index');
-Route::post(    '/groups/{group}/messages', 'Groups\MessageController@store');
-Route::post(    '/groups/{group}/photo', 'Groups\ProfilePhotoController@store');
-Route::delete(  '/groups/{group}/photo', 'Groups\ProfilePhotoController@destroy');
-Route::post(    '/groups/{group}/join', 'Groups\CurrentUserController@store');
-Route::delete(  '/groups/{group}/leave', 'Groups\CurrentUserController@delete');
-Route::post(    '/groups/{group}/attachment', 'Groups\MessageAttachmentController@store');
+Route::get('/groups/{group}/members', 'Groups\MemberController@index');
+Route::post('/groups/{group}/members/add', 'Groups\MemberController@store');/* @deprecated TODO: Remove this. */
+Route::post('/groups/{group}/members', 'Groups\MemberController@store');
+Route::delete('/groups/{group}/members/remove', 'Groups\MemberController@destroy');/* @deprecated TODO: Remove this. */
+Route::delete('/groups/{group}/members', 'Groups\MemberController@destroy');
+Route::get('/groups/{group}/messages', 'Groups\MessageController@index');
+Route::post('/groups/{group}/messages', 'Groups\MessageController@store');
+Route::post('/groups/{group}/photo', 'Groups\ProfilePhotoController@store');
+Route::delete('/groups/{group}/photo', 'Groups\ProfilePhotoController@destroy');
+Route::post('/groups/{group}/join', 'Groups\CurrentUserController@store');
+Route::delete('/groups/{group}/leave', 'Groups\CurrentUserController@delete');
+Route::post('/groups/{group}/attachment', 'Groups\MessageAttachmentController@store');
 Route::resource('/groups', 'Groups\GroupController', $resource);
 
 // - Direct Messages
@@ -82,12 +82,11 @@ Route::get('/messages/direct/{user}/messages', 'Messages\Direct\MessageControlle
 Route::post('/messages/direct/{user}/attachment', 'Messages\Direct\MessageAttachmentController@store');
 
 // - Messages
-Route::put( '/messages/read', 'Messages\MessageController@readAll');
-Route::put( '/messages/{message}/read', 'Messages\MessageController@read');
+Route::put('/messages/read', 'Messages\MessageController@readAll');
+Route::put('/messages/{message}/read', 'Messages\MessageController@read');
 
 // - User Context
 Route::get('/me/groups', 'Groups\CurrentUserController@index');
 Route::get('/me/groups/{group}', 'Groups\CurrentUserController@show');
 Route::get('/me/users', 'Messages\CurrentUserController@index');
 Route::get('/me/users/{user}', 'Messages\CurrentUserController@show');
-

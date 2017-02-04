@@ -150,15 +150,12 @@ class StudentRepository extends Repository
             if (isset($student->address)) {
                 repository(Address::class)
                     ->update($student->address, $attributes['address']);
-
             } else {
                 $student->address()->associate(repository(Address::class)->create(array_get($attributes, 'address', [])));
             }
         }
         if (array_has($attributes, 'department_id')) {
             $student->department()->associate(find($attributes, 'department_id'));
-
-
         }
         if (array_has($attributes, 'discipline_id')) {
             $student->discipline()->associate(find($attributes, 'discipline_id'));

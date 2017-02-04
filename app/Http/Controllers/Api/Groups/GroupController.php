@@ -16,7 +16,8 @@ class GroupController extends Controller
     /**
      * Add auth middleware for all routes.
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('auth:api,web');
     }
 
@@ -28,7 +29,8 @@ class GroupController extends Controller
      *
      * @return mixed
      */
-    public function index(Request $request, GroupRepository $repository) {
+    public function index(Request $request, GroupRepository $repository)
+    {
         $groups = $repository->with(['photo', 'lastMessage'])->pushCriteria(new PrivateGroup(false));
 
         if ($request->has('q')) {
@@ -47,7 +49,8 @@ class GroupController extends Controller
      *
      * @return \Scalex\Zero\Models\Group
      */
-    public function show(Group $group) {
+    public function show(Group $group)
+    {
         $this->authorize('view', $group);
 
         return $group;
@@ -61,7 +64,8 @@ class GroupController extends Controller
      *
      * @return \Scalex\Zero\Models\Group
      */
-    public function store(Request $request, GroupRepository $repository) {
+    public function store(Request $request, GroupRepository $repository)
+    {
         $this->authorize('create', Group::class);
 
         $group = $repository->createWithMembers(
@@ -84,7 +88,8 @@ class GroupController extends Controller
      *
      * @return \Scalex\Zero\Models\Group
      */
-    public function update(Request $request, Group $group, GroupRepository $repository) {
+    public function update(Request $request, Group $group, GroupRepository $repository)
+    {
         $this->authorize('update', $group);
 
         $attributes = $request->all();
@@ -100,7 +105,8 @@ class GroupController extends Controller
         return $group;
     }
 
-    public function destroy(Group $group, GroupRepository $repository) {
+    public function destroy(Group $group, GroupRepository $repository)
+    {
         $this->authorize('delete', $group);
 
         if ($group->isOfType('course')) {

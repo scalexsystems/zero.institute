@@ -5,7 +5,8 @@ use Scalex\Zero\Models\Message\MessageState;
 
 class MessageStateObserver
 {
-    public function created(MessageState $state) {
+    public function created(MessageState $state)
+    {
         event(new MessageRead($state));
     }
 }

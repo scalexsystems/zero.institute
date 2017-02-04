@@ -10,22 +10,26 @@ class StudentObserver
      */
     protected $manager;
 
-    public function __construct(CacheManager $manager) {
+    public function __construct(CacheManager $manager)
+    {
         $this->manager = $manager;
     }
 
-    public function created(Student $student) {
+    public function created(Student $student)
+    {
         $this->forgetStatsCache($student);
     }
 
-    public function deleted(Student $student) {
+    public function deleted(Student $student)
+    {
         $this->forgetStatsCache($student);
     }
 
     /**
      * @param \Scalex\Zero\Models\Student $student
      */
-    protected function forgetStatsCache(Student $student):void {
+    protected function forgetStatsCache(Student $student):void
+    {
         $this->manager->driver()->forget(
             schoolScopeCacheKey('stats.people', $student->school_id)
         );

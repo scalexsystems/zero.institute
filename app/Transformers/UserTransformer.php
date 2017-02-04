@@ -8,7 +8,8 @@ class UserTransformer extends Transformer
 {
     protected $availableIncludes = ['person'];
 
-    public function index(User $user) {
+    public function index(User $user)
+    {
         return [
             'name' => (string)$user->name,
             'photo' => attach_url($user->photo) ?? asset('img/placeholder-64.jpg'),
@@ -18,11 +19,13 @@ class UserTransformer extends Transformer
         ];
     }
 
-    public function show(User $user) {
+    public function show(User $user)
+    {
         return $this->showPartial($user) + $this->showEmail($user) + $this->me($user);
     }
 
-    public function me(User $user) {
+    public function me(User $user)
+    {
         if ($current = current_user() and $user->getKey() === $current->getKey()) {
             return ['permission' => $user->getPermissionNames()];
         }
@@ -30,7 +33,8 @@ class UserTransformer extends Transformer
         return [];
     }
 
-    public function includePerson(User $user) {
+    public function includePerson(User $user)
+    {
         if ($user->person) {
             return $this->item($user->person, transformer($user->person)->setIndexing(false));
         }
@@ -45,7 +49,8 @@ class UserTransformer extends Transformer
      *
      * @return string
      */
-    public function getBio(User $user) {
+    public function getBio(User $user)
+    {
         return ''; // TODO: Implement user bio.
     }
 
@@ -56,7 +61,8 @@ class UserTransformer extends Transformer
      *
      * @return array
      */
-    protected function showPartial(User $user):array {
+    protected function showPartial(User $user):array
+    {
         return [
             'name' => (string)$user->name,
             'photo' => attach_url($user->photo) ?? asset('img/placeholder-64.jpg'),
@@ -73,7 +79,8 @@ class UserTransformer extends Transformer
      *
      * @return array
      */
-    protected function showEmail(User $user) {
+    protected function showEmail(User $user)
+    {
         if (Gate::allows('read-email', $user)) {
             return ['email' => $user->email];
         }

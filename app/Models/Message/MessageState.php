@@ -27,7 +27,7 @@ class MessageState extends BaseModel
      *
      * @var array
      */
-    protected  $dates = [
+    protected $dates = [
         'read_at'
     ];
 

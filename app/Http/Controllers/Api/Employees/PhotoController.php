@@ -1,6 +1,5 @@
 <?php namespace Scalex\Zero\Http\Controllers\Api\Employees;
 
-
 use Illuminate\Http\Request;
 use Ramsey\Uuid\Uuid;
 use Scalex\Zero\Http\Controllers\Controller;
@@ -17,7 +16,7 @@ class PhotoController extends Controller
 
     public function store(Request $request, Employee $employee)
     {
-//        $this->authorize('update', $student);
+        //        $this->authorize('update', $student);
         $this->validate($request, ['photo' => 'required|image|max:10240']);
 
         $schoolId = $request->user()->school_id;

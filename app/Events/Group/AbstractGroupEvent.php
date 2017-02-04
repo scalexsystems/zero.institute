@@ -43,7 +43,8 @@ abstract class AbstractGroupEvent implements ShouldBroadcast
      *
      * @param $group
      */
-    public function __construct(Group $group) {
+    public function __construct(Group $group)
+    {
         $this->group = $group;
         $this->group_id = $group->getKey();
     }
@@ -53,7 +54,8 @@ abstract class AbstractGroupEvent implements ShouldBroadcast
      *
      * @return array
      */
-    public function broadcastOn() {
+    public function broadcastOn()
+    {
         $channels = collect();
 
         if ($this->toSchool and $this->group->school) {
@@ -72,7 +74,8 @@ abstract class AbstractGroupEvent implements ShouldBroadcast
      *
      * @return \Scalex\Zero\Models\Group
      */
-    public function getGroup(): Group {
+    public function getGroup(): Group
+    {
         return $this->group;
     }
 }

@@ -50,7 +50,8 @@ class Group extends BaseModel implements ReceivesMessage
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function owner() {
+    public function owner()
+    {
         return $this->belongsTo(User::class);
     }
 
@@ -59,7 +60,8 @@ class Group extends BaseModel implements ReceivesMessage
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function school() {
+    public function school()
+    {
         return $this->belongsTo(School::class);
     }
 
@@ -69,7 +71,8 @@ class Group extends BaseModel implements ReceivesMessage
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      * @deprecated in v0.4.0, use @method photo(). TODO: Remove in v0.5+.
      */
-    public function profilePhoto() {
+    public function profilePhoto()
+    {
         return $this->photo();
     }
 
@@ -78,7 +81,8 @@ class Group extends BaseModel implements ReceivesMessage
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function photo() {
+    public function photo()
+    {
         return $this->belongsTo(Attachment::class);
     }
 
@@ -88,7 +92,8 @@ class Group extends BaseModel implements ReceivesMessage
      * @return \Scalex\Zero\Database\Relation\LastMessage
      * @deprecated in v0.4.0, use @method lastMessage(). TODO: Remove in v0.5+.
      */
-    public function lastMessageAt() {
+    public function lastMessageAt()
+    {
         return $this->lastMessage();
     }
 
@@ -97,7 +102,8 @@ class Group extends BaseModel implements ReceivesMessage
      *
      * @return \Scalex\Zero\Database\Relation\LastMessage
      */
-    public function lastMessage() {
+    public function lastMessage()
+    {
         return new LastMessage((new Message())->newQuery(), $this);
     }
 
@@ -106,7 +112,8 @@ class Group extends BaseModel implements ReceivesMessage
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function members() {
+    public function members()
+    {
         return $this->belongsToMany(User::class)->withTimestamps();
     }
 
@@ -115,7 +122,8 @@ class Group extends BaseModel implements ReceivesMessage
      *
      * @return string
      */
-    public function getChannelName(): string {
+    public function getChannelName(): string
+    {
         return $this->getMorphClass().'-'.$this->getKey();
     }
 
@@ -124,7 +132,8 @@ class Group extends BaseModel implements ReceivesMessage
      *
      * @return \Illuminate\Broadcasting\PresenceChannel
      */
-    public function getChannel() {
+    public function getChannel()
+    {
         return new PresenceChannel($this->getChannelName());
     }
 }

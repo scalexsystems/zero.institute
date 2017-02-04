@@ -10,7 +10,8 @@ use Scalex\Zero\User;
 
 class CurrentUserController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('auth:api,web');
     }
 
@@ -22,7 +23,8 @@ class CurrentUserController extends Controller
      *
      * @return mixed
      */
-    public function index(Request $request, UserRepository $repository) {
+    public function index(Request $request, UserRepository $repository)
+    {
         $request->query->set('with', 'person');
 
         return $repository->with(['person', 'photo', 'lastMessage'])
@@ -37,7 +39,8 @@ class CurrentUserController extends Controller
      *
      * @return \Scalex\Zero\User
      */
-    public function show(User $user, UserTransformer $transformer) {
+    public function show(User $user, UserTransformer $transformer)
+    {
         return $transformer->setIndexing(false)->transform($user);
     }
 }

@@ -39,7 +39,8 @@ class MessageRepository extends Repository
      *
      * @return \Scalex\Zero\Models\Message
      */
-    public function createWithUser(User $receiver, array $attributes, User $sender) {
+    public function createWithUser(User $receiver, array $attributes, User $sender)
+    {
         return $this->createWithSenderAndReceiver($receiver, $attributes, $sender);
     }
 
@@ -52,7 +53,8 @@ class MessageRepository extends Repository
      *
      * @return \Scalex\Zero\Models\Message
      */
-    public function createWithGroup(Group $receiver, array $attributes, User $sender) {
+    public function createWithGroup(Group $receiver, array $attributes, User $sender)
+    {
         return $this->createWithSenderAndReceiver($receiver, $attributes, $sender);
     }
 
@@ -64,7 +66,8 @@ class MessageRepository extends Repository
      *
      * @return \Scalex\Zero\Models\Message
      */
-    public function read(Message $message, User $user) {
+    public function read(Message $message, User $user)
+    {
         if (!$message->isReadBy($user)) {
             $this->onUpdate(false !== $message->read($user));
         }
@@ -78,7 +81,8 @@ class MessageRepository extends Repository
      * @param \Illuminate\Database\Eloquent\Collection $messages
      * @param \Scalex\Zero\User $user
      */
-    public function readAll(Collection $messages, User $user) {
+    public function readAll(Collection $messages, User $user)
+    {
         $old = DB::table('message_reads')
                  ->where('user_id', $user->getKey())
                  ->whereIn('message_id', $messages->modelKeys())
@@ -110,7 +114,8 @@ class MessageRepository extends Repository
      *
      * @return \Scalex\Zero\Models\Message
      */
-    protected function createWithSenderAndReceiver(ReceivesMessage $receiver, array $attributes, User $sender) {
+    protected function createWithSenderAndReceiver(ReceivesMessage $receiver, array $attributes, User $sender)
+    {
         $this->validateWith($attributes, [
             'content' => 'required_without:attachments',
         ]);
@@ -146,7 +151,8 @@ class MessageRepository extends Repository
      *
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function loadMessageStatesFor($messages, User $user) {
+    public function loadMessageStatesFor($messages, User $user)
+    {
         $ids = $messages->getCollection()->modelKeys();
         $states = Message\MessageState::whereUserId($user->getKey())
                                       ->whereIn('message_id', $ids)->get()->keyBy('message_id');

@@ -102,7 +102,8 @@ class UserRepository extends Repository
         return $this->upload($user, $file, $attributes, 'messages');
     }
 
-    protected function getUploadPath(User $user, string $directory): string {
+    protected function getUploadPath(User $user, string $directory): string
+    {
         return "schools/{$user->school_id}/users/{$user->id}/${directory}";
     }
 
@@ -116,7 +117,8 @@ class UserRepository extends Repository
      *
      * @return \Scalex\Zero\Models\Attachment
      */
-    public function upload(User $user, UploadedFile $file, array $attributes = [], string $directory = 'attachments'): Attachment {
+    public function upload(User $user, UploadedFile $file, array $attributes = [], string $directory = 'attachments'): Attachment
+    {
         $this->validateWith(compact('file'), ['file' => 'required|file']);
 
         $attributes['path'] = $this->getUploadPath($user, $directory);
@@ -136,5 +138,5 @@ class UserRepository extends Repository
         $this->onCreate($attachment->save());
 
         return $attachment;
-}
+    }
 }

@@ -147,15 +147,12 @@ class EmployeeRepository extends Repository
             if (isset($employee->address)) {
                 repository(Address::class)
                     ->update($employee->address, $attributes['address']);
-
             } else {
                 $employee->address()->associate(repository(Address::class)->create(array_get($attributes, 'address', [])));
             }
         }
         if (array_has($attributes, 'department_id')) {
             $employee->department()->associate(find($attributes, 'department_id'));
-
-
         }
         if (array_has($attributes, 'photo_id')) {
             attach_attachment($employee, 'profilePhoto', find($attributes, 'photo_id', Attachment::class));

@@ -17,7 +17,8 @@ class MessageController extends Controller
     /**
      * Add auth middleware to all routes.
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('auth:api,web');
     }
 
@@ -29,14 +30,14 @@ class MessageController extends Controller
      *
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function index(Request $request, User $user) {
+    public function index(Request $request, User $user)
+    {
         return repository(Message::class)
             ->pushCriteria(new ConversationBetween($user, $request->user()))
             ->pushCriteria(new MessageBeforeTimestamp($request->input('timestamp', time())))
             ->pushCriteria(new OrderBy('id', 'desc'))
             ->with(['attachments', 'sender'])
             ->paginate();
-
     }
 
     /**
@@ -48,7 +49,8 @@ class MessageController extends Controller
      *
      * @return \Scalex\Zero\Models\Message
      */
-    public function store(Request $request, User $user, MessageRepository $repository) {
+    public function store(Request $request, User $user, MessageRepository $repository)
+    {
         $this->authorize('send-message', $user);
 
         $message = $repository->createWithUser($user, $request->all(), $request->user());

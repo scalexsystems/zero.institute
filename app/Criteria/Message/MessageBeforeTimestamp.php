@@ -6,7 +6,6 @@ use Znck\Repositories\Contracts\Repository;
 
 class MessageBeforeTimestamp implements Criteria
 {
-
     protected $timestamp;
 
     /**
@@ -14,7 +13,8 @@ class MessageBeforeTimestamp implements Criteria
      *
      * @param int $timestamp
      */
-    public function __construct(int $timestamp) {
+    public function __construct(int $timestamp)
+    {
         $this->timestamp = $timestamp;
     }
 
@@ -26,7 +26,8 @@ class MessageBeforeTimestamp implements Criteria
      *
      * @return void
      */
-    public function apply($model, Repository $repository) {
+    public function apply($model, Repository $repository)
+    {
         $model->where('created_at', '<=', Carbon::createFromTimestamp($this->timestamp));
     }
 }

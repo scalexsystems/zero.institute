@@ -44,7 +44,8 @@ abstract class AbstractPolicy
      *
      * @return \Scalex\Zero\User
      */
-    protected function getUser () {
+    protected function getUser()
+    {
         return $this->user;
     }
 }

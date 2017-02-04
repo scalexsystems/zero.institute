@@ -11,7 +11,8 @@ class GroupControllerTest extends \TestCase
 {
     use GroupTestsHelper;
 
-    public function test_index_api_format() {
+    public function test_index_api_format()
+    {
         $this->createPublicGroup(2);
 
         $this->actingAs($this->getUser())->get('/api/groups')
@@ -41,7 +42,8 @@ class GroupControllerTest extends \TestCase
                                 ]);
     }
 
-    public function test_index_can_have_only_public_groups() {
+    public function test_index_can_have_only_public_groups()
+    {
         $groups = $this->createPublicGroup(2);
         $this->createPrivateGroup();
 
@@ -50,7 +52,8 @@ class GroupControllerTest extends \TestCase
              ->seeResources('groups', $groups->modelKeys());
     }
 
-    public function test_index_can_respond_with_zero_groups() {
+    public function test_index_can_respond_with_zero_groups()
+    {
         $this->actingAs($this->getUser())->get('/api/groups')
              ->assertResponseStatus(200)
             // TODO: Hack it to change `items` to `groups`.
@@ -65,7 +68,8 @@ class GroupControllerTest extends \TestCase
         $this->actingAs($this->getUser())->get('/api/groups?q='.$group->name)->seeResources('groups', [$group->getKey()]);
     } */
 
-    public function test_show_api_format() {
+    public function test_show_api_format()
+    {
         $group = $this->createPublicGroup();
 
         $this->actingAs($this->getUser())->get('/api/groups/'.$group->id)
@@ -96,19 +100,22 @@ class GroupControllerTest extends \TestCase
                                 ]);
     }
 
-    public function test_show_can_return_public_group() {
+    public function test_show_can_return_public_group()
+    {
         $group = $this->createPublicGroup();
 
         $this->actingAs($this->getUser())->get('/api/groups/'.$group->id)->assertResponseStatus(200);
     }
 
-    public function test_show_cannot_return_private_group() {
+    public function test_show_cannot_return_private_group()
+    {
         $group = $this->createPrivateGroup();
 
         $this->actingAs($this->getUser())->get('/api/groups/'.$group->id)->assertResponseStatus(401);
     }
 
-    public function test_show_can_return_private_group_if_user_is_member() {
+    public function test_show_can_return_private_group_if_user_is_member()
+    {
         $group = $this->createPrivateGroup();
 
         $group->addMembers($this->getUser());
@@ -116,11 +123,13 @@ class GroupControllerTest extends \TestCase
         $this->actingAs($this->getUser())->get('/api/groups/'.$group->id)->assertResponseStatus(200);
     }
 
-    public function test_show_throws_not_found_error() {
+    public function test_show_throws_not_found_error()
+    {
         $this->actingAs($this->getUser())->get('/api/groups/1')->assertResponseStatus(404);
     }
 
-    public function test_store_can_create_group() {
+    public function test_store_can_create_group()
+    {
         $this->expectsModelEvents(Group::class, 'created');
         $this->expectsEvents(GroupCreated::class);
         $this->actingAs($this->getUserWithPerson())->post('/api/groups', ['name' => 'Foo'])
@@ -129,13 +138,15 @@ class GroupControllerTest extends \TestCase
         $this->seeInDatabase('groups', ['name' => 'Foo']);
     }
 
-    public function test_store_throws_validation_exception() {
+    public function test_store_throws_validation_exception()
+    {
         $this->actingAs($this->getUserWithPerson())->post('/api/groups')
              ->assertResponseStatus(422)
              ->seeJsonStructure(['errors' => ['name']]);
     }
 
-    public function test_update_can_update_group() {
+    public function test_update_can_update_group()
+    {
         $group = $this->createPublicGroup();
 
         $this->expectsModelEvents(Group::class, 'updated');
@@ -146,7 +157,8 @@ class GroupControllerTest extends \TestCase
         $this->seeInDatabase('groups', ['name' => 'Foo']);
     }
 
-    public function test_update_cannot_be_updated_non_owner() {
+    public function test_update_cannot_be_updated_non_owner()
+    {
         $group = $this->createPublicGroup();
 
         $group->addMembers($user = $this->createUser());
@@ -155,7 +167,8 @@ class GroupControllerTest extends \TestCase
              ->assertResponseStatus(401);
     }
 
-    public function test_update_throws_validation_exception() {
+    public function test_update_throws_validation_exception()
+    {
         $group = $this->createPublicGroup();
 
         $this->actingAs($group->owner)->put('/api/groups/'.$group->id, ['private' => 'Foo'])
@@ -163,7 +176,8 @@ class GroupControllerTest extends \TestCase
              ->seeJsonStructure(['errors' => ['private']]);
     }
 
-    public function test_update_cannot_make_course_group_public() {
+    public function test_update_cannot_make_course_group_public()
+    {
         $group = $this->createCourseGroup();
 
         $this->doesntExpectModelEvents(Group::class, 'updated');
@@ -173,7 +187,8 @@ class GroupControllerTest extends \TestCase
         $this->seeInDatabase('groups', ['private' => true]);
     }
 
-    public function test_delete_can_delete_a_group() {
+    public function test_delete_can_delete_a_group()
+    {
         $group = $this->createPublicGroup();
 
         $this->expectsModelEvents(Group::class, 'deleted');
@@ -184,14 +199,16 @@ class GroupControllerTest extends \TestCase
         $this->dontSeeInDatabase('groups', ['id' => $group->id, 'deleted_at' => null]);
     }
 
-    public function test_delete_cannot_be_deleted_by_non_owner() {
+    public function test_delete_cannot_be_deleted_by_non_owner()
+    {
         $group = $this->createPublicGroup();
 
         $this->actingAs($this->getUser())->delete('/api/groups/'.$group->id)
              ->assertResponseStatus(401);
     }
 
-    public function test_delete_cannot_delete_course_type_group() {
+    public function test_delete_cannot_delete_course_type_group()
+    {
         $group = $this->createCourseGroup();
 
         $this->actingAs($group->owner)->delete('/api/groups/'.$group->id)

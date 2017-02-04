@@ -38,7 +38,8 @@ class EmployeeController extends Controller
         return $employee;
     }
 
-    public function update(Request $request, Employee $employee) {
+    public function update(Request $request, Employee $employee)
+    {
         $this->authorize($employee);
         $data = $request->all();
         repository(Employee::class)->update($employee, $data);
