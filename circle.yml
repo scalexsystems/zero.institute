@@ -21,6 +21,7 @@ test:
   override:
     - composer lint -- --using-cache=no --path-mode=intersection `git diff --name-only --diff-filter=ACMRTUXB $COMMIT_RANGE`
     # - composer test:unit
+    - touch .env
     - php artisan key:generate
     - composer test:api
     # - yarn prod -- --bail

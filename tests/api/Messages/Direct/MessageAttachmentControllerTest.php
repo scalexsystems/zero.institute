@@ -12,7 +12,7 @@ class MessageAttachmentControllerTest extends \TestCase
 
         $this->actingAs($this->getUser())
              ->postFile('/api/messages/direct/'.$user->id.'/attachment', ['file' => $this->getSomeFile()]);
-        
+
         $this->assertResponseStatus(200)->seeJsonStructure(['attachment' => ['id', 'links']]);
         $this->seeInDatabase('attachments', []);
     }
