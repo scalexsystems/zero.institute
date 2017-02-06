@@ -1,7 +1,7 @@
 <?php namespace Scalex\Zero\Http\Controllers\Api\People\Students;
 
 use Illuminate\Http\Request;
-use Scalex\Zero\Events\Student\AddressUpdated;
+use Scalex\Zero\Events\Student\StudentAddressUpdated;
 use Scalex\Zero\Http\Controllers\Controller;
 use Scalex\Zero\Models\Student;
 use Scalex\Zero\Repositories\StudentRepository;
@@ -21,8 +21,8 @@ class AddressController extends Controller
 
         $repository->updateAddress($student, $request->all());
 
-        broadcast(new AddressUpdated($student));
+        broadcast(new StudentAddressUpdated($student));
 
-        return $student;
+        return $student->address;
     }
 }

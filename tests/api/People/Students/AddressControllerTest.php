@@ -1,6 +1,8 @@
 <?php namespace Test\Api\People\Students;
 
 use Scalex\Zero\Action;
+use Scalex\Zero\Events\Student\StudentAddressUpdated;
+use Scalex\Zero\Models\Geo\Address;
 
 class AddressControllerTest extends \TestCase
 {
@@ -38,5 +40,23 @@ class AddressControllerTest extends \TestCase
 
         $this->assertResponseStatus(200)
              ->seeJsonStructure(['address' => ['address_line1', 'address_line2', 'city']]);
+    }
+
+    public function test_update_can_change_student_address()
+    {
+        $student = $this->createStudent();
+        $payload = ['address_line1' => 'Foo'];
+
+        $this->expectsEvents(StudentAddressUpdated::class)
+             ->expectsModelEvents(Address::class, 'updated');
+
+        $this->actingAs($this->getUser())
+             ->givePermissionTo(Action::VIEW_STUDENT)
+             ->givePermissionTo(Action::UPDATE_STUDENT)
+             ->post('/api/people/students/'.$student->uid.'/address', $payload);
+
+        $this->assertResponseStatus(200)
+             ->seeJsonStructure(['address' => ['address_line1', 'address_line2', 'city']])
+             ->seeInDatabase('addresses', $payload);
     }
 }

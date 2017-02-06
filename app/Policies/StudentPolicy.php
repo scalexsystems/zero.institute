@@ -22,52 +22,77 @@ class StudentPolicy extends AbstractPolicy
 
     public function update(User $user, Student $student)
     {
-        return trust($user)->to(Action::UPDATE_STUDENT) or $this->isHimself($user, $student);
+        return $this->canUpdate($user, $student);
     }
 
     public function viewAddress(User $user, Student $student)
     {
-        return $this->isHimself($user, $student) or trust($user)->to(Action::VIEW_STUDENT);
+        return $this->canView($user, $student);
+    }
+
+    public function updateAddress(User $user, Student $student)
+    {
+        return $this->canUpdate($user, $student);
     }
 
     public function viewGuardian(User $user, Student $student)
     {
-        return $this->isHimself($user, $student) or trust($user)->to(Action::VIEW_STUDENT);
+        return $this->canView($user, $student);
     }
 
     public function viewAssociatedUserAccount(User $user, Student $student)
     {
-        return $this->isHimself($user, $student) or trust($user)->to(Action::VIEW_STUDENT);
+        return $this->canView($user, $student);
     }
 
     public function readSchoolInfo(User $user, Student $student)
     {
-        return $this->isHimself($user, $student) or trust($user)->to(Action::VIEW_STUDENT);
+        return $this->canView($user, $student);
     }
 
     public function readMedicalInfo(User $user, Student $student)
     {
-        return $this->isHimself($user, $student) or trust($user)->to(Action::VIEW_STUDENT);
+        return $this->canView($user, $student);
     }
 
     public function readBasicInfo(User $user, Student $student)
     {
-        return $this->isHimself($user, $student) or trust($user)->to(Action::VIEW_STUDENT);
-    }
-
-    protected function canView(Student $student)
-    {
-        return $this->isHimself($this->getUser(), $student)
-               or trust($this->getUser())->to(Action::UPDATE_STUDENT);
+        return $this->canView($user, $student);
     }
 
     public function updatePhoto(User $user, Student $student)
     {
-        return $this->isHimself($user, $student) or trust($user)->to(Action::UPDATE_STUDENT);
+        return $this->canUpdate($user, $student);
     }
 
     public function invite(User $user)
     {
         return trust($user)->to(Action::INVITE_STUDENT);
     }
+
+    /**
+     * Can update any information?
+     *
+     * @param \Scalex\Zero\User $user
+     * @param \Scalex\Zero\Models\Student $student
+     *
+     * @return bool
+     */
+    protected function canUpdate(User $user, Student $student): bool
+    {
+        return $this->isHimself($user, $student) or trust($user)->to(Action::UPDATE_STUDENT);
+    }
+
+    /**
+     * Can view any information?
+     *
+     * @param \Scalex\Zero\User $user
+     * @param \Scalex\Zero\Models\Student $student
+     *
+     * @return bool
+     */
+    protected function canView(User $user, Student $student): bool
+    {
+        return $this->isHimself($user, $student) or trust($user)->to(Action::VIEW_STUDENT);
+}
 }
