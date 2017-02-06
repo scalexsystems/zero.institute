@@ -4,7 +4,9 @@ namespace Scalex\Zero\Repositories\Course;
 
 use Scalex\Zero\Models\Course\Session;
 use Scalex\Zero\Models\Group;
+use Scalex\Zero\Models\Student;
 use Scalex\Zero\Models\Teacher;
+use Scalex\Zero\User;
 use Znck\Repositories\Repository;
 
 /**
@@ -99,6 +101,13 @@ class SessionRepository extends Repository
 
         $session->students()->attach($newEnrollments);
 
-        $session->group->addMembers($newEnrollments);
+        $enrolled = repository(Student::class)->with('user')->findMany($newEnrollments);
+        $enrolledUsers = $enrolled->map(function ($person) {
+            return [
+                'user_id' => $person->user->id
+            ];
+        })->flatten()->toArray();
+
+        $session->group->addMembers($enrolledUsers);
     }
 }
