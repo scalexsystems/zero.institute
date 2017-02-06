@@ -27,43 +27,43 @@ class StudentPolicy extends AbstractPolicy
 
     public function viewAddress(User $user, Student $student)
     {
-        return $this->canView($student);
+        return $this->isHimself($user, $student) or trust($user)->to(Action::VIEW_STUDENT);
     }
 
     public function viewGuardian(User $user, Student $student)
     {
-        return $this->canView($student);
+        return $this->isHimself($user, $student) or trust($user)->to(Action::VIEW_STUDENT);
     }
 
     public function viewAssociatedUserAccount(User $user, Student $student)
     {
-        return $this->canView($student);
+        return $this->isHimself($user, $student) or trust($user)->to(Action::VIEW_STUDENT);
     }
 
     public function readSchoolInfo(User $user, Student $student)
     {
-        return $this->canView($student);
+        return $this->isHimself($user, $student) or trust($user)->to(Action::VIEW_STUDENT);
     }
 
     public function readMedicalInfo(User $user, Student $student)
     {
-        return $this->canView($student);
+        return $this->isHimself($user, $student) or trust($user)->to(Action::VIEW_STUDENT);
     }
 
     public function readBasicInfo(User $user, Student $student)
     {
-        return $this->canView($student);
+        return $this->isHimself($user, $student) or trust($user)->to(Action::VIEW_STUDENT);
     }
 
     protected function canView(Student $student)
     {
-        return trust($this->getUser())->to(Action::UPDATE_STUDENT)
-               or $this->isHimself($this->getUser(), $student);
+        return $this->isHimself($this->getUser(), $student)
+               or trust($this->getUser())->to(Action::UPDATE_STUDENT);
     }
 
     public function updatePhoto(User $user, Student $student)
     {
-        return trust($user)->to(Action::UPDATE_STUDENT) or $this->isHimself($user, $student);
+        return $this->isHimself($user, $student) or trust($user)->to(Action::UPDATE_STUDENT);
     }
 
     public function invite(User $user)

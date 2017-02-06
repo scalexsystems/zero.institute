@@ -56,6 +56,10 @@ class User extends BaseModel implements
         'approved' => 'bool',
     ];
 
+    protected $observables = [
+        'permissionsAdded', 'permissionsRemoved'
+    ];
+
     public function school()
     {
         return $this->belongsTo(School::class);
@@ -92,7 +96,7 @@ class User extends BaseModel implements
         return $this->belongsToMany(Group::class)->withTimestamps();
     }
 
-    public function getChannelName() : string
+    public function getChannelName(): string
     {
         return $this->getMorphClass().'-'.$this->getKey();
     }

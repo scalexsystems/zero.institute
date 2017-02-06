@@ -4,98 +4,101 @@ $resource = ['except' => ['edit', 'create']];
 $extra = ['only' => ['store', 'destroy']];
 
 // Schools
-Route::get('/schools', 'Schools\SchoolController@index');
-Route::get('/school', 'Schools\CurrentSchoolController@index');
-Route::put('/school', 'Schools\CurrentSchoolController@update');
-Route::post('/school/logo', 'Schools\FileController@store');
+Route::get('/schools', 'Api\Schools\SchoolController@index');
+Route::get('/school', 'Api\Schools\CurrentSchoolController@index');
+Route::put('/school', 'Api\Schools\CurrentSchoolController@update');
+Route::post('/school/logo', 'Api\Schools\FileController@store');
 
-Route::resource('/disciplines', 'Schools\DisciplineController', $resource);
-Route::resource('/departments', 'Schools\DepartmentController', $resource);
-Route::resource('/semesters', 'Schools\SemesterController', $resource);
+Route::resource('/disciplines', 'Api\Schools\DisciplineController', $resource);
+Route::resource('/departments', 'Api\Schools\DepartmentController', $resource);
+Route::resource('/semesters', 'Api\Schools\SemesterController', $resource);
 
-Route::get('/me', 'Users\CurrentUserController@index');
-Route::put('/me', 'Users\CurrentUserController@update');
-Route::get('/me/dashboard', 'Users\DashboardController@index');
+Route::get('/me', 'Api\Users\CurrentUserController@index');
+Route::put('/me', 'Api\Users\CurrentUserController@update');
+Route::get('/me/dashboard', 'Api\Users\DashboardController@index');
 
 // Students
 
 
 // Teachers
-Route::resource('/people/teachers', 'People\Teachers\TeacherController', ['only' => ['index', 'show', 'update']]);
-Route::post('/people/teachers/invite', 'People\Teachers\TeacherController@invite');
-Route::post('/people/teachers/{uid}/photo', 'People\Teachers\PhotoController@store');
+Route::resource('/people/teachers', 'Api\People\Teachers\TeacherController', ['only' => ['index', 'show', 'update']]);
+Route::post('/people/teachers/invite', 'Api\People\Teachers\TeacherController@invite');
+Route::post('/people/teachers/{uid}/photo', 'Api\People\Teachers\PhotoController@store');
 
 
 // Employees
-Route::resource('/people/employees', 'People\Employees\EmployeeController', ['only' => ['index', 'show', 'update']]);
-Route::post('/people/employees/invite', 'People\Employees\EmployeeController@invite');
-Route::post('/people/employees/{uid}/photo', 'People\Employees\PhotoController@store');
+Route::resource('/people/employees', 'Api\People\Employees\EmployeeController', ['only' => ['index', 'show', 'update']]);
+Route::post('/people/employees/invite', 'Api\People\Employees\EmployeeController@invite');
+Route::post('/people/employees/{uid}/photo', 'Api\People\Employees\PhotoController@store');
 
 
 // People
-//Route::get('/people', 'People\PeopleController@index');
-//Route::get('/people/stats', 'People\PeopleController@stats');
-//Route::get('/people/{person}', 'People\PeopleController@show');
+//Route::get('/people', 'Api\People\PeopleController@index');
+//Route::get('/people/stats', 'Api\People\PeopleController@stats');
+//Route::get('/people/{person}', 'Api\People\PeopleController@show');
 
-Route::get('people/roles/{role}', 'RoleController@index');
-Route::post('people/roles', 'RoleController@store');
+Route::get('people/roles/{role}', 'Api\RoleController@index');
+Route::post('people/roles', 'Api\RoleController@store');
 
 // Courses
-Route::get('/me/courses', 'Courses\CurrentUserController@index');
-Route::get('me/courses/{course}/enrolled', 'Courses\EnrollmentController@index');
-Route::post('/courses/{course}/enroll', 'Courses\EnrollmentController@store');
-Route::resource('courses', 'Courses\CourseController', $resource);
+Route::get('/me/courses', 'Api\Courses\CurrentUserController@index');
+Route::get('me/courses/{course}/enrolled', 'Api\Courses\EnrollmentController@index');
+Route::post('/courses/{course}/enroll', 'Api\Courses\EnrollmentController@store');
+Route::resource('courses', 'Api\Courses\CourseController', $resource);
 
 // Intents
-Route::post('/intents/{intent}/accept', 'Users\IntentController@accept');
-Route::post('/intents/{intent}/reject', 'Users\IntentController@reject');
-Route::post('/intents/{intent}/lock', 'Users\IntentController@lock');
-Route::resource('intents', 'Users\IntentController', $resource);
+Route::post('/intents/{intent}/accept', 'Api\Users\IntentController@accept');
+Route::post('/intents/{intent}/reject', 'Api\Users\IntentController@reject');
+Route::post('/intents/{intent}/lock', 'Api\Users\IntentController@lock');
+Route::resource('intents', 'Api\Users\IntentController', $resource);
 
 
 //======================================================================================//
 //                                Shared Services                                       //
 //======================================================================================//
-Route::get(     '/geo/cities',        'CitiesController@index');
-Route::get(     '/geo/cities/{city}', 'CitiesController@show');
+Route::get(     '/geo/cities',        'Api\CitiesController@index');
+Route::get(     '/geo/cities/{city}', 'Api\CitiesController@show');
 
 //======================================================================================//
 //                                    People                                            //
 //======================================================================================//
-Route::post(    '/people/invite',                   'People\InvitationController@invite');
-Route::post(    '/people/students/{student}/photo', 'People\Students\PhotoController@store');
-Route::resource('/people/students',                 'People\Students\StudentController', $resource);
+Route::post(    '/people/invite',                     'Api\People\InvitationController@invite');
+Route::get(     '/people/students/{student}/address', 'Api\People\Students\AddressController@show');
+Route::post(    '/people/students/{student}/address', 'Api\People\Students\AddressController@update');
+Route::get(     '/people/students/{student}/photo',   'Api\People\Students\PhotoController@show');
+Route::post(    '/people/students/{student}/photo',   'Api\People\Students\PhotoController@store');
+Route::resource('/people/students',                   'Api\People\Students\StudentController', $resource);
 
 //======================================================================================//
 //                                 Communication                                        //
 //======================================================================================//
 
 // - Groups
-Route::get(     '/groups/{group}/members',        'Groups\MemberController@index');
-Route::post(    '/groups/{group}/members/add',    'Groups\MemberController@store');/* @deprecated TODO: Remove this. */
-Route::post(    '/groups/{group}/members',        'Groups\MemberController@store');
-Route::delete(  '/groups/{group}/members/remove', 'Groups\MemberController@destroy');/* @deprecated TODO: Remove this. */
-Route::delete(  '/groups/{group}/members',        'Groups\MemberController@destroy');
-Route::get(     '/groups/{group}/messages',       'Groups\MessageController@index');
-Route::post(    '/groups/{group}/messages',       'Groups\MessageController@store');
-Route::post(    '/groups/{group}/photo',          'Groups\ProfilePhotoController@store');
-Route::delete(  '/groups/{group}/photo',          'Groups\ProfilePhotoController@destroy');
-Route::post(    '/groups/{group}/join',           'Groups\CurrentUserController@store');
-Route::delete(  '/groups/{group}/leave',          'Groups\CurrentUserController@delete');
-Route::post(    '/groups/{group}/attachment',     'Groups\MessageAttachmentController@store');
-Route::resource('/groups',                        'Groups\GroupController', $resource);
+Route::get(     '/groups/{group}/members',        'Api\Groups\MemberController@index');
+Route::post(    '/groups/{group}/members/add',    'Api\Groups\MemberController@store');/* @deprecated TODO: Remove this. */
+Route::post(    '/groups/{group}/members',        'Api\Groups\MemberController@store');
+Route::delete(  '/groups/{group}/members/remove', 'Api\Groups\MemberController@destroy');/* @deprecated TODO: Remove this. */
+Route::delete(  '/groups/{group}/members',        'Api\Groups\MemberController@destroy');
+Route::get(     '/groups/{group}/messages',       'Api\Groups\MessageController@index');
+Route::post(    '/groups/{group}/messages',       'Api\Groups\MessageController@store');
+Route::post(    '/groups/{group}/photo',          'Api\Groups\ProfilePhotoController@store');
+Route::delete(  '/groups/{group}/photo',          'Api\Groups\ProfilePhotoController@destroy');
+Route::post(    '/groups/{group}/join',           'Api\Groups\CurrentUserController@store');
+Route::delete(  '/groups/{group}/leave',          'Api\Groups\CurrentUserController@delete');
+Route::post(    '/groups/{group}/attachment',     'Api\Groups\MessageAttachmentController@store');
+Route::resource('/groups',                        'Api\Groups\GroupController', $resource);
 
 // - Direct Messages
-Route::get(     '/messages/direct/{user}/messages',   'Messages\Direct\MessageController@index');
-Route::post(    '/messages/direct/{user}/messages',   'Messages\Direct\MessageController@store');
-Route::post(    '/messages/direct/{user}/attachment', 'Messages\Direct\MessageAttachmentController@store');
+Route::get(     '/messages/direct/{user}/messages',   'Api\Messages\Direct\MessageController@index');
+Route::post(    '/messages/direct/{user}/messages',   'Api\Messages\Direct\MessageController@store');
+Route::post(    '/messages/direct/{user}/attachment', 'Api\Messages\Direct\MessageAttachmentController@store');
 
 // - Messages
-Route::put(     '/messages/read',           'Messages\MessageController@readAll');
-Route::put(     '/messages/{message}/read', 'Messages\MessageController@read');
+Route::put(     '/messages/read',           'Api\Messages\MessageController@readAll');
+Route::put(     '/messages/{message}/read', 'Api\Messages\MessageController@read');
 
 // - User Context
-Route::get(     '/me/groups',         'Groups\CurrentUserController@index');
-Route::get(     '/me/groups/{group}', 'Groups\CurrentUserController@show');
-Route::get(     '/me/users',          'Messages\CurrentUserController@index');
-Route::get(     '/me/users/{user}',   'Messages\CurrentUserController@show');
+Route::get(     '/me/groups',         'Api\Groups\CurrentUserController@index');
+Route::get(     '/me/groups/{group}', 'Api\Groups\CurrentUserController@show');
+Route::get(     '/me/users',          'Api\Messages\CurrentUserController@index');
+Route::get(     '/me/users/{user}',   'Api\Messages\CurrentUserController@show');
