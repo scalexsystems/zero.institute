@@ -1,11 +1,11 @@
-<?php namespace Tests\Api\People\Parents;
+<?php namespace Test\Api\People\Teachers;
 
 
 use Scalex\Zero\Models\Teacher;
 
 trait TeacherTestHelper
 {
-    public function createTeacher($count = 1, array $attributes)
+    public function createTeacher($count = 1, array $attributes = [])
     {
         $school = $this->getSchool();
 
