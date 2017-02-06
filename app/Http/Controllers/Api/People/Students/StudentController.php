@@ -7,7 +7,7 @@ use Scalex\Zero\Events\Student\StudentUpdated;
 use Scalex\Zero\Http\Controllers\Controller;
 use Scalex\Zero\Http\Requests;
 use Scalex\Zero\Models\Student;
-use Scalex\Zero\Jobs\InvitationMailer;
+use Scalex\Zero\Jobs\SendInvitations;
 use Scalex\Zero\Repositories\StudentRepository;
 
 class StudentController extends Controller

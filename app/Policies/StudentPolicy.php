@@ -75,7 +75,7 @@ class StudentPolicy extends AbstractPolicy
         return $this->canView($user, $student);
     }
 
-    public function invite(User $user)
+    public function sendInvitation(User $user)
     {
         return trust($user)->to(Action::INVITE_STUDENT);
     }

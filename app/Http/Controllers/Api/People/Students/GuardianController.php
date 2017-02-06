@@ -8,6 +8,11 @@ use Scalex\Zero\Repositories\StudentRepository;
 
 class GuardianController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api,web');
+    }
+
     public function father(Student $student)
     {
         $this->authorize('view-guardian', $student);

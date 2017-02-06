@@ -6,7 +6,7 @@ use Scalex\Zero\Criteria\OrderBy;
 use Scalex\Zero\Http\Controllers\Controller;
 use Scalex\Zero\Mail\InvitationMail;
 use Scalex\Zero\Models\Employee;
-use Scalex\Zero\Jobs\InvitationMailer;
+use Scalex\Zero\Jobs\SendInvitations;
 
 class EmployeeController extends Controller
 {
@@ -53,6 +53,6 @@ class EmployeeController extends Controller
             'employees.*' => 'required | email',
         ]);
 
-        dispatch(new InvitationMailer('employee', $request->employees, $request->user()->school_id, $request->user()));
+        dispatch(new SendInvitations('employee', $request->employees, $request->user()->school_id, $request->user()));
     }
 }

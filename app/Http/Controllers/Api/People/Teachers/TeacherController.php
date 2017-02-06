@@ -6,7 +6,7 @@ use Scalex\Zero\Criteria\OrderBy;
 use Scalex\Zero\Http\Controllers\Controller;
 use Scalex\Zero\Mail\InvitationMail;
 use Scalex\Zero\Models\Teacher;
-use Scalex\Zero\Jobs\InvitationMailer;
+use Scalex\Zero\Jobs\SendInvitations;
 
 class TeacherController extends Controller
 {
@@ -53,6 +53,6 @@ class TeacherController extends Controller
             'teachers.*' => 'required|email'
         ]);
 
-        dispatch(new InvitationMailer('teacher', $request->teachers, $request->user()->school_id, $request->user()));
+        dispatch(new SendInvitations('teacher', $request->teachers, $request->user()->school_id, $request->user()));
     }
 }

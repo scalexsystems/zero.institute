@@ -1,6 +1,7 @@
 <?php namespace Scalex\Zero\Observers;
 
 use Scalex\Zero\Models\Teacher;
+use Scalex\Zero\Services\PeopleStatisticsService;
 
 class TeacherObserver
 {
@@ -30,7 +31,7 @@ class TeacherObserver
     protected function forgetStatsCache(Teacher $teacher)
     {
         $this->manager->driver()->forget(
-            schoolScopeCacheKey('stats.people', $teacher->school_id)
+            (new PeopleStatisticsService($teacher->school_id))->getTeacherCacheKey()
         );
     }
 }

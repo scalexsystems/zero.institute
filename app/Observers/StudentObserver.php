@@ -2,6 +2,7 @@
 
 use Illuminate\Cache\CacheManager;
 use Scalex\Zero\Models\Student;
+use Scalex\Zero\Services\PeopleStatisticsService;
 
 class StudentObserver
 {
@@ -31,7 +32,7 @@ class StudentObserver
     protected function forgetStatsCache(Student $student)
     {
         $this->manager->driver()->forget(
-            schoolScopeCacheKey('stats.people', $student->school_id)
+            (new PeopleStatisticsService($student->school_id))->getStudentCacheKey()
         );
     }
 }

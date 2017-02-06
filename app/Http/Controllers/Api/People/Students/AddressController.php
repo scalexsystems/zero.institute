@@ -8,6 +8,11 @@ use Scalex\Zero\Repositories\StudentRepository;
 
 class AddressController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api,web');
+    }
+
     public function show(Student $student)
     {
         $this->authorize('view-address', $student);

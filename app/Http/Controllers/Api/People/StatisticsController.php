@@ -1,36 +1,26 @@
 <?php namespace Scalex\Zero\Http\Controllers\Api\People;
 
+use Illuminate\Http\Request;
 use Scalex\Zero\Http\Controllers\Controller;
+use Scalex\Zero\Services\PeopleStatisticsService;
 
 class StatisticsController extends Controller
 {
-    public function stats()
+    public function __construct()
     {
-        // FIXME: Check permission here!
-        // FIXME: Move to other controller.
+        $this->middleware('auth:api,web');
+    }
+
+    public function index(Request $request)
+    {
+        $this->authorize('view-people-statistics', $request->user()->school);
+
+        $stats = new PeopleStatisticsService($request->user()->school_id);
 
         return [
-            'requests' => cache()->rememberForever(schoolScopeCacheKey('stats.accounts'), function () {
-                $q = ['tag' => 'account', 'locked' => true];
-
-                return [
-                    'student' => repository(Intent::class)->pushCriteria(new FilterIntents($q + ['type' => 'student']))->count(),
-                    'teacher' => repository(Intent::class)->pushCriteria(new FilterIntents($q + ['type' => 'teacher']))->count(),
-                    'employee' => repository(Intent::class)->pushCriteria(new FilterIntents($q + ['type' => 'employee']))->count(),
-                ];
-            }),
-            'incomplete' => cache()->rememberForever(schoolScopeCacheKey('stats.incomplete'), function () {
-                $q = ['tag' => 'account', 'locked' => false];
-
-                return repository(Intent::class)->pushCriteria(new FilterIntents($q))->count();
-            }),
-            'accounts' => cache()->rememberForever(schoolScopeCacheKey('stats.people'), function () {
-                return [
-                    'student' => repository(Student::class)->count(),
-                    'teacher' => repository(Teacher::class)->count(),
-                    'employee' => repository(Employee::class)->count(),
-                ];
-            }),
+            'student' => $stats->student(),
+            'teacher' => $stats->teacher(),
+            'employee' => $stats->employee(),
         ];
     }
 }

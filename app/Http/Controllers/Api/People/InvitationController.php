@@ -2,17 +2,26 @@
 
 use Illuminate\Http\Request;
 use Scalex\Zero\Http\Controllers\Controller;
-use Scalex\Zero\Models\Student;
+use Scalex\Zero\Jobs\SendInvitations;
 
 class InvitationController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api,web');
+    }
+
     public function invite(Request $request)
     {
-        $this->authorize('invite', Student::class);
+        $this->validate($request, [
+            'emails.*' => 'required|email',
+            'type' => 'required|in:student,teacher,employee',
+        ]);
 
-        $this->validate($request, ['students.*' => 'required | email']);
+        $this->authorize('send-invitation', morph_model($request->input('type')));
 
-        // TODO: Fix
-        dispatch(new InvitationMailer('student', $request->students, $request->user()->school_id, $request->user()));
+        dispatch(new SendInvitations($request->input('type'), $request->input('emails'), $request->user()));
+
+        return $this->accepted();
     }
 }

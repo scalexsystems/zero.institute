@@ -8,10 +8,6 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 
 class SchoolPolicy extends AbstractPolicy
 {
-    use VerifiesSchool;
-
-    protected $skipSchoolVerification = true;
-
     /**
      * Determine whether the user can view the school.
      *
@@ -26,6 +22,19 @@ class SchoolPolicy extends AbstractPolicy
     }
 
     /**
+     * Can user view school statistics for people.
+     *
+     * @param \Scalex\Zero\User $user
+     * @param \Scalex\Zero\Models\School $school
+     *
+     * @return bool
+     */
+    public function viewPeopleStatistics(User $user, School $school)
+    {
+        return $this->verifySchool($user, $school) and trust($user)->to(Action::PEOPLE);
+    }
+
+    /**
      * Determine whether the user can update the school.
      *
      * @param  \Scalex\Zero\User $user
@@ -35,7 +44,11 @@ class SchoolPolicy extends AbstractPolicy
      */
     public function update(User $user, School $school)
     {
-        return $this->verifySchool($user, $school);
-//        return $this->verifySchool($user, $school) and trust($user)->to(Action::UPDATE_SCHOOL);
+        return $this->verifySchool($user, $school) and trust($user)->to(Action::UPDATE_SCHOOL);
+    }
+
+    protected function verifySchool(User $user, School $school)
+    {
+        return (int)$user->school_id === $school->getKey();
     }
 }

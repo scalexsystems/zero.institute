@@ -14,7 +14,7 @@ use Scalex\Zero\Repositories\UserRepository;
 use Scalex\Zero\User;
 use Znck\Trust\Models\Role;
 
-class PersonFinderController extends Controller
+class PersonController extends Controller
 {
     public function __construct()
     {
@@ -25,7 +25,7 @@ class PersonFinderController extends Controller
     {
         $request->query->set('with', 'person');
 
-        $repository->with(['photo', 'person', 'person.photo'])
+        $repository->with(['person', 'person.photo'])
                    ->pushCriteria(new OfSchool($request->user()->school));
 
         if ($request->has('q')) {
@@ -34,17 +34,19 @@ class PersonFinderController extends Controller
             $repository->pushCriteria(new OrderBy('name'));
         }
 
-        return $repository->paginate();
+        $results = $repository->paginate();
+        $people = $results->getCollection()->map(function ($user) {
+            return transformer($user->person)->setIndexing()->transform($user->person);
+        });
+        $results->setCollection($people);
+
+        return $results;
     }
 
-    public function show(Request $request, UserRepository $repository, $person)
+    public function show(Request $request, User $user)
     {
-        $request->query->set('with', 'person');
-        $user = repository(User::class)
-            ->with(['person', 'profilePhoto', 'person.profilePhoto'])
-            ->pushCriteria(new OfSchool($request->user()->school))
-            ->find((int)$person);
-
-        return $user;
+        return [
+            'item' => transformer($user->person)->setIndexing()->transform($user),
+        ];
     }
 }

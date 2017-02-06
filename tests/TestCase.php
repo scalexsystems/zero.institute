@@ -7,7 +7,7 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
 {
     use Illuminate\Foundation\Testing\DatabaseMigrations;
     use Illuminate\Foundation\Testing\DatabaseTransactions;
-    use \Illuminate\Foundation\Testing\Concerns\InteractsWithDatabase;
+    use Illuminate\Foundation\Testing\Concerns\InteractsWithDatabase;
 
     /**
      * The base URL to use while testing the application.
@@ -62,9 +62,9 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
         return $this;
     }
 
-    public function seeResources(string $type, array $ids)
+    public function seeResources(string $type, array $ids, string $key = 'id')
     {
-        $actual = collect(collect((array)$this->decodeResponseJson())->get($type))->pluck('id')->toArray();
+        $actual = collect(collect((array)$this->decodeResponseJson())->get($type))->pluck($key)->toArray();
 
         $this->assertEquals(Arr::sortRecursive($actual), Arr::sortRecursive($ids));
 
