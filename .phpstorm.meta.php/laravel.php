@@ -522,9 +522,4 @@ namespace PHPSTORM_META {
             'command.ide-helper.meta' instanceof \Barryvdh\LaravelIdeHelper\Console\MetaCommand,
         ],
     ];
-
-    override(\repository(0), type(0));
-    override(\repository(0), 0);
-    override(\transformer(0), type(0));
-    override(\transformer(0), 0);
 }
