@@ -23,7 +23,7 @@ class GuardianController extends Controller
 
         broadcast(new GuardianUpdated($student, 'father'));
 
-        return $student;
+        return $student->father;
     }
 
     public function mother(Student $student)
@@ -41,6 +41,6 @@ class GuardianController extends Controller
 
         broadcast(new GuardianUpdated($student, 'mother'));
 
-        return $student;
+        return $student->mother;
     }
 }

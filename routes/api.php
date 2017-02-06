@@ -67,6 +67,10 @@ Route::get(     '/people/students/{student}/address', 'Api\People\Students\Addre
 Route::post(    '/people/students/{student}/address', 'Api\People\Students\AddressController@update');
 Route::get(     '/people/students/{student}/photo',   'Api\People\Students\PhotoController@show');
 Route::post(    '/people/students/{student}/photo',   'Api\People\Students\PhotoController@store');
+Route::get(     '/people/students/{student}/father',  'Api\People\Students\GuardianController@father');
+Route::post(    '/people/students/{student}/father',  'Api\People\Students\GuardianController@updateFather');
+Route::get(     '/people/students/{student}/mother',  'Api\People\Students\GuardianController@mother');
+Route::post(    '/people/students/{student}/mother',  'Api\People\Students\GuardianController@updateMother');
 Route::resource('/people/students',                   'Api\People\Students\StudentController', $resource);
 
 //======================================================================================//

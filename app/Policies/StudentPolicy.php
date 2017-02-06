@@ -50,6 +50,11 @@ class StudentPolicy extends AbstractPolicy
         return $this->canView($user, $student);
     }
 
+    public function updateGuardian(User $user, Student $student)
+    {
+        return $this->canUpdate($user, $student);
+    }
+
     public function viewAssociatedUserAccount(User $user, Student $student)
     {
         return $this->canView($user, $student);
