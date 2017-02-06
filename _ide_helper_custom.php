@@ -5,12 +5,14 @@ namespace {
     /**
      * @return \Illuminate\Contracts\Cache\Repository
      */
-    function cache() {
+    function cache()
+    {
 
     }
 }
 
 namespace Znck\Attach {
+
     class Builder
     {
         /**
@@ -18,24 +20,34 @@ namespace Znck\Attach {
          *
          * @return \Znck\Attach\Contracts\Uploader
          */
-        public function upload ($attr) {}
+        public function upload($attr)
+        {
+        }
 
         /**
-         * @param $size
+         * @param $width
          * @param $name
+         * @param $height
+         * @param $mime
          *
          * @return $this
          */
-        public function resize($size, $name=null) {}
+        public function resize($width, $name = null, $height = null, $mime = null)
+        {
+        }
     }
 }
 
 namespace Znck\Attach\Contracts {
-    class Uploader {
+
+    class Uploader
+    {
         /**
          * @return \Scalex\Zero\Models\Attachment
          */
-        public function getAttachment() {}
+        public function getAttachment()
+        {
+        }
     }
 }
 
@@ -100,7 +112,8 @@ namespace {
          * @return void
          * @static
          */
-        public static function channel($pattern, $callback) {
+        public static function channel($pattern, $callback)
+        {
             \Illuminate\Broadcasting\BroadcastManager::channel($pattern, $callback);
         }
     }
