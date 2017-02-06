@@ -67,6 +67,8 @@ Route::get(     '/people/statistics', 'Api\People\StatisticsController@index');
 Route::post(    '/people/invite',     'Api\People\InvitationController@invite');
 Route::get(     '/people/{user}',     'Api\People\PersonController@show');
 
+Route::post(    '/people/teachers/{teacher}/photo', 'People\Teachers\PhotoController@store');
+Route::resource('/people/teachers',                 'People\Teachers\TeacherController', $resource);
 //======================================================================================//
 //                                 Communication                                        //
 //======================================================================================//

@@ -129,11 +129,11 @@ class Teacher extends BaseModel implements BelongsToSchool, Person
     }
 
     /**
-     * Profile photo of the student.
+     * Profile photo of the teacher.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function profilePhoto()
+    public function photo()
     {
         return $this->belongsTo(Attachment::class, 'photo_id');
     }

@@ -1,12 +1,12 @@
 <?php namespace Scalex\Zero\Http\Controllers\Api\People\Teachers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 use Scalex\Zero\Criteria\OrderBy;
+use Scalex\Zero\Events\Teacher\TeacherUpdated;
 use Scalex\Zero\Http\Controllers\Controller;
-use Scalex\Zero\Mail\InvitationMail;
 use Scalex\Zero\Models\Teacher;
 use Scalex\Zero\Jobs\SendInvitations;
+use Scalex\Zero\Repositories\TeacherRepository;
 
 class TeacherController extends Controller
 {
@@ -15,44 +15,47 @@ class TeacherController extends Controller
         $this->middleware('auth:api,web');
     }
 
-    public function index(Request $request)
+    public function index(Request $request, TeacherRepository $repository)
     {
-        $teachers = repository(Teacher::class)->with('profilePhoto');
+        $this->authorize('browse', Teacher::class);
+
+        $repository->with(['photo', 'user']);
 
         if ($request->has('q')) {
-            $teachers->search($request->input('q'));
+            $repository->search($request->input('q'));
         } else {
-            $teachers->pushCriteria(new OrderBy(['first_name', 'last_name']));
+            $repository->pushCriteria(new OrderBy(['first_name', 'last_name']));
         }
 
-        return $teachers->simplePaginate();
+        return $repository->simplePaginate();
     }
 
     public function show(Request $request, Teacher $teacher)
     {
-        $this->authorize($teacher);
+        $this->authorize('view', $teacher);
 
-        $request->query->set('with', ['profilePhoto', 'address']);
+        return transform($teacher, ['photo', 'address'], null, true);
+    }
 
-        return $teacher;
+    public function store()
+    {
+        abort(401);
     }
 
     public function update(Request $request, Teacher $teacher)
     {
-        $this->authorize($teacher);
-        $data = $request->all();
-        repository(Teacher::class)->update($teacher, $data);
-        $this->accepted();
-    }
+        $this->authorize('update', $teacher);
 
+        repository(Teacher::class)->update($teacher, $request->all());
 
-    public function invite(Request $request)
-    {
-        $this->authorize('invite', Teacher::class);
-        $this->validate($request, [
-            'teachers.*' => 'required|email'
-        ]);
+        broadcast(new TeacherUpdated($teacher));
 
         dispatch(new SendInvitations('teacher', $request->teachers, $request->user()->school_id, $request->user()));
     }
+
+    public function destroy()
+    {
+        abort(401);
+    }
+
 }

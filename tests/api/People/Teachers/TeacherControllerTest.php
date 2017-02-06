@@ -33,7 +33,7 @@ class TeacherControllerTest extends \Testcase
     {
         $teacher = $this->createTeacher();
 
-        $this->actingAs($this->getUser())->get('/api/people/students/'.$teacher->uid);
+        $this->actingAs($this->getUser())->get('/api/people/teachers/'.$teacher->uid);
 
         $this->assertResponseStatus(200)
             ->seeJsonStructure(['teacher' => []]);
