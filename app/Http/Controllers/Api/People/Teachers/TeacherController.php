@@ -50,7 +50,6 @@ class TeacherController extends Controller
 
         broadcast(new TeacherUpdated($teacher));
 
-        dispatch(new SendInvitations('teacher', $request->teachers, $request->user()->school_id, $request->user()));
     }
 
     public function destroy()
