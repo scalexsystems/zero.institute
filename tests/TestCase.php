@@ -42,11 +42,22 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
         return factory(Scalex\Zero\User::class, $count)->create($attributes);
     }
 
-    public function givePermissionTo(Scalex\Zero\User $user, string $permission)
+    /**
+     * @param \Scalex\Zero\User|string $user
+     * @param string|null $permission
+     *
+     * @return $this
+     */
+    public function givePermissionTo($user, string $permission = null)
     {
+        if (is_null($permission)) {
+            $permission = $user;
+            $user = $this->getUser();
+        }
+
         Znck\Trust\Models\Permission::create(['slug' => $permission, 'name' => $permission]);
 
-        $user->grantPermission($permission);
+        $user->grantPermission($permission)->refreshPermissions();
 
         return $this;
     }
