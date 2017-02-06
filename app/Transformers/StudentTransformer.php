@@ -1,5 +1,6 @@
 <?php namespace Scalex\Zero\Transformers;
 
+use Gate;
 use Scalex\Zero\Models\Student;
 use Znck\Transformers\Transformer;
 
@@ -7,44 +8,116 @@ class StudentTransformer extends Transformer
 {
     protected $availableIncludes = ['father', 'mother', 'address', 'user'];
 
+    public function index(Student $student)
+    {
+        return $this->getPublicInfo($student);
+    }
+
     public function show(Student $student)
     {
+        return $this->getPublicInfo($student)
+               + $this->getBasicInfo($student)
+               + $this->getMedicalInfo($student)
+               + $this->getSchoolRelatedInfo($student);
+    }
+
+    public function includeUser(Student $student)
+    {
+        if ($student->user and Gate::allows('view-associated-user-account', $student)) {
+            return $this->item($student->user);
+        }
+
+        return $this->null();
+    }
+
+    public function includeAddress(Student $student)
+    {
+        if ($student->address and Gate::allows('view-address', $student)) {
+            return $this->item($student->address);
+        }
+
+        return $this->null();
+    }
+
+    public function includeFather(Student $student)
+    {
+        if ($student->father and Gate::allows('view-guardian', $student)) {
+            return $this->item($student->father);
+        }
+
+        return $this->null();
+    }
+
+    public function includeMother(Student $student)
+    {
+        if ($student->mother and Gate::allows('view-guardian', $student)) {
+            return $this->item($student->mother);
+        }
+
+        return $this->null();
+    }
+
+    /**
+     * Get public information.
+     *
+     * @param \Scalex\Zero\Models\Student $student
+     *
+     * @return array
+     */
+    protected function getPublicInfo(Student $student): array
+    {
         return [
+            'uid' => (string)$student->uid,
             'name' => (string)$student->name,
-            'bio' => (string)$student->bio,
-            'photo' => attach_url($student->profilePhoto) ?? asset('img/placeholder.jpg'),
+            'photo' => $student->getPhotoUrl(),
+
+            'department_id' => $student->department_id,
+            'discipline_id' => $student->discipline_id,
+
             'has_account' => !is_null($student->user),
-            'user_id' => $student->user->getKey(),
+            'user_id' => $student->user ? $student->user->getKey() : null,
+        ];
+    }
 
-            // Basic Information.
-            'email' => (string)($student->user->email ?? $student->user->email),
-            'first_name' => (string)$student->first_name,
-            'middle_name' => (string)$student->middle_name,
-            'last_name' => (string)$student->last_name,
-            'date_of_birth' => iso_date($student->date_of_birth),
-            'gender' => (string)$student->gender,
-            'blood_group' => (string)$student->blood_group,
-            'category' => (string)$student->category,
-            'religion' => (string)$student->religion,
-            'language' => (string)$student->language,
-            'passport' => (string)$student->passport,
-            'govt_id' => (string)$student->govt_id,
+    /**
+     * Get school related information.
+     *
+     * @param \Scalex\Zero\Models\Student $student
+     *
+     * @return array
+     */
+    protected function getSchoolRelatedInfo(Student $student): array
+    {
+        if (Gate::denies('read-school-info', $student)) {
+            return [];
+        }
 
-
-            // Parents
-            'mother_id' => $student->mother_id,
-            'father_id' => $student->father_id,
-
-            // Related to School.
+        return [
             'uid' => $student->uid,
             'date_of_admission' => iso_date($student->date_of_admission),
             'boarding_type' => (string)$student->boarding_type,
-            'year' => $student->date_of_admission->year ?? null,
+            'year' => $student->year,
             'department_id' => $student->department_id,
             'discipline_id' => $student->discipline_id,
             'biometric_id' => (string)$student->biometric_id,
+        ];
+    }
 
-            // Medical Information.
+    /**
+     * Get medical information.
+     *
+     * @param \Scalex\Zero\Models\Student $student
+     *
+     * @return array
+     */
+    protected function getMedicalInfo(Student $student): array
+    {
+        if (Gate::denies('read-medical-info', $student)) {
+            return [];
+        }
+
+        return [
+            'blood_group' => (string)$student->blood_group,
             'is_disabled' => (boolean)$student->is_disabled,
             'disability' => (string)$student->disability,
             'disease' => (string)$student->disease,
@@ -55,47 +128,34 @@ class StudentTransformer extends Transformer
         ];
     }
 
-    public function includeUser(Student $student)
+    /**
+     * Get basic information.
+     *
+     * @param \Scalex\Zero\Models\Student $student
+     *
+     * @return array
+     */
+    protected function getBasicInfo(Student $student): array
     {
-        return $student->user ? $this->item($student->user) : $this->null();
-    }
+        if (Gate::denies('read-basic-info', $student)) {
+            return [];
+        }
 
-    public function index(Student $student)
-    {
         return [
-            'uid' => (string)$student->uid,
-            'name' => (string)$student->name,
-            'bio' => (string)$student->bio,
-            'photo' => attach_url($student->profilePhoto) ?? asset('img/placeholder-64.jpg'),
-            'department_id' => $student->department_id,
-            'discipline_id' => $student->discipline_id,
+            'email' => (string)($student->email ?? $student->user->email),
+            'first_name' => (string)$student->first_name,
+            'middle_name' => (string)$student->middle_name,
+            'last_name' => (string)$student->last_name,
+            'gender' => (string)$student->gender,
+            'category' => (string)$student->category,
+            'religion' => (string)$student->religion,
+            'language' => (string)$student->language,
+            'passport' => (string)$student->passport,
+            'govt_id' => (string)$student->govt_id,
+            'date_of_birth' => iso_date($student->date_of_birth),
+
+            'mother_id' => $student->mother_id,
+            'father_id' => $student->father_id,
         ];
-    }
-
-    public function includeAddress(Student $student)
-    {
-        return $student->address ? allow(
-            'read-address', $student,
-            $this->item($student->address),
-            $this->null()
-        ) : $this->null();
-    }
-
-    public function includeFather(Student $student)
-    {
-        return $student->father ? allow(
-            'read-parent', $student,
-            $this->item($student->father, transformer($student->father)),
-            $this->null()
-        ) : $this->null();
-    }
-
-    public function includeMother(Student $student)
-    {
-        return $student->mother ? allow(
-            'read-parent', $student,
-            $this->item($student->mother, transformer($student->mother)),
-            $this->null()
-        ) : $this->null();
     }
 }

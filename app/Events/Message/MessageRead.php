@@ -1,6 +1,6 @@
 <?php
 
-namespace Scalex\Zero\Events\Messages;
+namespace Scalex\Zero\Events\Message;
 
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;

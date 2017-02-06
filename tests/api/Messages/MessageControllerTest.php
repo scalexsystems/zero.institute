@@ -1,6 +1,6 @@
 <?php namespace Test\Api\Messages;
 
-use Scalex\Zero\Events\Messages\MessageRead;
+use Scalex\Zero\Events\Message\MessageRead;
 use Test\Api\Groups\MessagingTestHelper;
 
 class MessageControllerTest extends \TestCase
@@ -13,7 +13,7 @@ class MessageControllerTest extends \TestCase
         $group->addMembers($this->getUser());
         $message = $this->sendMessageTo($group);
 
-        $this->expectsEvents(MessageRead::class);
+        $this->expectsEvents(\Scalex\Zero\Events\Message\MessageRead::class);
         $this->actingAs($this->getUser())->put('/api/messages/'.$message->id.'/read')->assertResponseStatus(202);
         $this->seeInDatabase('message_reads', ['message_id' => $message->id, 'user_id' => $this->getUser()->id]);
     }
@@ -23,7 +23,7 @@ class MessageControllerTest extends \TestCase
         $group = $this->createPublicGroup();
         $message = $this->sendMessageTo($group);
 
-        $this->doesntExpectEvents(MessageRead::class);
+        $this->doesntExpectEvents(\Scalex\Zero\Events\Message\MessageRead::class);
         $this->actingAs($this->getUser())->put('/api/messages/'.$message->id.'/read')->assertResponseStatus(401);
         $this->dontSeeInDatabase('message_reads', ['message_id' => $message->id, 'user_id' => $this->getUser()->id]);
     }
@@ -44,7 +44,7 @@ class MessageControllerTest extends \TestCase
         $group = $this->createPublicGroup();
         $message = $this->sendMessageTo($group);
 
-        $this->doesntExpectEvents(MessageRead::class);
+        $this->doesntExpectEvents(\Scalex\Zero\Events\Message\MessageRead::class);
         $this->actingAs($this->getUser())->put('/api/messages/read', ['messages' => $message->id])->assertResponseStatus(401);
         $this->dontSeeInDatabase('message_reads', ['message_id' => $message->id, 'user_id' => $this->getUser()->id]);
     }
@@ -53,7 +53,7 @@ class MessageControllerTest extends \TestCase
     {
         $message = $this->sendMessageTo($this->getUser());
 
-        $this->expectsEvents(MessageRead::class);
+        $this->expectsEvents(\Scalex\Zero\Events\Message\MessageRead::class);
         $this->actingAs($this->getUser())->put('/api/messages/'.$message->id.'/read')->assertResponseStatus(202);
         $this->seeInDatabase('message_reads', ['message_id' => $message->id, 'user_id' => $this->getUser()->id]);
     }
@@ -62,7 +62,7 @@ class MessageControllerTest extends \TestCase
     {
         $message = $this->sendMessageTo($this->createUser());
 
-        $this->doesntExpectEvents(MessageRead::class);
+        $this->doesntExpectEvents(\Scalex\Zero\Events\Message\MessageRead::class);
         $this->actingAs($this->getUser())->put('/api/messages/'.$message->id.'/read')->assertResponseStatus(401);
         $this->dontSeeInDatabase('message_reads', ['message_id' => $message->id, 'user_id' => $this->getUser()->id]);
     }
@@ -71,7 +71,7 @@ class MessageControllerTest extends \TestCase
     {
         $message = $this->sendMessageTo($this->getUser());
 
-        $this->expectsEvents(MessageRead::class);
+        $this->expectsEvents(\Scalex\Zero\Events\Message\MessageRead::class);
         $this->actingAs($this->getUser())->put('/api/messages/read', ['messages' => $message->id])->assertResponseStatus(202);
         $this->seeInDatabase('message_reads', ['message_id' => $message->id, 'user_id' => $this->getUser()->id]);
     }
@@ -80,7 +80,7 @@ class MessageControllerTest extends \TestCase
     {
         $message = $this->sendMessageTo($this->createUser());
 
-        $this->doesntExpectEvents(MessageRead::class);
+        $this->doesntExpectEvents(\Scalex\Zero\Events\Message\MessageRead::class);
         $this->actingAs($this->getUser())->put('/api/messages/read', ['messages' => $message->id])->assertResponseStatus(401);
         $this->dontSeeInDatabase('message_reads', ['message_id' => $message->id, 'user_id' => $this->getUser()->id]);
     }

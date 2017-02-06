@@ -19,11 +19,4 @@ class CityRepository extends Repository
      * @var string
      */
     protected $model = City::class;
-
-    /**
-     * Validation rules.
-     *
-     * @var array
-     */
-    protected $rules = [];
 }

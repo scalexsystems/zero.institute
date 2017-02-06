@@ -764,8 +764,9 @@ namespace Scalex\Zero\Models{
  * @property-read \Scalex\Zero\Models\Guardian $father
  * @property mixed $extended
  * @property-read mixed $name
+ * @property-read mixed $year
  * @property-read \Scalex\Zero\Models\Guardian $mother
- * @property-read \Scalex\Zero\Models\Attachment $profilePhoto
+ * @property-read \Scalex\Zero\Models\Attachment $photo
  * @property-read \Scalex\Zero\Models\School $school
  * @property-read \Illuminate\Database\Eloquent\Collection|\Scalex\Zero\Models\Course\Session[] $sessions
  * @property-read \Scalex\Zero\User $user

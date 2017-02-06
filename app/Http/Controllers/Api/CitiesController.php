@@ -6,6 +6,7 @@ use Scalex\Zero\Criteria\OrderBy;
 use Scalex\Zero\Http\Controllers\Controller;
 use Scalex\Zero\Http\Requests;
 use Scalex\Zero\Models\Geo\City;
+use Scalex\Zero\Repositories\Geo\CityRepository;
 
 class CitiesController extends Controller
 {
@@ -14,22 +15,35 @@ class CitiesController extends Controller
         $this->middleware('auth:api,web');
     }
 
-    public function index(Request $request)
+    /**
+     * List all cities (paginated).
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \Scalex\Zero\Repositories\Geo\CityRepository $repository
+     *
+     * @return \Illuminate\Contracts\Pagination\Paginator
+     */
+    public function index(Request $request, CityRepository $repository)
     {
-        $cities = repository(City::class);
-
         if ($request->has('q')) {
-            $q = $request->query('q');
-
-            if (is_numeric($q)) {
-                $cities->pushCriteria(new ExactMatch($q));
-            } else {
-                $cities->search($q);
-            }
+            $repository->search($request->query('q'));
         } else {
-            $cities->pushCriteria(new OrderBy('name'));
+            $repository->pushCriteria(new OrderBy('name'));
         }
 
-        return $cities->simplePaginate();
+        return $repository->simplePaginate();
+    }
+
+    /**
+     * Get a city by ID.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \Scalex\Zero\Models\Geo\City $city
+     *
+     * @return \Scalex\Zero\Models\Geo\City
+     */
+    public function show(Request $request, City $city)
+    {
+        return $city;
     }
 }

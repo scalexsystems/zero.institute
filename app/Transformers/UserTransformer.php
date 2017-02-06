@@ -13,10 +13,9 @@ class UserTransformer extends Transformer
     {
         return [
             'name' => (string)$user->name,
-            'photo' => attach_url($user->photo) ?? asset('img/placeholder-64.jpg'),
+            'photo' => attach_url($user->photo) ?? asset('img/placeholder.jpg'),
             'type' => morph_model($user->person),
             'bio' => $this->getBio($user),
-            'department' => $user->person->department->short_name ?? '',
         ];
     }
 
@@ -66,7 +65,7 @@ class UserTransformer extends Transformer
     {
         return [
             'name' => (string)$user->name,
-            'photo' => attach_url($user->photo) ?? asset('img/placeholder-64.jpg'),
+            'photo' => attach_url($user->photo) ?? asset('img/placeholder.jpg'),
             'type' => $user->person_type,
             'bio' => $this->getBio($user),
             'channel' => $user->getChannelName(),

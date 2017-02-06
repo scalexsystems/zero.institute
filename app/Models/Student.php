@@ -144,7 +144,7 @@ class Student extends BaseModel implements Person, BelongsToSchool
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function profilePhoto()
+    public function photo()
     {
         return $this->belongsTo(Attachment::class, 'photo_id');
     }
@@ -177,5 +177,17 @@ class Student extends BaseModel implements Person, BelongsToSchool
     public function setDateOfBirthAttribute($value)
     {
         $this->attributes['date_of_birth'] = Carbon::parse($value);
+    }
+
+    public function getPhotoUrl()
+    {
+        return attach_url($this->photo) ?? asset('img/placeholder.jpg');
+    }
+
+    public function getYearAttribute()
+    {
+        if ($this->date_of_admission instanceof Carbon) {
+            return $this->date_of_admission->year;
+        }
     }
 }

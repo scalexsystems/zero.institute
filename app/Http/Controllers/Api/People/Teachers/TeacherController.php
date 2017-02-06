@@ -1,4 +1,4 @@
-<?php namespace Scalex\Zero\Http\Controllers\Api\Teachers;
+<?php namespace Scalex\Zero\Http\Controllers\Api\People\Teachers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
