@@ -80,6 +80,11 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
         return $this->anUser ?? ($this->anUser = $this->createUser());
     }
 
+    public function getResponseJson()
+    {
+        return json_decode($this->response->getContent());
+    }
+
     public function getUserWithPerson(string $type = 'student')
     {
         $user = $this->getUser();

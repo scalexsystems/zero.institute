@@ -142,7 +142,7 @@ class StudentTransformer extends Transformer
         }
 
         return [
-            'email' => (string)($student->email ?? $student->user->email),
+            'email' => $this->getEmail($student),
             'first_name' => (string)$student->first_name,
             'middle_name' => (string)$student->middle_name,
             'last_name' => (string)$student->last_name,
@@ -157,5 +157,23 @@ class StudentTransformer extends Transformer
             'mother_id' => $student->mother_id,
             'father_id' => $student->father_id,
         ];
+    }
+
+    /**
+     * @param \Scalex\Zero\Models\Student $student
+     *
+     * @return string
+     */
+    protected function getEmail(Student $student): string
+    {
+        if ($student->address) {
+            return (string) $student->address->email;
+        }
+
+        if ($student->user) {
+            return (string) $student->user->email;
+        }
+
+        return '';
     }
 }
