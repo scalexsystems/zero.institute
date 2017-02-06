@@ -17,7 +17,9 @@ class PhotoController extends Controller
 
     public function show(Student $student)
     {
-        return $student->photo;
+        $this->authorize('view-photo', $student);
+
+        return $student->photo ?? [];
     }
 
     public function store(Request $request, Student $student, StudentRepository $repository)

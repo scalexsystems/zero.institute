@@ -12,7 +12,7 @@ class AddressController extends Controller
     {
         $this->authorize('view-address', $student);
 
-        return $student->address;
+        return $student->address ?? [];
     }
 
     public function update(Request $request, Student $student, StudentRepository $repository)

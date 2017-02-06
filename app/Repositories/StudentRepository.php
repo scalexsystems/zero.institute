@@ -2,13 +2,16 @@
 
 use Illuminate\Http\UploadedFile;
 use Illuminate\Validation\Rule;
+use Ramsey\Uuid\Uuid;
 use Request;
 use Scalex\Zero\Criteria\OfSchool;
 use Scalex\Zero\Models\Geo\Address;
 use Scalex\Zero\Models\Guardian;
 use Scalex\Zero\Models\School;
 use Scalex\Zero\Models\Student;
+use Scalex\Zero\User;
 use UnexpectedValueException;
+use Znck\Attach\Builder;
 use Znck\Repositories\Repository;
 
 /**

@@ -35,6 +35,16 @@ class StudentPolicy extends AbstractPolicy
         return $this->canUpdate($user, $student);
     }
 
+    public function viewPhoto()
+    {
+        return true;
+    }
+
+    public function updatePhoto(User $user, Student $student)
+    {
+        return $this->canUpdate($user, $student);
+    }
+
     public function viewGuardian(User $user, Student $student)
     {
         return $this->canView($user, $student);
@@ -58,11 +68,6 @@ class StudentPolicy extends AbstractPolicy
     public function readBasicInfo(User $user, Student $student)
     {
         return $this->canView($user, $student);
-    }
-
-    public function updatePhoto(User $user, Student $student)
-    {
-        return $this->canUpdate($user, $student);
     }
 
     public function invite(User $user)
@@ -94,5 +99,5 @@ class StudentPolicy extends AbstractPolicy
     protected function canView(User $user, Student $student): bool
     {
         return $this->isHimself($user, $student) or trust($user)->to(Action::VIEW_STUDENT);
-}
+    }
 }
