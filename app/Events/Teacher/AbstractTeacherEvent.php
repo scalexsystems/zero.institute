@@ -25,7 +25,7 @@ class AbstractTeacherEvent implements ShouldBroadcast
      */
     public function __construct(Teacher $teacher)
     {
-        $this->$teacher = $teacher;
+        $this->teacher = $teacher;
     }
 
     /**

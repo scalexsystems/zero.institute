@@ -50,6 +50,8 @@ class TeacherController extends Controller
 
         broadcast(new TeacherUpdated($teacher));
 
+        return $teacher;
+
     }
 
     public function destroy()
