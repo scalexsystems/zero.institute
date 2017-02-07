@@ -12,7 +12,7 @@
       </a>
     </p>
 
-    <p> <a href="https://goo.gl/cPtRCf"> Watch this video to learn more about Zero </a> </p>
+    <p> <a href="https://www.youtube.com/watch?v=Q0FRHSRaLE8"> Watch this video to learn more about Zero </a> </p>
 
     <p>
         <img src="{{ asset('/img/web/zero.png') }}">
