@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c47ec378c4897f915c5ed327a308df5f",
+    "hash": "20aec886b00386e621253b9d8622e760",
     "content-hash": "055bb818989ad9785118b21207f03b4e",
     "packages": [
         {
@@ -3525,12 +3525,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/znck/transformer.git",
-                "reference": "2c3da7abbd3eb138266551f1c75b7c63de644333"
+                "reference": "dba9baea1c4cc0525de3e89d7c3144327426fa56"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/znck/transformer/zipball/2c3da7abbd3eb138266551f1c75b7c63de644333",
-                "reference": "2c3da7abbd3eb138266551f1c75b7c63de644333",
+                "url": "https://api.github.com/repos/znck/transformer/zipball/dba9baea1c4cc0525de3e89d7c3144327426fa56",
+                "reference": "dba9baea1c4cc0525de3e89d7c3144327426fa56",
                 "shasum": ""
             },
             "require": {
@@ -3574,7 +3574,7 @@
                 "repositories",
                 "transformer"
             ],
-            "time": "2017-02-03 06:51:38"
+            "time": "2017-02-06 13:05:04"
         },
         {
             "name": "znck/trust",

@@ -18,6 +18,7 @@ class Action
     const VIEW_EMPLOYEE = 'people.employee.read';
 
     const UPDATE_STUDENT = 'people.student.update';
+    const UPDATE_TEACHER = 'people.teacher.update';
 
     const INVITE_STUDENT = 'people.student.invite';
     const INVITE_TEACHER = 'people.teacher.invite';
