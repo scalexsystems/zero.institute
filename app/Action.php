@@ -19,12 +19,13 @@ class Action
 
     const UPDATE_STUDENT = 'people.student.update';
     const UPDATE_TEACHER = 'people.teacher.update';
+    const UPDATE_EMPLOYEE = 'people.employee.update';
 
     const INVITE_STUDENT = 'people.student.invite';
+
     const INVITE_TEACHER = 'people.teacher.invite';
 
     const INVITE_EMPLOYEE = 'people.employee.invite';
-
     // -- @next --
     /*
      * @model \Scalex\Zero\Models\Course
