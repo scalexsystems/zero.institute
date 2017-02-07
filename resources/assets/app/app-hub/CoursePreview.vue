@@ -4,6 +4,11 @@
                 v-bind="{ title, subtitle, disableFooter: true }"
                 @close="$router.push({ name: 'acad.course', params: { course: course.id } })">
 
+      <template slot='actions'>
+        <router-link v-if="course.session.group.is_admin" :to="{ name: 'hub.group-edit', params: { group: course.session.group_id } }"
+                   class="btn btn-primary">Edit</router-link>
+      </template>
+
     <div class="container py-2">
       <div class="row">
         <div class="col-xs-12 col-lg-8 offset-lg-2">
@@ -112,6 +117,9 @@ export default {
       }
 
       return false
+    },
+    groupParams() {
+        return { group: course.session.group_id };
     },
     ...mapGetters('hub', ['courses']),
     ...mapGetters(['user'])
