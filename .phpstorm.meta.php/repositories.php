@@ -1,15 +1,19 @@
 <?php
 
 namespace PHPSTORM_META {
-
-    override(
-        \repository(0),
-        map([
-                \Scalex\Zero\User::class => \Scalex\Zero\Repositories\UserRepository::class,
-                \Scalex\Zero\Models\Group::class => \Scalex\Zero\Repositories\GroupRepository::class,
-                \Scalex\Zero\Models\Message::class => \Scalex\Zero\Repositories\MessageRepository::class,
-                \Scalex\Zero\Models\Student::class => \Scalex\Zero\Repositories\StudentRepository::class,
-                \Scalex\Zero\Models\Geo\City::class => \Scalex\Zero\Repositories\Geo\CityRepository::class,
-                \Scalex\Zero\Models\Geo\Address::class => \Scalex\Zero\Repositories\Geo\AddressRepository::class,
-            ]));
+    $STATIC_METHOD_TYPES = [
+        \repository('') => [
+            '\Scalex\Zero\User' instanceof \Scalex\Zero\Repositories\UserRepository,
+            '\Scalex\Zero\Models\Group' instanceof \Scalex\Zero\Repositories\GroupRepository,
+            '\Scalex\Zero\Models\School' instanceof \Scalex\Zero\Repositories\SchoolRepository,
+            '\Scalex\Zero\Models\Department' instanceof \Scalex\Zero\Repositories\DepartmentRepository,
+            '\Scalex\Zero\Models\Discipline' instanceof \Scalex\Zero\Repositories\DisciplineRepository,
+            '\Scalex\Zero\Models\Message' instanceof \Scalex\Zero\Repositories\MessageRepository,
+            '\Scalex\Zero\Models\Student' instanceof \Scalex\Zero\Repositories\StudentRepository,
+            '\Scalex\Zero\Models\Geo\City' instanceof \Scalex\Zero\Repositories\Geo\CityRepository,
+            '\Scalex\Zero\Models\Geo\Address' instanceof \Scalex\Zero\Repositories\Geo\AddressRepository,
+            '\Scalex\Zero\Models\Course' instanceof \Scalex\Zero\Repositories\CourseRepository,
+            '\Scalex\Zero\Models\Course\Session' instanceof \Scalex\Zero\Repositories\Course\SessionRepository,
+        ]
+    ];
 };

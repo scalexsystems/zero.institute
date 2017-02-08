@@ -18,18 +18,20 @@ export default {
         photo: group.photo,
         type: 'rounded-circle',
         class: 'sidebar-list-item-group',
-        hasExtra: group.unread > 0,
-        extra: group.unread,
+        hasExtra: group.$has_unread,
+        extra: group.$unread_count,
         route: { name: 'group.messages', params: { id: group.id }}
       }))
     },
-    ...mapGetters('messages/groups', ['groups'])
+    ...mapGetters('groups', { groups: 'myGroups' })
   },
 
-  methods: mapActions('messages/groups', ['index']),
+  methods: mapActions('groups', { index: 'my' }),
 
   created () {
-    this.index()
+    if (!this.groups.length) {
+      this.index()
+    }
   },
 
   components: { List }

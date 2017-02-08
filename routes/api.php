@@ -33,12 +33,6 @@ Route::post('/people/employees/{uid}/photo', 'Api\People\Employees\PhotoControll
 Route::get('people/roles/{role}', 'Api\RoleController@index');
 Route::post('people/roles', 'Api\RoleController@store');
 
-// Courses
-Route::get('/me/courses', 'Api\Courses\CurrentUserController@index');
-Route::get('me/courses/{course}/enrolled', 'Api\Courses\EnrollmentController@index');
-Route::post('/courses/{course}/enroll', 'Api\Courses\EnrollmentController@store');
-Route::resource('courses', 'Api\Courses\CourseController', $resource);
-
 
 //======================================================================================//
 //                                Shared Services                                       //
@@ -98,3 +92,20 @@ Route::get(     '/me/groups',         'Api\Groups\CurrentUserController@index');
 Route::get(     '/me/groups/{group}', 'Api\Groups\CurrentUserController@show');
 Route::get(     '/me/users',          'Api\Messages\CurrentUserController@index');
 Route::get(     '/me/users/{user}',   'Api\Messages\CurrentUserController@show');
+
+
+//======================================================================================//
+//                                  Academics                                           //
+//======================================================================================//
+
+Route::get(     'courses/{course}/enrolled',                    'Api\Courses\EnrollmentController@index');
+Route::get(     'courses/{course}/sessions/{session}/enrolled', 'Api\Courses\EnrollmentController@index');
+Route::post(    'courses/{course}/sessions/{session}/enroll',   'Api\Courses\EnrollmentController@store');
+Route::delete(  'courses/{course}/sessions/{session}/expel',    'Api\Courses\EnrollmentController@destroy');
+Route::resource('courses/{course}/sessions',                    'Api\Courses\SessionController', $resource);
+Route::get(     'courses/{course}/instructors',                 'Api\Courses\InstructorController@index');
+Route::post(    'courses/{course}/instructors',                 'Api\Courses\InstructorController@store');
+Route::delete(  'courses/{course}/instructors',                 'Api\Courses\InstructorController@destroy');
+Route::resource('courses',                                      'Api\Courses\CourseController', $resource);
+
+Route::get('me/courses', 'Api\Courses\CurrentUserController@index');

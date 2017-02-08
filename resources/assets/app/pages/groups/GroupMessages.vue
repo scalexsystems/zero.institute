@@ -1,59 +1,72 @@
 <template>
-<container-window v-bind="{ title, subtitle, photo }">
-  <message-browser v-if="group" v-bind="{ messages }"></message-browser>
+<container-window v-bind="{ title, subtitle, photo }" @action="onAction">
+  <message-browser v-if="group" ref="mb"
+                   v-bind="{ messages: group.$messages, dest: `group/${group.id}/attachment` }"
+                   v-model="message" @infinite="fetchMessage"></message-browser>
 </container-window>
 </template>
 
 <script lang="babel">
 import { mapActions, mapGetters } from 'vuex'
 import MessageBrowser from '../../components/hub/MessageBrowser.vue'
+import GroupRoute from './mixins/route'
 
 export default {
   name: 'GroupMessages',
 
-  props: {
-    id: {
-      type: Object,
-      required: true
-    }
-  },
-
   data () {
-    return { notFound: false }
+    return { notFound: false, message: '' }
   },
 
   computed: {
-    group () {
-      return this.findGroup(this.id)
-    },
     title () {
-      return this.group.name
+      return this.group ? this.group.name : '...'
     },
     subtitle () {
-      return this.group.description
+      return this.group ? this.group.description || 'Click to add purpose of the group.' : '...'
     },
     photo () {
-      return this.group.photo
+      return this.group ? this.group.photo : ''
     },
-    messages () {
-      return this.group.$messages
-    },
-    ...mapGetters('messages/groups', ['findGroup'])
+    ...mapGetters('groups', {groupById: 'myGroupById', groups: 'myGroups'})
   },
 
   methods: {
-    ...mapActions('messages/groups', ['fetchMessages', 'send', 'find'])
+    onAction (type) {
+      const params = { id: this.group.id }
+
+      if (type === 'subtitle' && !this.group.description) {
+        this.$router.push({ name: 'group.edit', params })
+
+        return //
+      }
+
+      this.$router.push({ name: 'group.show', params })
+    },
+    async fetchMessage ({ loaded = () => 0, complete = () => 0 } = {}) {
+      const { meta } = await this.fetchMessagesAPI({ group: this.group })
+
+      if (meta && meta.pagination.current_page === meta.pagination.total_pages ) {
+        complete()
+
+        return true
+      }
+
+      loaded()
+    },
+    ...mapActions('groups', ['send']),
+    ...mapActions('groups', { fetchMessagesAPI: 'messages', find: 'myFind' })
   },
 
   watch: {
-    id (id) {
-      const group = this.findGroup(id)
-
-      if (!group) this.find(id)
-    },
     group (group) {
-      if (!group.$messages_loaded) this.fetchMessages({ group })
+      if (!group.$messages_loaded) this.fetchMessage()
+
+      this.$nextTick(() => this.$refs && this.$refs.mb && this.$refs.mb.$emit('reset'))
     }
-  }
+  },
+
+  components: { MessageBrowser },
+  mixins: [GroupRoute]
 }
 </script>

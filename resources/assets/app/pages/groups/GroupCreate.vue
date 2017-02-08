@@ -9,13 +9,24 @@
   <form @submit.prevent="onSubmit" class="container my-3">
     <div class="row">
       <div class="col-12 col-lg-8 offset-lg-2">
-        <input-text v-model="attributes.name" title="Name of the group" autofocus required></input-text>
+        <input-text v-model="attributes.name" title="Name of the group" :errors="errors" autofocus required></input-text>
         <checkbox-wrapper title="Group Type" required>
           <input-box v-model="attributes.private" title="Public" :radio="false" class="form-check-inline"></input-box>
           <input-box v-model="attributes.private" title="Private" :radio="true" class="form-check-inline"></input-box>
         </checkbox-wrapper>
-        <input-text v-model="attributes.description" title="Description"></input-text>
-        <input-typeahead v-model="attributes.members" title="Members" :suggestions="[]"></input-typeahead>
+        <input-textarea v-model="attributes.description" title="Description" :errors="errors"></input-textarea>
+        <div class="form-group">
+          <label>Add Members</label>
+          <typeahead title="Members" @search="onSearch" v-bind="{ suggestions, value: [] }" component="select-option-user" @select="onMemberSelect"></typeahead>
+        </div>
+      </div>
+
+      <div class="col-12 col-lg-8 offset-lg-2">
+        <div class="row">
+          <div class="col-12 col-lg-6 mb-3" v-for="member in members">
+            <user-card :user="member"></user-card>
+          </div>
+        </div>
       </div>
     </div>
   </form>
@@ -24,6 +35,8 @@
 
 <script lang="babel">
 import { mapGetters, mapActions } from 'vuex'
+import { formHelper } from 'bootstrap-for-vue'
+import throttle from 'lodash.throttle'
 
 export default {
   name: 'GroupCreate',
@@ -37,14 +50,50 @@ export default {
     }
   }),
 
+  computed: {
+    members () {
+      const members = this.suggestions
+      const ids = this.attributes.members
+
+      return members.filter(({id}) => ids.indexOf(id) > -1)
+    },
+
+    ...mapGetters('people', { suggestions: 'items' })
+  },
+
   methods: {
-    onSubmit () {
-      console.log('SUBMIT')
-    }
-  }
+    async onSubmit () {
+      const { errors, group } = await this.create(this.attributes)
+
+      if (errors) {
+        this.setErrors(errors)
+      }
+
+      if (group) {
+        this.clearErrors()
+        this.attributes = this.$options.data().attributes
+
+        this.$router.push({ name: 'group.messages', params: { id: group.id } })
+      }
+    },
+    onSearch: throttle(function onSearch (q) {
+      this.query({ q })
+    }),
+    onMemberSelect (member) {
+      const id = member.user_id
+
+      if (this.attributes.members.indexOf(id) < 0) {
+        this.attributes.members.push(id)
+      }
+    },
+    ...mapActions('people', { query: 'index' }),
+    ...mapActions('groups', { create: 'store' })
+  },
+
+  created () {
+    this.query()
+  },
+
+  mixins: [formHelper]
 }
 </script>
-
-
-<style lang="scss">
-</style>

@@ -1,5 +1,5 @@
 <template>
-<div class="c-group-card card">
+<div class="c-group-card card" @click="e => $emit('click', e)">
   <div class="c-group-card-block">
     <div class="d-flex flex-row align-items-center">
       <img :src="group.photo" class="rounded-circle c-group-card-photo">

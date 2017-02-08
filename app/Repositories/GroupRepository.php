@@ -6,6 +6,7 @@ use Ramsey\Uuid\Uuid;
 use Request;
 use Scalex\Zero\Criteria\OfSchool;
 use Scalex\Zero\Models\Attachment;
+use Scalex\Zero\Models\Course;
 use Scalex\Zero\Models\Group;
 use Scalex\Zero\User;
 use Symfony\Component\HttpFoundation\File\Exception\UploadException;

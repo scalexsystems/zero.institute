@@ -1,11 +1,9 @@
 <template>
-<div class="container c-shared-container-window">
+<div class="container c-shared-container-window px-0">
   <div class="row window">
-    <div class="col-12 col-lg-2">
-      <sidebar></sidebar>
-    </div>
+    <sidebar class="col-12 col-lg-2"></sidebar>
 
-    <div class="col-12 col-lg-10">
+    <div class="col-12 col-lg-10 px-0">
       <container v-bind="{ title, subtitle, back, photo, hasFooter }"
                  @action="any => $emit('action', any)"
                  @back="any => $emit('back', any)">

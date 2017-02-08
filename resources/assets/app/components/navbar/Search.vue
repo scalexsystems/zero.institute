@@ -7,7 +7,7 @@
 <script lang="babel">
 export default {
   data () {
-    return { query: '' }
+    return { query: [] }
   },
 
   computed: {

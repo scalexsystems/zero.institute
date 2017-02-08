@@ -34,6 +34,11 @@ export function toArray (any) {
 export function toInt (any) {
   return parseInt(any, 10)
 }
+
+export function clone (any) {
+  return JSON.parse(JSON.stringify(any))
+}
+
 // NOTICE: UNSAFE with unsafe strings; only use on previously-escaped ones!
 // export const unescapeHtml = (escapedString) => {
 //   const div = document.createElement('div')

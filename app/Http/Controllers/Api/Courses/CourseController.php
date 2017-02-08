@@ -3,11 +3,15 @@
 namespace Scalex\Zero\Http\Controllers\Api\Courses;
 
 use Illuminate\Http\Request;
+use Scalex\Zero\Events\CourseCreated;
+use Scalex\Zero\Events\CourseDeleted;
+use Scalex\Zero\Events\CourseUpdated;
 use Scalex\Zero\Http\Controllers\Controller;
 use Scalex\Zero\Models\Course;
 use Scalex\Zero\Models\Course\Session;
 use Scalex\Zero\Criteria\OrderBy;
 use Carbon\Carbon;
+use Scalex\Zero\Repositories\CourseRepository;
 
 class CourseController extends Controller
 {
@@ -16,111 +20,67 @@ class CourseController extends Controller
         $this->middleware('auth:api,web');
     }
 
-    /*
-     * Get all courses.
-     * GET /courses
-     * Requires: auth
-     */
-    public function index(Request $request)
+    public function index(Request $request, CourseRepository $repository)
     {
         $this->authorize('index', Course::class);
 
-        $request->query->set('with', ['photo', 'sessions', 'instructors', 'prerequisites', 'active_sessions', 'future_sessions']);
+        $relations = ['photo', 'sessions', 'instructors', 'prerequisites'];
 
-        $courses = repository(Course::class)->with(['photo', 'sessions', 'instructors', 'prerequisites']);
+        $repository->with($relations);
 
         if ($request->has('q')) {
-            $courses->search($request->input('q'));
+            $repository->search($request->input('q'));
         } else {
-            $courses->pushCriteria(new OrderBy('name'));
+            $repository->pushCriteria(new OrderBy('name'));
         }
 
-        return $courses->paginate();
+        return transform($repository->paginate(), $relations, null, true);
     }
 
-    /*
-     * Get a course.
-     * GET /courses/{course}
-     * Required: auth
-     */
     public function show(Request $request, Course $course)
     {
-        $this->authorize($course);
+        $this->authorize('view', $course);
 
-        return $course;
+        return transform($course, [/* TODO: Add required relations here! */], null, true);
     }
 
-    /*
-     * Create a course.
-     * POST /courses
-     * Requires: auth
-     */
-    public function store(Request $request)
+    public function store(Request $request, CourseRepository $repository)
     {
-        $this->authorize('store', Course::class);
+        $this->authorize('create', Course::class);
 
-        $course = repository(Course::class)->create(
-            ['school_id' => current_user()->school_id] + $request->all()
-        );
+        $course = $repository->createForSchool($request->user()->school, $request->all());
 
-        $teacher = $course->instructors->first();
-
-        if ($teacher) {
-            repository(Session::class)->create([
-                'course_id' => $course->getKey(),
-                'instructor_id' => $teacher->getKey(),
-                'started_on' => Carbon::now(),
-                'ended_on' => Carbon::now()->addMonth(4),
-            ]);
+        if ($request->has('prerequisites')) {
+            $repository->addPrerequisites($course, (array)$request->input('prerequisites'));
         }
 
+        if ($request->has('instructors')) {
+            $repository->addInstructors($course, (array)$request->input('instructors'));
+        }
+
+        broadcast(new CourseCreated($course));
+
         return $course;
     }
 
-    /*
-     * Update a course.
-     * PUT /courses/{course}
-     * Requires: auth
-     */
-    public function update(Request $request, Course $course)
+    public function update(Request $request, Course $course, CourseRepository $repository)
     {
         $this->authorize('update', $course);
 
-        $this->validate($request, ['instructors' => 'required'], ['instructors.required' => 'Course instructor is required.']);
+        $repository->update($course, $request->all());
 
-        repository($course)->update($course, $request->all());
-
-        $course->fresh('instructors');
-
-        $teacher = $course->instructors->first();
-        $session = $course->sessions->filter(function ($session) {
-            return $session->ended_on->isFuture();
-        })->first();
-
-        if ($teacher and $session) {
-            repository(Session::class)->update($session, [ 'instructor_id' => $teacher->getKey() ]);
-        } elseif ($teacher and !$session) {
-            repository(Session::class)->create([
-                'course_id' => $course->getKey(),
-                'instructor_id' => $teacher->getKey(),
-                'started_on' => Carbon::now(),
-                'ended_on' => Carbon::now()->addMonth(4),
-            ]);
-        }
+        broadcast(new CourseUpdated($course));
 
         return $course;
     }
 
-    /*
-     * Delete a course.
-     * DELETE /courses/{course}
-     * Requried: auth
-     */
     public function destroy(Request $request, Course $course)
     {
         $this->authorize('delete', $course);
 
         repository($course)->delete($course);
+
+        broadcast(new CourseDeleted($course));
 
         return $this->accepted();
     }

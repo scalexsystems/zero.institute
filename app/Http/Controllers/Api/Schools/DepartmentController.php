@@ -26,11 +26,9 @@ class DepartmentController extends Controller
     {
         $this->authorize('store', Department::class);
 
-        $department = repository(Department::class)->create(
-            [
-                'school' => current_user()->school,
-                'school_id' => current_user()->school_id,
-            ] + $request->all() // FIXME: This is too blunt.
+        $department = repository(Department::class)->createForSchool(
+            $request->user()->school,
+            $request->all()
         );
 
         return $department;

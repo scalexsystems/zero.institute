@@ -6,7 +6,7 @@ import { isObject, toArray } from '../util'
  * @return {boolean}
  */
 export function ID_COMPARE (a, b) {
-  return a && b && a.id === b.id
+  return a.id === b.id
 }
 
 /**
@@ -21,7 +21,7 @@ export function ID_SORT_COMPARE (a, b) {
 export function binarySearch (haystack, needle) {
   let start = 0, end = haystack.length - 1
 
-  while (start < end) {
+  while (start <= end) {
     const mid = start + parseInt((end - start) / 2, 10)
     const item = haystack[mid]
 
@@ -42,7 +42,7 @@ export function binarySearchIndex (haystack, needle) {
 
   const index = binarySearch(haystack, needle)
 
-  if (ID_COMPARE(haystack[index], needle)) {
+  if (haystack[index] && ID_COMPARE(haystack[index], needle)) {
     return index
   }
 
@@ -76,12 +76,13 @@ export function insert (target, items) {
 
   for (let i = 0; i < items.length; i += 1) {
     const item = items[i]
-    const index = binarySearchIndex(target, item)
+    const position = binarySearch(target, item)
+    const index = target[position] && ID_COMPARE(target[position], item) ? position : -1
 
     if (index > -1) {
       target.splice(index, 1, keepLocals(item, target[index]))
     } else {
-      target.push(item)
+      target.splice(position, 1, item)
     }
   }
 

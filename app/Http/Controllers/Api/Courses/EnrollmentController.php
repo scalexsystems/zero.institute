@@ -3,6 +3,8 @@
 namespace Scalex\Zero\Http\Controllers\Api\Courses;
 
 use Illuminate\Http\Request;
+use Scalex\Zero\Events\Course\Session\StudentsEnrolled;
+use Scalex\Zero\Events\Course\Session\StudentsExpelled;
 use Scalex\Zero\Http\Controllers\Controller;
 use Scalex\Zero\Models\Course;
 use Scalex\Zero\Models\Course\Session;
@@ -16,43 +18,37 @@ class EnrollmentController extends Controller
         $this->middleware('auth:api,web');
     }
 
-    /**
-     * Get list of enrolled students in the course.
-     */
-    public function index(Request $request, Course $course)
+    public function index($course, Session $session)
     {
-        $request->query->set('with', ['user']);
-        $session = repository(Course::class)->findActiveSessions($course, $request->user())->first();
+        $this->authorize('view-enrolled-students', $session);
 
-        if (! ($session instanceof Session)) {
-            abort(404, 'No active session found for the course - '.$course->name);
-        }
-
-        $paginator = $session->students()->paginate();
-
-        $paginator->getCollection()->load(['user', 'profilePhoto']);
-
-        return $paginator;
+        return $session->students()->getQuery()
+                                   ->with('photo', 'user')
+                                   ->paginate();
     }
 
-    
-    /**
-     * Enroll students to Current session.
-     *  - Current session is **First** active session of the $course isntructed by $user (Auth user.).
-     */
-    public function store(Request $request, Course $course)
+    public function store($course, Session $session, Request $request)
     {
-        $this->validate($request, ['session_id' => 'required', 'students' => 'required|array|min:1']);
-        $session = repository(Session::class)->find($request->input('session_id'));
+        $this->validate($request, ['students' => 'required|array|min:1']);
 
-        $this->authorize('enroll', $session);
+        $students = Student::whereSchoolId($course->school_id)->findMany($request->input('students'));
 
-        $studentIds = repository(Student::class)
-            ->filterBySchool((array)$request->input('students'), $request->user()->school)->toArray();
+        repository(Session::class)->enroll($session, $students);
 
-        if (count($studentIds)) {
-            repository(Session::class)->enroll($session, $studentIds);
-        }
+        broadcast(new StudentsEnrolled($session, $students));
+
+        return $this->accepted();
+    }
+
+    public function destroy($course, Session $session, Request $request)
+    {
+        $this->validate($request, ['students' => 'required|array|min:1']);
+
+        $students = Student::whereSchoolId($course->school_id)->findMany($request->input('students'));
+
+        repository(Session::class)->expel($session, $students);
+
+        broadcast(new StudentsExpelled($session, $students));
 
         return $this->accepted();
     }
