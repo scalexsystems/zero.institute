@@ -2,7 +2,9 @@ import moment from 'moment'
 
 export function prepare (any) {
   any.$messages = []
-  any.$next_page = 1
+  any.$messages_page = 1
+  any.$members = []
+  any.$members_page = 1
   any.$messages_loaded = false
   any.$has_unread = false
   any.$unread_count = 0

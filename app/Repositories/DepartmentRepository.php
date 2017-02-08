@@ -1,8 +1,11 @@
 <?php namespace Scalex\Zero\Repositories;
 
 use Illuminate\Support\Arr;
+use Illuminate\Validation\Rule;
+use Request;
 use Scalex\Zero\Criteria\OfSchool;
 use Scalex\Zero\Models\Department;
+use Scalex\Zero\Models\School;
 use Scalex\Zero\Models\Teacher;
 use Znck\Repositories\Repository;
 
@@ -32,15 +35,36 @@ class DepartmentRepository extends Repository
         'name' => 'required|max:255',
         'short_name' => 'nullable|max:255',
         'academic' => 'nullable|boolean',
-        'head_id' => 'nullable|exists:teachers,id',
-        'school_id' => 'required|exists:schools,id',
     ];
+
+    /**
+     * Get update rules.
+     *
+     * @param array $rules
+     * @param array $attributes
+     * @param \Scalex\Zero\Models\Department $department
+     *
+     * @return array
+     */
+    public function getUpdateRules(array $rules, array $attributes, $department)
+    {
+        return array_only(
+            $rules + $this->getRulesForSchool($department->school),
+            array_keys($attributes)
+        );
+    }
+
 
     public function boot()
     {
-        if (current_user()) {
-            $this->pushCriteria(new OfSchool(current_user()->school));
+        if ($user = Request::user()) {
+            $this->pushCriteria(new OfSchool($user->school));
         }
+    }
+
+    public function createForSchool(School $school, array $attributes)
+    {
+        $this->validateWith($attributes, $this->getRulesForSchool($school));
     }
 
     public function creating(Department $department, array $attributes)
@@ -58,12 +82,19 @@ class DepartmentRepository extends Repository
 
     public function updating(Department $department, array $attributes)
     {
-        $department->fill($attributes);
+        $department->head()->associate($attributes['head_id'] ?? $department->head_id);
 
-        if (Arr::has($attributes, 'head_id')) {
-            $department->head()->associate(find($attributes, 'head_id', Teacher::class));
-        }
+        return $department->update($attributes);
+    }
 
-        return $department->update();
+    protected function getRulesForSchool(School $school)
+    {
+        return $this->rules + [
+            'head_id' => [
+                'bail',
+                'required',
+                Rule::exists('teachers', 'id')->where('school_id', $school->getKey())
+            ]
+        ];
     }
 }

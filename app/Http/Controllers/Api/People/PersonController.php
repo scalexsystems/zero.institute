@@ -23,8 +23,6 @@ class PersonController extends Controller
 
     public function index(Request $request, UserRepository $repository)
     {
-        $request->query->set('with', 'person');
-
         $repository->with(['person', 'person.photo'])
                    ->pushCriteria(new OfSchool($request->user()->school));
 
@@ -34,7 +32,9 @@ class PersonController extends Controller
             $repository->pushCriteria(new OrderBy('name'));
         }
 
+        /** @var \Illuminate\Pagination\LengthAwarePaginator $results */
         $results = $repository->paginate();
+
         $people = $results->getCollection()->map(function ($user) {
             return transformer($user->person)->setIndexing()->transform($user->person);
         });

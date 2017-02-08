@@ -56,7 +56,7 @@ class CourseTransformer extends Transformer
 
     public function includeSemester(Course $course)
     {
-        return $course->semeseter ? $this->item($course->semeseter) : $this->null();
+        return $this->item($course->semester);
     }
 
     public function includeSchool(Course $course)
@@ -74,11 +74,6 @@ class CourseTransformer extends Transformer
         return $this->item($course->discipline);
     }
 
-    public function includeSession(Course $course)
-    {
-        return $this->item($course->session); // NOTE: $course->session is set in Courses/CurrentUserController.
-    }
-
     public function includeSessions(Course $course)
     {
         return $this->collection($course->sessions);
@@ -86,14 +81,14 @@ class CourseTransformer extends Transformer
 
     public function includeActiveSessions(Course $course)
     {
-        return $this->collection($course->sessions->filter(function ($session) {
-            return $session->ended_on->isFuture();
+        return $this->collection($course->sessions->filter(function (Course\Session $session) {
+            return $session->started_on->isPast() and $session->ended_on->isFuture();
         }));
     }
 
     public function includeFutureSessions(Course $course)
     {
-        return $this->collection($course->sessions->filter(function ($session) {
+        return $this->collection($course->sessions->filter(function (Course\Session $session) {
             return $session->started_on->isFuture();
         }));
     }

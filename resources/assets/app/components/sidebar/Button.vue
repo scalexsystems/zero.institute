@@ -20,7 +20,7 @@ export default {
     photo: String,
     type: String,
     hasExtra: Boolean,
-    extra: String,
+    extra: [Number, String],
     route: {
       type: [Object, String],
       required: true

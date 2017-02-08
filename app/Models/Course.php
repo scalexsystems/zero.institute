@@ -53,6 +53,9 @@ class Course extends BaseModel implements BelongsToSchool
         return $this->belongsTo(Attachment::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany|\Illuminate\Database\Eloquent\Builder
+     */
     public function sessions()
     {
         return $this->hasMany(Session::class)->orderBy('started_on');

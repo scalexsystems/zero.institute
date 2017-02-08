@@ -2,17 +2,24 @@
 
 namespace Scalex\Zero\Repositories\Course;
 
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Validation\Rule;
+use Scalex\Zero\Models\Course;
 use Scalex\Zero\Models\Course\Session;
 use Scalex\Zero\Models\Group;
+use Scalex\Zero\Models\School;
+use Scalex\Zero\Models\Student;
 use Scalex\Zero\Models\Teacher;
+use Scalex\Zero\User;
+use Znck\Repositories\Exceptions\StoreResourceException;
 use Znck\Repositories\Repository;
 
 /**
- * @method Session find(string|int $id)
+ * @method Session find(int $id)
  * @method Session findBy(string $key, $value)
  * @method Session create(array $attr)
- * @method Session update(string|int|Session $id, array $attr, array $o = [])
- * @method Session delete(string|int|Session $id)
+ * @method Session update(int|Session $id, array $attr, array $o = [])
+ * @method Session delete(int|Session $id)
  * @method SessionRepository validate(array $attr, Session|null $model)
  */
 class SessionRepository extends Repository
@@ -33,72 +40,114 @@ class SessionRepository extends Repository
         'name' => 'nullable|max:255',
         'started_on' => 'required|date',
         'ended_on' => 'required|date',
-        'course_id' => 'required|exists:courses,id',
-        'instructor_id' => 'required|exists:teachers,id',
     ];
 
-    public function creating(Session $session, array $attributes)
+    /**
+     * Get update rules.
+     *
+     * @param array $rules
+     * @param array $attributes
+     * @param \Scalex\Zero\Models\Course\Session $session
+     *
+     * @return array
+     */
+    protected function getUpdateRules(array $rules, array $attributes, $session)
     {
-        $session->fill($attributes);
-        $session->course()->associate(find($attributes, 'course_id'));
-        $session->instructor()->associate($instructor = find($attributes, 'instructor_id', Teacher::class));
+        return array_only(
+            $rules + $this->getRulesForSchool($session->course->school),
+            array_keys($attributes)
+        );
+    }
 
-        $group = new Group([
-            'name' => $session->course->name,
-            'description' => 'Course discussion group',
-            'private' => true,
-        ]);
-        $group->owner()->associate($instructor->user);
-        $group->photo_id = $session->course->photo_id;
-        $group->type = 'course';
-        $group->save();
+    public function createForCourse(Course $course, array $attributes)
+    {
+        $this->validateWith($attributes, $this->getRulesForSchool($course->school));
 
-        $session->group()->associate($group);
+        $instructor = Teacher::find($attributes['instructor_id']);
 
-        $status = $session->save();
-
-        if (!$status) {
-            $group->delete();
-        } else {
-            $group->addMembers((array) $group->owner->getKey());
+        if ($instructor->user)
+        {
+            throw new StoreResourceException('Instructor does not have an account on Zero.');
         }
 
-        return $status;
+        $session = new Session($attributes);
+
+        $session->course()->associate($course);
+        $session->instructor()->associate($instructor);
+        $session->group()->associate($this->createGroupForSession($course, $instructor->user));
+
+        $this->onCreate($session->save());
+
+        return $session;
     }
 
     public function updating(Session $session, array $attributes)
     {
-        $session->fill($attributes);
+        if (isset($attributes['private'])) unset($attributes['private']);
 
-        if (array_has($attributes, 'instructor_id')) {
-            $instructor = find($attributes, 'instructor_id', Teacher::class);
+        $session->instructor()->associate($attributes['instructor_id'] ?? $session->instructor_id);
 
-            $group = $session->group;
-            $old = $group->owner->getKey();
-            $session->instructor()->associate($instructor);
-            $session->save();
-
-            $group->owner()->associate($session->instructor->user);
-            $group->save();
-
-            $group->addMembers((array)$session->instructor->user->getKey());
-            $group->removeMembers((array)$old);
-        }
-
-        return $session->update();
+        return $session->update($attributes);
     }
 
-    public function enroll(Session $session, array $students)
+    public function enroll(Session $session, Collection $students)
     {
-        $enrolled = \DB::table('course_session_student')
-            ->select('student_id')->whereSessionId($session->getKey())
-            ->whereIn('student_id', (array) $students)->get()
-            ->pluck('student_id')->toArray();
+        $duplicates = $session->students()->wherePivotIn('student_id', $students->modelKeys())->get()->keyBy('id');
 
-        $newEnrollments = array_values(array_diff($students, $enrolled));
+        $students = $students->filter(function (Student $student) use ($duplicates) {
+            return $duplicates->has($student->getKey());
+        });
 
-        $session->students()->attach($newEnrollments);
+        $session->students()->attach($students);
 
-        $session->group->addMembers($newEnrollments);
+        $users = $students->load('user')->map(function (Student $student) {
+            return $student->user;
+        })->pluck('id');
+
+        $session->group->addMembers($users);
     }
+
+    public function expel(Session $session, Collection $students)
+    {
+        $session->students()->detach($students);
+
+        $users = $students->load('user')->map(function (Student $student) {
+            return $student->user;
+        })->pluck('id');
+
+        $session->group->removeMembers($users);
+    }
+
+    protected function getRulesForSchool(School $school)
+    {
+        return [
+            'instructor_id' => [
+                'bail',
+                'required',
+                Rule::exists('teachers', 'id')->where('school_id', $school->getKey())
+            ],
+        ];
+    }
+
+    /**
+     * @param \Scalex\Zero\Models\Course $course
+     * @param $instructor
+     *
+     * @return \Scalex\Zero\Models\Group
+     */
+    protected function createGroupForSession(Course $course, User $owner): Group
+    {
+        $group = new Group();
+
+        $group->name = $course->name;
+        $group->description = $course->description;
+        $group->type = morph_model(Course::class);
+        $group->private = true;
+        $group->owner()->associate($owner);
+        $group->school()->associate($course->school);
+
+        $this->onCreate($group->save());
+
+        return $group;
+}
 }

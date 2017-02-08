@@ -8,9 +8,9 @@
 
 
   <searchable-list v-model="query" placeholder="Start typing..." ref="list"
-                   @search="onSearch" @load="onLoad">
-    <div class="row my-3">
-      <div class="col-12 col-lg-6" v-for="group in groups" :key="group">
+                   @search="onSearch" @infinite="onLoad">
+    <div class="row">
+      <div class="col-12 col-lg-6 mt-3" v-for="group in groups" :key="group">
         <group-card :group="group" role="button"
                     @click="$router.push({ name: 'group.show', params: { id: group.id } })"
         ></group-card>
@@ -46,21 +46,21 @@ export default {
 
       this.index({ page: this.page, query: this.query })
     },
-    onLoad ({ loaded, complete }) {
-      const result = this.index({ page: this.page, query: this.query })
+    async onLoad ({ loaded, complete }) {
+      const { meta } = await this.index({ page: this.page, query: this.query })
 
-      if (!result) {
-        complete()
-        return
+
+      if (meta) {
+        this.page = meta.pagination.next_page
+
+        if (meta.pagination.current_page === meta.pagination.total_pages) {
+          complete()
+        }
+
+        return true
       }
 
-      this.page = result.meta.pagination.next_page
-
-      if (result.meta.pagination.current_page === result.meta.pagination.total_pages) {
-        complete()
-      } else {
-        loaded()
-      }
+      loaded()
     },
     ...mapActions('groups', ['index'])
   },

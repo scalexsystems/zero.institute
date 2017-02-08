@@ -3,6 +3,7 @@
 use Scalex\Zero\Events\Group\GroupCreated;
 use Scalex\Zero\Events\Group\GroupDeleted;
 use Scalex\Zero\Events\Group\GroupUpdated;
+use Scalex\Zero\Events\Group\MemberLeft;
 use Scalex\Zero\Models\Group;
 
 class GroupObserver

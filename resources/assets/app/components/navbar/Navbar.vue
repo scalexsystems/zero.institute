@@ -1,11 +1,11 @@
 <template>
 <nav class="navbar fixed-top navbar-dark bg-accent">
   <div class="container navbar-container d-flex">
-    <a role="button" class="navbar-brand nav-sidebar hidden-lg-up" tabindex @click="$root.$emit('sidebar')">
+    <a role="button" class="navbar-brand nav-sidebar hidden-lg-up" tabindex @click.prevent="openSidebar">
       <icon class="fa-fw" type="bars"/>
     </a>
 
-    <router-link to="/" class="navbar-brand nav-zero">
+    <router-link to="/" class="navbar-brand nav-zero hidden-md-down">
       <img src="../../assets/logo.svg" alt="Zero">
     </router-link>
 
@@ -24,6 +24,20 @@ import NavbarUser from './User.vue'
 
 export default {
   name: 'Navbar',
+
+  methods: {
+    openSidebar () {
+      this.$emit('sidebar')
+
+      const classList = document.body.classList
+
+      if (classList.contains('has-sidebar')) {
+        classList.remove('has-sidebar')
+      } else {
+        classList.add('has-sidebar')
+      }
+    }
+  },
 
   components: { NavbarApps, NavbarSearch, NavbarUser }
 }
@@ -74,24 +88,23 @@ body {
   padding-top: $navbar-height;
 
   .nav-zero {
-    display: inline-flex !important;
+    display: inline-flex;
   }
 
   .nav-sidebar {
+    padding: .5rem 0;
     color: white;
     font-size: to-rem(28px);
     display: none !important;
   }
 
   @include media-breakpoint-down(md) {
-    &.has-sidebar {
-      .nav-zero {
-        display: none !important;
-      }
+    .nav-zero {
+      display: none !important;
+    }
 
-      .nav-sidebar {
-        display: inline-flex !important;
-      }
+    .nav-sidebar {
+      display: inline-flex !important;
     }
   }
 }
