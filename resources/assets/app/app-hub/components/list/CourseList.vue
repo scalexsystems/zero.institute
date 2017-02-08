@@ -1,12 +1,13 @@
 <template>
 <div class="course-list my-1" v-if="courses.length">
   <div class="course-list-container">
+      <i class="fa fa-paper-plane"></i>  <strong> COURSES </strong>
     <div class="course-list-item" v-for="(course, index) of courses"
          :class="{ active: activeId === course.id }" :key="course.id"
          @click="onGroupSelected(course, index, $event)">
       <img class="course-list-photo" :src="course.session.group.photo">
       <div class="course-list-name" :class="{ unread: course.session.group.has_unread }">
-        <span v-tooltip:right="course.name">{{ course.code }}</span>
+        <span v-tooltip:right="course.name">{{ course.code }} - {{ course.name }} </span>
       </div>
       <div class="course-list-unread-count" v-if="course.session.group.unread_count > 0">
         <span class="tag tag-default">
