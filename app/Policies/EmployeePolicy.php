@@ -9,29 +9,74 @@ class EmployeePolicy extends AbstractPolicy
 {
     use VerifiesSchool;
 
-    protected function isHimself(User $user, Employee $employee)
-    {
-        return !is_null($user->person) and $employee->getKey() === $user->person->getKey();
-    }
-
-    public function index(User $user)
+    public function browse(User $user)
     {
         return true;
     }
 
-    public function view(User $user, Employee $employee)
+    public function view(User $user)
     {
-        return trust($user)->to(Action::VIEW_EMPLOYEE)
-               or $this->isHimself($user, $employee);
+        return true;
     }
 
-    public function readAddress(User $user, Employee $employee)
+    public function update(User $user, Employee $employee)
     {
-        return $this->view($user, $employee);
+        return $this->canUpdate($user, $employee);
+    }
+
+    public function updatePhoto(User $user, Employee $employee)
+    {
+        return trust($user)->to(Action::VIEW_EMPLOYEE) or $this->isHimself($user, $employee);
+    }
+
+    public function viewAddress(User $user, Employee $employee)
+    {
+        return $this->canView($employee);
+    }
+
+    public function viewAssociatedUserAccount(User $user, Employee $employee)
+    {
+        return $this->canView($employee);
+    }
+
+    public function readSchoolInfo(User $user, Employee $employee)
+    {
+        return $this->canView($employee);
+    }
+
+    public function readMedicalInfo(User $user, Employee $employee)
+    {
+        return $this->canView($employee);
+    }
+
+    public function readBasicInfo(User $user, Employee $employee)
+    {
+        return $this->canView($employee);
+    }
+
+    public function readQualificationInfo(User $user, Employee $employee)
+    {
+        return $this->canView($employee);
+    }
+
+    public function readBankAccountInfo(User $user, Employee $employee)
+    {
+        return $this->canView($employee);
+    }
+
+    protected function canView(Employee $employee)
+    {
+        return trust($this->getUser())->to(Action::UPDATE_EMPLOYEE)
+        or $this->isHimself($this->getUser(), $employee);
     }
 
     public function invite(User $user)
     {
-        return trust($user)->to(Action::INVITE_EMPLOYEE);
+        return trust($user)->to(Action::INVITE_STUDENT);
+    }
+
+    private function canUpdate($user, $employee)
+    {
+        return $this->isHimself($user, $employee) or trust($user)->to(Action::UPDATE_EMPLOYEE);
     }
 }

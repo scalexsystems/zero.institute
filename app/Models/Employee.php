@@ -132,7 +132,7 @@ class Employee extends BaseModel implements BelongsToSchool, Person
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function profilePhoto()
+    public function photo()
     {
         return $this->belongsTo(Attachment::class, 'photo_id');
     }

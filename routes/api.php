@@ -64,6 +64,10 @@ Route::get(     '/people/{user}',     'Api\People\PersonController@show');
 // - Teachers
 Route::post(    '/people/teachers/{teacher}/photo', 'Api\People\Teachers\PhotoController@store');
 Route::resource('/people/teachers',                 'Api\People\Teachers\TeacherController', $resource);
+
+// - Employees
+Route::post(    '/people/employees/{employee}/photo', 'Api\People\Employees\PhotoController@store');
+Route::resource('/people/employees',                 'Api\People\Employees\EmployeeController', $resource);
 //======================================================================================//
 //                                 Communication                                        //
 //======================================================================================//
