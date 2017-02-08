@@ -298,7 +298,7 @@ methods: {
                         'address_line1' : '',
                         'address_line2' : '',
                         'landmark' : '',
-                        'city' : '',
+                        'city_id' : '',
                         'pin_code' : '',
                         'email' : '',
                         'phone' : '',
@@ -355,7 +355,7 @@ methods: {
         this.getCities({ q: value }).then(end)
     }, 400),
     selectCity(city) {
-        this.student.city = city;
+        this.student.address.city_id = city.id;
     },
     ...mapActions({
         getDepartments: actions.getDepartments,

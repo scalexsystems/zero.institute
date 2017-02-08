@@ -138,7 +138,6 @@
                                                       @select="selectCity"></input-search>
 
 
-
                                     </div>
                                 </div>
                                 <div class="col-xs-6 col-md-4">
@@ -296,7 +295,7 @@
                                 'address_line1' : '',
                                 'address_line2' : '',
                                 'landmark' : '',
-                                'city' : '',
+                                'city_id' : '',
                                 'pin_code' : '',
                                 'email' : '',
                                 'phone' : '',
@@ -351,7 +350,7 @@
                 this.getCities({ q: value }).then(end)
             }, 400),
             selectCity(city) {
-                this.student.city = city;
+                this.teacher.address.city_id = city.id;
             },
             ...mapActions({
                 getDepartments: actions.getDepartments,
