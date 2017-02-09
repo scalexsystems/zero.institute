@@ -355,7 +355,14 @@ methods: {
         this.getCities({ q: value }).then(end)
     }, 400),
     selectCity(city) {
-        this.student.address.city_id = city.id;
+        if (this.student.address) {
+            this.student.address.city_id = city.id;
+        } else {
+            this.student.address = {
+                city: city.id
+            }
+        }
+
     },
     ...mapActions({
         getDepartments: actions.getDepartments,

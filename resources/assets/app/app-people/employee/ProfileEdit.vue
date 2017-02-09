@@ -256,7 +256,13 @@
                 this.getCities({ q: value }).then(end)
             }, 400),
             selectCity(city) {
+              if (this.employee.address) {
                 this.employee.address.city_id = city.id;
+              } else {
+                this.employee.address = {
+                  city: city.id
+                }
+              }
             },
             ...mapGetters({
                 employees: getters.employees,
