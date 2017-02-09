@@ -7,7 +7,7 @@
          @click="onGroupSelected(course, index, $event)">
       <img class="course-list-photo" :src="course.session.group.photo">
       <div class="course-list-name" :class="{ unread: course.session.group.has_unread }">
-        <span v-tooltip:right="course.name">{{ course.code }} - {{ course.name }} </span>
+        <span v-tooltip:right="course.name">{{ course.code }} </span>
       </div>
       <div class="course-list-unread-count" v-if="course.session.group.unread_count > 0">
         <span class="tag tag-default">
