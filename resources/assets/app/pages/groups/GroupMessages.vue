@@ -60,7 +60,9 @@ export default {
 
   watch: {
     group (group) {
-      if (!group.$messages_loaded) this.fetchMessage()
+      if (!group.$messages_loaded) {
+        setTimeout(() => this.fetchMessage(), 0)
+      }
 
       this.$nextTick(() => this.$refs && this.$refs.mb && this.$refs.mb.$emit('reset'))
     }

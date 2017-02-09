@@ -86,9 +86,7 @@ export default {
   methods: {
     async joinGroup (e) {
       e.target.classList.add('disabled')
-
       const { group } = await this.join(this.group.id)
-
       e.target.classList.remove('disabled')
 
       if (group) this.$router.push({ name: 'group.messages', params: { id: this.group.id } })

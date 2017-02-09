@@ -10,7 +10,9 @@ const actions = {
   async index ({ dispatch }, { page = 1, query, type } = {}) {
     const { groups, meta } = await http.get('groups', { params: { page, q: query, type }})
 
-    await dispatch('addToStore', groups)
+    if (!query) {
+      await dispatch('addToStore', groups)
+    }
 
     return { groups, meta }
   },
@@ -80,7 +82,7 @@ const actions = {
     const { users, meta } = await http.get(`groups/${group.id}/members`, { params: { page: group.$members_page } })
 
     if (users) {
-      dispatch('addMembersToStore', { members: users, id: group.id, page: meta.pagination.next_page })
+      await dispatch('addMembersToStore', { members: users, id: group.id, page: meta.pagination.current_page + 1 })
     }
 
     return { meta, members: users }
@@ -92,7 +94,7 @@ const actions = {
   async join ({ dispatch }, id) {
     const { group } = await http.post(`groups/${id}/join`)
 
-    dispatch('addToStore', group)
+    await dispatch('addToStore', group)
 
     return { group }
   },
@@ -103,7 +105,7 @@ const actions = {
   async leave ({ dispatch }, id) {
     const { group } = await http.delete(`groups/${id}/leave`)
 
-    dispatch('removeFromStore', id)
+    await dispatch('removeFromStore', id)
 
     return { group }
   },
@@ -117,7 +119,7 @@ const actions = {
     return { groups, meta }
   },
 
-  async findMy ({ dispatch }, id) {
+  async myFind ({ dispatch }, id) {
     const { group } = await http.get(`me/groups/${id}`)
 
     if (group) await dispatch('addToStore', group)
@@ -134,12 +136,12 @@ const actions = {
       }
     }
 
-    const { messages, meta } = http.get(`groups/${group.id}/messages`, options)
+    const { messages, meta } = await http.get(`groups/${group.id}/messages`, options)
 
     if (messages) {
       const payload = {
         id: group.id,
-        page: meta.pagination.next_page,
+        page: meta.pagination.current_page + 1,
         messages
       }
 

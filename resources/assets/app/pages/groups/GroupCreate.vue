@@ -55,15 +55,17 @@ export default {
       const members = this.suggestions
       const ids = this.attributes.members
 
-      return members.filter(({id}) => ids.indexOf(id) > -1)
+      return members.filter(({user_id}) => ids.indexOf(user_id) > -1)
     },
 
     ...mapGetters('people', { suggestions: 'items' })
   },
 
   methods: {
-    async onSubmit () {
+    async onSubmit (e) {
+      e.traget.classList.add('disabled')
       const { errors, group } = await this.create(this.attributes)
+      e.traget.classList.remove('disabled')
 
       if (errors) {
         this.setErrors(errors)

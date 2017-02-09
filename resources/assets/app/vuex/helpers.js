@@ -1,4 +1,4 @@
-import { isObject, toArray } from '../util'
+import { isObject, toArray, clone } from '../util'
 /**
  * @param {object} a
  * @param {object} b
@@ -75,7 +75,7 @@ export function insert (target, items) {
   items = toArray(items).sort(ID_SORT_COMPARE)
 
   for (let i = 0; i < items.length; i += 1) {
-    const item = items[i]
+    const item = clone(items[i])
     const position = binarySearch(target, item)
     const index = target[position] && ID_COMPARE(target[position], item) ? position : -1
 

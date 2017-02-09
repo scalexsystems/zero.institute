@@ -7,6 +7,7 @@ use Illuminate\Support\AggregateServiceProvider;
 class DevelopmentServiceProvider extends AggregateServiceProvider
 {
     protected $providers = [
+        'TeamTNT\Scout\TNTSearchScoutServiceProvider',
         '\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
         '\Themsaid\MailPreview\MailPreviewServiceProvider',
         '\Mmieluch\LaravelVfsProvider\LaravelVfsServiceProvider',
