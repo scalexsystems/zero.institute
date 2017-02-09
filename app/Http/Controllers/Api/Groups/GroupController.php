@@ -39,7 +39,8 @@ class GroupController extends Controller
             $groups->pushCriteria(new OrderBy('name'));
         }
 
-        return $groups->paginate();
+        $paginatedGroups = $groups->paginate();
+        return $paginatedGroups->total() ? $paginatedGroups : [];
     }
 
     /**
