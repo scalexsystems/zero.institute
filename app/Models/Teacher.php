@@ -139,16 +139,6 @@ class Teacher extends BaseModel implements BelongsToSchool, Person
     }
 
     /**
-     * Profile photo of the student.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function photo()
-    {
-        return $this->belongsTo(Attachment::class, 'photo_id');
-    }
-
-    /**
      * Associated user account.
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphOne
@@ -166,6 +156,11 @@ class Teacher extends BaseModel implements BelongsToSchool, Person
     public function getRouteKeyName()
     {
         return 'uid';
+    }
+
+    public function getPhotoUrl()
+    {
+        return attach_url($this->photo) ?? asset('img/placeholder.jpg');
     }
 
     public function setDateOfJoiningAttribute($value)
