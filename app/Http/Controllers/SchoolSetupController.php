@@ -36,22 +36,24 @@ class SchoolSetupController extends Controller
             'name' => 'required|max:255',
             'email' => 'required|email',
             'university' => 'required|max:255',
-            'logo' => 'required|image|max:10240',
+            'logo' => 'nullable|image|max:10240',
             'institute_type' => 'required|in:'.implode(',', array_keys($this->getInstituteTypes())),
         ]);
 
 
         $school = $request->user()->school;
-        $schoolId = $school->getKey();
-        $slug = Uuid::uuid4();
-        $path = "schools/${schoolId}/logo";
+        if ($request->logo) {
+            $schoolId = $school->getKey();
+            $slug = Uuid::uuid4();
+            $path = "schools/${schoolId}/logo";
 
-        $photo = Builder::make($request, 'logo')
-                        ->resize(300, null, 300)
-                        ->upload(compact('slug', 'path'))
-                        ->getAttachment();
+            $photo = Builder::make($request, 'logo')
+                ->resize(300, null, 300)
+                ->upload(compact('slug', 'path'))
+                ->getAttachment();
 
-        $school->logo()->associate($photo);
+            $school->logo()->associate($photo);
+        }
 
         $school->verified = true;
 
