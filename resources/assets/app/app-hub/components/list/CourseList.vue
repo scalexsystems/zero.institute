@@ -1,7 +1,8 @@
 <template>
 <div class="course-list my-1" v-if="courses.length">
   <div class="course-list-container">
-      <i class="fa fa-paper-plane"></i>  <strong> COURSES </strong>
+      <i class="fa fa-paper-plane course-list-course-icon"></i>
+      <strong class='course-list-courses-label'> COURSES </strong>
     <div class="course-list-item" v-for="(course, index) of courses"
          :class="{ active: activeId === course.id }" :key="course.id"
          @click="onGroupSelected(course, index, $event)">
@@ -152,5 +153,19 @@ $group-list-photo-border-radius: rem(28px) !default;
     margin-top: -2px;
     font-size: 1.1rem;
   }
+
+  &-course-icon {
+    color: #9b9b9b ;
+    font-size: 12px;
+    padding-left: 6px;
+    padding-bottom: 12px;
+  }
+
+  &-course-label {
+    letter-spacing: 2px;
+    padding-left: 10px;
+    color: #000;
+  }
+
 }
 </style>
