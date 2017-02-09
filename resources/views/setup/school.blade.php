@@ -3,7 +3,7 @@
 @section('content')
     <div class="container py-2">
         <div class="row">
-            <div class="col-xs-12 col-lg-8 offset-lg-2">
+            <div class="col-12 col-lg-8 offset-lg-2">
                 <form action="{{ url('/setup') }}" method="post" enctype="multipart/form-data">
                     {!! csrf_field() !!}
 
@@ -13,7 +13,7 @@
                         </h3>
                         <div class="card-block">
                             <div class="row">
-                                <div class="col-xs-12">
+                                <div class="col-12">
                                     <div class="form-group @if($errors->has('name')) has-danger @endif">
                                         <label for="formName">Name of the Intitute</label>
                                         <input type="text" class="form-control form-control-lg" id="formName" name="name"
@@ -25,7 +25,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-xs-12 col-md-6">
+                                <div class="col-12 col-md-6">
                                     <div class="form-group @if($errors->has('university')) has-danger @endif">
                                         <label for="formUniversity">University</label>
                                         <input type="text" class="form-control form-control-lg" id="formUniversity" name="university"
@@ -37,7 +37,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-xs-12 col-md-6">
+                                <div class="col-12 col-md-6">
                                     <div class="form-group @if($errors->has('institute_type')) has-danger @endif">
                                         <label for="formInstituteType">Institute Type</label>
                                         <select class="form-control form-control-lg custom-select" id="formInstituteType" name="institute_type">
@@ -58,7 +58,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-xs-12 col-md-6">
+                                <div class="col-12 col-md-6">
                                     <div class="form-group @if($errors->has('email')) has-danger @endif">
                                         <label for="formEmail">Email Address</label>
                                         <input type="email" class="form-control form-control-lg" id="formEmail" name="email"
@@ -70,7 +70,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-xs-12 col-md-6">
+                                <div class="col-12 col-md-6">
                                     <div class="form-group @if($errors->has('logo')) has-danger @endif">
                                         <label for="formLogo">Insitute Logo</label>
                                         <input type="file" id="formLogo" name="logo">
@@ -82,7 +82,7 @@
                             </div>
                         </div>
                         <div class="card-footer">
-                            <button type="submit" class="btn btn-primary float-xs-right">Next</button>
+                            <button type="submit" class="btn btn-primary float-right">Next</button>
                         </div>
                     </div>
                 </form>
