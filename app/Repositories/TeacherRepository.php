@@ -206,4 +206,9 @@ class TeacherRepository extends Repository
         return "schools/{$teacher->school_id}/teachers/photo/{$teacher->id}";
     }
 
+    public function getBio()
+    {
+        return '';
+    }
+
 }

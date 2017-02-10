@@ -200,4 +200,9 @@ class EmployeeRepository extends Repository
         return "schools/{$employee->school_id}/employees/photo/{$employee->id}";
     }
 
+    public function getBio()
+    {
+        return '';
+    }
+
 }
