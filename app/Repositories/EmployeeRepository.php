@@ -1,10 +1,14 @@
 <?php namespace Scalex\Zero\Repositories;
 
+use Ramsey\Uuid\Uuid;
 use Scalex\Zero\Criteria\OfSchool;
 use Scalex\Zero\Models\Attachment;
 use Scalex\Zero\Models\Employee;
 use Scalex\Zero\Models\Geo\Address;
+use Scalex\Zero\User;
+use Znck\Attach\Builder;
 use Znck\Repositories\Repository;
+use Illuminate\Http\UploadedFile;
 
 /**
  * @method Employee find(string|int $id)
@@ -162,8 +166,43 @@ class EmployeeRepository extends Repository
         return $employee->update();
     }
 
-    public function getBio(Employee $employee)
+    public function uploadPhoto(Employee $employee, UploadedFile $photo, User $user)
+    {
+        if (!$photo->isValid()) {
+            throw new UploadException('Invalid photo.');
+        }
+
+        // Set path & slug.
+        $attributes['path'] = $this->getPhotoUploadPath($employee);
+        $attributes['slug'] = $attributes['slug'] ?? Uuid::uuid4();
+
+        // Prepare uploader.
+        $uploader = Builder::makeFromFile($photo)->resize(360, 'preview', 360);;
+
+        // Upload & get attachment.
+        $attachment = $uploader->upload($attributes)->getAttachment();
+
+        $attachment->owner()->associate($user);
+        $attachment->related()->associate($employee);
+
+        $this->onCreate($attachment->save());
+
+        // Associate photo to the teacher.
+        $employee->photo()->associate($attachment);
+
+        $this->onUpdate($employee->save());
+
+        return $attachment;
+
+    }
+    protected function getPhotoUploadPath(Employee $employee)
+    {
+        return "schools/{$employee->school_id}/employees/photo/{$employee->id}";
+    }
+
+    public function getBio()
     {
         return '';
     }
+
 }

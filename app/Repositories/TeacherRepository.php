@@ -1,11 +1,15 @@
 <?php namespace Scalex\Zero\Repositories;
 
-use Illuminate\Database\Eloquent\Model;
+use Ramsey\Uuid\Uuid;
 use Scalex\Zero\Criteria\OfSchool;
 use Scalex\Zero\Models\Attachment;
 use Scalex\Zero\Models\Geo\Address;
 use Scalex\Zero\Models\Teacher;
+use Scalex\Zero\User;
+use Znck\Attach\Builder;
 use Znck\Repositories\Repository;
+use Illuminate\Http\UploadedFile;
+
 
 /**
  * @method Teacher find(string|int $id)
@@ -106,7 +110,7 @@ class TeacherRepository extends Repository
                 'address' => repository(Address::class)->getRules($attributes, $teacher->address),
             ]);
 
-        $rules['uid'] = 'required|unique:teachers,uid,'.$teacher->id.',id,school_id,'.current_user()->school_id;
+        $rules['uid'] = 'required|unique:teachers,uid,' . $teacher->id . ',id,school_id,' . current_user()->school_id;
 
         return array_only($rules, array_keys($attributes));
     }
@@ -114,11 +118,11 @@ class TeacherRepository extends Repository
     public function getCreateRules(array $attributes)
     {
         $rules = $this->rules + array_dot(
-            [
-                'address' => repository(Address::class)->getRules($attributes),
-            ]);
+                [
+                    'address' => repository(Address::class)->getRules($attributes),
+                ]);
 
-        $rules['uid'] = 'required|unique:teachers,uid,NULL,id,school_id,'.current_user()->school_id;
+        $rules['uid'] = 'required|unique:teachers,uid,NULL,id,school_id,' . current_user()->school_id;
 
         return $rules;
     }
@@ -167,8 +171,44 @@ class TeacherRepository extends Repository
         return $teacher->update();
     }
 
-    public function getBio(Teacher $teacher)
+    public function uploadPhoto(Teacher $teacher, UploadedFile $photo, User $user)
+    {
+        if (!$photo->isValid()) {
+            throw new UploadException('Invalid photo.');
+        }
+
+        // Set path & slug.
+        $attributes['path'] = $this->getPhotoUploadPath($teacher);
+        $attributes['slug'] = $attributes['slug'] ?? Uuid::uuid4();
+
+        // Prepare uploader.
+        $uploader = Builder::makeFromFile($photo)->resize(360, 'preview', 360);;
+
+        // Upload & get attachment.
+        $attachment = $uploader->upload($attributes)->getAttachment();
+
+        $attachment->owner()->associate($user);
+        $attachment->related()->associate($teacher);
+
+        $this->onCreate($attachment->save());
+
+        // Associate photo to the teacher.
+        $teacher->photo()->associate($attachment);
+
+        $this->onUpdate($teacher->save());
+
+        return $attachment;
+
+    }
+
+    protected function getPhotoUploadPath(Teacher $teacher)
+    {
+        return "schools/{$teacher->school_id}/teachers/photo/{$teacher->id}";
+    }
+
+    public function getBio()
     {
         return '';
     }
+
 }
