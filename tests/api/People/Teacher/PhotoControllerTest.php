@@ -20,12 +20,12 @@ class PhotoControllerTest extends \TestCase
 
     public function test_store_can_update_photo()
     {
-        $teacher = $this->createTeacher();
+        $teacher = $this->createTeacherAndUser();
 
         $this->expectsEvents(TeacherPhotoUpdated::class);
 
         $this->actingAs($teacher->user)
-            ->postFile('/api/people/teacher/'.$teacher->uid.'/photo', ['photo' => $this->getSomeFile('photo.jpg')]);
+            ->postFile('/api/people/teachers/'.$teacher->uid.'/photo', ['photo' => $this->getSomeFile('photo.jpg')]);
 
         $this->assertResponseStatus(202);
     }

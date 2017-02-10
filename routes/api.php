@@ -20,15 +20,8 @@ Route::get('/me/dashboard', 'Api\Users\DashboardController@index');
 
 
 // Teachers
-Route::resource('/people/teachers', 'Api\People\Teachers\TeacherController', ['only' => ['index', 'show', 'update']]);
-Route::post('/people/teachers/invite', 'Api\People\Teachers\TeacherController@invite');
-Route::post('/people/teachers/{uid}/photo', 'Api\People\Teachers\PhotoController@store');
-
 
 // Employees
-Route::resource('/people/employees', 'Api\People\Employees\EmployeeController', ['only' => ['index', 'show', 'update']]);
-Route::post('/people/employees/invite', 'Api\People\Employees\EmployeeController@invite');
-Route::post('/people/employees/{uid}/photo', 'Api\People\Employees\PhotoController@store');
 
 Route::get('people/roles/{role}', 'Api\RoleController@index');
 Route::post('people/roles', 'Api\RoleController@store');
@@ -62,10 +55,12 @@ Route::post(    '/people/invite',     'Api\People\InvitationController@invite');
 Route::get(     '/people/{user}',     'Api\People\PersonController@show');
 
 // - Teachers
+Route::get(    '/people/teachers/{teacher}/photo', 'Api\People\Teachers\PhotoController@show');
 Route::post(    '/people/teachers/{teacher}/photo', 'Api\People\Teachers\PhotoController@store');
 Route::resource('/people/teachers',                 'Api\People\Teachers\TeacherController', $resource);
 
 // - Employees
+Route::get(    '/people/employees/{employee}/photo', 'Api\People\Employees\PhotoController@show');
 Route::post(    '/people/employees/{employee}/photo', 'Api\People\Employees\PhotoController@store');
 Route::resource('/people/employees',                 'Api\People\Employees\EmployeeController', $resource);
 //======================================================================================//

@@ -20,4 +20,23 @@ trait TeacherTestHelper
         $this->assignRoleTo($teacher->user, 'admin');
         return $teacher;
     }
+
+    /**
+     * Create teachers & associated user accounts.
+     *
+     * @param int $count
+     * @param array $attributes
+     *
+     * @return \Scalex\Zero\Models\Teacher|\Illuminate\Database\Eloquent\Collection
+     */
+    protected function createTeacherAndUser($count = 1, array $attributes = [])
+    {
+        $teachers = $this->createTeacher($count, $attributes);
+
+        collect($count === 1 ? [$teachers] : $teachers)->each(function ($teacher) {
+            $teacher->user()->save($this->createUser());
+        });
+
+        return $teachers;
+    }
 }

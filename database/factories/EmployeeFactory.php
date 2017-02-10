@@ -13,7 +13,7 @@ $factory->define(Scalex\Zero\Models\Employee::class, function (Faker\Generator $
         'date_of_joining' => $f->date(),
         'job_title' => $f->title,
         'department_id' => function () use ($attributes) {
-            return factory(Scalex\Zero\Models\Department::class, $attributes)->create()->id;
+            return factory(Scalex\Zero\Models\Department::class)->create(array_only($attributes, 'school_id'))->id;
         },
         'nationality' => $f->name,
         'category' => $f->randomElement(['gen', 'obc', 'sc', 'st', 'ot']),

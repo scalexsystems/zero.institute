@@ -2,12 +2,13 @@
 
 use Scalex\Zero\Action;
 use Scalex\Zero\Models\Employee;
+use Scalex\Zero\Policies\Traits\IsHimself;
 use Scalex\Zero\Policies\Traits\VerifiesSchool;
 use Scalex\Zero\User;
 
 class EmployeePolicy extends AbstractPolicy
 {
-    use VerifiesSchool;
+    use VerifiesSchool, isHimself;
 
     public function browse(User $user)
     {
@@ -22,6 +23,11 @@ class EmployeePolicy extends AbstractPolicy
     public function update(User $user, Employee $employee)
     {
         return $this->canUpdate($user, $employee);
+    }
+
+    public function viewPhoto()
+    {
+        return true;
     }
 
     public function updatePhoto(User $user, Employee $employee)
