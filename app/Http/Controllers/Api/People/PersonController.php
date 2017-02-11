@@ -46,7 +46,7 @@ class PersonController extends Controller
     public function show(Request $request, User $user)
     {
         return [
-            'item' => transformer($user->person)->setIndexing()->transform($user),
+            'item' => transformer($user->person)->setIndexing()->transform($user->person),
         ];
     }
 }
