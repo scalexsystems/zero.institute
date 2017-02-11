@@ -50,6 +50,7 @@ class GroupTransformer extends Transformer
         return [
             'is_member' => $user and $group->isMember($user),
             'is_admin' => $user and (int)$group->owner_id === (int)$user->id,
+            'messages_count' => $group->messages_count,
         ];
     }
 

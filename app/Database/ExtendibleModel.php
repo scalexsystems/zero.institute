@@ -11,6 +11,4 @@ abstract class ExtendibleModel extends Model
     {
         return array_merge(parent::getHidden(), ['additional']);
     }
-
-
 }

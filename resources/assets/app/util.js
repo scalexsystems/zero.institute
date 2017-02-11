@@ -12,15 +12,25 @@ export const escapeHtml = (unsafeString) => {
 export const nl2br = content => content.replace(/\n+/g, '<br>')
 
 export const each = (any, cb) => {
-  const keys = Object.keys(any)
+  if (isArray(any)) {
+    for (let i = 0; i < any.length; i += 1) {
+      cb(any[i], i)
+    }
+  } else {
+    const keys = Object.keys(any)
 
-  for (let i = 0; i < keys.length; i += 1) {
-    cb(any[keys[i]], keys[i])
+    for (let i = 0; i < keys.length; i += 1) {
+      cb(any[keys[i]], keys[i])
+    }
   }
 }
 
 export function isObject (any) {
   return any !== null && typeof (any) === 'object'
+}
+
+export function last (any) {
+  return isArray(any) ? any[any.length - 1] : null
 }
 
 export function isArray (any) {
@@ -39,6 +49,20 @@ export function clone (any) {
   return JSON.parse(JSON.stringify(any))
 }
 
+export function isImageExtension (any) {
+  return ['png', 'gif', 'jpg', 'jpeg', 'webp', 'tiff', 'svg'].indexOf(any) > -1
+}
+
+export const only = (source, keys) => {
+  const output = {}
+
+  each(keys, key => {
+    output[key] = source[key]
+  })
+
+  return output
+}
+
 // NOTICE: UNSAFE with unsafe strings; only use on previously-escaped ones!
 // export const unescapeHtml = (escapedString) => {
 //   const div = document.createElement('div')
@@ -48,21 +72,7 @@ export function clone (any) {
 //   return child ? child.nodeValue : ''
 // }
 //
-// export const mapObject = (source, mappings) => {
-//   const output = {}
-//
-//   if (_.isArray(mappings)) {
-//     _.each(mappings, (key) => {
-//       output[key] = source[key]
-//     })
-//   } else {
-//     _.each(mappings, (newKey, oldKey) => {
-//       output[newKey] = source[oldKey]
-//     })
-//   }
-//
-//   return output
-// }
+
 //
 // export const pushOrMerge = (target, items, local = []) => {
 //   if (!isArray(items)) {

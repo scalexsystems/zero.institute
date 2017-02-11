@@ -24,7 +24,7 @@ export default {
         return true
       }
 
-      if (!this.group)  {
+      if (!this.group) {
         complete()
 
         return false

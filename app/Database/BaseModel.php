@@ -20,7 +20,7 @@ abstract class BaseModel extends ExtendibleModel
         $fields = $this->getSearchableFields();
 
         if ($fields === ['*']) {
-            return $this->toArray();
+            return $this->attributesToArray();
         }
 
         $fields = array_merge($fields, [$this->getKeyName()]);

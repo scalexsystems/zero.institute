@@ -3324,12 +3324,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/znck/attach.git",
-                "reference": "18f1de689a9f01e9e177d47e993a71e9bdb1ace2"
+                "reference": "7f2c92bc6cf56189a8dd242f7f9a1533991be0c2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/znck/attach/zipball/18f1de689a9f01e9e177d47e993a71e9bdb1ace2",
-                "reference": "18f1de689a9f01e9e177d47e993a71e9bdb1ace2",
+                "url": "https://api.github.com/repos/znck/attach/zipball/7f2c92bc6cf56189a8dd242f7f9a1533991be0c2",
+                "reference": "7f2c92bc6cf56189a8dd242f7f9a1533991be0c2",
                 "shasum": ""
             },
             "require": {
@@ -3375,7 +3375,7 @@
                 "attach",
                 "znck"
             ],
-            "time": "2017-01-30 16:57:15"
+            "time": "2017-02-10 13:53:27"
         },
         {
             "name": "znck/cities",
@@ -3532,12 +3532,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/znck/repository.git",
-                "reference": "9f4518a61703497de84886f365a029e0e0480df0"
+                "reference": "ac6bc263e87e6510c603f5d5782c9b02c9cd3254"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/znck/repository/zipball/9f4518a61703497de84886f365a029e0e0480df0",
-                "reference": "9f4518a61703497de84886f365a029e0e0480df0",
+                "url": "https://api.github.com/repos/znck/repository/zipball/ac6bc263e87e6510c603f5d5782c9b02c9cd3254",
+                "reference": "ac6bc263e87e6510c603f5d5782c9b02c9cd3254",
                 "shasum": ""
             },
             "require": {
@@ -3581,7 +3581,7 @@
                 "repositories",
                 "repository"
             ],
-            "time": "2017-01-26 12:34:16"
+            "time": "2017-02-06 13:04:28"
         },
         {
             "name": "znck/states",
@@ -3637,12 +3637,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/znck/transformer.git",
-                "reference": "f4ba885a634748947506f4434f43af1104783c62"
+                "reference": "e1a502af043f24b6d27da51ac0b68486797f1773"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/znck/transformer/zipball/f4ba885a634748947506f4434f43af1104783c62",
-                "reference": "f4ba885a634748947506f4434f43af1104783c62",
+                "url": "https://api.github.com/repos/znck/transformer/zipball/e1a502af043f24b6d27da51ac0b68486797f1773",
+                "reference": "e1a502af043f24b6d27da51ac0b68486797f1773",
                 "shasum": ""
             },
             "require": {
@@ -3686,7 +3686,7 @@
                 "repositories",
                 "transformer"
             ],
-            "time": "2017-02-08 15:49:05"
+            "time": "2017-02-10 08:57:42"
         },
         {
             "name": "znck/trust",

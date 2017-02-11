@@ -4,7 +4,7 @@
     <sidebar class="col-12 col-lg-2"></sidebar>
 
     <div class="col-12 col-lg-10 px-0">
-      <container v-bind="{ title, subtitle, back, photo, hasFooter }"
+      <container v-bind="{ title, subtitle, back, photo, hasFooter, scroll, scrollSelector }"
                  @action="any => $emit('action', any)"
                  @back="any => $emit('back', any)">
         <template slot="buttons"><slot name="buttons"></slot></template>
@@ -28,6 +28,16 @@ export default {
     subtitle: String,
     back: Boolean,
     photo: String,
+
+    // Scrollable
+    scroll: {
+      type: Boolean,
+      default: true
+    },
+    scrollSelector: {
+      type: String,
+      default: '.body'
+    },
 
     // Footer
     hasFooter: Boolean

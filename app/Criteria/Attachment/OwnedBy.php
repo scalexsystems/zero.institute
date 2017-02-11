@@ -20,6 +20,6 @@ class OwnedBy implements Criteria
 
     public function apply($model, Repository $repository)
     {
-        $model->where('owner_id', $this->user->getKey());
+        $model->where('user_id', $this->user->getKey());
     }
 }

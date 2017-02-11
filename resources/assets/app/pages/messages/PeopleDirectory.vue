@@ -1,17 +1,10 @@
 <template>
-<container-window title="Groups" subtitle="Join or create groups" :back="true" @back="$router.go(-1)">
-  <template slot="buttons">
-  <router-link :to="{ name: 'group.create' }" class="btn btn-primary"
-               role="button">Create Group
-  </router-link>
-  </template>
-
-
+<container-window title="People" subtitle="Send direct messages" :back="true" @back="$router.go(-1)">
   <searchable-list v-model="query" placeholder="Start typing..." ref="list"
                    @search="onSearch" @infinite="onLoad">
     <div class="row">
-      <div class="col-12 col-lg-6 mt-3" v-for="group in groups" :key="group">
-        <group-card :group="group" role="button" @click.native="goToGroup(group)"></group-card>
+      <div class="col-12 col-lg-6 mt-3" v-for="person in persons" :key="person">
+        <user-card :user="person" role="button" @click.native="goToUser(person)"></user-card>
       </div>
     </div>
   </searchable-list>
@@ -23,16 +16,16 @@ import Sifter from 'sifter'
 import throttle from 'lodash.throttle'
 import { mapGetters, mapActions } from 'vuex'
 
-import GroupCard from '../../components/group/Card.vue'
+import UserCard from '../../components/user/Card.vue'
 
 export default {
-  name: 'GroupDirectory',
+  name: 'PeopleDirectory',
 
   data () {
     return {
       page: 1,
       query: '',
-      groups: []
+      persons: []
     }
   },
 
@@ -43,14 +36,14 @@ export default {
       this.onLoad()
     }, 800),
     async onLoad ({ loaded = () => 0, complete = () => 0 } = {}) {
-      const { meta, groups } = await this.index({ page: this.page, query: this.query })
+      const { meta, items } = await this.index({ page: this.page, query: this.query })
 
       if (meta) {
         if (this.page === 1) {
-          this.groups = []
+          this.persons = []
         }
 
-        if (groups) this.groups.splice(this.groups.length, 0, ...groups)
+        if (items) this.persons.splice(this.persons.length, 0, ...items)
 
         this.page = meta.pagination.current_page + 1
 
@@ -62,17 +55,17 @@ export default {
       }
       complete()
     },
-    goToGroup (group) {
-      this.$router.push({ name: group.is_member ? 'group.messages' : 'group.show', params: { id: group.id }})
+    goToUser (user) {
+      this.$router.push({ name: 'user.messages', params: { id: user.user_id }})
     },
-    ...mapActions('groups', ['index'])
+    ...mapActions('people', ['index'])
   },
 
   created () {
-    if (this.groups.length === 0) this.index()
+    if (this.persons.length === 0) this.index()
   },
 
-  components: { GroupCard }
+  components: { UserCard }
 }
 </script>
 

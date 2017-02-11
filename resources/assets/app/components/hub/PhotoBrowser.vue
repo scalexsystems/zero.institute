@@ -9,9 +9,13 @@
       </a>
 
       <div class="d-flex flex-column align-items-center" v-for="(photo, index) in photos" :key="photo"
-        :class="{ [$style.photoContainer]: true, full, before: index < cursor, after: index > cursor, active: index === cursor }">
-        <img :class="[$style.photo]" :src="photo.src" :alt="photo.alt">
-      </div>
+        :class="{
+          [$style.photoContainer]: true,
+          [$style.full]: full,
+          [$style.before]: index < cursor,
+          [$style.after]: index > cursor,
+          [$style.active]: index === cursor
+        }"><img :class="[$style.photo]" :src="photo.src" :alt="photo.alt"></div>
 
 
       <div :class="[$style.ticker]">
@@ -96,7 +100,7 @@ export default {
     padding-bottom: 56.25%;
   }
 
-  &.fullscreen {
+  &:global(.fullscreen) {
     .photos {
       height: 100vh;
       padding-bottom: 0;

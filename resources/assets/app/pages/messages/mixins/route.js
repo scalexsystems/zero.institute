@@ -9,23 +9,23 @@ export default {
   },
 
   computed: {
-    group () {
-      return this.groupById(this.id)
+    user () {
+      return this.userById(this.id)
     },
-    ...mapGetters('groups', ['groupById'])
+    ...mapGetters('messages', ['userById'])
   },
 
-  methods: mapActions('groups', { find: 'find' }),
+  methods: mapActions('messages', { find: 'find' }),
 
   created () {
-    if (!this.groupById(this.id)) {
+    if (!this.userById(this.id)) {
       this.find(this.id)
     }
   },
 
   watch: {
     id (id) {
-      if (!this.groupById(id)) {
+      if (!this.userById(id)) {
         this.find(id)
       }
     }

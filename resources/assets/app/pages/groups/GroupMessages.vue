@@ -1,7 +1,7 @@
 <template>
-<container-window v-bind="{ title, subtitle, photo }" @action="onAction">
-  <message-browser v-if="group" ref="mb"
-                   v-bind="{ messages: group.$messages, dest: `group/${group.id}/attachment` }"
+<container-window v-bind="{ title, subtitle, photo, scroll: false }" @action="onAction">
+  <message-browser v-if="group" ref="mb" @send="onSend"
+                   v-bind="{ messages, dest: `groups/${group.id}/attachment` }"
                    v-model="message" @infinite="fetchMessage"></message-browser>
 </container-window>
 </template>
@@ -28,10 +28,14 @@ export default {
     photo () {
       return this.group ? this.group.photo : ''
     },
-    ...mapGetters('groups', {groupById: 'myGroupById', groups: 'myGroups'})
+    messages () {
+      return this.group ? this.messagesByGroupId(this.group.id) : []
+    },
+    ...mapGetters('groups', { groupById: 'myGroupById', groups: 'myGroups', messagesByGroupId: 'messagesByGroupId' })
   },
 
   methods: {
+
     onAction (type) {
       const params = { id: this.group.id }
 
@@ -43,28 +47,34 @@ export default {
 
       this.$router.push({ name: 'group.show', params })
     },
+
+    onSend (payload) {
+      const { content, attachments = [], errors = [] } = typeof payload === 'string' ? { content: payload } : payload
+      const request = { id: this.group.id, content, extras: { attachments }, errors }
+
+      this.send(request)
+
+      this.message = ''
+    },
+
     async fetchMessage ({ loaded = () => 0, complete = () => 0 } = {}) {
       const { meta } = await this.fetchMessagesAPI({ group: this.group })
 
-      if (meta && meta.pagination.current_page === meta.pagination.total_pages ) {
-        complete()
+      if (meta && meta.pagination.current_page < meta.pagination.total_pages) {
+        loaded()
 
         return true
       }
 
-      loaded()
+      complete()
     },
     ...mapActions('groups', ['send']),
     ...mapActions('groups', { fetchMessagesAPI: 'messages', find: 'myFind' })
   },
 
   watch: {
-    group (group) {
+    group () {
       this.$nextTick(() => this.$refs && this.$refs.mb && this.$refs.mb.$emit('reset'))
-
-      if (!group.$messages_loaded) {
-        this.fetchMessage()
-      }
     }
   },
 

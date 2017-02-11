@@ -2,7 +2,7 @@
 <div>
   <slot></slot>
   <div class="text-center col-12">
-    <infinite-scroll :on-infinite="onInfinite" ref="is" spinner="waveDots">
+    <infinite-scroll ref="is" v-bind="{ onInfinite, direction, distance, spinner }">
       <div slot="no-results"></div>
       <div slot="no-more"></div>
     </infinite-scroll>
@@ -16,13 +16,28 @@ import InfiniteScroll from 'vue-infinite-loading'
 export default {
   name: 'InfiniteLoader',
 
+  props: {
+    distance: {
+      type: Number,
+      default: 100
+    },
+    spinner: {
+      type: String,
+      default: 'waveDots'
+    },
+    direction: {
+      type: String,
+      default: 'bottom'
+    }
+  },
+
   methods: {
     onInfinite () {
-      this.$emit('infinite', {
+      setTimeout(() => this.$emit('infinite', {
         loaded: () => this.$refs && this.$refs.is.$emit('$InfiniteLoading:loaded'),
         complete: () => this.$refs && this.$refs.is.$emit('$InfiniteLoading:complete'),
         reset: () => this.$refs && this.$refs.is.$emit('$InfiniteLoading:reset')
-      })
+      }), 0)
     }
   },
 

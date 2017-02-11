@@ -82,7 +82,7 @@ export function insert (target, items) {
     if (index > -1) {
       target.splice(index, 1, keepLocals(item, target[index]))
     } else {
-      target.splice(position, 1, item)
+      target.splice(position, 0, item)
     }
   }
 

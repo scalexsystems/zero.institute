@@ -55,7 +55,7 @@ export default {
       const members = this.suggestions
       const ids = this.attributes.members
 
-      return members.filter(({user_id}) => ids.indexOf(user_id) > -1)
+      return members.filter(({ user_id }) => ids.indexOf(user_id) > -1)
     },
 
     ...mapGetters('people', { suggestions: 'items' })
@@ -75,7 +75,7 @@ export default {
         this.clearErrors()
         this.attributes = this.$options.data().attributes
 
-        this.$router.push({ name: 'group.messages', params: { id: group.id } })
+        this.$router.push({ name: 'group.messages', params: { id: group.id }})
       }
     },
     onSearch: throttle(function onSearch (q) {

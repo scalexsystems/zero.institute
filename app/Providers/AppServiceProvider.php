@@ -6,16 +6,20 @@ use DB;
 use Event;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
 use Log;
 use Scalex\Zero\Models;
 use Scalex\Zero\Observers;
 use Scalex\Zero\User;
+use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
 use Znck\Attach\AttachServiceProvider;
+use Znck\Attach\Util\GuessMimeFromExtension;
 use Znck\Transformers\Serializers\EmbedSerializer;
 use Znck\Transformers\Transformer;
 
 class AppServiceProvider extends ServiceProvider
 {
+    public static $dump = false;
     protected $logs = [];
 
     public function __construct($app)
@@ -32,8 +36,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadTranslationsFrom(resource_path('lang-web'), 'app');
-
+        $this->registerMimeTypeGuesser();
         $this->registerApiSerializer();
         $this->registerQueryLogger();
         $this->registerObservers();
@@ -52,6 +55,9 @@ class AppServiceProvider extends ServiceProvider
     protected function registerQueryLogger()
     {
         DB::listen(function ($query) {
+            if (static::$dump) {
+                dump($query->sql);
+            }
             $this->logs[] = [
                 'sql' => $query->sql,
                 'bindings' => $query->bindings,
@@ -124,5 +130,10 @@ class AppServiceProvider extends ServiceProvider
                 'semester' => Models\Semester::class,
             ]
         );
+    }
+
+    protected function registerMimeTypeGuesser()
+    {
+        MimeTypeGuesser::getInstance()->register($this->app->make(GuessMimeFromExtension::class));
     }
 }

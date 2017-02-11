@@ -5,7 +5,9 @@ const actions = {
   async index ({ dispatch }, { page = 1, q } = {}) {
     const { items, meta } = await http.get('people', { q, page })
 
-    await dispatch('addToStore', items)
+    if (!q) {
+      await dispatch('addToStore', items)
+    }
 
     return { items, meta }
   },
@@ -13,7 +15,7 @@ const actions = {
   async show ({ dispatch }, id) {
     const { item } = http.get(`people/${id}`)
 
-    dispatch('addToStore', item)
+    dispatch('addToStore', [item])
 
     return item
   },

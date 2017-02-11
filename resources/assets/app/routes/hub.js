@@ -34,5 +34,18 @@ export default [
     props: route => ({
       id: toInt(route.params.id)
     })
+  },
+  {
+    name: 'dm',
+    path: '/hub/messages',
+    component: require('../pages/messages/PeopleDirectory.vue')
+  },
+  {
+    name: 'user.messages',
+    path: '/hub/messages/:id',
+    component: require('../pages/messages/PeopleMessages.vue'),
+    props: route => ({
+      id: toInt(route.params.id)
+    })
   }
 ]
