@@ -1,5 +1,6 @@
 <?php namespace Scalex\Zero\Observers;
 
+use Illuminate\Cache\CacheManager;
 use Scalex\Zero\Models\Employee;
 use Scalex\Zero\Services\PeopleStatisticsService;
 
