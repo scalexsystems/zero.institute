@@ -1,9 +1,11 @@
 <?php namespace Scalex\Zero\Repositories;
 
 use Carbon\Carbon;
+use DB;
 use Illuminate\Http\UploadedFile;
 use Ramsey\Uuid\Uuid;
 use Request;
+use Scalex\Zero\Criteria\Group\MessagesCount;
 use Scalex\Zero\Criteria\OfSchool;
 use Scalex\Zero\Models\Attachment;
 use Scalex\Zero\Models\Course;
@@ -14,12 +16,12 @@ use Znck\Attach\Builder;
 use Znck\Repositories\Repository;
 
 /**
- * @method Group find(string|int $id)
+ * @method Group find(string | int $id)
  * @method Group findBy(string $key, $value)
  * @method Group create(array $attr)
- * @method Group update(string|int|Group $id, array $attr, array $o = [])
- * @method Group delete(string|int|Group $id)
- * @method GroupRepository validate(array $attr, Group|null $model)
+ * @method Group update(string | int | Group $id, array $attr, array $o = [])
+ * @method Group delete(string | int | Group $id)
+ * @method GroupRepository validate(array $attr, Group | null $model)
  */
 class GroupRepository extends Repository
 {
@@ -125,6 +127,10 @@ class GroupRepository extends Repository
 
         $query->with('photo')->orderBy('name');
 
+        $count = new MessagesCount();
+
+        $count->apply($query, $this);
+
         return $query->paginate();
     }
 
@@ -203,9 +209,13 @@ class GroupRepository extends Repository
      *
      * @return \Scalex\Zero\Models\Attachment
      */
-    protected function upload(Group $group, UploadedFile $file, User $user, array $attributes,
-        bool $isGroupPhoto): Attachment
-    {
+    protected function upload(
+        Group $group,
+        UploadedFile $file,
+        User $user,
+        array $attributes,
+        bool $isGroupPhoto
+    ): Attachment {
         if (!$file->isValid()) {
             throw new UploadException('Invalid file.');
         }

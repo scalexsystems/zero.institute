@@ -13,13 +13,10 @@ export default function plugin (Vue, options = {}) {
       }
     })
   } else {
-    const logger = debug('app')
-    debug.enable('app')
+    debug.enable('app*')
 
-    Object.defineProperty(Vue.prototype, '$debug', {
-      get () {
-        return logger
-      }
-    })
+    Vue.prototype.$debug = function (...args) {
+      debug(`app:${this.$options.name || '< NAME THIS COMPONENT'}`)(...args)
+    }
   }
 }

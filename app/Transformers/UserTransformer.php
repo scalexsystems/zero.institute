@@ -16,6 +16,8 @@ class UserTransformer extends Transformer
             'photo' => attach_url($user->photo) ?? asset('img/placeholder.jpg'),
             'type' => morph_model($user->person),
             'bio' => $this->getBio($user),
+            'unread_count' => $user->getAttribute('messages_count'),
+            'last_message_id' => $user->getAttribute('last_message_id')
         ];
     }
 
@@ -27,7 +29,9 @@ class UserTransformer extends Transformer
     public function me(User $user)
     {
         if ($current = Request::user() and $user->getKey() === $current->getKey()) {
-            return ['permissions' => $user->getPermissionNames()];
+            return [
+                'permissions' => $user->getPermissionNames()
+            ];
         }
 
         return [];
@@ -69,6 +73,9 @@ class UserTransformer extends Transformer
             'type' => $user->person_type,
             'bio' => $this->getBio($user),
             'channel' => $user->getChannelName(),
+
+            'unread_count' => $user->getAttribute('messages_count'),
+            'last_message_id' => $user->getAttribute('last_message_id')
         ];
     }
 

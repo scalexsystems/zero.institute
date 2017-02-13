@@ -301,7 +301,6 @@ const state = () => ({
    * @type {Object}
    */
   unread: {
-    $total: 0
   }
 })
 
@@ -330,17 +329,15 @@ const mutations = {
 
   MESSAGE (state, { id, messages, page }) {
     const group = binarySearchFind(state.groups, id)
-    const old = state.unread[group.id] || 0
-    state.unread[group.id] = group.$unread_count
+    const old = group.$unread_count
 
     // Insert and update group unread status
     insert(group.$messages, messages)
 
-    const unread = group.$messages.filter(m => m.unread).length
+    const unread = old - group.$messages.length + group.$messages.filter(m => m.unread).length
 
-    state.unread.$total += unread - old
-    state.unread[group.id] += unread - old
-    group.$unread_count += unread - old
+    state.unread[group.id] = unread
+    group.$unread_count = unread
     group.$has_unread = group.$unread_count > 0
     group.$messages_loaded = true
 
@@ -353,6 +350,7 @@ const mutations = {
     const group = binarySearchFind(state.groups, id)
     const msg = binarySearchFind(group.$messages, message)
 
+    // TODO: Update unread count.
     msg.unread = true
     msg.read_at = new Date().toISOString()
   },

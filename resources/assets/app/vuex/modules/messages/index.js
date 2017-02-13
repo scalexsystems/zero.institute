@@ -29,7 +29,7 @@ const actions = {
       }
     }
 
-    const { messages, meta } = http.get(`messages/direct/${user.id}/messages`, options)
+    const { messages, meta } = await http.get(`messages/direct/${user.id}/messages`, options)
 
     if (messages) {
       const payload = {
@@ -133,7 +133,6 @@ const state = () => ({
   users: [],
 
   unread: {
-    $total: 0
   }
 })
 
@@ -144,19 +143,17 @@ const mutations = {
 
   MESSAGE (state, { id, messages, page }) {
     const user = binarySearchFind(state.users, id)
-    const old = state.unread[user.id] || 0
-    state.unread[user.id] = user.$unread_count
+    const old = user.$unread_count
 
-    // Insert and update user unread status
     insert(user.$messages, messages)
 
-    const unread = user.$messages.filter(m => m.unread).length
-
-    state.unread.$total += unread - old
-    state.unread[user.id] += unread - old
-    user.$unread_count += unread - old
+    // << UPDATE UNREAD COUNT
+    const unread = old - user.$messages.length + user.$messages.filter(m => m.unread).length
+    state.unread[user.id] = unread
+    user.$unread_count = unread
     user.$has_unread = user.$unread_count > 0
     user.$messages_loaded = true
+    // UPDATE UNREAD COUNT >>
 
     if (page) {
       user.$messages_page = page
@@ -167,6 +164,7 @@ const mutations = {
     const user = binarySearchFind(state.user, id)
     const msg = binarySearchFind(user.$messages, message)
 
+    // TODO: Update unread count.
     msg.unread = true
     msg.read_at = new Date().toISOString()
   },

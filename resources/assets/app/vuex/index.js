@@ -1,13 +1,10 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import createLogger from 'vuex/dist/logger'
 import 'es6-promise/auto'
-
 import actions from './actions'
 import getters from './getters'
 import { default as mutations, state } from './mutations'
 import modules from './modules'
-
 
 Vue.use(Vuex)
 
@@ -18,6 +15,6 @@ export default new Vuex.Store({
   actions,
   modules,
 
-  plugins: process.env.NODE_ENV !== 'production' ? [createLogger()] : [],
+  plugins: [],
   strict: process.env.NODE_ENV !== 'production'
 })

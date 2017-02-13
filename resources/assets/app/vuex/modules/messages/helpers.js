@@ -8,6 +8,7 @@ export function prepareGroup (any) {
   any.$members_page = 1
   any.$messages_loaded = false
   any.$unread_count = any.unread_count || 0
+  any.$last_message_id = any.last_message_id || 0
   any.$has_unread = any.$unread_count > 0
 
   return any
@@ -18,6 +19,7 @@ export function prepareUser (any) {
   any.$messages_page = 1
   any.$messages_loaded = false
   any.$unread_count = any.unread_count || 0
+  any.$last_message_id = any.last_message_id || 0
   any.$has_unread = any.$unread_count > 0
 
   return any

@@ -40,6 +40,6 @@ class HaveConversationWith implements Criteria
             })->orderBy('messages.created_at', 'desc');
         });
 
-        $query->select('users.*')->groupBy('users.id');
+        $query->groupBy('users.id');
     }
 }

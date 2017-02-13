@@ -1,7 +1,13 @@
 <template>
 <div class="c-sidebar" @click="onClick">
-  <group-list></group-list>
-  <user-list></user-list>
+
+  <div class="btn-group flex-row d-flex mt-2">
+    <a class="btn" tabindex="-1" role="button" :class="[group ? 'btn-primary' : 'btn-secondary']" @click.prevent="group = true">Groups</a>
+    <a class="btn btn-block" tabindex="-1" role="button" :class="[group ? 'btn-secondary' : 'btn-primary']" @click.prevent="group = false">People</a>
+  </div>
+
+  <group-list v-show="group"></group-list>
+  <user-list v-show="!group"></user-list>
 </div>
 </template>
 
@@ -12,6 +18,10 @@ import UserList from './UserList.vue'
 
 export default {
   name: 'Sidebar',
+
+  data: () => ({
+    group: true
+  }),
 
   computed: {
     scroll: () => true,

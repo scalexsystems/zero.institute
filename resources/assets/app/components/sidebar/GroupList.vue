@@ -26,14 +26,6 @@ export default {
     ...mapGetters('groups', { groups: 'myGroups' })
   },
 
-  methods: mapActions('groups', { index: 'my' }),
-
-  created () {
-    if (!this.groups.length) {
-      this.index()
-    }
-  },
-
   components: { List }
 }
 </script>

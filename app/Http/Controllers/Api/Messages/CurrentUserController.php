@@ -2,11 +2,11 @@
 
 use Illuminate\Http\Request;
 use Scalex\Zero\Criteria\Message\Direct\HaveConversationWith;
+use Scalex\Zero\Criteria\Message\Direct\MessagesCountMultipleUser;
+use Scalex\Zero\Criteria\Message\Direct\MessagesCountSingleUser;
 use Scalex\Zero\Http\Controllers\Controller;
 use Scalex\Zero\Http\Requests;
 use Scalex\Zero\Repositories\UserRepository;
-use Scalex\Zero\Transformers\UserTransformer;
-use Scalex\Zero\User;
 
 class CurrentUserController extends Controller
 {
@@ -27,9 +27,11 @@ class CurrentUserController extends Controller
     {
         $request->query->set('with', 'person');
 
-        $users = $repository->with(['person', 'photo'])
-                          ->pushCriteria(new HaveConversationWith($request->user()))
-                          ->paginate();
+        $repository->with(['person', 'photo'])
+                   ->pushCriteria(new HaveConversationWith($request->user()))
+                   ->pushCriteria(new MessagesCountMultipleUser());
+
+        $users = $repository->paginate();
 
         return transform($users, ['person'], null, true);
     }
@@ -41,8 +43,10 @@ class CurrentUserController extends Controller
      *
      * @return \Scalex\Zero\User
      */
-    public function show(User $user, UserTransformer $transformer)
+    public function show($user, UserRepository $repository)
     {
+        $user = $repository->pushCriteria(new MessagesCountSingleUser())->find($user);
+
         return transform($user, ['person'], null, true);
     }
 }

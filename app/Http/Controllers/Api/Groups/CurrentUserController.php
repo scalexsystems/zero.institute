@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Scalex\Zero\Criteria\Group\MessagesCount;
 use Scalex\Zero\Events\Group\MemberJoined;
 use Scalex\Zero\Events\Group\MemberLeft;
 use Scalex\Zero\Http\Controllers\Controller;
@@ -39,8 +40,10 @@ class CurrentUserController extends Controller
      *
      * @return \Scalex\Zero\Models\Group
      */
-    public function show(Request $request, Group $group)
+    public function show(Request $request, $group, GroupRepository $repository)
     {
+        $group = $repository->pushCriteria(new MessagesCount())->find((int) $group);
+
         if (!$group->isMember($request->user())) {
             abort(404);
         }

@@ -1,13 +1,16 @@
 <template>
-<div class="c-hub-message-list" ref="messages">
+<div class="c-hub-message-list" ref="list">
   <modal :open="photos !== null" @close="cursor = -1" wrapper="d-flex flex-row">
     <photo-browser :photos="photos" class="flex-auto fullscreen" @end="next" @start="prev"></photo-browser>
   </modal>
 
   <div class="c-hub-message-list-container container d-flex flex-column justify-content-end">
-    <infinite-loader @infinite="any => $emit('infinite', any)" ref="il" direction="top"></infinite-loader>
-    <message v-for="(message, index) in messages" :key="message"
-             v-bind="{ message, continued: message.$continued === true }"
+    <div class="col-12 text-center" v-if="!complete">
+      <input-button class="btn btn-secondary btn-sm my-2 text-muted my-2" @click.native="onInfinite" v-if="!fetching" value="Load older messages"/>
+      <icon type="circle-o-notch" class="fa-spin" v-else />
+    </div>
+    <message v-for="(message, index) in messages" :key="message" data-type="message"
+             v-bind="{ message, continued: message.$continued === true }" ref="messages"
              @preview="(payload) => preview(message, index, payload)"></message>
   </div>
 </div>
@@ -29,7 +32,7 @@ export default {
   },
 
   data () {
-    return { cursor: -1, scrollNext: false }
+    return { cursor: -1, fetching: false, complete: false, position: 0, offset: 0 }
   },
 
   computed: {
@@ -62,7 +65,8 @@ export default {
       this.previewAttachment(message, index, payload)
     },
 
-    previewAttachment () {},
+    previewAttachment () {
+    },
 
     previewPhotos (_, cursor) {
       this.cursor = cursor
@@ -88,48 +92,68 @@ export default {
       }
     },
 
-    scrollTo (bottom = true) {
+    onInfinite () {
+      this.fetching = true
+      this.saveScrollPosition()
+      this.$emit('infinite', {
+        loaded: () => {
+          this.fetching = false
+          this.restoreScrollPosition()
+        },
+        complete: () => {
+          this.fetching = false
+          this.complete = true
+          this.restoreScrollPosition()
+        }
+      })
+    },
+
+    saveScrollPosition () {
+      this.position = this.messages.length ? this.messages[0].id : 0
+
+      if (this.position !== 0) {
+        this.offset = this.$refs.messages[0].$el.offsetTop
+      }
+    },
+
+    restoreScrollPosition () {
+      const position = this.position
+
       if (!this.$refs || !this.$refs.messages) return
 
-      if (bottom) {
-        this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
-      }
+      this.position = 0
+      const message = this.$refs.messages.find(vm => position === vm.message.id)
+
+      if (!message) return
+
+      this.$refs.list.scrollTop = - (this.offset || 0) + message.$el.offsetTop
     }
   },
 
   created () {
-    this.$on('reset', e => this.$refs && this.$refs.il.$emit('reset', e))
-    this.$nextTick(() => this.scrollTo())
+    this.$on('reset', () => {
+      this.fetching = false
+      this.complete = false
+    })
+    this.onInfinite()
   },
 
   components: { Message, PhotoBrowser },
 
   watch: {
     messages (messages, old) {
-      const scrollNext = this.scrollNext
-
-      this.scrollNext = this.$refs.messages.scrollHeight < this.$refs.messages.clientHeight
-
-      if (!messages || !messages.length) return
-
-      // Source changed (If Keep Alive)
-      if (old.length && last(messages).id === last(old).id && messages[0].id === old[0].id) {
-        this.scrollNext = false
-      }
-
-      // Last update height was smaller than required
-      if (scrollNext === true) {
-        this.$nextTick(() => this.scrollTo())
-
+      if (messages.length === 0) {
+        this.onInfinite()
         return
       }
 
-      // Fetch old message.
-      if (old.length && last(messages).id === last(old).id && messages[0].id !== old[0].id) {
-        return
-      }
+      if (!old.length || last(messages).id !== last(old).id) {
+        this.$nextTick(() => {
+          if (!this.$refs || !this.$refs.list) return
 
-      this.$nextTick(() => this.scrollTo())
+          this.$refs.list.scrollTop = this.$refs.list.scrollHeight
+        })
+      }
     }
   }
 }

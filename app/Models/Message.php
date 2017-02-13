@@ -29,6 +29,9 @@ class Message extends BaseModel
      */
     protected $userReadCache = [];
 
+
+    protected $perPage = 25;
+
     /**
      * Message sender. (@property \Scalex\Zero\User $sender)
      *
