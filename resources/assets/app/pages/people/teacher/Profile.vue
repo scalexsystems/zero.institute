@@ -1,14 +1,11 @@
 <template>
-<window-box title="Teacher Profile" subtitle="See profile here...">
-    <template slot="header">
-        <router-link :to="{ name: 'teacher.profile.edit' }" class="btn btn-secondary">
-            <i class="fa fa-fw fa-pencil" v-tooltip="'Edit Profile'"></i> <span class="hidden-md-down">Edit Profile </span></router-link>
-    </template>
+<container title="Teacher Profile" subtitle="Everything & anything you need to know about a teacher is here."
+           @back="$router.go(-1)" back>
 
-    <div class="container my-1">
+    <div class="container my-3">
       <div class="row">
           <div class="col-xs-12 col-lg-4 text-xs-center">
-            <div class="card" ref="sidebar">
+            <div class="card mb-3" ref="sidebar" v-if="teacher">
               <img class="card-img-top teacher-photo" :src="teacher.photo">
               <div class="card-block">
                 <h3 class="value">{{ teacher.name }}</h3>
@@ -24,67 +21,9 @@
             </div>
           </div>
 
-          <div class="col-xs-12 col-lg-8" v-if="loading">
-            <loading-placeholder></loading-placeholder>
-          </div>
-          <div class="col-xs-12 col-lg-8" v-if="success">
-            <div class="card">
-              <h5 class="card-header bg-white">
-                Person Information
-              </h5>
-              <div class="card-block">
-                <div class="row">
-                    <div class="col-xs-6 col-md-4">
-                        <div class="teacher-field">
-                            <div class="label">Name</div>
-                            <div class="value">{{ teacher.name }}</div>
-                        </div>
-                    </div>
-                    <div class="col-xs-6 col-md-4">
-                        <div class="teacher-field">
-                            <div class="label">Gender</div>
-                            <div class="value text-capitalize">{{ teacher.gender }}</div>
-                        </div>
-                    </div>
-                    <div class="col-xs-6 col-md-4">
-                        <div class="teacher-field">
-                            <div class="label">Date of Birth</div>
-                            <div class="value">{{ teacher.date_of_birth | dateForHumans }}</div>
-                        </div>
-                    </div>
-                    <div class="col-xs-6 col-md-4">
-                        <div class="teacher-field">
-                            <div class="label">Category</div>
-                            <div class="value">{{ teacher.category }}</div>
-                        </div>
-                    </div>
-                    <div class="col-xs-6 col-md-4">
-                        <div class="teacher-field">
-                            <div class="label">AADHAR ID</div>
-                            <div class="value">{{ teacher.govt_id }}</div>
-                        </div>
-                    </div>
-                    <div class="col-xs-6 col-md-4">
-                        <div class="teacher-field">
-                            <div class="label">Passport</div>
-                            <div class="value">{{ teacher.passport }}</div>
-                        </div>
-                    </div>
-                    <div class="col-xs-6 col-md-4">
-                        <div class="teacher-field">
-                            <div class="label">Religion</div>
-                            <div class="value">{{ teacher.religion }}</div>
-                        </div>
-                    </div>
-                    <div class="col-xs-6 col-md-4">
-                        <div class="teacher-field">
-                            <div class="label">Mother Tongue</div>
-                            <div class="value">{{ teacher.language }}</div>
-                        </div>
-                    </div>
-                </div>
-              </div>
-            </div>
+          <div class="col-xs-12 col-lg-8" v-if="teacher">
+            <personal-information class="mb-3" :source="teacher" :submit="() => {}" />
+            <contact-information class="mb-3" :source="teacher" :submit="() => {}" />
 
             <div class="card">
               <h5 class="card-header bg-white">
@@ -222,48 +161,32 @@
           </div>
       </div>
   </div>
-</window-box>
+</container>
 </template>
 
 <script lang="babel">
 import first from 'lodash/first'
 import toNumber from 'lodash/toNumber'
-import isNaN from 'lodash/isNaN'
 import moment from 'moment'
 import { mapGetters, mapActions } from 'vuex'
 
 import { getters, actions } from '../../vuex/meta'
-import { WindowBox, LoadingPlaceholder } from '../../components'
+import ContactInformation from '../../../components/profile/ContactInformation.vue'
+import PersonalInformation from '../../../components/profile/PersonalInformation.vue
 
 export default {
   name: 'teacherProfile',
-  data () {
-    return {
-      errors: null,
-      remote: null
-    }
+  data: () => ({
+        student: null,
+        error: false
+  }),
+  props: {
+    uid: {
+      type: String,
+      required: true
+    },
   },
   computed: {
-    teacher () {
-      const local = this.local || {}
-      const remote = this.remote
-
-      if (remote) return remote
-
-      return local
-    },
-    local () {
-      const teachers = this.teachers
-      const uid = this.$route.params.teacher
-
-      return first(teachers.filter(teacher => teacher.uid === uid))
-    },
-    loading () {
-      return this.remote === null && this.errors === null
-    },
-    success () {
-      return this.remote !== null
-    },
     department () {
       const departments = this.departments
       const id = this.teacher.department_id
@@ -274,23 +197,18 @@ export default {
       return this.teacher.address.length ? (this.teacher.address.addressline1 + this.teacher.address.addressline2) : ''
     },
     ...mapGetters({
-      teachers: getters.teachers,
       departments: getters.departments
     })
   },
-  components: { WindowBox, LoadingPlaceholder },
+  components: { ContactInformation, PersonalInformation },
   created () {
-    if (this.departments.length === 0) {
-      this.getDepartments()
-    }
-
-    this.getteacher()
+    this.fetch()
   },
   filters: {
     currency (value) {
       const amount = toNumber(value)
 
-      if (isNaN(amount)) return '₹ 0'
+      if (Number.isNaN(amount)) return '₹ 0'
 
       return `₹ ${amount}`
     },
@@ -299,33 +217,30 @@ export default {
     }
   },
   methods: {
-    getteacher () {
-      const id = this.$route.params.teacher
-
-      this.remote = this.errors = null
-
-      this.$http.get(`people/teachers/${id}`)
-          .then(response => response.json())
-          .then((result) => {
-            this.remote = result
-          })
-          .catch((response) => {
-            response.json()
-                .then((result) => {
-                  this.errors = result.message
-                })
-                .catch(() => {
-                  this.errors = 'Retry. There was some error apprehending response from server.'
-                })
-          })
+    async fetch () {
+     const { student } = await this.find(this.uid)
+      if (student) {
+          this.student = student
+          this.error = false
+      } else {
+          this.error = true
+      }
     },
     ...mapActions({
       getDepartments: actions.getDepartments
     })
   },
   watch: {
-    $route: 'getteacher'
+    uid (uid, oldUID) {
+      if (uid === oldUID) return
+
+      this.teacher = null
+      this.error = false
+
+      this.fetch()
   }
+
+ }
 }
 </script>
 
