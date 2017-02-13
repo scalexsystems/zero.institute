@@ -98,6 +98,8 @@ class Teacher extends BaseModel implements BelongsToSchool, Person
         );
     }
 
+
+
     /**
      * School of the employee.
      *
