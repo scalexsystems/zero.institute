@@ -7,7 +7,7 @@
     <div class="ml-auto btn-group">
       <input-button v-if="editing || keepEditing" key="cancel" :value="cancelText" @click.native="onCancel" :disabled="keepEditing" class="btn btn-secondary" />
       <input-button v-if="editing || keepEditing" icon="save" key="save" :value="saveText" @click.native="onSave" :disabled="keepEditing" />
-      <input-button v-else-if="editable" icon="pencil" key="edit" :value="editText" @click.native="onEdit" class="btn btn-secondary border-0 edit-button" />
+      <input-button v-else-if="editable" icon="pencil" key="edit" :value="editText" @click.native="onEdit" class="btn btn-secondary edit-button" />
     </div>
   </div>
 
@@ -91,9 +91,11 @@ export default {
 .c-shared-form-card {
   .edit-button {
     color: $text-muted;
+    border-color: transparent;
 
     &:hover {
-      color: $body-color;
+      color: $btn-secondary-color;
+      border-color: $btn-secondary-border;
     }
   }
 }
