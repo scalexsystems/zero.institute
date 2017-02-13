@@ -14,6 +14,7 @@ class EmployeeControllerTest extends \TestCase
         'updated_at',
         'uid',
         'name',
+
         'photo',
         'department_id',
         'has_account',

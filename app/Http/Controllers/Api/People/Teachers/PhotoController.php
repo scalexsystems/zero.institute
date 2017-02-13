@@ -2,9 +2,11 @@
 
 use Illuminate\Http\Request;
 use Ramsey\Uuid\Uuid;
+use Scalex\Zero\Events\Teacher\TeacherPhotoUpdated;
 use Scalex\Zero\Http\Controllers\Controller;
 use Scalex\Zero\Models\Student;
 use Scalex\Zero\Models\Teacher;
+use Scalex\Zero\Repositories\TeacherRepository;
 use Znck\Attach\Builder;
 
 class PhotoController extends Controller
@@ -14,24 +16,21 @@ class PhotoController extends Controller
         $this->middleware('auth:api,web');
     }
 
-    public function store(Request $request, Teacher $teacher)
+    public function show(Teacher $teacher)
     {
-        //        $this->authorize('update', $student);
+        $this->authorize('view-photo', $teacher);
+
+        return $teacher->photo ?? [];
+    }
+    public function store(Request $request, Teacher $teacher, TeacherRepository $repository)
+    {
+        $this->authorize('update-photo', $teacher);
         $this->validate($request, ['photo' => 'required|image|max:10240']);
 
-        $schoolId = $request->user()->school_id;
-        $studentId = $teacher->getKey();
-        $slug = Uuid::uuid4();
-        $path = "schools/${schoolId}/user/${studentId}";
+        $repository->uploadPhoto($teacher, $request->file('photo'), $request->user());
 
-        $photo = Builder::make($request, 'photo')
-            ->resize(300, null, 300)
-            ->upload(compact('slug', 'path'))
-            ->getAttachment();
+        broadcast(new TeacherPhotoUpdated($teacher));
 
-        if (!$photo->exists) {
-            abort(500, 'Your photo just broke our servers.');
-        }
-        return $photo;
+        return $this->accepted($teacher->getPhotoUrl());
     }
 }
