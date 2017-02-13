@@ -7,6 +7,7 @@ import RavenVue from 'raven-js/plugins/vue'
 import each from 'lodash/each'
 
 import VueEcho from './services/echo'
+import VueACL from './services/acl'
 import VueDebug from './services/debug'
 import components from './components'
 
@@ -29,6 +30,7 @@ if (process.env.NODE_ENV === 'production') {
 Vue.use(VueResource)
 Vue.use(VueDebug, { debug: process.env.NODE_ENV !== 'production' })
 Vue.use(VueEcho, Laravel.broadcast)
+Vue.use(VueACL)
 Vue.use(VueBootstrap, { all: true, custom: true })
 
 // HTTP lib config.

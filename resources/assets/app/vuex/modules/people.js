@@ -20,6 +20,12 @@ const actions = {
     return item
   },
 
+  async statistics ({ commit }) {
+    const statistics = await http.get('people/statistics')
+
+    if (statistics) commit('STATISTICS', statistics)
+  },
+
   // -- LOCAL ACTIONS --
   addToStore ({ commit }, items) {
     if (!items) return
@@ -30,16 +36,27 @@ const actions = {
 
 const getters = {
   personById: state => id => binarySearchFind(state.items, id),
-  items: state => state.items
+  people: state => state.items,
+  statistics: state => state.statistics
 }
 
 const state = () => ({
-  items: []
+  items: [],
+  statistics: {
+    $fetch: true,
+    student: { count: 0 },
+    teacher: { count: 0 },
+    employee: { count: 0 }
+  }
 })
 
 const mutations = {
   INSERT (state, items) {
     insert(state.items, items)
+  },
+
+  STATISTICS (state, statistics) {
+    state.statistics = statistics
   }
 }
 

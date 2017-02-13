@@ -58,7 +58,7 @@ export default {
       return members.filter(({ user_id }) => ids.indexOf(user_id) > -1)
     },
 
-    ...mapGetters('people', { suggestions: 'items' })
+    ...mapGetters('people', { suggestions: 'people' })
   },
 
   methods: {

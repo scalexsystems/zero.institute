@@ -41,6 +41,14 @@ export function toArray (any) {
   return isArray(any) ? any : [any]
 }
 
+export function isString (any) {
+  return typeof (any) === 'string'
+}
+
+export function isFunction (any) {
+  return any instanceof Function
+}
+
 export function toInt (any) {
   return parseInt(any, 10)
 }
@@ -61,6 +69,18 @@ export const only = (source, keys) => {
   })
 
   return output
+}
+
+export function notLastPage (meta) {
+  return meta && meta.pagination && meta.pagination.current_page < meta.pagination.total_pages
+}
+
+export function nextPage (meta) {
+  if (meta && meta.pagination) {
+    return meta.pagination.current_page + 1
+  }
+
+  return 1
 }
 
 // NOTICE: UNSAFE with unsafe strings; only use on previously-escaped ones!

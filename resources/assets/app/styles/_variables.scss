@@ -30,9 +30,10 @@ $gray-lightest: #e7e7e7 !default;
 
 $blue: #001dFF !default;
 $black: #000000 !default;
-$border-color: #e7e7e7 !default;
+$border-color: rgba(0, 0, 0, 0.15) !default;
 $input-border-color: $border-color !default;
 $card-border-color: $border-color !default;
+$dropdown-border-color: $border-color !default;
 
 $btn-primary-color: #ffffff;
 $btn-primary-bg: #20a0ff;

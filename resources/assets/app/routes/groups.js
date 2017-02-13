@@ -3,17 +3,17 @@ import { toInt } from '../util'
 export default [
   {
     name: 'group.index',
-    path: '/hub/messages/groups',
+    path: '/hub/groups',
     component: require('../pages/groups/GroupDirectory.vue')
   },
   {
     name: 'group.create',
-    path: '/hub/messages/groups/create',
+    path: '/hub/groups/create',
     component: require('../pages/groups/GroupCreate.vue')
   },
   {
     name: 'group.show',
-    path: '/hub/messages/groups/:id/show',
+    path: '/hub/groups/:id/show',
     component: require('../pages/groups/Group.vue'),
     props: route => ({
       id: toInt(route.params.id)
@@ -21,7 +21,7 @@ export default [
   },
   {
     name: 'group.edit',
-    path: '/hub/messages/groups/:id/edit',
+    path: '/hub/groups/:id/edit',
     component: require('../pages/groups/GroupEdit.vue'),
     props: route => ({
       id: toInt(route.params.id)
@@ -29,21 +29,8 @@ export default [
   },
   {
     name: 'group.messages',
-    path: '/hub/messages/groups/:id',
+    path: '/hub/groups/:id',
     component: require('../pages/groups/GroupMessages.vue'),
-    props: route => ({
-      id: toInt(route.params.id)
-    })
-  },
-  {
-    name: 'dm',
-    path: '/hub/messages',
-    component: require('../pages/messages/PeopleDirectory.vue')
-  },
-  {
-    name: 'user.messages',
-    path: '/hub/messages/:id',
-    component: require('../pages/messages/PeopleMessages.vue'),
     props: route => ({
       id: toInt(route.params.id)
     })

@@ -1,0 +1,133 @@
+<template>
+<container title="Students" subtitle="Search students" @back="$router.go(-1)" back>
+  <div class="student-search-container">
+    <div class="container">
+      <h3 class="text-center">Students</h3>
+      <div class="row">
+        <div class="col-12 col-md-6 offset-md-3">
+          <typeahead v-model="query" input-class="form-control-lg" @select="onSelect" @enter="onSearch"
+                     @search="onInput" component="SelectOptionUser" v-bind="{ suggestions }"/>
+        </div>
+      </div>
+      <p class="text-center">
+        Find students by their roll number or name.
+      </p>
+    </div>
+  </div>
+
+  <div class="container people-d-links">
+    <div class="card text-center">
+      <div class="card-block">
+        <h5>Departments</h5>
+
+        <div class="item" v-for="department of departments">
+          <router-link :to="{name: 'student.index', query: {department: [department.id]}}" class="btn btn-secondary">
+            {{ department.name }}
+          </router-link>
+        </div>
+      </div>
+      <div class="card-block">
+        <h5>Disciplines</h5>
+
+        <div class="item" v-for="discipline of disciplines">
+          <router-link :to="{name: 'student.index', query: {discipline: [discipline.id]}}" class="btn btn-secondary">
+            {{ discipline.name }}
+          </router-link>
+        </div>
+      </div>
+    </div>
+  </div>
+</container>
+</template>
+
+<script lang="babel">
+import { mapGetters, mapActions } from 'vuex'
+import throttle from 'lodash.throttle'
+
+export default {
+  name: 'StudentDashboard',
+
+  data () {
+    return {
+      query: '',
+      suggestions: []
+    }
+  },
+
+  computed: {
+    ...mapGetters({
+      departments: 'departments/academic',
+      disciplines: 'disciplines/disciplines'
+    })
+  },
+
+  methods: {
+    onSearchInput: throttle(function onSearchInput() {
+      this.fetch()
+    }, 400),
+    onInput (value) {
+      this.query = value
+
+      this.onSearchInput()
+    },
+    async fetch () {
+      const { students } = await this.getStudents({ q: this.query })
+
+      if (students) {
+        this.suggestions = students
+      }
+    },
+    onSearch () {
+      this.$router.push({ name: 'student.index', query: { q: this.query } })
+    },
+    onSelect ({ uid }) {
+      this.$router.push({ name: 'student.show', params: { uid } })
+    },
+    ...mapActions('students', { getStudents: 'index' })
+  },
+
+  created () {
+    this.fetch()
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+@import '../../../styles/variables';
+@import '../../../styles/mixins';
+
+.student-search-container {
+  background-size: cover;
+  padding-top: 8rem;
+  padding-bottom: 11rem;
+  margin-bottom: -5rem;
+  color: white;
+
+  h3 {
+    text-transform: uppercase;
+    letter-spacing: to-rem(2px);
+  }
+
+  background-image: linear-gradient(to right, rgba(0, 0, 0, .35), rgba(0, 0, 0, .35)), url(./assets/m-cover.jpg);
+
+  @include media-breakpoint-up(md) {
+    background-image: linear-gradient(to right, rgba(0, 0, 0, .35), rgba(0, 0, 0, .35)), url(./assets/cover.jpg);
+  }
+}
+</style>
+
+<style lang="scss">
+@import '../../../styles/variables';
+@import '../../../styles/mixins';
+
+.people-d-links {
+  h5 {
+    text-transform: uppercase;
+    letter-spacing: to-rem(1px);
+  }
+  .item {
+    margin: 1rem;
+    display: inline-block;
+  }
+}
+</style>

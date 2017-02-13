@@ -23,7 +23,7 @@ export default {
       return this.user ? this.user.name : '...'
     },
     subtitle () {
-      return this.user ? this.user.description || 'Click to add purpose of the user.' : '...'
+      return this.user ? this.user.description || 'Click to view user profile.' : '...'
     },
     photo () {
       return this.user ? this.user.photo : ''

@@ -286,7 +286,9 @@ const getters = {
     return (id) => {
       const group = getters.groupById(id)
 
-      return group.$members
+      if (group) return group.$members
+
+      return []
     }
   }
 }

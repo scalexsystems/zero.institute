@@ -18,8 +18,6 @@ const config = require('./config')
 const log = config.logger
 const servers = {}
 
-env.set(env.get().replace(/APP_URL=[^\s]+/g, 'APP_URL=http://localhost:8080'))
-
 cleanup(function () {
   env.cleanup()
   fs.unlinkSync(path.resolve(__dirname, '../public/hot'))
