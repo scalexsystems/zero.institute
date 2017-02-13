@@ -17,7 +17,7 @@ export default {
 
   methods: mapActions('groups', { find: 'find' }),
 
-  created() {
+  created () {
     if (!this.groupById(this.id)) {
       this.find(this.id)
     }

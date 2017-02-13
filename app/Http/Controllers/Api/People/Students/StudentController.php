@@ -2,6 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Scalex\Zero\Criteria\OfDepartment;
+use Scalex\Zero\Criteria\OfDiscipline;
 use Scalex\Zero\Criteria\OrderBy;
 use Scalex\Zero\Events\Student\StudentUpdated;
 use Scalex\Zero\Http\Controllers\Controller;
@@ -21,7 +23,9 @@ class StudentController extends Controller
     {
         $this->authorize('browse', Student::class);
 
-        $repository->with(['photo', 'user']);
+        $repository->with(['photo', 'user'])
+                   ->pushCriteria(new OfDepartment($request->input('department')))
+                   ->pushCriteria(new OfDiscipline($request->input('discipline')));
 
         if ($request->has('q')) {
             $repository->search($request->input('q'));

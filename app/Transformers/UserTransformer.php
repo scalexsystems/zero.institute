@@ -27,7 +27,7 @@ class UserTransformer extends Transformer
     public function me(User $user)
     {
         if ($current = Request::user() and $user->getKey() === $current->getKey()) {
-            return ['permission' => $user->getPermissionNames()];
+            return ['permissions' => $user->getPermissionNames()];
         }
 
         return [];

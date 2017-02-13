@@ -24,7 +24,7 @@ export default {
         return true
       }
 
-      if (!this.group)  {
+      if (!this.group) {
         complete()
 
         return false
@@ -34,13 +34,13 @@ export default {
       const { meta } = await this.fetchMembersAPI({ group: this.group })
       this.membersRequestSent = false
 
-      if (meta && meta.pagination.current_page === meta.pagination.total_pages) {
-        complete()
+      if (meta && meta.pagination.current_page < meta.pagination.total_pages) {
+        loaded()
 
         return true
       }
 
-      loaded()
+      complete()
     },
     ...mapActions('groups', { fetchMembersAPI: 'members' })
   },
@@ -53,10 +53,10 @@ export default {
     group (group, oldGroup) {
       if (oldGroup && group.id !== oldGroup.id) {
         this.membersRequestSent = false
-        this.$refs && this.$refs.is.$emit('reset')
+        this.$refs && this.$refs.is && this.$refs.is.$emit('reset')
       }
 
-      this.fetchMembers()
+      this.$nextTick(() => this.fetchMembers())
     }
   }
 }

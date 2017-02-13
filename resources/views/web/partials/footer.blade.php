@@ -2,15 +2,15 @@
   <div class="container">
     <div class="row">
       {{--Scalex Logo--}}
-      <div class="col-xs-12 col-md-2 text-xs-center text-md-left">
+      <div class="col-12 col-md-2 text-center text-md-left">
         <a href="http://zero.institute/" class="brand-link" title="Zero for Institutes">
           <img src="{{ asset('img/web/logo-zero-institute.svg') }}" alt="Logo: Scalex Zero">
         </a>
       </div>
       {{--Links/Site Map--}}
-      <div class="col-xs-12 col-md-6">
+      <div class="col-12 col-md-6">
         <div class="row">
-          <div class="col-xs-4">
+          <div class="col-4">
             <h6>Company</h6>
             <ul class="nav">
               <li class="nav-item"><a href="http://scalex.xyz/" class="nav-link" target="_blank">Scalex Systems</a></li>
@@ -18,7 +18,7 @@
               <li class="nav-item"><a href="http://scalex.xyz/team" class="nav-link" target="_blank">Team</a></li>
             </ul>
           </div>
-          <div class="col-xs-4">
+          <div class="col-4">
             <h6>Products</h6>
             <ul class="nav">
               <li class="nav-item">
@@ -40,7 +40,7 @@
               </li>
             </ul>
           </div>
-          <div class="col-xs-4">
+          <div class="col-4">
             <h6>Contact Us</h6>
             <ul class="nav">
               <li class="nav-item"><a href="@include('web.partials.setup')" class="nav-link">Setup</a></li>
@@ -50,7 +50,7 @@
         </div>
       </div>
       {{--Social Links & Copyright--}}
-      <div class="col-xs-12 col-md-4 text-xs-center text-md-left">
+      <div class="col-12 col-md-4 text-center text-md-left">
         <p class="social">
           <a href="https://facebook.com/scalexsystems" title="Scalex System on Facebook"><i class="fa fa-facebook-square"></i></a>
           <a href="https://twitter.com/scalexsystems" title="Scalex System on Twitter"><i class="fa fa-twitter-square"></i></a>

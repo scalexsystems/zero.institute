@@ -9,6 +9,8 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development'
 process.env.DEBUG = process.env.DEBUG || require('../package.json').name+'*'
 
 const spawn = require('cross-spawn')
+const fs = require('fs')
+const path = require('path')
 const cleanup = require('./cleanup')
 const env = require('./env')
 const config = require('./config')
@@ -16,10 +18,9 @@ const config = require('./config')
 const log = config.logger
 const servers = {}
 
-env.set(env.get().replace(/zero\.institute\.app/i, 'localhost:8080'))
-
 cleanup(function () {
   env.cleanup()
+  fs.unlinkSync(path.resolve(__dirname, '../public/hot'))
   if (servers.laravel) servers.laravel.kill()
   if (servers.webpack) servers.webpack.kill()
 })

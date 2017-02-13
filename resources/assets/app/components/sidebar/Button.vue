@@ -37,9 +37,16 @@ export default {
   overflow: hidden;
   color: inherit;
 
+  &.router-link-active {
+    background: white;
+    border: 1px solid $card-border-color;
+  }
+
   &:active, &:hover, &:focus {
     color: inherit;
     text-decoration: none;
+
+    background: white;
   }
 
   .notification {

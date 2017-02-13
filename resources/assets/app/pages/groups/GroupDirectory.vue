@@ -11,9 +11,7 @@
                    @search="onSearch" @infinite="onLoad">
     <div class="row">
       <div class="col-12 col-lg-6 mt-3" v-for="group in groups" :key="group">
-        <group-card :group="group" role="button"
-                    @click="$router.push({ name: 'group.show', params: { id: group.id } })"
-        ></group-card>
+        <group-card :group="group" role="button" @click.native="goToGroup(group)"></group-card>
       </div>
     </div>
   </searchable-list>
@@ -21,6 +19,8 @@
 </template>
 
 <script lang="babel">
+import Sifter from 'sifter'
+import throttle from 'lodash.throttle'
 import { mapGetters, mapActions } from 'vuex'
 
 import GroupCard from '../../components/group/Card.vue'
@@ -31,36 +31,39 @@ export default {
   data () {
     return {
       page: 1,
-      query: ''
+      query: '',
+      groups: []
     }
   },
 
-  computed: {
-    ...mapGetters('groups', ['groups'])
-  },
-
   methods: {
-    onSearch () {
-      this.page = 1
+    onSearch: throttle(function onSearch () {
       this.$refs.list.$emit('reset')
-
-      this.index({ page: this.page, query: this.query })
-    },
-    async onLoad ({ loaded, complete }) {
-      const { meta } = await this.index({ page: this.page, query: this.query })
-
+      this.page = 1
+      this.onLoad()
+    }, 800),
+    async onLoad ({ loaded = () => 0, complete = () => 0 } = {}) {
+      const { meta, groups } = await this.index({ page: this.page, query: this.query })
 
       if (meta) {
-        this.page = meta.pagination.next_page
-
-        if (meta.pagination.current_page === meta.pagination.total_pages) {
-          complete()
+        if (this.page === 1) {
+          this.groups = []
         }
 
-        return true
-      }
+        if (groups) this.groups.splice(this.groups.length, 0, ...groups)
 
-      loaded()
+        this.page = meta.pagination.current_page + 1
+
+        if (meta.pagination.current_page < meta.pagination.total_pages) {
+          loaded()
+
+          return true
+        }
+      }
+      complete()
+    },
+    goToGroup (group) {
+      this.$router.push({ name: group.is_member ? 'group.messages' : 'group.show', params: { id: group.id }})
     },
     ...mapActions('groups', ['index'])
   },

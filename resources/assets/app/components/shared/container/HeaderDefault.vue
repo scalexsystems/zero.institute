@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-row" :class="[ $style.header ]">
+  <div class="container d-flex flex-row" :class="[ $style.header ]">
     <a v-if="back" class="d-flex align-items-center justify-content-center"
       :class="[ $style.back ]" @click.prevent="$emit('back')">
       <img src="../../../assets/back.svg" alt="Back">

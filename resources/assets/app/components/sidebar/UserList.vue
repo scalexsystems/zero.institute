@@ -1,5 +1,9 @@
 <template>
-<list :items="items"></list>
+<list :items="items">
+  <router-link :to="{ name: 'dm' }" class="text-muted btn btn-block btn-link text-left">
+    <icon type="plus-square-o"></icon> Send a DM
+  </router-link>
+</list>
 </template>
 
 <script lang="babel">
@@ -14,18 +18,20 @@ export default {
         photo: user.photo,
         type: 'rounded-circle',
         class: 'sidebar-list-item-user',
-        hasExtra: user.unread > 0,
-        extra: user.unread,
+        hasExtra: user.$has_unread,
+        extra: user.$unread_count,
         route: { name: 'user.messages', params: { id: user.id }}
       }))
     },
-    ...mapGetters('messages/users', ['users'])
+    ...mapGetters('messages', { users: 'users' })
   },
 
-  methods: mapActions('messages/users', ['index']),
+  methods: mapActions('messages', { index: 'index' }),
 
   created () {
-    this.index()
+    if (!this.users.length) {
+      this.index()
+    }
   },
 
   components: { List }

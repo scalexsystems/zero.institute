@@ -3,7 +3,7 @@
   <textarea class="c-hub-message-composer-input" name="message" :value="value" ref="input"
             placeholder="Start discussing..." autofocus @input="onInput"
             @keydown.enter="onEnter" :disabled="disabled" rows='1'
-            autocomplete="off" autocorrect="off" @focus="$emit('focused')"></textarea>
+            autocomplete="off" autocorrect="off" @focus="$emit('focus')"></textarea>
   <div class="c-hub-message-composer-actions">
     <a role="button" class="action" v-tooltip:left="'Add files'"
        @click.prevent="$refs.uploader.$emit('upload')">
@@ -63,11 +63,9 @@ export default {
       }
     },
     onUploaded (attachments, errors) {
-      if (!attachments.length) return
+      const message = (attachments.length && attachments[0].message) || ''
 
-      const message = attachments[0].message || ''
-
-      this.$emit('send', message, attachments.map(i => i.id), errors)
+      this.$emit('send', { message, attachments: attachments.map(i => i.id), errors })
     }
   },
 

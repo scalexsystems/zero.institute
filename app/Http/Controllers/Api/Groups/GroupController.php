@@ -1,6 +1,7 @@
 <?php namespace Scalex\Zero\Http\Controllers\Api\Groups;
 
 use Illuminate\Http\Request;
+use Scalex\Zero\Criteria\Group\MessagesCount;
 use Scalex\Zero\Criteria\Group\PrivateGroup;
 use Scalex\Zero\Criteria\OrderBy;
 use Scalex\Zero\Events\Group\GroupCreated;
@@ -37,6 +38,7 @@ class GroupController extends Controller
             $groups->search($request->query('q'));
         } else {
             $groups->pushCriteria(new OrderBy('name'));
+            $groups->pushCriteria(new MessagesCount());
         }
 
         return $groups->paginate();
@@ -49,8 +51,10 @@ class GroupController extends Controller
      *
      * @return \Scalex\Zero\Models\Group
      */
-    public function show(Group $group)
+    public function show($group, GroupRepository $repository)
     {
+        $group = $repository->pushCriteria(new MessagesCount())->find((int) $group);
+
         $this->authorize('view', $group);
 
         return $group;

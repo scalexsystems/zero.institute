@@ -51,6 +51,7 @@ exports.use = function (name) {
  */
 exports.cleanup = function cleanup () {
   fs.writeFileSync(exports.path, fs.readFileSync(backup))
+  fs.unlinkSync(backup)
 }
 
 // Backup .env file.

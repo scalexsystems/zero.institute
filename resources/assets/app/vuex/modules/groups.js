@@ -1,6 +1,6 @@
 import http from '../api'
 import { insert, remove, binarySearchFind, binarySearchIndex } from '../helpers'
-import { prepare, dateChangesAt, TIMESTAMP } from './messages/helpers'
+import { prepareGroup as prepare, prepareMessages, TIMESTAMP } from './messages/helpers'
 import { toArray, isObject } from '../../util'
 
 const actions = {
@@ -10,7 +10,9 @@ const actions = {
   async index ({ dispatch }, { page = 1, query, type } = {}) {
     const { groups, meta } = await http.get('groups', { params: { page, q: query, type }})
 
-    await dispatch('addToStore', groups)
+    if (!query) {
+      await dispatch('addToStore', groups)
+    }
 
     return { groups, meta }
   },
@@ -77,10 +79,10 @@ const actions = {
    * Fetch members.
    */
   async members ({ dispatch }, { group }) {
-    const { users, meta } = await http.get(`groups/${group.id}/members`, { params: { page: group.$members_page } })
+    const { users, meta } = await http.get(`groups/${group.id}/members`, { params: { page: group.$members_page }})
 
     if (users) {
-      dispatch('addMembersToStore', { members: users, id: group.id, page: meta.pagination.next_page })
+      await dispatch('addMembersToStore', { members: users, id: group.id, page: meta.pagination.current_page + 1 })
     }
 
     return { meta, members: users }
@@ -92,7 +94,7 @@ const actions = {
   async join ({ dispatch }, id) {
     const { group } = await http.post(`groups/${id}/join`)
 
-    dispatch('addToStore', group)
+    await dispatch('addToStore', group)
 
     return { group }
   },
@@ -103,7 +105,7 @@ const actions = {
   async leave ({ dispatch }, id) {
     const { group } = await http.delete(`groups/${id}/leave`)
 
-    dispatch('removeFromStore', id)
+    await dispatch('removeFromStore', id)
 
     return { group }
   },
@@ -117,7 +119,7 @@ const actions = {
     return { groups, meta }
   },
 
-  async findMy ({ dispatch }, id) {
+  async myFind ({ dispatch }, id) {
     const { group } = await http.get(`me/groups/${id}`)
 
     if (group) await dispatch('addToStore', group)
@@ -134,12 +136,12 @@ const actions = {
       }
     }
 
-    const { messages, meta } = http.get(`groups/${group.id}/messages`, options)
+    const { messages, meta } = await http.get(`groups/${group.id}/messages`, options)
 
     if (messages) {
       const payload = {
         id: group.id,
-        page: meta.pagination.next_page,
+        page: meta.pagination.current_page + 1,
         messages
       }
 
@@ -154,17 +156,17 @@ const actions = {
       id: Date.now(),
       content,
       sender: rootState.user,
-      $status: { sending: true, attachment: errors }
+      $status: { sending: true, attachments: errors || [] }
     }
 
-    await dispatch('addMessageToGroup', { id, message })
+    await dispatch('addMessageToGroup', { id, messages: message })
 
     try {
       const payload = await http.post(true, `groups/${id}/messages`, { content, ...extras })
 
-      commit('MESSAGE_SENT', { id, message, payload })
+      commit('MESSAGE_SENT', { id, message, payload: payload.message })
 
-      return { message: payload }
+      return payload
     } catch (error) {
       commit('MESSAGE_FAILED', { id, message, error })
 
@@ -172,8 +174,16 @@ const actions = {
     }
   },
 
-  async read ({ commit }, { id, messages }) {
-    const response = await http.put(`groups/${id}/messages/read`, { ids: messages.map(message => message.id) })
+  async read ({ commit }, { id, message }) {
+    const response = await http.put(`messages/${message.id}/read`)
+
+    if (!response) {
+      commit('MESSAGE_READ', { id, message })
+    }
+  },
+
+  async readAll ({ commit }, { id, messages }) {
+    const response = await http.put(`messages/read`, { ids: messages.map(message => message.id) })
 
     if (!response) {
       messages.forEach(message => commit('MESSAGE_READ', { id, message }))
@@ -228,7 +238,7 @@ const actions = {
    * @private
    */
   async addMessageToGroup ({ dispatch, commit, state }, { id, messages, page, _isRetry }) {
-    const group = binarySearchFind(state.groups.groups, id)
+    const group = binarySearchFind(state.groups, id)
 
     if (group) {
       commit('MESSAGE', { id, messages, page })
@@ -249,44 +259,36 @@ const actions = {
 
 const getters = {
   groups: state => state.groups.filter(group => group.type === 'group'),
+
   communities: state => state.groups.filter(group => group.type === 'community'),
+
   my: state => state.groups.filter(group => group.is_member),
+
   myGroups: (_, getters) => getters.my.filter(group => group.type === 'group'),
+
   myCourses: (_, getters) => getters.my.filter(group => group.type === 'course'),
+
   myCommunities: (_, getters) => getters.my.filter(group => group.type === 'community'),
+
   groupById: state => (id) => binarySearchFind(state.groups, id),
+
   myGroupById: (_, getters) => (id) => binarySearchFind(getters.my, id),
+
   messagesByGroupId (_, getters) {
     return (id) => {
       const group = getters.myGroupById(id)
 
-      const messages = []
-
-      for (let i = 0; i < group.$messages.length; i += 1) {
-        const prev = i > 0 ? messages[i - 1] : null
-        const current = group.$messages[i]
-        const $dateChanges = dateChangesAt(current, prev)
-        const $continued = prev && // Not first message
-            !$dateChanges && // Not first message of the day
-            current.attachments.length === 0 && // Has no attachments
-            current.sender.id === prev.sender.id // From same sender
-
-        messages.push({
-          $continued,
-          $dateChanges,
-          $receivedAt: $continued ? (prev.$receivedAt || prev.received_at) : null,
-          ...current
-        })
-      }
-
-      return messages
+      return prepareMessages(group.$messages)
     }
   },
+
   membersByGroupId (_, getters) {
     return (id) => {
       const group = getters.groupById(id)
 
-      return group.$members
+      if (group) return group.$members
+
+      return []
     }
   }
 }
@@ -296,7 +298,7 @@ const state = () => ({
   /**
    * Tracks unread messages.
    *
-   * @type {Object.<int,int>}
+   * @type {Object}
    */
   unread: {
     $total: 0
@@ -327,16 +329,18 @@ const mutations = {
   },
 
   MESSAGE (state, { id, messages, page }) {
-    const unread = toArray(messages).filter(message => message.unread === true).length
     const group = binarySearchFind(state.groups, id)
-
-    // Calculate quick unread count.
-    state.unread.$total += unread
-    state.unread[group.id] = (state.unread[group.id] || 0) + unread
+    const old = state.unread[group.id] || 0
+    state.unread[group.id] = group.$unread_count
 
     // Insert and update group unread status
     insert(group.$messages, messages)
-    group.$unread_count += unread
+
+    const unread = group.$messages.filter(m => m.unread).length
+
+    state.unread.$total += unread - old
+    state.unread[group.id] += unread - old
+    group.$unread_count += unread - old
     group.$has_unread = group.$unread_count > 0
     group.$messages_loaded = true
 
@@ -356,8 +360,13 @@ const mutations = {
   MESSAGE_SENT (state, { id, message, payload }) {
     const group = binarySearchFind(state.groups, id)
     const index = binarySearchIndex(group.$messages, message)
+    const already = binarySearchIndex(group.$messages, payload)
 
-    group.$messages.splice(index, 1, payload)
+    if (already > -1) {
+      group.$messages.splice(index, 1)
+    } else {
+      group.$messages.splice(index, 1, payload)
+    }
   },
 
   MESSAGE_FAILED (state, { id, message, error }) {
