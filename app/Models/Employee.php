@@ -137,7 +137,6 @@ class Employee extends BaseModel implements BelongsToSchool, Person
         return $this->belongsTo(Attachment::class, 'photo_id');
     }
 
-
     /**
      * Associated user account.
      *
@@ -151,6 +150,11 @@ class Employee extends BaseModel implements BelongsToSchool, Person
     public function getRouteKeyName()
     {
         return 'uid';
+    }
+
+    public function getPhotoUrl()
+    {
+        return attach_url($this->photo) ?? asset('img/placeholder.jpg');
     }
 
     public function setDateOfJoiningAttribute($value)

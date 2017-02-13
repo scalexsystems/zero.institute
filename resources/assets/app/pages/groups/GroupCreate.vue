@@ -55,15 +55,17 @@ export default {
       const members = this.suggestions
       const ids = this.attributes.members
 
-      return members.filter(({id}) => ids.indexOf(id) > -1)
+      return members.filter(({ user_id }) => ids.indexOf(user_id) > -1)
     },
 
-    ...mapGetters('people', { suggestions: 'items' })
+    ...mapGetters('people', { suggestions: 'people' })
   },
 
   methods: {
-    async onSubmit () {
+    async onSubmit (e) {
+      e.traget.classList.add('disabled')
       const { errors, group } = await this.create(this.attributes)
+      e.traget.classList.remove('disabled')
 
       if (errors) {
         this.setErrors(errors)
@@ -73,7 +75,7 @@ export default {
         this.clearErrors()
         this.attributes = this.$options.data().attributes
 
-        this.$router.push({ name: 'group.messages', params: { id: group.id } })
+        this.$router.push({ name: 'group.messages', params: { id: group.id }})
       }
     },
     onSearch: throttle(function onSearch (q) {

@@ -7,10 +7,10 @@
       <div v-if="content" class="content" v-html="content"></div>
       <div v-if="count > 0" class="card card-inverse" :class="[ $style.photoCard ]" role="button" @click="$emit('preview', photos)">
         <div class="embed-responsive embed-responsive-16by9 card-img">
-          <img class="embed-responsive-item" :src="preview">
+          <img class="embed-responsive-item photo" :src="preview">
         </div>
 
-        <div class="card-img-overlay d-flex justify-content-center align-items-center" v-if="count > 1">
+        <div class="card-img-overlay d-flex justify-content-center align-items-center" v-if="count > 1" style="background: rgba(0, 0, 0, 0.1)">
           <h1 class="text-white">{{ count }} Photos</h1>
         </div>
       </div>
@@ -66,5 +66,9 @@ export default {
 .photo-card {
   min-width: 280px;
   max-width: 480px;
+
+  img {
+    object-fit: cover;
+  }
 }
 </style>

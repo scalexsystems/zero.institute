@@ -1,12 +1,16 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import hub from './hub'
+import groups from './groups'
+import messages from './messages'
+import people from './people'
 
 Vue.use(VueRouter)
 
 /* Pages */
 const routes = [
-  ...hub
+  ...groups,
+  ...messages,
+  ...people
 ]
 
 export default new VueRouter({

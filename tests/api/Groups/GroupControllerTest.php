@@ -6,6 +6,7 @@ use Scalex\Zero\Events\Group\GroupCreated;
 use Scalex\Zero\Events\Group\GroupDeleted;
 use Scalex\Zero\Events\Group\GroupUpdated;
 use Scalex\Zero\Models\Group;
+use Scalex\Zero\Providers\AppServiceProvider;
 
 class GroupControllerTest extends \TestCase
 {
@@ -47,8 +48,9 @@ class GroupControllerTest extends \TestCase
         $groups = $this->createPublicGroup(2);
         $this->createPrivateGroup();
 
-        $this->actingAs($this->getUser())->get('/api/groups')
-             ->assertResponseStatus(200)
+        $this->actingAs($this->getUser())->get('/api/groups');
+
+        $this->assertResponseStatus(200)
              ->seeResources('groups', $groups->modelKeys());
     }
 

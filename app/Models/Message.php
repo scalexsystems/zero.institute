@@ -70,17 +70,6 @@ class Message extends BaseModel
     }
 
     /**
-     * Get read at timestamp. (@property \Carbon\Carbon $userReadAt)
-     *
-     * @return \Scalex\Zero\Database\Relation\MessageReadAt
-     * @deprecated in v0.4.0. TODO: Remove in v0.5+.
-     */
-    public function userReadAt()
-    {
-        return new MessageReadAt($this->newQuery(), current_user());
-    }
-
-    /**
      * Messages read states for all relevant users.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

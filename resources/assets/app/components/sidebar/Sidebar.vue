@@ -1,12 +1,14 @@
 <template>
 <div class="c-sidebar" @click="onClick">
   <group-list></group-list>
+  <user-list></user-list>
 </div>
 </template>
 
 <script lang="babel">
 import scrollbar from '../mixins/scrollbar'
 import GroupList from './GroupList.vue'
+import UserList from './UserList.vue'
 
 export default {
   name: 'Sidebar',
@@ -28,7 +30,7 @@ export default {
     }
   },
 
-  components: { GroupList },
+  components: { GroupList, UserList },
   mixins: [scrollbar]
 }
 </script>
@@ -38,6 +40,7 @@ export default {
 @import '../../styles/mixins';
 
 .c-sidebar {
+  @include match-parent();
   position: relative;
   overflow-x: hidden;
   overflow-y: auto;
@@ -47,8 +50,8 @@ export default {
   .c-sidebar {
     z-index: $zindex-navbar !important;
     position: fixed !important;
-    width: 70% !important;
-    left: -70% !important;
+    width: 300px !important;
+    left: -300px !important;
     transition: left .3s !important;
 
     + * {
@@ -59,7 +62,7 @@ export default {
     .c-sidebar {
       left: 0 !important;
       + * {
-        transform: translateX(70%);
+        transform: translateX(250px);
       }
     }
   }

@@ -17,4 +17,14 @@ class PersonControllerTest extends \TestCase
         $this->assertResponseStatus(200)
              ->seeResources('items', (array) $student->uid, 'uid');
     }
+
+    public function test_show_can_get_person()
+    {
+        $student = $this->createStudentAndUser();
+        $this->actingAs($this->getUser())
+            ->get('/api/people/' . $student->user->id);
+
+        $this->assertResponseStatus(200)
+            ->seeJsonStructure(['item' => []]);
+    }
 }

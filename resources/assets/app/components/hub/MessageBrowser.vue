@@ -1,7 +1,10 @@
 <template>
 <div class="c-hub-message-browser d-flex flex-column">
-  <message-list v-bind="{ messages }" class="flex-auto" ref="ml" @infinite="any => $emit('infinite', any)"/>
-  <message-composer v-bind="{ value, dest }" @input="v => $emit('input', v)"/>
+  <message-list v-bind="{ messages }" class="flex-auto pb-2" ref="ml" @infinite="any => $emit('infinite', any)"/>
+  <message-composer v-bind="{ value, dest }"
+                    @input="v => $emit('input', v)"
+                    @focus="() => $emit('focus')"
+                    @send="v => $emit('send', v)"/>
 </div>
 </template>
 
@@ -22,7 +25,7 @@ export default {
     MessageList
   },
 
-  created() {
+  created () {
     this.$on('reset', e => this.$refs && this.$refs.ml.$emit('reset', e))
   }
 }
@@ -31,5 +34,8 @@ export default {
 <style lang="scss">
 .c-hub-message-browser {
   height: 100%;
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 </style>

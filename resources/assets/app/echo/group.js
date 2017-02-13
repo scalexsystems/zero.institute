@@ -1,6 +1,4 @@
 export default {
-  namespace: 'Group',
-
   // GroupCreated ({ group_id }, store) {},
 
   GroupUpdated ({ group_id }, store) {

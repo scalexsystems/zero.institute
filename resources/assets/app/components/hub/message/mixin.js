@@ -13,7 +13,7 @@ export default {
       const message = this.message
 
       return nl2br(e(
-        message.content.trim()
+          (message.content || '').trim()
           .replace(/(\r?\n){2,}/g, '\n\n')
       ))
     }

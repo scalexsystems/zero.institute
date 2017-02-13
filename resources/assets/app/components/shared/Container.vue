@@ -12,7 +12,7 @@
       </slot>
     </div>
 
-    <div :class="[ $style.body ]">
+    <div :class="[ $style.body ]" class="body">
       <slot></slot>
     </div>
 

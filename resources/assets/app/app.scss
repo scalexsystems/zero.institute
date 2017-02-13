@@ -6,11 +6,6 @@
 @import '~perfect-scrollbar/src/css/main';
 @import '~bootstrap-for-vue/dist/scss/bootstrap-for-vue';
 
-.container > .row {
-  margin-left: 0!important;
-  margin-right: 0!important;
-}
-
 html {
   font-size: 14px;
 }
@@ -42,3 +37,19 @@ html {
     color: $brand-danger;
   }
 }
+
+// Profile shared style.
+.profile-field {
+  margin-bottom: 2rem;
+
+  .label {
+    font-size: .75rem;
+    color: #b3b3b3;
+  }
+
+  .value:empty:before {
+    content: "xxx x xxxx";
+    opacity: 0.1;
+  }
+}
+

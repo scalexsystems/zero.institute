@@ -25,6 +25,11 @@ class EmployeePolicy extends AbstractPolicy
         return $this->canUpdate($user, $employee);
     }
 
+    public function viewPhoto()
+    {
+        return true;
+    }
+
     public function updatePhoto(User $user, Employee $employee)
     {
         return trust($user)->to(Action::VIEW_EMPLOYEE) or $this->isHimself($user, $employee);

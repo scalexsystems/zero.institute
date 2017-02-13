@@ -27,9 +27,11 @@ class CurrentUserController extends Controller
     {
         $request->query->set('with', 'person');
 
-        return $repository->with(['person', 'photo'])
+        $users = $repository->with(['person', 'photo'])
                           ->pushCriteria(new HaveConversationWith($request->user()))
                           ->paginate();
+
+        return transform($users, ['person'], null, true);
     }
 
     /**
@@ -41,8 +43,6 @@ class CurrentUserController extends Controller
      */
     public function show(User $user, UserTransformer $transformer)
     {
-        // TODO: Move root resource property to Transformer.
-        // return $transformer->setIndexing(false)->transform($user);
-        return $user;
+        return transform($user, ['person'], null, true);
     }
 }

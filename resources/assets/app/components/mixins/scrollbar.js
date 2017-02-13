@@ -47,5 +47,5 @@ export default {
 
   beforeDestroy () {
     this.removeBars()
-  },
+  }
 }

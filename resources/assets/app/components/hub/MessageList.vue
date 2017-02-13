@@ -1,21 +1,20 @@
 <template>
-  <div class="c-hub-message-list">
-    <modal :open="photos !== null" @close="cursor = -1" wrapper="d-flex flex-row">
-      <photo-browser :photos="photos" class="flex-auto fullscreen" @end="next" @start="prev"></photo-browser>
-    </modal>
+<div class="c-hub-message-list" ref="messages">
+  <modal :open="photos !== null" @close="cursor = -1" wrapper="d-flex flex-row">
+    <photo-browser :photos="photos" class="flex-auto fullscreen" @end="next" @start="prev"></photo-browser>
+  </modal>
 
-    <div class="c-hub-message-list-container">
-      <message v-for="(message, index) in messages" :key="message"
-               v-bind="{ message, continued: message.$continued === true }"
-               @preview="(payload) => preview(message, index, payload)"></message>
-
-      <infinite-loader @infinite="any => $emit('infinite', any)" ref="il"></infinite-loader>
-    </div>
+  <div class="c-hub-message-list-container container d-flex flex-column justify-content-end">
+    <infinite-loader @infinite="any => $emit('infinite', any)" ref="il" direction="top"></infinite-loader>
+    <message v-for="(message, index) in messages" :key="message"
+             v-bind="{ message, continued: message.$continued === true }"
+             @preview="(payload) => preview(message, index, payload)"></message>
   </div>
+</div>
 </template>
 
 <script lang="babel">
-import { isArray } from '../../util'
+import { isArray, last } from '../../util'
 import Message from './message'
 import PhotoBrowser from './PhotoBrowser.vue'
 
@@ -30,7 +29,7 @@ export default {
   },
 
   data () {
-    return { cursor: -1 }
+    return { cursor: -1, scrollNext: false }
   },
 
   computed: {
@@ -40,24 +39,22 @@ export default {
       if (cursor < 0) return null
 
       return this.messages[cursor].attachments.filter(
-        any => ['png', 'gif', 'jpg', 'jpeg', 'webp', 'tiff', 'svg'].indexOf(any.extension) > -1
+          any => ['png', 'gif', 'jpg', 'jpeg', 'webp', 'tiff', 'svg'].indexOf(any.extension) > -1
       ).map(
-        (any) => {
-          const links = any.links
+          (any) => {
+            const links = any.links
 
-          return {
-            src: links.preview || links.original,
-            alt: any.title
+            return {
+              src: links.preview || links.original,
+              alt: any.title
+            }
           }
-        }
       )
     }
   },
 
   methods: {
     preview (message, index, payload) {
-      console.log(payload)
-
       if (isArray(payload)) {
         this.previewPhotos(message, index)
       }
@@ -67,7 +64,7 @@ export default {
 
     previewAttachment () {},
 
-    previewPhotos (message, cursor) {
+    previewPhotos (_, cursor) {
       this.cursor = cursor
     },
 
@@ -89,13 +86,59 @@ export default {
           return
         }
       }
+    },
+
+    scrollTo (bottom = true) {
+      if (!this.$refs || !this.$refs.messages) return
+
+      if (bottom) {
+        this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
+      }
     }
   },
 
-  created() {
+  created () {
     this.$on('reset', e => this.$refs && this.$refs.il.$emit('reset', e))
+    this.$nextTick(() => this.scrollTo())
   },
 
-  components: { Message, PhotoBrowser }
+  components: { Message, PhotoBrowser },
+
+  watch: {
+    messages (messages, old) {
+      const scrollNext = this.scrollNext
+
+      this.scrollNext = this.$refs.messages.scrollHeight < this.$refs.messages.clientHeight
+
+      if (!messages || !messages.length) return
+
+      // Source changed (If Keep Alive)
+      if (old.length && last(messages).id === last(old).id && messages[0].id === old[0].id) {
+        this.scrollNext = false
+      }
+
+      // Last update height was smaller than required
+      if (scrollNext === true) {
+        this.$nextTick(() => this.scrollTo())
+
+        return
+      }
+
+      // Fetch old message.
+      if (old.length && last(messages).id === last(old).id && messages[0].id !== old[0].id) {
+        return
+      }
+
+      this.$nextTick(() => this.scrollTo())
+    }
+  }
 }
 </script>
+
+<style lang="scss">
+.c-hub-message-list {
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+</style>
