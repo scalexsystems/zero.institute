@@ -8,7 +8,7 @@ use Scalex\Zero\User;
 
 class EmployeePolicy extends AbstractPolicy
 {
-    use VerifiesSchool, isHimself;
+    use VerifiesSchool, IsHimself;
 
     public function browse(User $user)
     {

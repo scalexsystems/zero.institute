@@ -20,7 +20,6 @@ class EmployeeController extends Controller
     public function index(Request $request, EmployeeRepository $repository)
     {
         $this->authorize('browse', Employee::class);
-
         $repository->with(['photo', 'user']);
 
         if ($request->has('q')) {
