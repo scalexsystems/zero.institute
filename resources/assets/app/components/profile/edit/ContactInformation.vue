@@ -18,15 +18,15 @@
     </div>
 
     <div class="col-12 col-lg-6">
-      <input-text v-model="attributes.pin_code" title="PIN Code" v-bind="{ errors }" required/>
+      <input-text v-model="attributes.pin_code" title="PIN Code" type="number" v-bind="{ errors }" required/>
     </div>
 
     <div class="col-12 col-lg-6">
-      <input-text v-model="attributes.phone" title="Phone" v-bind="{ errors }" />
+      <input-text v-model="attributes.phone" title="Phone" type="tel" v-bind="{ errors }" />
     </div>
 
     <div class="col-12 col-lg-6">
-      <input-text v-model="attributes.email" title="Email" v-bind="{ errors }" />
+      <input-text v-model="attributes.email" title="Email" type="email" v-bind="{ errors }" />
     </div>
   </div>
 </form>

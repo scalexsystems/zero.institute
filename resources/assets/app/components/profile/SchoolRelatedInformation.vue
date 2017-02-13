@@ -1,20 +1,20 @@
 <template>
-<form-card v-if="$can('view-personal-information', source)"
-           :editable="$can('update-personal-information', source)"
+<form-card v-if="$can('view-school-related-information', source)"
+           :editable="$can('update-school-related-information', source)"
            :keep-editing="waiting"
-           title="Personal Information"
+           title="School Related Information"
            @edit="onEdit" @save="onSave" @cancel="onCancel">
-  <view-personal-information slot="view" v-bind="{ source }"/>
-  <edit-personal-information slot="edit" v-bind="{ source, submit }" ref="edit" @updated="waiting = false"/>
+  <view-school-related-information slot="view" v-bind="{ source }"/>
+  <edit-school-related-information slot="edit" v-bind="{ source, submit }" ref="edit" @updated="waiting = false"/>
 </form-card>
 </template>
 
 <script lang="babel">
-import EditPersonalInformation from './edit/PeronalInformation.vue'
-import ViewPersonalInformation from './view/PersonalInformation.vue'
+import EditSchoolRelatedInformation from './edit/SchoolRelatedInformation.vue'
+import ViewSchoolRelatedInformation from './view/SchoolRelatedInformation.vue'
 
 export default {
-  name: 'PersonalInformation',
+  name: 'SchoolRelatedInformation',
 
   props: {
     source: {
@@ -51,6 +51,6 @@ export default {
     }
   },
 
-  components: { EditPersonalInformation, ViewPersonalInformation }
+  components: { EditSchoolRelatedInformation, ViewSchoolRelatedInformation }
 }
 </script>

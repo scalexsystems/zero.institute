@@ -123,7 +123,7 @@ class StudentTransformer extends Transformer
             'disease' => (string)$student->disease,
             'allergy' => (string)$student->allergy,
             'visible_marks' => (string)$student->visible_marks,
-            'food_habit' => (string)$student->food_habit,
+            'food_habit' => (array)$student->food_habit,
             'medical_remarks' => (string)$student->medical_remarks,
         ];
     }

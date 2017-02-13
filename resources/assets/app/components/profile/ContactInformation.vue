@@ -14,6 +14,8 @@ import EditContactInformation from './edit/ContactInformation.vue'
 import ViewContactInformation from './view/ContactInformation.vue'
 
 export default {
+  name: 'ContactInformation',
+
   props: {
     source: {
       type: Object,

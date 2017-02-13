@@ -36,6 +36,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->loadTranslationsFrom(resource_path('lang-web'), 'app');
         $this->registerMimeTypeGuesser();
         $this->registerApiSerializer();
         $this->registerQueryLogger();

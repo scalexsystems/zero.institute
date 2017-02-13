@@ -16,7 +16,7 @@ export default {
   },
 
   updatePersonalInformation (user, student) {
-    return canUpdateStudent(user)
+    return isMe(user, student) || canUpdateStudent(user)
   },
 
   viewContactInformation (user, student) {
@@ -24,6 +24,30 @@ export default {
   },
 
   updateContactInformation (user, student) {
+    return isMe(user, student) || canUpdateStudent(user)
+  },
+
+  viewSchoolRelatedInformation (user, student) {
+    return isMe(user, student) || canViewStudent(user)
+  },
+
+  updateSchoolRelatedInformation (user) {
+    return canUpdateStudent(user)
+  },
+
+  viewMedicalInformation (user, student) {
+    return isMe(user, student) || canViewStudent(user)
+  },
+
+  updateMedicalInformation (user, student) {
+    return isMe(user, student) || canUpdateStudent(user)
+  },
+
+  viewGuardianInformation (user, student) {
+    return isMe(user, student) || canViewStudent(user)
+  },
+
+  updateGuardianInformation (user, student) {
     return isMe(user, student) || canUpdateStudent(user)
   }
 }

@@ -3,38 +3,44 @@
   <div class="row">
     <div class="col-6 col-md-4">
       <div class="profile-field">
-        <div class="label">Name</div>
-        <div class="value">{{ source.name }}</div>
+        <div class="label">Blood Group</div>
+        <div class="value text-uppercase">{{ source.blood_group }}</div>
       </div>
     </div>
     <div class="col-6 col-md-4">
       <div class="profile-field">
-        <div class="label">Gender</div>
-        <div class="value text-capitalize">{{ source.gender }}</div>
+        <div class="label">Physically Challenged</div>
+        <div class="value">{{ source.is_disabled ? source.disability : 'No' }}</div>
       </div>
     </div>
     <div class="col-6 col-md-4">
       <div class="profile-field">
-        <div class="label">Date of Birth</div>
-        <div class="value">{{ source.date_of_birth | dateForHumans }}</div>
+        <div class="label">Major Disease/Illness</div>
+        <div class="value">{{ source.disease }}</div>
       </div>
     </div>
     <div class="col-6 col-md-4">
       <div class="profile-field">
-        <div class="label">Category</div>
-        <div class="value">{{ source.category }}</div>
+        <div class="label">Allergy</div>
+        <div class="value">{{ source.allergy }}</div>
       </div>
     </div>
     <div class="col-6 col-md-4">
       <div class="profile-field">
-        <div class="label">Religion</div>
-        <div class="value">{{ source.religion }}</div>
+        <div class="label">Body Marks/Identification Marks</div>
+        <div class="value">{{ source.body_marks }}</div>
       </div>
     </div>
     <div class="col-6 col-md-4">
       <div class="profile-field">
-        <div class="label">Mother Tongue</div>
-        <div class="value">{{ source.language }}</div>
+        <div class="label">Food Habit</div>
+        <div class="value">{{ source.food_habit.join(', ') }}</div>
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="profile-field">
+        <div class="label">Additional Remarks</div>
+        <div class="value">{{ source.medical_remarks }}</div>
       </div>
     </div>
   </div>
@@ -46,7 +52,7 @@ import moment from 'moment'
 import { isObject } from '../../../util'
 
 export default {
-  name: 'PersonalInformation',
+  name: 'MedicalInformation',
 
   props: {
     source: {
