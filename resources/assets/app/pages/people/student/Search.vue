@@ -42,53 +42,30 @@
 
 <script lang="babel">
 import { mapGetters, mapActions } from 'vuex'
-import throttle from 'lodash.throttle'
+import mixin from '../search'
 
 export default {
   name: 'StudentDashboard',
 
-  data () {
-    return {
-      query: '',
-      suggestions: []
-    }
-  },
+  data: () => ({
+    type: 'student'
+  }),
 
-  computed: {
-    ...mapGetters({
-      departments: 'departments/academic',
-      disciplines: 'disciplines/disciplines'
-    })
-  },
+  computed: mapGetters({
+    departments: 'departments/academic',
+    disciplines: 'disciplines/disciplines'
+  }),
 
   methods: {
-    onSearchInput: throttle(function onSearchInput() {
-      this.fetch()
-    }, 400),
-    onInput (value) {
-      this.query = value
+    async callAPI (q) {
+      const { students } = await this.index({ q })
 
-      this.onSearchInput()
+      return { items: students }
     },
-    async fetch () {
-      const { students } = await this.getStudents({ q: this.query })
-
-      if (students) {
-        this.suggestions = students
-      }
-    },
-    onSearch () {
-      this.$router.push({ name: 'student.index', query: { q: this.query } })
-    },
-    onSelect ({ uid }) {
-      this.$router.push({ name: 'student.show', params: { uid } })
-    },
-    ...mapActions('students', { getStudents: 'index' })
+    ...mapActions('students', ['index'])
   },
 
-  created () {
-    this.fetch()
-  }
+  mixins: [mixin]
 }
 </script>
 

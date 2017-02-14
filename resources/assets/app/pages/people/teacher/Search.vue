@@ -1,17 +1,16 @@
 <template>
 <container title="Teachers" subtitle="Search teachers" @back="$router.go(-1)" back>
-
   <div class="teacher-search-container">
     <div class="container">
       <h3 class="text-center">Teachers</h3>
       <div class="row">
-        <div class="col-12 col-md-6 offset-md-3 m-t-1">
-          <typeahead v-model="query" input-class="form-control-lg" @select="onSelect" @search="onSearch"
-                     @input="onSearchInput" component="SelectOptionUser" v-bind="{ suggestions }"/>
+        <div class="col-12 col-md-6 offset-md-3">
+          <typeahead v-model="query" input-class="form-control-lg" @select="onSelect" @enter="onSearch"
+                     @search="onInput" component="SelectOptionUser" v-bind="{ suggestions }"/>
         </div>
       </div>
       <p class="text-center">
-        Find teachers by their teacher ID or name.
+        Find teachers by their roll number or name.
       </p>
     </div>
   </div>
@@ -34,39 +33,27 @@
 
 <script lang="babel">
 import { mapGetters, mapActions } from 'vuex'
-import throttle from 'lodash/throttle'
+import mixin from '../search'
 
 export default {
   name: 'TeacherDashboard',
+
   data: () => ({
-    query: '',
-    suggestions: []
+    type: 'teacher'
   }),
+
   computed: mapGetters({ departments: 'departments/academic' }),
 
   methods: {
-    onSearchInput: throttle(function onSearchInput() {
-      this.fetch()
-    }, 400),
-    async fetch () {
-      const { teachers } = await this.getTeachers({ q: this.query })
+    async callAPI (q) {
+      const { teachers } = await this.index({ q })
 
-      if (teachers) {
-        this.suggestions = teachers
-      }
+      return { items: teachers }
     },
-    onSearch () {
-      this.$router.push({ name: 'teacher.index', query: { q: this.query }})
-    },
-    onSelect (teacher) {
-      this.$debug(teacher)
-    },
-    ...mapActions('teachers', { getTeachers: 'index' })
+    ...mapActions('teachers', ['index'])
   },
 
-  created () {
-    this.fetch()
-  }
+  mixins: [mixin]
 }
 </script>
 

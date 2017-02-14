@@ -4,13 +4,13 @@
     <div class="container">
       <h3 class="text-center">Employees</h3>
       <div class="row">
-        <div class="col-12 col-md-6 offset-md-3 m-t-1">
-          <typeahead v-model="query" input-class="form-control-lg" @select="onSelect" @search="onSearch"
-                     @input="onSearchInput" component="SelectOptionUser" v-bind="{ suggestions }"/>
+        <div class="col-12 col-md-6 offset-md-3">
+          <typeahead v-model="query" input-class="form-control-lg" @select="onSelect" @enter="onSearch"
+                     @search="onInput" component="SelectOptionUser" v-bind="{ suggestions }"/>
         </div>
       </div>
       <p class="text-center">
-        Find employees by their employee ID or name.
+        Find employees by their roll number or name.
       </p>
     </div>
   </div>
@@ -33,41 +33,28 @@
 
 <script lang="babel">
 import { mapGetters, mapActions } from 'vuex'
-import throttle from 'lodash/throttle'
+import mixin from '../search'
 
 export default {
   name: 'EmployeeDashboard',
 
   data: () => ({
-    query: '',
-    suggestions: []
+    type: 'employee'
   }),
 
   computed: mapGetters({ departments: 'departments/departments' }),
 
   methods: {
-    onSearchInput: throttle(function onSearchInput() {
-      this.fetch()
-    }, 400),
-    async fetch () {
-      const { teachers } = await this.getTeachers({ q: this.query })
+    async callAPI (q) {
+      const { employees } = await
+      this.index({ q })
 
-      if (teachers) {
-        this.suggestions = teachers
-      }
+      return { items: employees }
     },
-    onSearch () {
-      this.$router.push({ name: 'employee.index', query: { q: this.query }})
-    },
-    onSelect (employee) {
-
-    },
-    ...mapActions('employees', { getTeachers: 'index' })
+    ...mapActions('employees', ['index'])
   },
 
-  created () {
-    this.fetch()
-  }
+  mixins: [mixin]
 }
 </script>
 
@@ -84,7 +71,7 @@ export default {
 
   h3 {
     text-transform: uppercase;
-    letter-spacing: rem(2px);
+    letter-spacing: to-rem(2px);
   }
 
   background-image: linear-gradient(to right, rgba(0, 0, 0, .35), rgba(0, 0, 0, .35)), url(./assets/m-cover.jpg);
@@ -102,7 +89,7 @@ export default {
 .people-d-links {
   h5 {
     text-transform: uppercase;
-    letter-spacing: rem(1px);
+    letter-spacing: to-rem(1px);
   }
   .item {
     margin: 1rem;

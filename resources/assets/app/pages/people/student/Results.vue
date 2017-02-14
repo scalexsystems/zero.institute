@@ -25,16 +25,16 @@
         <input-search v-model="query" input-class="form-control-lg" @input="onInput"></input-search>
 
         <div class="card">
-          <div class="card-header bg-white">
-            <div class="title">{{ searchText }}</div>
+          <div class="card-header bg-white d-flex flex-row">
+            <h5 class="mb-0">{{ searchText }}</h5>
 
-            <div class="text-muted">
+            <div class="text-muted ml-auto">
               {{ countText }}
             </div>
           </div>
           <div class="card-block">
             <infinite-loader class="row" @infinite="onInfinite">
-              <router-link tag="div" class="col-12 col-lg-6 student-card" role="button"
+              <router-link tag="div" class="col-12 col-lg-6 student-card mb-3" role="button"
                            v-for="student of students" :key="student"
                            :to="{ name: 'student.show', params: { uid: student.uid } }">
                 <student-card :student="student"/>
@@ -49,31 +49,20 @@
 </template>
 
 <script lang="babel">
-import throttle from 'lodash.throttle'
 import { mapGetters, mapActions } from 'vuex'
-import { notLastPage, nextPage, toArray, toInt } from '../../../util'
-import StudentCard from '../../../components/student/Card.vue'
+import mixin from '../results'
 
 export default {
   name: 'StudentDirectory',
 
   data: () => ({
-    discipline: [],
-    department: [],
-    students: [],
-    query: '',
-    ignoreChanges: false,
-    page: 1
+    discipline: []
   }),
 
   computed: {
-    countText () {
-      const students = this.students
-
-      return students.length === 1 ? '1 student' : `${students.length} students`
-    },
-    searchText () {
-      return 'All Students'
+    type: () => 'student',
+    students () {
+      return this.items
     },
     ...mapGetters({
       departments: 'departments/academic',
@@ -82,101 +71,16 @@ export default {
   },
 
   methods: {
-    onInput: throttle(function onInput() {
-      this.page = 1
-      this.fetch()
-    }, 400),
-    async onInfinite ({ loaded, complete }) {
-      notLastPage(await this.fetch()) ? loaded() : complete()
-    },
-    async fetch () {
-      const { students, meta } = await this.getStudents(
+    async callAPI () {
+      const { students, meta } = await this.index(
           { page: this.page, q: this.query, department: this.department, discipline: this.discipline }
       )
 
-      if (students) {
-        if (this.page === 1) {
-          this.students = students
-        } else {
-          this.students.push(...students.filter(s => this.students.findIndex(o => o.id === s.id) < 0))
-        }
-      } else {
-        this.students = []
-      }
-
-      this.page = nextPage(meta)
-
-      return meta
+      return { items: students, meta }
     },
-    go () {
-      const query = {}
-
-      if (this.ignoreChanges) return
-
-      if (this.query.trim().length) {
-        query.q = this.query
-      }
-
-      if (this.discipline.length) {
-        query.discipline = this.discipline.slice()
-      }
-
-      if (this.department.length) {
-        query.department = this.department.slice()
-      }
-
-      this.$router.replace({ name: 'student.index', query })
-    },
-
-    getRouteParams () {
-      this.ignoreChanges = true
-      this.page = 1
-      this.query = this.$route.query.q || ''
-      this.discipline = toArray(this.$route.query.discipline || []).map(toInt)
-      this.department = toArray(this.$route.query.department || []).map(toInt)
-      this.$nextTick(() => {
-        this.ignoreChanges = false
-      })
-      this.fetch()
-    },
-    ...mapActions('students', { getStudents: 'index' })
+    ...mapActions('students', ['index'])
   },
 
-  created () {
-    this.getRouteParams()
-  },
-
-  components: { StudentCard },
-
-  watch: {
-    discipline: 'go',
-    department: 'go',
-    $route: 'getRouteParams'
-  }
+  mixins: [mixin]
 }
 </script>
-
-<style lang="scss" scoped>
-@import '../../../styles/variables';
-@import '../../../styles/mixins';
-
-.card-header {
-  @include media-breakpoint-up(lg) {
-    display: flex;
-    flex-direction: row;
-
-    > * {
-      align-self: baseline;
-    }
-  }
-}
-
-.title {
-  font-size: 1.5rem;
-  flex: 1;
-}
-
-.search-box {
-  padding: 1.25rem;
-}
-</style>
