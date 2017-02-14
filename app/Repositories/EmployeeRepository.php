@@ -53,7 +53,7 @@ class EmployeeRepository extends Repository
         'govt_id' => 'nullable|max:255',
 
         // Related to School
-        'uid' => 'required|unique:teachers,uid,NULL,id,school_id,',
+        'uid' => 'required|unique:employees,uid,NULL,id,school_id,',
         'date_of_joining' => 'nullable|date',
         'job_title' => 'nullable|max:255',
         'department_id' => 'required|exists:departments,id',
@@ -104,7 +104,7 @@ class EmployeeRepository extends Repository
         return $this->rules + [
             'uid' => [
                 'required',
-                Rule::unique('teachers')->where('school_id', $id),
+                Rule::unique('employees')->where('school_id', $id),
             ],
             'department_id' => [
                 'required',
