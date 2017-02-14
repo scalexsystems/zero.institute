@@ -1,54 +1,54 @@
 <template>
 <form class="card-block" @submit="save">
-  <div class="row">
+  <alert type="danger" v-if="formStatus" v-html="formStatus"></alert>
+
+  <form class="row" @submit.prevent="$emit('submit')">
+    <input type="submit" hidden>
     <div class="col-12 col-lg-6">
-      <input-text v-model="attributes.address_line1" title="Address Line 1" autofocus required v-bind="{ errors }"/>
+      <input-text v-model="attributes.address_line1" title="Address Line 1" autofocus required v-bind="{ errors }"
+                  autocomplete="address-line1"/>
     </div>
 
     <div class="col-12 col-lg-6">
-      <input-text v-model="attributes.address_line2" title="Address Line 2" v-bind="{ errors }"/>
+      <input-text v-model="attributes.address_line2" title="Address Line 2" required v-bind="{ errors }"
+                  autocomplete="address-line2"/>
     </div>
 
     <div class="col-12 col-lg-6">
-      <input-text v-model="attributes.landmark" title="Landmark" v-bind="{ errors }"/>
+      <input-text v-model="attributes.landmark" title="Landmark" v-bind="{ errors }" autocomplete="address-line3"/>
     </div>
 
     <div class="col-12 col-lg-6">
-      <input-typeahead v-model="attributes.city_id" title="City" v-bind="{ errors, suggestions }" @search="getCities" required />
+      <input-typeahead v-model="attributes.city_id" title="City" v-bind="{ errors, suggestions }" @search="getCities"
+                       required autocomplete="city"/>
     </div>
 
     <div class="col-12 col-lg-6">
-      <input-text v-model="attributes.pin_code" title="PIN Code" type="number" v-bind="{ errors }" required/>
+      <input-text v-model="attributes.pin_code" title="PIN Code" v-bind="{ errors }" required
+                  autocomplete="postal-code"/>
     </div>
 
     <div class="col-12 col-lg-6">
-      <input-text v-model="attributes.phone" title="Phone" type="tel" v-bind="{ errors }" />
+      <input-text v-model="attributes.phone" title="Phone" type="tel" v-bind="{ errors }" autocomplete="tel"/>
     </div>
 
     <div class="col-12 col-lg-6">
-      <input-text v-model="attributes.email" title="Email" type="email" v-bind="{ errors }" />
+      <input-text v-model="attributes.email" title="Email" type="email" v-bind="{ errors }" autocomplete="email"/>
     </div>
-  </div>
+  </form>
 </form>
 </template>
 
 <script lang="babel">
 import { mapGetters } from 'vuex'
 import { only } from '../../../util'
-import { formHelper } from 'bootstrap-for-vue'
+import mixin from './mixin'
 import ContactInformation from '../view/ContactInformation.vue'
 
 export default {
   name: 'EditContactInformation',
 
   extends: ContactInformation,
-
-  props: {
-    submit: {
-      type: Function,
-      required: true
-    }
-  },
 
   data: () => ({
     attributes: {
@@ -62,21 +62,18 @@ export default {
     }
   }),
 
-  computed: mapGetters('cities', { suggestions: 'cities' }),
+  computed: mapGetters('cities', { suggestions: 'cities', cityById: 'cityById' }),
 
   methods: {
     prepareAttributes () {
-      this.clearErrors()
+      if (this.address.city_id > 0 && !this.cityById(this.address.city_id)) {
+        this.$store.dispatch('cities/find', this.address.city_id)
+      }
+
       this.attributes = only(this.address || {}, Object.keys(this.attributes))
     },
-    async save () {
-      const { errors } = await this.submit({ id: this.source.id, payload: this.attributes })
-
-      if (errors) {
-        this.setErrors(errors)
-      } else {
-        this.$emit('updated')
-      }
+    async callAPI () {
+      return await this.submit({ uid: this.source.uid, payload: this.attributes })
     },
 
     getCities (q) {
@@ -85,11 +82,11 @@ export default {
   },
 
   created () {
-    this.$on('edit', () => this.prepareAttributes())
-    this.$on('save', () => this.save())
-    this.$store.dispatch('cities/index')
+    if (!this.suggestions.length) {
+      this.$store.dispatch('cities/index')
+    }
   },
 
-  mixins: [formHelper]
+  mixins: [mixin]
 }
 </script>

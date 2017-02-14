@@ -18,6 +18,10 @@ class GuardianTransformer extends Transformer
 
             'gender' => (string)$guardian->gender,
             'blood_group' => (string)$guardian->blood_group,
+
+            'phone' => $guardian->phone,
+            'income' => (float)$guardian->income,
+            'profession' => (string)$guardian->profession,
         ];
     }
 }

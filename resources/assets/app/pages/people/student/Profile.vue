@@ -3,39 +3,39 @@
            @back="$router.go(-1)" back>
 
   <div class="container my-3">
-    <div class="row">
-      <div class="col-12 col-lg-4 text-center">
-        <div class="card mb-3" ref="sidebar" v-if="student">
-          <img class="card-img-top student-photo" :src="student.photo">
-          <div class="card-block">
-            <h3 class="value">{{ student.name }}</h3>
-            <span v-if="student.uid"><span class="text-muted">Roll Number:</span> {{ student.uid }}<br></span>
-            <span v-if="student.email"><span class="text-muted">Email:</span> {{ student.email}}</span>
-          </div>
-          <hr class="m-0">
-          <div class="card-block" v-if="student.user_id">
-            <router-link class="card-link" :to="{ name: 'user.messages', params: { id: student.user_id } }">
-              Send Message
-            </router-link>
-          </div>
-        </div>
+    <div class="row" v-if="student">
+      <div class="col-12 col-lg-4">
+        <profile-card class="mb-3" :source="student"/>
       </div>
-      <div class="col-12 col-lg-8" v-if="student">
-        <personal-information class="mb-3" :source="student" :submit="() => {}"/>
-        <school-related-information class="mb-3" :source="student" :submit="() => {}"/>
-        <contact-information class="mb-3" :source="student" :submit="() => {}"/>
-        <guardian-information class="mb-3" :source="student" :submit="() => {}" type="father"
-                              title="Father's Information"/>
-        <guardian-information class="mb-3" :source="student" :submit="() => {}" type="mother"
-                              title="Mother's Information"/>
-        <medical-information class="mb-3" :source="student" :submit="() => {}"/>
+      <div class="col-12 col-lg-8">
+        <alert type="info" v-if="sourceChanged">
+          {{ student.first_name }}'s profile have been updated.
+          <a href="#" role="button" @click.prevent="fetch">Click here</a> to load latest information.
+        </alert>
+
+        <personal-information class="mb-3" :source="student" :submit="update" @editing="editing += 1"
+                              @edited="editing -= 1"/>
+        <school-related-information class="mb-3" :source="student" :submit="update" @editing="editing += 1"
+                                    @edited="editing -= 1"/>
+        <contact-information class="mb-3" :source="student" :submit="updateAddress" @editing="editing += 1"
+                             @edited="editing -= 1"/>
+        <guardian-information class="mb-3" :source="student" :submit="updateFather" type="father"
+                              title="Father's Information" @editing="editing += 1" @edited="editing -= 1"/>
+        <guardian-information class="mb-3" :source="student" :submit="updateMother" type="mother"
+                              title="Mother's Information" @editing="editing += 1" @edited="editing -= 1"/>
+        <medical-information class="mb-3" :source="student" :submit="update" @editing="editing += 1"
+                             @edited="editing -= 1"/>
       </div>
-      <div class="col-12 col-lg-8" v-else-if="error">
+    </div>
+    <div class="row" v-else-if="error">
+      <div class="col-12">
         <div class="card card-block text-center card-outline-danger text-danger">
           You cannot access this profile.
         </div>
       </div>
-      <div class="col-12 col-lg-8" v-else>
+    </div>
+    <div class="row" v-else>
+      <div class="col-12">
         <loading/>
       </div>
     </div>
@@ -44,102 +44,44 @@
 </template>
 
 <script lang="babel">
-import moment from 'moment'
-import { mapGetters, mapActions } from 'vuex'
-import {
-  ContactInformation,
-  GuardianInformation,
-  MedicalInformation,
-  PersonalInformation,
-  SchoolRelatedInformation
-} from '../../../components/profile'
+import { mapActions } from 'vuex'
+import mixin from '../profile'
 
 export default {
   name: 'Student',
 
-  props: {
-    uid: {
-      type: String,
-      required: true
-    }
-  },
-
-  data: () => ({
-    student: null,
-    error: false
-  }),
-
-  created () {
-    this.fetch()
-  },
-
-  filters: {
-    currency (value) {
-      const amount = parseFloat(value)
-
-      if (Number.isNaN(amount)) return '₹ 0'
-
-      return `₹ ${amount}`
-    },
-    dateForHumans (value) {
-      return value ? moment(value).format('D MMMM YYYY') : ''
+  computed: {
+    student () {
+      return this.source
     }
   },
 
   methods: {
-    async fetch () {
-      const { student } = await this.find(this.uid)
+    async callAPI () {
+      const { student } = await this.$store.dispatch('students/find', this.uid)
 
-      if (student) {
-        this.student = student
-        this.error = false
-      } else {
-        this.error = true
+      return student
+    },
+    ...mapActions('students', ['update', 'updateAddress', 'updateFather', 'updateMother'])
+  },
+
+  channel: 'school',
+  echo: {
+    namespace: 'Student',
+
+    StudentPhotoUpdated ({ id, photo }) {
+      if (id === this.student.id) {
+        this.sourcePhotoUpdated(photo)
       }
     },
-    ...mapActions('students', ['find'])
-  },
 
-  components: {
-    ContactInformation,
-    GuardianInformation,
-    MedicalInformation,
-    PersonalInformation,
-    SchoolRelatedInformation
-  },
-
-  watch: {
-    uid (uid, oldUID) {
-      if (uid === oldUID) return
-
-      this.student = null
-      this.error = false
-
-      this.fetch()
+    StudentUpdated ({ id, uid }) {
+      if (id === this.student.id) {
+        this.sourceUpdated(uid)
+      }
     }
-  }
+  },
+
+  mixins: [mixin]
 }
 </script>
-
-<style lang="scss" scoped>
-.card-header {
-  padding: 1.25rem;
-}
-
-.student-photo {
-  width: 100%;
-}
-
-.student-field {
-  margin-bottom: 2rem;
-  .label {
-    font-size: .75rem;
-    color: #b3b3b3;
-  }
-}
-
-.value:empty:before {
-  content: "xxx x xxxx";
-  opacity: 0.1;
-}
-</style>

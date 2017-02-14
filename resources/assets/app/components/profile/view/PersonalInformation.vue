@@ -22,7 +22,7 @@
     <div class="col-6 col-md-4">
       <div class="profile-field">
         <div class="label">Category</div>
-        <div class="value">{{ source.category }}</div>
+        <div class="value">{{ source.category | category }}</div>
       </div>
     </div>
     <div class="col-6 col-md-4">
@@ -33,7 +33,7 @@
     </div>
     <div class="col-6 col-md-4">
       <div class="profile-field">
-        <div class="label">Mother Tongue</div>
+        <div class="label">Native Language</div>
         <div class="value">{{ source.language }}</div>
       </div>
     </div>
@@ -45,6 +45,14 @@
 import moment from 'moment'
 import { isObject } from '../../../util'
 
+const categories = [
+  { id: 'gen', name: 'General' },
+  { id: 'sc', name: 'Scheduled Castes (SC)' },
+  { id: 'st', name: 'Scheduled Tribes (ST)' },
+  { id: 'obc', name: 'Other Backward Classes (OBC)' },
+  { id: 'sbc', name: 'Special Backward Classes (SBC)' },
+]
+
 export default {
   name: 'PersonalInformation',
 
@@ -55,9 +63,19 @@ export default {
     }
   },
 
+  computed: {
+    categories: () => categories
+  },
+
   filters: {
     dateForHumans (value) {
       return value ? moment(value).format('D MMMM YYYY') : ''
+    },
+
+    category (value) {
+      const category = categories.find(c => c.id === value) || {}
+
+      return category.name || value
     }
   }
 }

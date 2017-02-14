@@ -16,11 +16,11 @@ class TeacherTransformer extends Transformer
     public function show(Teacher $teacher)
     {
         return $this->getPublicInfo($teacher)
-        + $this->getBasicInfo($teacher)
-        + $this->getMedicalInfo($teacher)
-        + $this->getSchoolRelatedInfo($teacher)
-        + $this->getQualificationInfo($teacher)
-        + $this->getBankAccountInfo($teacher);
+               + $this->getBasicInfo($teacher)
+               + $this->getMedicalInfo($teacher)
+               + $this->getSchoolRelatedInfo($teacher)
+               + $this->getQualificationInfo($teacher)
+               + $this->getBankAccountInfo($teacher);
     }
 
     public function getPublicInfo(Teacher $teacher)
@@ -28,15 +28,15 @@ class TeacherTransformer extends Transformer
         return [
             'name' => (string)$teacher->name,
             'bio' => (string)$teacher->bio,
-            'photo' => attach_url($teacher->profilePhoto) ?? asset('img/placeholder-64.jpg'),
+            'photo' => $teacher->getPhotoUrl(),
             'has_account' => !is_null($teacher->user),
             'user_id' => $teacher->user ? $teacher->user->getKey() : null,
             'department_id' => (int)$teacher->department_id,
-            'uid' => (int)$teacher->uid,
+            'uid' => (string)$teacher->uid,
         ];
     }
 
-    public function getBasicInfo(Teacher $teacher) : array
+    public function getBasicInfo(Teacher $teacher): array
     {
         if (Gate::denies('read-basic-info', $teacher)) {
             return [];
@@ -114,7 +114,7 @@ class TeacherTransformer extends Transformer
             'disease' => (string)$teacher->disease,
             'allergy' => (string)$teacher->allergy,
             'visible_marks' => (string)$teacher->visible_marks,
-            'food_habit' => (string)$teacher->food_habit,
+            'food_habit' => (array)$teacher->food_habit,
             'medical_remarks' => (string)$teacher->medical_remarks,
         ];
 
@@ -127,8 +127,10 @@ class TeacherTransformer extends Transformer
 
     public function includeAddress(Teacher $teacher)
     {
-        return $this->item(
-            allow('read-address', $teacher, $teacher->address)
-        );
+        if ($teacher->address and Gate::allows('view-address', $teacher)) {
+            return $this->item($teacher->address);
+        }
+
+        return $this->null();
     }
 }

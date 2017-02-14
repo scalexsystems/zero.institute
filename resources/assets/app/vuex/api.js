@@ -10,31 +10,42 @@ async function format (response) {
 
 async function process (response) {
   if (response.status === 422) {
-    return (await format(response)).errors
+    const result = await format(response)
+
+    if (result.errors) {
+      result.errors.$message = 'There is some problem with your input. Make required changes and save again.'
+    }
+
+    return result.errors
   }
 
   if (response.status === 403) {
-    // TODO: Redirect to login. User session expired.
+    return { $message: 'It feels like your session has expired.' }
+  }
+
+  if (response.status === 405) {
+    return { $message: 'Ah! Oh! Feels like developer missed this one. Tell support that: <strong>There is an 405 here!</strong>' }
   }
 
   if (response.status === 401) {
-    // TODO: Notify user resource is not accessible.
+    return { $message: 'You don\'t have access to perform this action.' }
   }
 
-  if (response.status === 500) {
-    // TODO: Take to sentry feedback page.
-  }
 
   if (response.status === 404) {
-    // TODO: Notify user resource not found.
+    return { $message: 'There is nothing like this on Zero servers. (Not Found)' }
   }
 
   if (response.status === 413) {
-    // TODO: File size too large.
+    return { $message: 'Oops! You file is too large to handle.' }
   }
 
   if (response.status === 429) {
-    // TODO: Wait for cool down.
+    return { $message: 'Slow down! You\'ve hit the Zero servers too frequently. Wait for few minutes and try again.' }
+  }
+
+  if (response.status >= 500) {
+    return { $message: 'Some unexpected error occurred. Don\'t worry developers have been notified, it would be fixed soon.' }
   }
 }
 

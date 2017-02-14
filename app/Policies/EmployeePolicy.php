@@ -32,7 +32,7 @@ class EmployeePolicy extends AbstractPolicy
 
     public function updatePhoto(User $user, Employee $employee)
     {
-        return trust($user)->to(Action::VIEW_EMPLOYEE) or $this->isHimself($user, $employee);
+        return $this->canUpdate($user, $employee);
     }
 
     public function viewAddress(User $user, Employee $employee)
@@ -72,17 +72,16 @@ class EmployeePolicy extends AbstractPolicy
 
     protected function canView(Employee $employee)
     {
-        return trust($this->getUser())->to(Action::UPDATE_EMPLOYEE)
-        or $this->isHimself($this->getUser(), $employee);
+        return $this->isHimself($this->getUser(), $employee) or trust($this->getUser())->to('employee.read');
     }
 
     public function invite(User $user)
     {
-        return trust($user)->to(Action::INVITE_STUDENT);
+        return trust($user)->to('employee.invite');
     }
 
-    private function canUpdate($user, $employee)
+    private function canUpdate(User $user, Employee $employee)
     {
-        return $this->isHimself($user, $employee) or trust($user)->to(Action::UPDATE_EMPLOYEE);
+        return $this->isHimself($user, $employee) or trust($user)->to('employee.update');
     }
 }

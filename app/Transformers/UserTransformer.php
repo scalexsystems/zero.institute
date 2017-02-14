@@ -7,7 +7,7 @@ use Znck\Transformers\Transformer;
 
 class UserTransformer extends Transformer
 {
-    protected $availableIncludes = ['person'];
+    protected $availableIncludes = ['person', 'school'];
 
     public function index(User $user)
     {
@@ -17,7 +17,7 @@ class UserTransformer extends Transformer
             'type' => morph_model($user->person),
             'bio' => $this->getBio($user),
             'unread_count' => $user->getAttribute('messages_count'),
-            'last_message_id' => $user->getAttribute('last_message_id')
+            'last_message_id' => $user->getAttribute('last_message_id'),
         ];
     }
 
@@ -30,7 +30,7 @@ class UserTransformer extends Transformer
     {
         if ($current = Request::user() and $user->getKey() === $current->getKey()) {
             return [
-                'permissions' => $user->getPermissionNames()
+                'permissions' => $user->getPermissionNames(),
             ];
         }
 
@@ -40,7 +40,16 @@ class UserTransformer extends Transformer
     public function includePerson(User $user)
     {
         if ($user->person) {
-            return $this->item($user->person, transformer($user->person)->setIndexing(false));
+            return $this->item($user->person);
+        }
+
+        return $this->null();
+    }
+
+    public function includeSchool(User $user)
+    {
+        if ($user->school) {
+            return $this->item($user->school);
         }
 
         return $this->null();
@@ -65,7 +74,7 @@ class UserTransformer extends Transformer
      *
      * @return array
      */
-    protected function showPartial(User $user):array
+    protected function showPartial(User $user): array
     {
         return [
             'name' => (string)$user->name,
@@ -75,7 +84,7 @@ class UserTransformer extends Transformer
             'channel' => $user->getChannelName(),
 
             'unread_count' => $user->getAttribute('messages_count'),
-            'last_message_id' => $user->getAttribute('last_message_id')
+            'last_message_id' => $user->getAttribute('last_message_id'),
         ];
     }
 

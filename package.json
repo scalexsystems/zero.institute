@@ -10,7 +10,7 @@
     "prehot": "yarn run io",
     "hot": "node scripts/hot.js",
     "prod": "NODE_ENV=production webpack --env=prod --progress --hide-modules",
-    "io": "laravel-echo-server start &> /dev/null &",
+    "io": "laravel-echo-server start &",
     "test": "yarn run lint:fix && yarn run test:unit && yarn run test:e2e",
     "test:e2e": "node tests/e2e/runner.js",
     "test:unit": "karma start tests/unit/karma.conf.js --single-run",
@@ -26,6 +26,7 @@
     "chai": "^3.5.0",
     "chai-dom": "^1.4.3",
     "chromedriver": "^2.27.2",
+    "cross-spawn": "latest",
     "eslint": "^3.15.0",
     "eslint-config-vue": "^2.0.1",
     "eslint-plugin-html": "^2.0.0-beta.0",
@@ -60,14 +61,13 @@
     "webpack": "^2.2.1",
     "webpack-dashboard": "^0.3.0",
     "webpack-dev-server": "^2.3.0",
-    "webpack-merge": "^2.6.1",
-    "cross-spawn": "latest"
+    "webpack-merge": "^2.6.1"
   },
   "dependencies": {
     "Validator": "^1.0.3",
     "autosize": "^3.0.20",
     "bootstrap": "next",
-    "bootstrap-for-vue": "^0.1.7",
+    "bootstrap-for-vue": "^0.1.11",
     "debug": "^2.6.0",
     "es6-promise": "^4.0.5",
     "filesize": "^3.3.0",

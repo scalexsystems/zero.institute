@@ -3,11 +3,11 @@ function isMe(user, student) {
 }
 
 function canViewStudent(user) {
-  return user.hasPermission('people.student.read') || user.hasPermission('people.manage')
+  return user.hasPermission('student.read')
 }
 
 function canUpdateStudent(user) {
-  return user.hasPermission('people.student.write') || user.hasPermission('people.manage')
+  return user.hasPermission('student.update')
 }
 
 export default {
@@ -48,6 +48,10 @@ export default {
   },
 
   updateGuardianInformation (user, student) {
+    return isMe(user, student) || canUpdateStudent(user)
+  },
+
+  updatePhoto (user, student) {
     return isMe(user, student) || canUpdateStudent(user)
   }
 }

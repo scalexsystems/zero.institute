@@ -1,6 +1,10 @@
 <template>
 <form class="card-block" @submit="save">
-  <div class="row">
+  <alert type="danger" v-if="formStatus" v-html="formStatus"></alert>
+
+  <form class="row" @submit.prevent="$emit('submit')">
+    <input type="submit" hidden>
+
     <div class="col-12 col-lg-6">
       <input-text v-model="attributes.first_name" title="First Name" autofocus required v-bind="{ errors }"/>
     </div>
@@ -15,40 +19,34 @@
       </checkbox-wrapper>
     </div>
     <div class="col-12 col-lg-6">
-      <input-text type="date" v-model="attributes.date_of_birth" title="Date of Birth" placeholder="dd/mm/yyyy" required subtitle="true">
+      <input-text type="date" v-model="attributes.date_of_birth" title="Date of Birth" placeholder="dd/mm/yyyy" required
+                  subtitle="true">
         <span slot="subtitle">Use date format <code>dd/mm/yyyy</code>.</span>
       </input-text>
     </div>
     <div class="col-12 col-lg-6">
-      <input-typeahead v-model="attributes.category" title="Category" :suggestions="categories" />
+      <input-typeahead v-model="attributes.category" title="Category" :suggestions="categories"/>
     </div>
     <div class="col-12 col-lg-6">
-      <input-text v-model="attributes.religion" title="Religion" />
+      <input-text v-model="attributes.religion" title="Religion"/>
     </div>
     <div class="col-12 col-lg-6">
-      <input-text v-model="attributes.mother_tongue" title="Mother Tongue" />
+      <input-text v-model="attributes.language" title="Native Language"/>
     </div>
-  </div>
+  </form>
 </form>
 </template>
 
 <script lang="babel">
-import { mapGetters } from 'vuex'
+import moment from 'moment'
 import { only } from '../../../util'
-import { formHelper } from 'bootstrap-for-vue'
+import mixin from './mixin'
 import PersonalInformation from '../view/PersonalInformation.vue'
 
 export default {
   name: 'EditPersonalInformation',
 
   extends: PersonalInformation,
-
-  props: {
-    submit: {
-      type: Function,
-      required: true
-    }
-  },
 
   data: () => ({
     attributes: {
@@ -59,46 +57,21 @@ export default {
       date_of_birth: '',
       category: '',
       religion: '',
-      mother_tongue: ''
+      language: ''
     }
   }),
 
-  computed: {
-    categories: () => [
-      { id: 'gen', name: 'General' },
-      { id: 'sc', name: 'Scheduled Castes (SC)' },
-      { id: 'st', name: 'Scheduled Tribes (ST)' },
-      { id: 'obc', name: 'Other Backward Classes (OBC)' },
-      { id: 'sbc', name: 'Special Backward Classes (SBC)' },
-    ]
-  },
-
   methods: {
     prepareAttributes () {
-      this.clearErrors()
+      const date = moment(this.source.date_of_birth)
       this.attributes = only(this.source, Object.keys(this.attributes))
+      this.attributes.date_of_birth = date.isValid() ? date.format('YYYY-MM-DD') : ''
     },
-    async save () {
-      const { errors } = await this.submit({ id: this.source.id, payload: this.attributes })
-
-      if (errors) {
-        this.setErrors(errors)
-      } else {
-        this.$emit('updated')
-      }
-    },
-
-    getCities (q) {
-      this.$store.dispatch('cities/index', { q })
+    async callAPI () {
+      return await this.submit({ uid: this.source.uid, payload: this.attributes })
     }
   },
 
-  created () {
-    this.$on('edit', () => this.prepareAttributes())
-    this.$on('save', () => this.save())
-    this.$store.dispatch('cities/index')
-  },
-
-  mixins: [formHelper]
+  mixins: [mixin]
 }
 </script>

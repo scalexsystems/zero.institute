@@ -2,55 +2,26 @@
 <form-card v-if="$can('view-contact-information', source)"
            :editable="$can('update-contact-information', source)"
            :keep-editing="waiting"
-           title="Contact Information"
+           title="Contact Information" ref="form"
            @edit="onEdit" @save="onSave" @cancel="onCancel">
   <view-contact-information slot="view" v-bind="{ source }"/>
-  <edit-contact-information slot="edit" v-bind="{ source, submit }" ref="edit" @updated="waiting = false"/>
+  <edit-contact-information slot="edit" v-bind="{ source, submit }" ref="edit"
+                            @updated="onUpdated"
+                            @submit="onSubmit"
+                            @error="resetFormButtons"/>
 </form-card>
 </template>
 
 <script lang="babel">
 import EditContactInformation from './edit/ContactInformation.vue'
 import ViewContactInformation from './view/ContactInformation.vue'
+import mixin from './mixin'
 
 export default {
   name: 'ContactInformation',
 
-  props: {
-    source: {
-      type: Object,
-      required: true
-    },
+  components: { EditContactInformation, ViewContactInformation },
 
-    submit: {
-      type: Function,
-      required: true
-    }
-  },
-
-  data: () => ({
-    waiting: false
-  }),
-
-  methods: {
-    onEdit () {
-      if (this.$refs.edit) {
-        this.$refs.edit.$emit('edit')
-      }
-    },
-
-    onSave () {
-      this.waiting = true
-      if (this.$refs.edit) {
-        this.$refs.edit.$emit('save')
-      }
-    },
-
-    onCancel () {
-      this.waiting = false
-    }
-  },
-
-  components: { EditContactInformation, ViewContactInformation }
+  mixins: [mixin]
 }
 </script>

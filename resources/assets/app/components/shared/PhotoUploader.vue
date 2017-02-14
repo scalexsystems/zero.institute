@@ -1,6 +1,7 @@
 <template>
 <div class="profile-photo-uploader" @click="$refs.file.click()">
   <slot></slot>
+
   <input type="file" ref="file" hidden @change="onFileSelected">
 
   <div class="backdrop" v-if="cropping">

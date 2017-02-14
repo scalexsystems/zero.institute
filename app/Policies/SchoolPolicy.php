@@ -1,10 +1,7 @@
 <?php namespace Scalex\Zero\Policies;
 
-use Scalex\Zero\Action;
-use Scalex\Zero\Policies\Traits\VerifiesSchool;
-use Scalex\Zero\User;
 use Scalex\Zero\Models\School;
-use Illuminate\Auth\Access\HandlesAuthorization;
+use Scalex\Zero\User;
 
 class SchoolPolicy extends AbstractPolicy
 {
@@ -18,7 +15,7 @@ class SchoolPolicy extends AbstractPolicy
      */
     public function view(User $user, School $school)
     {
-        return $this->verifySchool($user, $school) and trust($user)->to(Action::VIEW_PRIVATE_SCHOOL_INFO);
+        return $this->verifySchool($user, $school);
     }
 
     /**
@@ -31,7 +28,7 @@ class SchoolPolicy extends AbstractPolicy
      */
     public function viewPeopleStatistics(User $user, School $school)
     {
-        return $this->verifySchool($user, $school) and trust($user)->to(Action::PEOPLE);
+        return $this->verifySchool($user, $school) and trust($user)->to('people.statistics');
     }
 
     /**
@@ -44,7 +41,7 @@ class SchoolPolicy extends AbstractPolicy
      */
     public function update(User $user, School $school)
     {
-        return $this->verifySchool($user, $school) and trust($user)->to(Action::UPDATE_SCHOOL);
+        return $this->verifySchool($user, $school) and trust($user)->to('school.update');
     }
 
     protected function verifySchool(User $user, School $school)

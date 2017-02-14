@@ -16,13 +16,6 @@ Route::get('/me', 'Api\Users\CurrentUserController@index');
 Route::put('/me', 'Api\Users\CurrentUserController@update');
 Route::get('/me/dashboard', 'Api\Users\DashboardController@index');
 
-// Students
-
-
-// Teachers
-
-// Employees
-
 Route::get('people/roles/{role}', 'Api\RoleController@index');
 Route::post('people/roles', 'Api\RoleController@store');
 
@@ -39,14 +32,26 @@ Route::get(     '/geo/cities/{city}', 'Api\CitiesController@show');
 
 // - Students
 Route::get(     '/people/students/{student}/address', 'Api\People\Students\AddressController@show');
-Route::post(    '/people/students/{student}/address', 'Api\People\Students\AddressController@update');
+Route::put(     '/people/students/{student}/address', 'Api\People\Students\AddressController@update');
 Route::get(     '/people/students/{student}/photo',   'Api\People\Students\PhotoController@show');
 Route::post(    '/people/students/{student}/photo',   'Api\People\Students\PhotoController@store');
 Route::get(     '/people/students/{student}/father',  'Api\People\Students\GuardianController@father');
-Route::post(    '/people/students/{student}/father',  'Api\People\Students\GuardianController@updateFather');
+Route::put(     '/people/students/{student}/father',  'Api\People\Students\GuardianController@updateFather');
 Route::get(     '/people/students/{student}/mother',  'Api\People\Students\GuardianController@mother');
-Route::post(    '/people/students/{student}/mother',  'Api\People\Students\GuardianController@updateMother');
+Route::put(     '/people/students/{student}/mother',  'Api\People\Students\GuardianController@updateMother');
 Route::resource('/people/students',                   'Api\People\Students\StudentController', $resource);
+
+// - Teachers
+Route::get(     '/people/teachers/{teacher}/address', 'Api\People\Teachers\AddressController@show');
+Route::put(     '/people/teachers/{teacher}/address', 'Api\People\Teachers\AddressController@update');
+Route::get(     '/people/teachers/{teacher}/photo',   'Api\People\Teachers\PhotoController@show');
+Route::post(    '/people/teachers/{teacher}/photo',   'Api\People\Teachers\PhotoController@store');
+Route::resource('/people/teachers',                   'Api\People\Teachers\TeacherController', $resource);
+
+// - Employees
+Route::get(     '/people/employees/{employee}/photo', 'Api\People\Employees\PhotoController@show');
+Route::post(    '/people/employees/{employee}/photo', 'Api\People\Employees\PhotoController@store');
+Route::resource('/people/employees',                  'Api\People\Employees\EmployeeController', $resource);
 
 // - People Common
 Route::get(     '/people',            'Api\People\PersonController@index');
@@ -54,15 +59,6 @@ Route::get(     '/people/statistics', 'Api\People\StatisticsController@index');
 Route::post(    '/people/invite',     'Api\People\InvitationController@invite');
 Route::get(     '/people/{user}',     'Api\People\PersonController@show');
 
-// - Teachers
-Route::get(    '/people/teachers/{teacher}/photo', 'Api\People\Teachers\PhotoController@show');
-Route::post(    '/people/teachers/{teacher}/photo', 'Api\People\Teachers\PhotoController@store');
-Route::resource('/people/teachers',                 'Api\People\Teachers\TeacherController', $resource);
-
-// - Employees
-Route::get(    '/people/employees/{employee}/photo', 'Api\People\Employees\PhotoController@show');
-Route::post(    '/people/employees/{employee}/photo', 'Api\People\Employees\PhotoController@store');
-Route::resource('/people/employees',                 'Api\People\Employees\EmployeeController', $resource);
 //======================================================================================//
 //                                 Communication                                        //
 //======================================================================================//

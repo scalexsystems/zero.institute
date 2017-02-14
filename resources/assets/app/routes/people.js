@@ -1,3 +1,5 @@
+import store from '../vuex'
+
 const students = [
   {
     name: 'student.dashboard',
@@ -27,6 +29,12 @@ const teachers = [
     name: 'teacher.index',
     path: '/people/teachers',
     component: require('../pages/people/teacher/Search.vue')
+  },
+  {
+    name: 'teacher.show',
+    path: '/people/teachers/:uid',
+    component: require('../pages/people/teacher/Profile.vue'),
+    props: true
   }
 ]
 
@@ -48,6 +56,15 @@ export default [
     name: 'people.dashboard',
     path: '/people',
     component: require('../pages/people/Dashboard.vue')
+  },
+  {
+    name: 'user.profile',
+    path: '/profile',
+    redirect: to => {
+      const person = store.state.user.person
+
+      return `/people/${person._type}s/${person.uid}`
+    }
   },
   ...students,
   ...teachers,

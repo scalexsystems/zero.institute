@@ -28,7 +28,7 @@
     <div class="col-6 col-md-4" v-if="isTeacher">
       <div class="profile-field">
         <div class="label">Specialization</div>
-        <div class="value">{{ discipline.specialization}}</div>
+        <div class="value">{{ source.specialization }}</div>
       </div>
     </div>
     <div class="col-6 col-md-4" v-if="isStudent">
@@ -40,19 +40,19 @@
     <div class="col-6 col-md-4" v-if="!isStudent">
       <div class="profile-field">
         <div class="label">Job Title</div>
-        <div class="value">{{ discipline.job_title }}</div>
+        <div class="value">{{ source.job_title }}</div>
       </div>
     </div>
     <div class="col-6 col-md-4">
       <div class="profile-field">
         <div class="label">AADHAR</div>
-        <div class="value">{{ discipline.govt_id }}</div>
+        <div class="value">{{ source.govt_id }}</div>
       </div>
     </div>
     <div class="col-6 col-md-4">
       <div class="profile-field">
         <div class="label">Passport</div>
-        <div class="value">{{ discipline.passport }}</div>
+        <div class="value">{{ source.passport }}</div>
       </div>
     </div>
   </div>
@@ -63,6 +63,7 @@
 import moment from 'moment'
 import { mapGetters } from 'vuex'
 import { isObject } from '../../../util'
+import SourceType from './type'
 
 export default {
   name: 'SchoolRelatedInformation',
@@ -75,18 +76,6 @@ export default {
   },
 
   computed: {
-    isStudent () {
-      return this.source._type === 'student'
-    },
-
-    isTeacher () {
-      return this.source._type === 'teacher'
-    },
-
-    isEmployee () {
-      return this.source._type === 'employee'
-    },
-
     uidLabel () {
       const s = this.isStudent
       const t = this.isTeacher
@@ -97,15 +86,15 @@ export default {
     },
 
     department () {
-      const student = this.student || {}
+      const source = this.source
 
-      return this.getDepartment(student.department_id) || {}
+      return this.getDepartment(source.department_id) || {}
     },
 
     discipline () {
-      const student = this.student || {}
+      const source = this.source
 
-      return this.getDiscipline(student.discipline_id) || {}
+      return this.getDiscipline(source.discipline_id) || {}
     },
 
     ...mapGetters({
@@ -118,6 +107,8 @@ export default {
     dateForHumans (value) {
       return value ? moment(value).format('D MMMM YYYY') : ''
     }
-  }
+  },
+
+  mixins: [SourceType]
 }
 </script>

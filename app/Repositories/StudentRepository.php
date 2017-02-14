@@ -61,7 +61,7 @@ class StudentRepository extends Repository
         'disease' => 'nullable|max:255',
         'allergy' => 'nullable|max:255',
         'visible_marks' => 'nullable|max:255',
-        'food_habit' => 'nullable|in:veg,non_veg',
+        'food_habit' => 'nullable|array',
         'medical_remarks' => 'nullable|max:65536',
 
         // Maintenance Information.
@@ -77,6 +77,30 @@ class StudentRepository extends Repository
         if ($user = Request::user()) {
             $this->pushCriteria(new OfSchool($user->school));
         }
+    }
+
+    public function getCreateRulesForSchool(School $school)
+    {
+        $id = $school->getKey();
+
+        return $this->rules + [
+                'uid' => [
+                    'required',
+                    Rule::unique('students')->where('school_id', $id),
+                ],
+                'department_id' => [
+                    'required',
+                    Rule::exists('departments', 'id')->where('school_id', $id),
+                ],
+                'discipline_id' => [
+                    'required',
+                    Rule::exists('disciplines', 'id')->where('school_id', $id),
+                ],
+                'photo_id' => [
+                    'nullable',
+                    Rule::exists('attachments', 'id')->where('school_id', $id),
+                ],
+            ];
     }
 
     /**
@@ -100,30 +124,6 @@ class StudentRepository extends Repository
         ];
 
         return array_only($rules, array_keys($attributes));
-    }
-
-    public function getCreateRulesForSchool(School $school)
-    {
-        $id = $school->getKey();
-
-        return $this->rules + [
-            'uid' => [
-                'required',
-                Rule::unique('students')->where('school_id', $id),
-            ],
-            'department_id' => [
-                'required',
-                Rule::exists('departments', 'id')->where('school_id', $id),
-            ],
-            'discipline_id' => [
-                'required',
-                Rule::exists('disciplines', 'id')->where('school_id', $id),
-            ],
-            'photo_id' => [
-                'nullable',
-                Rule::exists('attachments', 'id')->where('school_id', $id),
-            ],
-        ];
     }
 
     public function creating()
@@ -179,9 +179,9 @@ class StudentRepository extends Repository
         if ($student->father) {
             $repository->update($student->father, $attributes);
         } else {
-            $address = $repository->create($attributes);
+            $father = $repository->createForSchool($student->school, $attributes);
 
-            $student->father()->associate($address);
+            $student->father()->associate($father);
 
             $this->onUpdate($student->save());
         }
@@ -196,9 +196,9 @@ class StudentRepository extends Repository
         if ($student->mother) {
             $repository->update($student->mother, $attributes);
         } else {
-            $address = $repository->create($attributes);
+            $mother = $repository->createForSchool($student->school, $attributes);
 
-            $student->mother()->associate($address);
+            $student->mother()->associate($mother);
 
             $this->onUpdate($student->save());
         }

@@ -53,3 +53,8 @@ html {
   }
 }
 
+// Fix outlines on buttons
+.btn:focus {
+  outline: none;
+}
+

@@ -26,7 +26,7 @@
     <div class="col-6 col-md-4">
       <div class="profile-field">
         <div class="label">PIN Code</div>
-        <div class="value">{{ address.pincode }}</div>
+        <div class="value">{{ address.pin_code }}</div>
       </div>
     </div>
 

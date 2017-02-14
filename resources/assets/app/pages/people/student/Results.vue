@@ -34,7 +34,7 @@
           </div>
           <div class="card-block">
             <infinite-loader class="row" @infinite="onInfinite">
-              <router-link tag="div" class="col-12 col-lg-6 student-card"
+              <router-link tag="div" class="col-12 col-lg-6 student-card" role="button"
                            v-for="student of students" :key="student"
                            :to="{ name: 'student.show', params: { uid: student.uid } }">
                 <student-card :student="student"/>
@@ -98,7 +98,7 @@ export default {
         if (this.page === 1) {
           this.students = students
         } else {
-          this.students.push(...students)
+          this.students.push(...students.filter(s => this.students.findIndex(o => o.id === s.id) < 0))
         }
       } else {
         this.students = []

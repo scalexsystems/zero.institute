@@ -20,6 +20,7 @@ class SchoolTransformer extends Transformer
             'university' => (string)$school->university,
             'institute_type' => (string)$school->institute_type,
             'verified' => (boolean)$school->verified,
+            'channel' => (string) $school->getChannelName(),
             'slug' => $school->slug,
         ];
     }

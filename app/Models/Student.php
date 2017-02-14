@@ -7,11 +7,12 @@ use Scalex\Zero\Contracts\Person;
 use Scalex\Zero\Database\BaseModel;
 use Scalex\Zero\Models\Course\Session;
 use Scalex\Zero\Models\Geo\Address;
+use Scalex\Zero\Others\FoodHabitTrait;
 use Scalex\Zero\User;
 
 class Student extends BaseModel implements Person, BelongsToSchool
 {
-    use SoftDeletes;
+    use SoftDeletes, FoodHabitTrait;
 
     protected $fillable = [
         // Basic Information.
@@ -189,17 +190,5 @@ class Student extends BaseModel implements Person, BelongsToSchool
         if ($this->date_of_admission instanceof Carbon) {
             return $this->date_of_admission->year;
         }
-    }
-
-    public function getFoodHabitAttribute()
-    {
-        return (isset($this->attributes['food_habit']) and is_string($this->attributes['food_habit']))
-            ? explode('|', $this->attributes['food_habit'])
-            : [];
-    }
-
-    public function setFoodHabitAttribute($value)
-    {
-        $this->attributes['food_habit'] = implode('|', (array)$value);
     }
 }

@@ -55,6 +55,7 @@ class AppServiceProvider extends ServiceProvider
 
     protected function registerQueryLogger()
     {
+        // TODO: Only in dev mode.
         DB::listen(function ($query) {
             if (static::$dump) {
                 dump($query->sql);
@@ -65,6 +66,7 @@ class AppServiceProvider extends ServiceProvider
                 'time' => $query->time,
             ];
         });
+
         Event::listen('kernel.handled', function () {
             if (config('app.debug')) {
                 foreach ($this->logs as $log) {
@@ -106,7 +108,7 @@ class AppServiceProvider extends ServiceProvider
                 'department' => Models\Department::class,
                 'discipline' => Models\Discipline::class,
                 'semester' => Models\Semester::class,
-                 /**
+                /**
                  * People
                  */
                 'student' => Models\Student::class,

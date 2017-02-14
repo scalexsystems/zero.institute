@@ -25,6 +25,7 @@ class Guardian extends ExtendibleModel implements Person
         // Personal Information.
         'income',
         'phone',
+        'profession',
 
         // Medical Information.
         'is_disabled',
@@ -45,6 +46,10 @@ class Guardian extends ExtendibleModel implements Person
         'school_id',
     ];
 
+    protected $extends = [
+        'profession'
+    ];
+
     protected $dates = ['date_of_birth'];
 
     protected $appends = ['name'];
@@ -54,7 +59,7 @@ class Guardian extends ExtendibleModel implements Person
         return str_replace(
             '  ', ' ',
             $this->attributes['first_name'].' '.
-            $this->attributes['middle_name'].' '.
+            ($this->attributes['middle_name'] ?? '').' '.
             $this->attributes['last_name']
         );
     }

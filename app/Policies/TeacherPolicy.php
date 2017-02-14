@@ -40,6 +40,11 @@ class TeacherPolicy extends AbstractPolicy
         return $this->canView($teacher);
     }
 
+    public function updateAddress(User $user, Teacher $teacher)
+    {
+        return $this->canUpdate($user, $teacher);
+    }
+
     public function viewAssociatedUserAccount(User $user, Teacher $teacher)
     {
         return $this->canView($teacher);
@@ -72,17 +77,16 @@ class TeacherPolicy extends AbstractPolicy
 
     protected function canView(Teacher $teacher)
     {
-        return trust($this->getUser())->to(Action::UPDATE_TEACHER)
-        or $this->isHimself($this->getUser(), $teacher);
+        return $this->isHimself($this->getUser(), $teacher) or trust($this->getUser())->to('teacher.read');
     }
 
     public function invite(User $user)
     {
-        return trust($user)->to(Action::INVITE_STUDENT);
+        return trust($user)->to('teacher.invite');
     }
 
-    private function canUpdate(User $user, Teacher $teacher) : bool
+    private function canUpdate(User $user, Teacher $teacher): bool
     {
-        return $this->isHimself($user, $teacher) or trust($user)->to(Action::VIEW_TEACHER);
+        return $this->isHimself($user, $teacher) or trust($user)->to('teacher.update');
     }
 }

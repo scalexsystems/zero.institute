@@ -18,7 +18,7 @@ class AddressTransformer extends Transformer
             'pin_code' => (string)$address->pin_code,
             'phone' => (string)$address->phone,
             'email' => (string)$address->email,
-            'city_id' => (string)$address->city_id,
+            'city_id' => (int)$address->city_id,
         ];
     }
 

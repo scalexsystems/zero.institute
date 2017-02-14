@@ -2,8 +2,8 @@
 <div class="c-sidebar" @click="onClick">
 
   <div class="btn-group flex-row d-flex mt-2">
-    <a class="btn" tabindex="-1" role="button" :class="[group ? 'btn-primary' : 'btn-secondary']" @click.prevent="group = true">Groups</a>
-    <a class="btn btn-block" tabindex="-1" role="button" :class="[group ? 'btn-secondary' : 'btn-primary']" @click.prevent="group = false">People</a>
+    <div class="btn" role="button" :class="[group ? 'btn-secondary' : 'btn-outline-secondary']" @click="group = true">Groups</div>
+    <div class="btn btn-block" role="button" :class="[group ? 'btn-outline-secondary' : 'btn-secondary']" @click="group = false">People</div>
   </div>
 
   <group-list v-show="group"></group-list>

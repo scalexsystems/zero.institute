@@ -1,54 +1,50 @@
 <template>
 <form class="card-block" @submit="save">
-  <div class="row">
+  <alert type="danger" v-if="formStatus" v-html="formStatus"></alert>
+
+  <form class="row" @submit.prevent="$emit('submit')">
+    <input type="submit" hidden>
     <div class="col-12 col-lg-6">
-      <input-typeahead v-model="attributes.blood_group" title="Blood Group" :suggestions="bloodGroups" autocomplete/>
+      <input-typeahead v-model="attributes.blood_group" title="Blood Group" :suggestions="bloodGroups" autofocus autocomplete v-bind="{ errors }"/>
     </div>
     <div class="col-12 col-lg-6">
-      <checkbox-wrapper title="Physically Challenged" required>
+      <checkbox-wrapper title="Physically Challenged" required v-bind="{ errors }">
         <input-box v-model="attributes.is_disabled" :radio="true" title="Yes" inline/>
         <input-box v-model="attributes.is_disabled" :radio="false" title="No" inline/>
       </checkbox-wrapper>
     </div>
     <div class="col-12 col-lg-6" v-if="attributes.is_disabled">
-      <input-text v-model="attributes.disability" title="Type of Disability"/>
+      <input-text v-model="attributes.disability" title="Type of Disability" v-bind="{ errors }"/>
     </div>
     <div class="col-12 col-lg-6">
-      <input-text v-model="attributes.disease" title="Disease"/>
+      <input-text v-model="attributes.disease" title="Disease" v-bind="{ errors }"/>
     </div>
     <div class="col-12 col-lg-6">
-      <input-text v-model="attributes.allergy" title="Allergy"/>
+      <input-text v-model="attributes.allergy" title="Allergy" v-bind="{ errors }"/>
     </div>
     <div class="col-12 col-lg-6">
-      <input-text v-model="attributes.body_marks" title="Body Marks/Identification Marks"/>
+      <input-text v-model="attributes.visible_marks" title="Body Marks/Identification Marks" v-bind="{ errors }"/>
     </div>
     <div class="col-12 col-lg-6">
-      <input-typeahead v-model="attributes.food_habit" title="Food Habit" :suggestions="foodHabits"/>
+      <input-typeahead v-model="attributes.food_habit" title="Food Habit" :suggestions="foodHabits" v-bind="{ errors }"/>
     </div>
     <div class="col-12">
-      <input-textarea v-model="attributes.medical_remarks" title="Remarks" />
+      <input-textarea v-model="attributes.medical_remarks" title="Remarks" v-bind="{ errors }"/>
     </div>
-  </div>
+  </form>
 </form>
 </template>
 
 <script lang="babel">
 import { mapGetters } from 'vuex'
 import { only } from '../../../util'
-import { formHelper } from 'bootstrap-for-vue'
+import mixin from './mixin'
 import MedicalInformation from '../view/MedicalInformation.vue'
 
 export default {
   name: 'EditMedicalInformation',
 
   extends: MedicalInformation,
-
-  props: {
-    submit: {
-      type: Function,
-      required: true
-    }
-  },
 
   data: () => ({
     attributes: {
@@ -57,7 +53,7 @@ export default {
       disability: '',
       disease: '',
       allergy: '',
-      body_marks: '',
+      visible_marks: '',
       food_habit: [],
       medical_remarks: ''
     }
@@ -65,47 +61,31 @@ export default {
 
   computed: {
     bloodGroups: () => [
-      { id: 'A+',  name: 'A+' },
-      { id: 'A-',  name: 'A-' },
-      { id: 'B+',  name: 'B+' },
-      { id: 'B-',  name: 'B-' },
+      { id: 'A+', name: 'A+' },
+      { id: 'A-', name: 'A-' },
+      { id: 'B+', name: 'B+' },
+      { id: 'B-', name: 'B-' },
       { id: 'AB+', name: 'AB+' },
       { id: 'AB-', name: 'AB-' },
-      { id: 'O+',  name: 'O+' },
-      { id: 'O-',  name: 'O-' },
-    ],
-
-    foodHabits: () => [
-      { id: 'veg', name: 'Vegetarian' },
-      { id: 'non-veg', name: 'Non Vegetarian' },
-      { id: 'egg', name: 'Egg & Egg Products' },
-      { id: 'vegan', name: 'Vegan' },
-      { id: 'fish', name: 'Fish & Fish Products' },
-      { id: 'sea', name: 'Sea Food' },
+      { id: 'O+', name: 'O+' },
+      { id: 'O-', name: 'O-' }
     ]
   },
 
   methods: {
     prepareAttributes () {
-      this.clearErrors()
       this.attributes = only(this.source, Object.keys(this.attributes))
     },
-    async save () {
-      const { errors } = await this.submit({ id: this.source.id, payload: this.attributes })
 
-      if (errors) {
-        this.setErrors(errors)
-      } else {
-        this.$emit('updated')
-      }
+    async callAPI () {
+      const payload = this.attributes
+
+      payload.food_habit = payload.food_habit.filter(h => h.length > 0)
+
+      return await this.submit({ uid: this.source.uid, payload })
     }
   },
 
-  created () {
-    this.$on('edit', () => this.prepareAttributes())
-    this.$on('save', () => this.save())
-  },
-
-  mixins: [formHelper]
+  mixins: [mixin]
 }
 </script>

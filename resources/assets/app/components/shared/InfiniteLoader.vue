@@ -1,12 +1,11 @@
 <template>
 <div>
   <slot></slot>
-  <div class="text-center col-12">
-    <infinite-scroll ref="is" v-bind="{ onInfinite, direction, distance, spinner }">
-      <div slot="no-results"></div>
-      <div slot="no-more"></div>
-    </infinite-scroll>
-  </div>
+
+  <infinite-scroll class="col-12 text-center" ref="is" v-bind="{ onInfinite, direction, distance, spinner }">
+    <div slot="no-results"></div>
+    <div slot="no-more"></div>
+  </infinite-scroll>
 </div>
 </template>
 
@@ -48,3 +47,9 @@ export default {
   components: { InfiniteScroll }
 }
 </script>
+
+<style lang="scss">
+.infinite-status-prompt {
+  display: none;
+}
+</style>

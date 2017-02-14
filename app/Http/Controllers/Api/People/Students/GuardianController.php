@@ -1,7 +1,7 @@
 <?php namespace Scalex\Zero\Http\Controllers\Api\People\Students;
 
 use Illuminate\Http\Request;
-use Scalex\Zero\Events\Student\GuardianUpdated;
+use Scalex\Zero\Events\Student\StudentUpdated;
 use Scalex\Zero\Http\Controllers\Controller;
 use Scalex\Zero\Models\Student;
 use Scalex\Zero\Repositories\StudentRepository;
@@ -26,7 +26,7 @@ class GuardianController extends Controller
 
         $repository->updateFather($student, $request->all());
 
-        broadcast(new GuardianUpdated($student, 'father'));
+        broadcast(new StudentUpdated($student));
 
         return $student->father;
     }
@@ -44,7 +44,7 @@ class GuardianController extends Controller
 
         $repository->updateMother($student, $request->all());
 
-        broadcast(new GuardianUpdated($student, 'mother'));
+        broadcast(new StudentUpdated($student, 'mother'));
 
         return $student->mother;
     }

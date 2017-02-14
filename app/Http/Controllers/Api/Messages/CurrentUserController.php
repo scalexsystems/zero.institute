@@ -43,8 +43,12 @@ class CurrentUserController extends Controller
      *
      * @return \Scalex\Zero\User
      */
-    public function show($user, UserRepository $repository)
+    public function show($user, UserRepository $repository, Request $request)
     {
+        if ($request->user()->id === (int) $user) {
+            return transform($request->user(), ['person'], null, true);
+        }
+
         $user = $repository->pushCriteria(new MessagesCountSingleUser())->find($user);
 
         return transform($user, ['person'], null, true);

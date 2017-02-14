@@ -14,6 +14,6 @@ class UserService
 
     public function currentTransformed()
     {
-        return transform($this->current(), ['person']);
+        return transform($this->current(), ['person', 'school']);
     }
 }

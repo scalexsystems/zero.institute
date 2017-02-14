@@ -174,7 +174,6 @@ return [
         Znck\Repositories\RepositoryServiceProvider::class,
         Znck\States\StatesServiceProvider::class,
         Znck\Transformers\TransformerServiceProvider::class,
-        Znck\Trust\TrustServiceProvider::class,
         Sentry\SentryLaravel\SentryLaravelServiceProvider::class,
 
         /*
@@ -182,6 +181,7 @@ return [
          */
 
         Scalex\Zero\Providers\AppServiceProvider::class,
+        Scalex\Zero\Providers\TrustServiceProvider::class,
         Scalex\Zero\Providers\AuthServiceProvider::class,
         Scalex\Zero\Providers\BroadcastServiceProvider::class,
         Scalex\Zero\Providers\EventServiceProvider::class,

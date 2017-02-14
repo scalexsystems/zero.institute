@@ -77,7 +77,7 @@ class StudentPolicy extends AbstractPolicy
 
     public function sendInvitation(User $user)
     {
-        return trust($user)->to(Action::INVITE_STUDENT);
+        return trust($user)->to('student.invite');
     }
 
     /**
@@ -90,7 +90,7 @@ class StudentPolicy extends AbstractPolicy
      */
     protected function canUpdate(User $user, Student $student): bool
     {
-        return $this->isHimself($user, $student) or trust($user)->to(Action::UPDATE_STUDENT);
+        return $this->isHimself($user, $student) or trust($user)->to('student.update');
     }
 
     /**
@@ -103,6 +103,6 @@ class StudentPolicy extends AbstractPolicy
      */
     protected function canView(User $user, Student $student): bool
     {
-        return $this->isHimself($user, $student) or trust($user)->to(Action::VIEW_STUDENT);
+        return $this->isHimself($user, $student) or trust($user)->to('student.read');
     }
 }

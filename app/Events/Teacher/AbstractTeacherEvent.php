@@ -16,7 +16,9 @@ class AbstractTeacherEvent implements ShouldBroadcast
      */
     protected $teacher;
 
-    public $student_id;
+    public $id;
+
+    public $uid;
 
     /**
      * Create event.
@@ -26,6 +28,8 @@ class AbstractTeacherEvent implements ShouldBroadcast
     public function __construct(Teacher $teacher)
     {
         $this->teacher = $teacher;
+        $this->id = $teacher->getKey();
+        $this->uid = $teacher->getRouteKey();
     }
 
     /**

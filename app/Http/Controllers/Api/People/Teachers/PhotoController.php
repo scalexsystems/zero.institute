@@ -22,12 +22,21 @@ class PhotoController extends Controller
 
         return $teacher->photo ?? [];
     }
+
     public function store(Request $request, Teacher $teacher, TeacherRepository $repository)
     {
         $this->authorize('update-photo', $teacher);
         $this->validate($request, ['photo' => 'required|image|max:10240']);
 
-        $repository->uploadPhoto($teacher, $request->file('photo'), $request->user());
+        $user = $request->user();
+
+        $repository->uploadPhoto($teacher, $request->file('photo'), $user);
+
+        if ($teacher->user->getKey() === $user->getKey()) {
+            $user->photo_id = $teacher->photo_id;
+
+            $user->save();
+        }
 
         broadcast(new TeacherPhotoUpdated($teacher));
 

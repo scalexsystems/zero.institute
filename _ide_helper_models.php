@@ -473,6 +473,7 @@ namespace Scalex\Zero\Models{
  * @property string $passport
  * @property string $govt_id
  * @property string $phone
+ * @property string $profession
  * @property float $income
  * @property int $address_id
  * @property bool $is_disabled

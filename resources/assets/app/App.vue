@@ -27,9 +27,11 @@ export default {
       throw new Error('Although impossible! But there is no user!')
     }
 
-    this.$channel(`private:${this.user.channel}`, [
-      'Scalex.Zero.Events.Message.NewMessage'
-    ])
+    this.$echoAlias(`private:${this.user.channel}`, 'user')
+    this.$echoAlias(`presence:${this.user.school.channel}`, 'school')
+
+    this.$channel('user', ['Scalex.Zero.Events.Message.NewMessage'])
+    this.$channel('school')
 
     this.getDepartments()
     this.getDisciplines()

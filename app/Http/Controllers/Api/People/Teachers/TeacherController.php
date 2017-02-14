@@ -1,6 +1,7 @@
 <?php namespace Scalex\Zero\Http\Controllers\Api\People\Teachers;
 
 use Illuminate\Http\Request;
+use Scalex\Zero\Criteria\OfDepartment;
 use Scalex\Zero\Criteria\OrderBy;
 use Scalex\Zero\Events\Teacher\TeacherUpdated;
 use Scalex\Zero\Http\Controllers\Controller;
@@ -19,7 +20,8 @@ class TeacherController extends Controller
     {
         $this->authorize('browse', Teacher::class);
 
-        $repository->with(['photo', 'user']);
+        $repository->with(['photo', 'user'])
+                   ->pushCriteria(new OfDepartment($request->input('department')));
 
         if ($request->has('q')) {
             $repository->search($request->input('q'));

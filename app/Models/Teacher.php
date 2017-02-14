@@ -7,11 +7,12 @@ use Scalex\Zero\Contracts\Person;
 use Scalex\Zero\Database\BaseModel;
 use Scalex\Zero\Models\Geo\Address;
 use Scalex\Zero\Models\Course\Session;
+use Scalex\Zero\Others\FoodHabitTrait;
 use Scalex\Zero\User;
 
 class Teacher extends BaseModel implements BelongsToSchool, Person
 {
-    use SoftDeletes;
+    use SoftDeletes, FoodHabitTrait;
 
     protected $fillable = [
         // Basic Information

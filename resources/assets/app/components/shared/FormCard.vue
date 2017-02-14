@@ -81,6 +81,16 @@ export default {
         this.editing = false
       })
     }
+  },
+
+  created () {
+    this.$on('error', () => {
+      this.editing = true
+    })
+
+    this.$on('submit', () => {
+      this.onSave()
+    })
   }
 }
 </script>

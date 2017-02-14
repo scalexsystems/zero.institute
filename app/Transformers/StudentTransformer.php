@@ -71,8 +71,8 @@ class StudentTransformer extends Transformer
             'name' => (string)$student->name,
             'photo' => $student->getPhotoUrl(),
 
-            'department_id' => $student->department_id,
-            'discipline_id' => $student->discipline_id,
+            'department_id' => (int)$student->department_id,
+            'discipline_id' => (int)$student->discipline_id,
 
             'has_account' => !is_null($student->user),
             'user_id' => $student->user ? $student->user->getKey() : null,
@@ -167,11 +167,11 @@ class StudentTransformer extends Transformer
     protected function getEmail(Student $student): string
     {
         if ($student->address) {
-            return (string) $student->address->email;
+            return (string)$student->address->email;
         }
 
         if ($student->user) {
-            return (string) $student->user->email;
+            return (string)$student->user->email;
         }
 
         return '';
