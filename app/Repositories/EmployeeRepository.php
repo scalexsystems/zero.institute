@@ -1,11 +1,15 @@
 <?php namespace Scalex\Zero\Repositories;
 
+use Illuminate\Validation\Rule;
 use Ramsey\Uuid\Uuid;
+use Request;
 use Scalex\Zero\Criteria\OfSchool;
 use Scalex\Zero\Models\Attachment;
 use Scalex\Zero\Models\Employee;
 use Scalex\Zero\Models\Geo\Address;
+use Scalex\Zero\Models\School;
 use Scalex\Zero\User;
+use UnexpectedValueException;
 use Znck\Attach\Builder;
 use Znck\Repositories\Repository;
 use Illuminate\Http\UploadedFile;
@@ -88,9 +92,29 @@ class EmployeeRepository extends Repository
 
     public function boot()
     {
-        if (current_user()) {
-            $this->pushCriteria(new OfSchool(current_user()->school));
+        if ($user = Request::user()) {
+            $this->pushCriteria(new OfSchool($user->school));
         }
+    }
+
+    private function getCreateRulesForSchool($school)
+    {
+        $id = $school->getKey();
+
+        return $this->rules + [
+            'uid' => [
+                'required',
+                Rule::unique('teachers')->where('school_id', $id),
+            ],
+            'department_id' => [
+                'required',
+                Rule::exists('departments', 'id')->where('school_id', $id),
+            ],
+            'photo_id' => [
+                'nullable',
+                Rule::exists('attachments', 'id')->where('school_id', $id),
+            ],
+        ];
     }
 
     /**
@@ -102,70 +126,29 @@ class EmployeeRepository extends Repository
      */
     public function getUpdateRules(array $rules, array $attributes, $employee)
     {
-        $rules += array_dot(
-            [
-                'address' => repository(Address::class)->getRules($attributes, $employee->address),
-            ]);
+        $rules = $this->getCreateRulesForSchool($employee->school);
 
-        $rules['uid'] ='required|unique:teachers,uid,'.$employee->uid.',id,school_id,'.current_user()->school_id;
-
+        $rules['uid'] = [
+            'required',
+            Rule::unique('employees')
+                ->where('school_id', $employee->school->getKey())
+                ->ignore($employee->getKey()),
+        ];
         return array_only($rules, array_keys($attributes));
-    }
 
-    public function getCreateRules(array $attributes)
-    {
-        $this->rules['uid'] = 'required|unique:teachers,uid,NULL,id,school_id,'.current_user()->school_id;
-
-        return $this->rules + array_dot(
-            [
-                'address' => repository(Address::class)->getRules($attributes),
-            ]);
     }
 
     public function creating(Employee $employee, array $attributes)
     {
-        $employee->fill($attributes);
-
-        $employee->address()->associate(repository(Address::class)->create(array_get($attributes, 'address', [])));
-        $employee->department()->associate(find($attributes, 'department_id'));
-        $employee->school()->associate(find($attributes, 'school_id'));
-        attach_attachment($employee, 'profilePhoto', find($attributes, 'photo_id', Attachment::class));
-
-        $employee->bio = $this->getBio($employee);
-
-        $status = $employee->save();
-
-        if ($status and $employee->address) {
-            $employee->address->addressee()->associate($employee)->save();
-        }
-
-        return $status;
+        throw new UnexpectedValueException('Use `createForSchool` method instead of `create`.');
     }
 
     public function updating(Employee $employee, array $attributes)
     {
-        $attributes = array_except($attributes, ['date_of_birth', 'date_of_admission']);
-        $employee->fill($attributes);
+        $employee->department()->associate($attributes['department_id'] ?? $employee->department_id);
 
-        if (array_has($attributes, 'address') && !empty($attributes['address'])) {
-            if (isset($employee->address)) {
-                repository(Address::class)
-                    ->update($employee->address, $attributes['address']);
-            } else {
-                $employee->address()->associate(repository(Address::class)->create(array_get($attributes, 'address', [])));
-            }
-        }
-        if (array_has($attributes, 'department_id')) {
-            $employee->department()->associate(find($attributes, 'department_id'));
-        }
-        if (array_has($attributes, 'photo_id')) {
-            attach_attachment($employee, 'profilePhoto', find($attributes, 'photo_id', Attachment::class));
-        }
-
-        $employee->bio = $this->getBio($employee);
-        return $employee->update();
+        return $employee->update($attributes);
     }
-
     public function uploadPhoto(Employee $employee, UploadedFile $photo, User $user)
     {
         if (!$photo->isValid()) {
@@ -187,7 +170,7 @@ class EmployeeRepository extends Repository
 
         $this->onCreate($attachment->save());
 
-        // Associate photo to the teacher.
+        // Associate photo to the employee.
         $employee->photo()->associate($attachment);
 
         $this->onUpdate($employee->save());
@@ -195,9 +178,43 @@ class EmployeeRepository extends Repository
         return $attachment;
 
     }
+
     protected function getPhotoUploadPath(Employee $employee)
     {
         return "schools/{$employee->school_id}/employees/photo/{$employee->id}";
     }
+
+    public function createForSchool(School $school, array $attributes)
+    {
+        $this->validateWith($attributes, $this->getCreateRulesForSchool($school));
+
+        $employee = new Employee($attributes);
+
+        $employee->department()->associate($attributes['department_id'] ?? null);
+        $employee->photo()->associate($attributes['photo_id'] ?? null);
+        $employee->school()->associate($school);
+
+        $this->onCreate($employee->save());
+
+        return $employee;
+    }
+
+    public function updateAddress(Employee $employee, array $attributes)
+    {
+        $repository = repository(Address::class);
+
+        if ($employee->address) {
+            $repository->update($employee->address, $attributes);
+        } else {
+            $address = $repository->create($attributes);
+
+            $employee->address()->associate($address);
+
+            $this->onUpdate($employee->save());
+        }
+
+        return $employee;
+    }
+
 
 }

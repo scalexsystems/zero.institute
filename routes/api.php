@@ -49,6 +49,8 @@ Route::post(    '/people/teachers/{teacher}/photo',   'Api\People\Teachers\Photo
 Route::resource('/people/teachers',                   'Api\People\Teachers\TeacherController', $resource);
 
 // - Employees
+Route::get(     '/people/employees/{employee}/address', 'Api\People\Employees\AddressController@show');
+Route::put(     '/people/employees/{employee}/address', 'Api\People\Employees\AddressController@update');
 Route::get(     '/people/employees/{employee}/photo', 'Api\People\Employees\PhotoController@show');
 Route::post(    '/people/employees/{employee}/photo', 'Api\People\Employees\PhotoController@store');
 Route::resource('/people/employees',                  'Api\People\Employees\EmployeeController', $resource);
