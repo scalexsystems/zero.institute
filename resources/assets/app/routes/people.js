@@ -1,6 +1,6 @@
 import store from '../vuex'
 
-const students = [
+const items = [
   {
     name: 'student.dashboard',
     path: '/people/students/dashboard',
@@ -28,7 +28,7 @@ const teachers = [
   {
     name: 'teacher.index',
     path: '/people/teachers',
-    component: require('../pages/people/teacher/Search.vue')
+    component: require('../pages/people/teacher/Results.vue')
   },
   {
     name: 'teacher.show',
@@ -47,7 +47,13 @@ const employees = [
   {
     name: 'employee.index',
     path: '/people/employees',
-    component: require('../pages/people/employee/Search.vue')
+    component: require('../pages/people/employee/Results.vue')
+  },
+  {
+    name: 'employee.show',
+    path: '/people/employees/:uid',
+    component: require('../pages/people/employee/Search.vue'),
+    props: true
   }
 ]
 
@@ -66,7 +72,7 @@ export default [
       return `/people/${person._type}s/${person.uid}`
     }
   },
-  ...students,
+  ...items,
   ...teachers,
   ...employees
 ]
