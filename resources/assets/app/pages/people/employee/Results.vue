@@ -1,76 +1,50 @@
 <template>
-  <window-box title="Find Employees" subtitle="View employees and new employee requests">
-    <div class="container py-1 employee-list">
-      <div class="row">
-        <div class="col-xs-12 col-lg-3">
-          <div class="card card-block">
-            <label class="custom-control custom-checkbox text-danger mb-0">
-              <input class="custom-control-input" type="checkbox" v-model="reviewingRequests">
-              <span class="custom-control-indicator"></span>
-              <span class="custom-control-description">New Requests</span>
-            </label>
-          </div>
-          <div class="card card-block" :class="{'hidden-sm-down': reviewingRequests}">
-            <div class="row">
-                <div class="col-xs-6 col-md-12">
-                    <h6 class="text-muted">Department</h6>
-                    <fieldset :disabled="reviewingRequests">
-                        <div class="custom-controls-stacked">
-                            <label class="custom-control custom-checkbox" v-for="item of departments">
-                                <input name="department" class="custom-control-input" type="checkbox"
-                                       :value="item.id" v-model="department">
-                                <span class="custom-control-indicator"></span>
-                                <span class="custom-control-description">{{ item.name }}</span>
-                            </label>
+ <container title="Teachers Directory" subtitle="Explore teachers' information" @back="$router.go(-1)" back>
+    <div class="container py-3 teacher-list">
+        <div class="row">
+            <div class="col-xs-12 col-lg-3">
+                <div class="card card-block">
+                    <div class=row">
+                        <div class="col-6 col-md-12">
+                            <checkbox-wrapper title="Department">
+                                <input-box v-for="item of departments" :checkbox="item.id" v-model="department" :title="item.name"
+                                           :custom="false"/>
+                            </checkbox-wrapper>
                         </div>
-                    </fieldset>
+                    </div>
                 </div>
-              </div>
-          </div>
-        </div>
+            </div>
         <div class="col-xs-12 col-lg-9">
-          <div class="form-group">
-            <div class="input-group">
-              <span class="input-group-addon search-box">
-                <i class="fa fa-fw fa-search"></i>
-              </span>
-              <input type="text" v-model="query" class="form-control form-control-lg search-box" placeholder="Start typing...">
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-header bg-white">
-              <div class="title">{{ searchText }}</div>
+            <input-search v-model="query" input-class="form-control-lg" @input="onInput"></input-search>
+            <div class="card">
+                <div class="card-header bg-white">
+                    <div class="title">{{ searchText }}</div>
 
-              <div class="text-muted">
-                {{ countText }}
-              </div>
-            </div>
-            <div class="card-block">
-              <div class="row">
-                <div v-for="employee of employees" :key="employee.id" class="col-xs-12 col-lg-6 employee-card">
-                  <person-card @open="$router.push({ name: 'employee.profile', params: { employee: employee.uid }})" :item="employee"></person-card>
+                    <div class="text-muted">
+                        {{ countText }}
+                    </div>
                 </div>
-                <div class="col-xs-12">
-                  <infinite-loader @load="onLoad"></infinite-loader>
+                <div class="card-block">
+                    <infinite-loader class="row" @infinite="onInfinite">
+                        <router-link tag="div" class="col-12 col-lg-6 employee-card"
+                                     v-for="employee of employees" :key="employee"
+                                     :to="{ name: 'employee.show', params: { uid: employee.uid } }">
+                            <employee-card :employee="employee"/>
+                        </router-link>
+                    </infinite-loader>
                 </div>
-              </div>
             </div>
-          </div>
         </div>
       </div>
     </div>
-  </window-box>
+  </container>
 </template>
 
 <script lang="babel">
-import Sifter from 'sifter'
-import get from 'lodash/get'
-import toArray from 'lodash/toArray'
-import toInt from 'lodash/toInteger'
+import throttle from 'lodash.throttle'
 import { mapGetters, mapActions } from 'vuex'
-
-import { WindowBox, PersonCard, InfiniteLoader } from '../../components'
-import { getters, actions } from '../../vuex/meta'
+import { notLastPage, nextPage, toArray, toInt } from '../../../util'
+import EmployeeCard from '../../../components/employee/Card.vue'
 
 export default {
   name: 'employeeSearchResults',
