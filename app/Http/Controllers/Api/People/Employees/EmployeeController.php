@@ -53,13 +53,4 @@ class EmployeeController extends Controller
         abort(401);
     }
 
-    public function invite(Request $request)
-    {
-        $this->authorize('invite', Employee::class);
-        $this->validate($request, [
-            'employees.*' => 'required | email',
-        ]);
-
-        dispatch(new SendInvitations('employee', $request->employees, $request->user()->school_id, $request->user()));
-    }
 }
