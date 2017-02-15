@@ -1,6 +1,6 @@
 import { toInt } from '../util'
 
-export default [
+  export default [
   {
     name: 'group.index',
     path: '/hub/groups',

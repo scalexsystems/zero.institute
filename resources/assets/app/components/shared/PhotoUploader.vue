@@ -1,43 +1,52 @@
 <template>
-<div class="profile-photo-uploader" @click="$refs.file.click()">
-  <slot></slot>
+    <div class="profile-photo-uploader" @click="$refs.file.click()">
+        <slot></slot>
 
-  <input type="file" ref="file" hidden @change="onFileSelected">
+        <input type="file" ref="file" hidden @change="onFileSelected">
 
-  <div class="backdrop" v-if="cropping">
-    <activity-box v-bind="{ title, subtitle }">
-      <img :src="image">
+        <div class="backdrop" v-if="cropping">
+            <div class="crop-window">
+                <{{ title }}
+                <img :src="image">
 
-      <div class="text-xs-center">
-        <button type="button" class="btn btn-primary" @click="cropAndUpload">Crop</button>
-      </div>
-    </activity-box>
-  </div>
+                <div class="text-xs-center">
+                    <button type="button" class="btn btn-primary" @click="cropAndUpload">Crop</button>
+                </div>
+            </div>
 
-  <div class="uploading" v-if="uploading">
-    <progress class="progress mb-0" :value="progress" max="100">
-      <div class="progress">
-        <span class="progress-bar" :style="{ width: progress + '%' }"></span>
-      </div>
-    </progress>
-  </div>
+            <div class="uploading" v-if="uploading">
+                <progress class="progress mb-0" :value="progress" max="100">
+                    <div class="progress">
+                        <span class="progress-bar" :style="{ width: progress + '%' }"></span>
+                    </div>
+                </progress>
+            </div>
 
-  <div class="overlay" v-if="empty">
-    <div class="upload-trigger">
-      <div>
-        <i class="fa fa-arrow-circle-up fa-3x mt-2 mb-1"></i>
-      </div>
+            <div class="overlay" v-if="empty">
+                <div class="upload-trigger">
+                    <div>
+                        <i class="fa fa-arrow-circle-up fa-3x mt-2 mb-1"></i>
+                    </div>
 
-      <span>Click to Upload</span>
-    </div>
-  </div>
-</div>
+                    <span>Click to Upload</span>
+                </div>
+                <div class="errors">
+                    <div>
+                        <i class="fa fa-exclamation-triangle fa-3x mt-2 mb-1"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
 </template>
 
 <script type='babel'>
+import { mapActions } from 'vuex'
 
 export default{
   props: {
+    source: {
+     type: Object,
+    },
     name: {
       type: String,
       default: 'photo',
@@ -68,15 +77,13 @@ export default{
       },
     },
   },
-  data() {
-    return {
+  data: () => ({
       cropping: false,
       uploading: false,
       progress: 0,
       error: null,
       context: null,
-    };
-  },
+  }),
   computed: {
     empty () {
       const cropping = this.cropping;
@@ -89,7 +96,7 @@ export default{
     cropAndUpload () {
       if (!this.context) return;
     },
-    upload (payload) {
+    async upload (payload) {
       const form = new FormData();
 
       form.append(this.name, payload);
@@ -97,6 +104,13 @@ export default{
       this.uploading = true;
       this.progress = 0;
       this.error = null;
+
+    try {
+      const { photo } = await this.uploadPhoto();
+    } catch(error) {
+      this.error = error;
+    }
+
 
       this.$http.post(this.dest, form, {
           progress: (event) => {
@@ -132,20 +146,12 @@ export default{
 
       return this.upload(files[0]);
 
-      // const ext = file.substring(file.lastIndexOf('.') + 1).toLowerCase();
-
-      // if (['png', 'gif', 'jpg', 'jpeg'].indexOf(ext) < 0) return;
-
-      // const FD = new FileReader();
-
-      // FD.onload((event) => {
-        // this.context = new Crop('#profile-photo-uploader-cropper', event.target.result, this.options);
-      // });
-
-      // FD.readAsDataURL(selected[0]);
     },
+    ...mapActions(source._type, ['uploadPhoto']),
   },
 };
+
+
 </script>
 
 <style lang="scss" scoped>
@@ -170,8 +176,6 @@ export default{
     .overlay {
       opacity: 0.95;
     }
-  }
-}
 
 .upload-trigger {
   display: flex;

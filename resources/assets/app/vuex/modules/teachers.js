@@ -28,6 +28,16 @@ const actions = {
     } catch (e) {
       return e
     }
+  },
+
+  async uploadPhoto (_, { uid, payload }) {
+    try {
+      const { photo } = await http.post(true, `people/teachers/${uid}/photo`, payload)
+
+      return { photo }
+    } catch (e) {
+      return e
+    }
   }
 }
 

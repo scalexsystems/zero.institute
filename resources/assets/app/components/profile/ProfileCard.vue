@@ -2,6 +2,7 @@
 <div class="card c-profile-profile-card text-center">
   <div class="photo-wrapper d-flex">
     <photo-uploader v-if="$can('update-photo', source)"
+                    :source=source
                     :dest="`people/${source._type}s/${source.uid}/photo`"
                     class="profile-card-photo">
       <img class="card-img-top" :src="source.photo">
