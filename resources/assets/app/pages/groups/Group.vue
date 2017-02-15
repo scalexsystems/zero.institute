@@ -14,7 +14,8 @@
             <photo-uploader v-if="isAdmin"
                             class="p-group-photo round"
                             :dest="`groups/${group.id}/photo`"
-                            @uploaded="find(group.id)">
+                            @uploaded="find(group.id)"
+            >
                 <img :src="group.photo" class="rounded-circle p-group-photo">
             </photo-uploader>
             <img v-else :src="group.photo" class="rounded-circle p-group-photo">
