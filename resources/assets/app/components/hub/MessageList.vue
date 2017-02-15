@@ -111,7 +111,7 @@ export default {
     saveScrollPosition () {
       this.position = this.messages.length ? this.messages[0].id : 0
 
-      if (this.position !== 0) {
+      if (this.position !== 0 && this.$refs && this.$refs.messages && this.$refs.messages.length) {
         this.offset = this.$refs.messages[0].$el.offsetTop
       }
     },

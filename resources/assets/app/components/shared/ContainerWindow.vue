@@ -1,9 +1,9 @@
 <template>
-<div class="container c-shared-container-window px-0">
+<div class="container c-shared-container-window">
   <div class="row window">
     <sidebar class="col-12 col-lg-2"></sidebar>
 
-    <div class="col-12 col-lg-10 px-0">
+    <div class="col-12 col-lg-10">
       <container v-bind="{ title, subtitle, back, photo, hasFooter, scroll, scrollSelector }"
                  @action="any => $emit('action', any)"
                  @back="any => $emit('back', any)">
@@ -52,6 +52,7 @@ export default {
 @import '../../styles/mixins';
 
 .c-shared-container-window {
+  padding: 0 !important;
   .window {
     @include match-parent();
   }

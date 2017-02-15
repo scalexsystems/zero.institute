@@ -72,7 +72,7 @@ export default {
     .c-sidebar {
       left: 0 !important;
       + * {
-        transform: translateX(250px);
+        transform: translateX(310px);
       }
     }
   }

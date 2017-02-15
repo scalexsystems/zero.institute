@@ -15,7 +15,7 @@ export default {
       const { errors, response } = await this.callAPI()
 
       if (errors) {
-        this.setErrors(errors)
+        this.formErrors = errors
         this.formStatus = errors.$message
       } else if (response) {
         this.formStatus = 'Where does this error come from? You may contact support if this persists.'

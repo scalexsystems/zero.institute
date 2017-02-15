@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from '../vuex'
+
+import courses from './courses'
 import groups from './groups'
 import messages from './messages'
 import people from './people'
@@ -27,6 +29,7 @@ const routes = [
       return '/hub/groups'
     }
   },
+  ...courses,
   ...groups,
   ...messages,
   ...people

@@ -19,6 +19,7 @@ export default {
   methods: {
     ...mapActions('departments', { getDepartments: 'index' }),
     ...mapActions('disciplines', { getDisciplines: 'index' }),
+    ...mapActions('semesters', { getSemesters: 'index' }),
     ...mapActions('groups', { getGroups: 'my' }),
   },
 
@@ -35,6 +36,7 @@ export default {
 
     this.getDepartments()
     this.getDisciplines()
+    this.getSemesters()
     this.getGroups()
   },
 

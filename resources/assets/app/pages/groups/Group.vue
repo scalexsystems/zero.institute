@@ -1,5 +1,5 @@
 <template>
-<container-window v-bind="{ title, subtitle, photo }">
+<container-window v-bind="{ title, subtitle }" back @back="$router.go(-1)">
   <template slot="buttons">
   <router-link v-if="isAdmin" :to="{ name: 'group.edit', params: { id: group.id } }" class="btn btn-primary"
                role="button">Edit</router-link>

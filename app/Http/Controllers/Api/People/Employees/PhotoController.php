@@ -28,9 +28,17 @@ class PhotoController extends Controller
         $this->authorize('update-photo', $employee);
         $this->validate($request, ['photo' => 'required|image|max:10240']);
 
-        $repository->uploadPhoto($employee, $request->file('photo'), $request->user());
+        $user = $request->user();
+        $repository->uploadPhoto($employee, $request->file('photo'), $user);
+
+        if ($employee->user->getKey() === $user->getKey()) {
+            $user->photo_id = $employee->photo_id;
+
+            $user->save();
+        }
 
         broadcast(new EmployeePhotoUpdated($employee));
 
         return $this->accepted($employee->getPhotoUrl());
-    }}
+    }
+}

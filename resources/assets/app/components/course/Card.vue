@@ -1,13 +1,11 @@
 <template>
-<abstract-card v-bind="{ remove }" class="c-teacher-card" @remove="$emit('remove', teacher)">
+<abstract-card class="c-course-card" v-bind="{ remove }" @remove="$emit('remove', course)">
   <div class="d-flex flex-row align-items-center">
-    <img :src="teacher.photo" class="rounded-circle c-teacher-card-photo">
+    <img v-if="course.photo" :src="course.photo" class="rounded-circle c-course-card-photo">
     <div>
-      <div class="c-teacher-card-title" :class="{ 'text-muted': !teacher.name.trim() }">{{ teacher.name.trim() || 'Name not set' }}
-      </div>
-      <div class="c-teacher-card-subtitle">
-        <span class="text-muted">Teacher ID:</span> {{ teacher.uid }} <br>
-        <span class="text-muted">Department:</span> {{ department.name || 'Not set' }}
+      <div class="c-course-card-title">{{ course.code }} - {{ course.name }}</div>
+      <div class="c-course-card-subtitle">
+        <span class="text-muted">Department:</span> {{ department.name }}
       </div>
     </div>
   </div>
@@ -18,9 +16,10 @@
 
 <script lang="babel">
 import { mapGetters } from 'vuex'
+
 export default {
   props: {
-    teacher: {
+    course: {
       type: Object,
       required: true
     },
@@ -33,9 +32,9 @@ export default {
 
   computed: {
     department () {
-      return this.departmentById(this.teacher.id) || {}
+      return this.courseById(this.course.id) || {}
     },
-    ...mapGetters('departments', ['departmentById'])
+    ...mapGetters('courses', ['courseById'])
   }
 }
 </script>
@@ -43,7 +42,8 @@ export default {
 <style lang="scss">
 @import '../../styles/methods';
 
-.c-teacher-card {
+.c-course-card {
+
   &-photo {
     width: to-rem(48px);
     height: to-rem(48px);

@@ -3,10 +3,11 @@
 
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Queue\SerializesModels;
 use Scalex\Zero\Models\Employee;
 
-abstract class AbstractEmployeeEvent
+abstract class AbstractEmployeeEvent implements ShouldBroadcast
 {
     use InteractsWithSockets, SerializesModels;
 
@@ -15,7 +16,9 @@ abstract class AbstractEmployeeEvent
      */
     protected $employee;
 
-    public $student_id;
+    public $id;
+
+    public $uid;
 
     /**
      * Create event.
@@ -25,6 +28,9 @@ abstract class AbstractEmployeeEvent
     public function __construct(Employee $employee)
     {
         $this->employee = $employee;
+
+        $this->id = $employee->getKey();
+        $this->uid = $employee->getRouteKey();
     }
 
     /**

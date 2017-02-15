@@ -1,0 +1,200 @@
+<template>
+<container-window title="Create Course" subtitle="Add institute courses for students & teachers." @back="$router.go(-1)"
+                  back>
+
+  <template slot="buttons">
+  <input-button value="Create" @click.native="create" ref="submit"/>
+  </template>
+
+  <div class="container mt-3">
+    <div class="row">
+      <div class="col-12 col-lg-8 offset-lg-2 my-2">
+        <alert v-if="formStatus" type="danger" v-html="formStatus" />
+
+        <form class="row">
+          <input type="submit" hidden>
+
+          <div class="col-12">
+            <input-text title="Name" v-model="attributes.name" autofocus required v-bind="{ errors }"
+                        subtitle="Complete course name e.g. Introduction to Computing 1"/>
+          </div>
+
+          <div class="col-12 col-lg-6">
+            <input-text title="Code" v-model="attributes.code" required v-bind="{ errors }"
+                        subtitle="A short name/code for the course e.g. CS50"/>
+          </div>
+
+          <div class="col-12 col-lg-6">
+            <input-typeahead title="Department" v-model="attributes.department_id" required
+                             v-bind="{ errors, suggestions: departments }"
+                             subtitle="Offerred by the department."/>
+          </div>
+
+          <div class="col-12">
+            <input-textarea title="Brief description" v-model="attributes.description" v-bind="{ errors }"
+                            subtitle="A brief description of the course. This is not course syllabus (Instructors can add course syllabus later)."/>
+          </div>
+
+          <h6 class="col-12 my-3 text-center text-uppercase text-muted">Instructors</h6>
+
+          <div class="col-12">
+            <div class="form-group">
+              <label>Instructors</label>
+              <typeahead v-bind="{ suggestions: teachers, value: [] }" @select="onInstructorSelect"
+                         @search="onInstructorSearch"/>
+            </div>
+          </div>
+
+          <div class="col-12 col-lg-6 mb-3" v-for="teacher in instructors">
+            <teacher-card v-bind="{ teacher }" remove @remove="onInstructorRemove"/>
+          </div>
+
+          <div v-if="instructors.length === 0" class="col-12 text-center text-muted" style="padding: 64px 0">
+            No instructors.
+          </div>
+
+          <h6 class="col-12 my-3 text-center text-uppercase text-muted">Constraints & Requisites</h6>
+
+          <div class="col-12">
+            <input-typeahead title="Discipline" v-model="attributes.disciplines"
+                             v-bind="{ errors, suggestions: disciplines }"/>
+          </div>
+
+          <div class="col-12 col-lg-6">
+            <input-typeahead title="Year" v-model="attributes.years" v-bind="{ errors, suggestions: years }"/>
+          </div>
+
+          <div class="col-12 col-lg-6">
+            <input-typeahead title="Semester" v-model="attributes.semester_id"
+                             v-bind="{ errors, suggestions: semesters }"/>
+          </div>
+
+          <div class="col-12">
+            <div class="form-group">
+              <label>Prerequisite courses</label>
+              <typeahead v-bind="{ suggestions: courses, value: [] }" @select="onCourseSelect"/>
+            </div>
+          </div>
+
+          <div class="col-12 col-lg-6 mb-3" v-for="course in prerequisites">
+            <course-card v-bind="{ course }" remove @remove="onCourseRemove"/>
+          </div>
+
+          <div v-if="prerequisites.length === 0" class="col-12 text-center text-muted" style="padding: 64px 0">
+            No prerequisite courses.
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</container-window>
+</template>
+
+<script lang="babel">
+import throttle from 'lodash/throttle'
+import { formHelper } from 'bootstrap-for-vue'
+import { mapGetters, mapActions } from 'vuex'
+import CourseCard from '../../components/course/Card.vue'
+import TeacherCard from '../../components/teacher/Card.vue'
+
+export default {
+  name: 'CourseCreate',
+
+  data: () => ({
+    attributes: {
+      name: '',
+      code: '',
+      department_id: '',
+      semester_id: '',
+      disciplines: [],
+      instructors: [],
+      years: [],
+      courses: []
+    },
+    instructors: [],
+    teachers: []
+  }),
+
+  computed: {
+    prerequisites () {
+      return this.attributes.courses.map(id => this.courseById(id))
+    },
+    years () {
+      return [
+        { id: 1, name: 'First Year' },
+        { id: 2, name: 'Second Year' },
+        { id: 3, name: 'Third Year' },
+        { id: 4, name: 'Fourth Year' }
+      ]
+    },
+    ...mapGetters({
+      departments: 'departments/academic',
+      disciplines: 'disciplines/disciplines',
+      courses: 'courses/courses',
+      semesters: 'semesters/semesters',
+      courseById: 'courses/courseById'
+    })
+  },
+  methods: {
+    async create () {
+      this.$refs.submit.$el.classList.add('disabled')
+      const { course, errors, response } = await this.store(this.attributes)
+
+      if (course) {
+        // Course created!.
+      } else if (errors) {
+        this.setErrors(errors)
+        this.formStatus = errors.$message
+      } else if (response) {
+        this.formStatus = 'Ah! Oh! This is unexpected. Call support now!'
+      }
+      this.$refs.submit.$el.classList.remove('disabled')
+    },
+    onCourseSelect (course) {
+      if (this.attributes.courses.indexOf(course.id) < 0) {
+        this.attributes.courses.push(course.id)
+      }
+    },
+    onCourseRemove (course) {
+      const index = this.attributes.courses.indexOf(course.id)
+
+      if (index > -1) {
+        this.attributes.courses.splice(index, 1)
+      }
+    },
+    onInstructorSearch: throttle(async function (q) {
+      const { teachers } = await this.search({ q })
+
+      this.teachers = teachers || []
+    }),
+    onInstructorSelect (instructor) {
+      if (this.attributes.instructors.indexOf(instructor.id) < 0) {
+        this.attributes.instructors.push(instructor.id)
+        this.instructors.push(instructor)
+      }
+    },
+    onInstructorRemove (instructor) {
+      const index = this.attributes.instructors.indexOf(instructor.id)
+
+      if (index > -1) {
+        this.attributes.instructors.splice(index, 1)
+        this.instructors.splice(index, 1)
+      }
+    },
+    ...mapActions('courses', ['index', 'store']),
+    ...mapActions('teachers', { search: 'index' })
+  },
+
+  created () {
+    if (!this.courses.length) {
+      this.index()
+    }
+
+    this.onInstructorSearch()
+  },
+
+  components: { CourseCard, TeacherCard },
+  mixins: [formHelper]
+}
+</script>

@@ -12,7 +12,7 @@
       <input-text v-model="attributes.last_name" title="Last Name" required v-bind="{ errors }"/>
     </div>
     <div class="col-12 col-lg-6">
-      <checkbox-wrapper title="Gender" required>
+      <checkbox-wrapper title="Gender" required v-bind="{ errors }">
         <input-box v-model="attributes.gender" radio="female" title="Female" inline/>
         <input-box v-model="attributes.gender" radio="male" title="Male" inline/>
         <input-box v-model="attributes.gender" radio="other" title="Other" inline/>
@@ -20,18 +20,18 @@
     </div>
     <div class="col-12 col-lg-6">
       <input-text type="date" v-model="attributes.date_of_birth" title="Date of Birth" placeholder="dd/mm/yyyy" required
-                  subtitle="true">
+                  subtitle="true" v-bind="{ errors }">
         <span slot="subtitle">Use date format <code>dd/mm/yyyy</code>.</span>
       </input-text>
     </div>
     <div class="col-12 col-lg-6">
-      <input-typeahead v-model="attributes.category" title="Category" :suggestions="categories"/>
+      <input-typeahead v-model="attributes.category" title="Category" :suggestions="categories" v-bind="{ errors }"/>
     </div>
     <div class="col-12 col-lg-6">
-      <input-text v-model="attributes.religion" title="Religion"/>
+      <input-text v-model="attributes.religion" title="Religion" v-bind="{ errors }"/>
     </div>
     <div class="col-12 col-lg-6">
-      <input-text v-model="attributes.language" title="Native Language"/>
+      <input-text v-model="attributes.language" title="Native Language" v-bind="{ errors }"/>
     </div>
   </form>
 </form>

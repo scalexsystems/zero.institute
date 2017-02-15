@@ -1,7 +1,7 @@
 import http from '../api'
 
 const actions = {
-  async index (_, { page = 1, q }) {
+  async index (_, { page = 1, q } = {}) {
     return await http.get('people/teachers', { params: { page, q } })
   },
 

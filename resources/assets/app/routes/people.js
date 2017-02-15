@@ -52,7 +52,7 @@ const employees = [
   {
     name: 'employee.show',
     path: '/people/employees/:uid',
-    component: require('../pages/people/employee/Search.vue'),
+    component: require('../pages/people/employee/Profile.vue'),
     props: true
   }
 ]
