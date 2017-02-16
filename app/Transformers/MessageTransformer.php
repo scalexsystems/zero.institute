@@ -18,7 +18,7 @@ class MessageTransformer extends Transformer
      *
      * @return array
      */
-    public function index(Message $message)
+    public function show(Message $message)
     {
         $readAt = $this->getReadAt($message);
 
@@ -39,9 +39,9 @@ class MessageTransformer extends Transformer
      *
      * @return array
      */
-    public function show(Message $message)
+    public function index(Message $message)
     {
-        return $this->index($message);
+        return $this->show($message);
     }
 
     /**

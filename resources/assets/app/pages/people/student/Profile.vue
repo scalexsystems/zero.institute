@@ -69,13 +69,13 @@ export default {
   echo: {
     namespace: 'Student',
 
-    StudentPhotoUpdated ({ id, photo }) {
+    PhotoUpdated ({ id, photo }) {
       if (id === this.student.id) {
         this.sourcePhotoUpdated(photo)
       }
     },
 
-    StudentUpdated ({ id, uid }) {
+    Updated ({ id, uid }) {
       if (id === this.student.id) {
         this.sourceUpdated(uid)
       }

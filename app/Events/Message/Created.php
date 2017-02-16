@@ -6,6 +6,10 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Queue\SerializesModels;
 use Scalex\Zero\Models\Message;
 
-class NewMessage extends AbstractMessageEvent
+class Created extends AbstractMessageEvent
 {
+    public function broadcastWith()
+    {
+        return transform($this->message);
+    }
 }

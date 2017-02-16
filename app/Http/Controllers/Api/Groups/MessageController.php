@@ -6,7 +6,7 @@ use Scalex\Zero\Criteria\Message\MessageBeforeTimestamp;
 use Scalex\Zero\Criteria\Message\MessageIntendedFor;
 use Scalex\Zero\Criteria\Message\MessageSentTo;
 use Scalex\Zero\Criteria\OrderBy;
-use Scalex\Zero\Events\Message\NewMessage;
+use Scalex\Zero\Events\Message\Created;
 use Scalex\Zero\Http\Controllers\Controller;
 use Scalex\Zero\Models\Group;
 use Scalex\Zero\Models\Message;
@@ -61,7 +61,7 @@ class MessageController extends Controller
         $message = $repository->createWithGroup($group, $request->all(), $request->user());
         $repository->read($message, $request->user());
 
-        broadcast(new NewMessage($message));
+        broadcast(new Created($message));
 
         return $message;
     }

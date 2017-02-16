@@ -16,15 +16,16 @@ import NavBar from './components/navbar/Navbar.vue'
 export default {
   name: 'Zero',
 
-  computed: { ...mapGetters(['user']), ...mapGetters('groups', { groups: 'my' }) },
+  computed: mapGetters({ user: 'user', groups: 'groups/my' }),
 
-  methods: {
-    ...mapActions('departments', { getDepartments: 'index' }),
-    ...mapActions('disciplines', { getDisciplines: 'index' }),
-    ...mapActions('semesters', { getSemesters: 'index' }),
-    ...mapActions('groups', { getGroups: 'my' }),
-    ...mapActions('courses', { getSessions: 'my', getCourses: 'index' })
-  },
+  methods: mapActions('departments', {
+    getDepartments: 'departments/index',
+    getDisciplines: 'disciplines/index',
+    getSemesters: 'semesters/index',
+    getGroups: 'groups/my',
+    getSessions: 'courses/my',
+    getCourses: 'courses/index'
+  }),
 
   created () {
     if (!this.user || !('id' in this.user)) {
@@ -34,9 +35,10 @@ export default {
     this.$echoAlias(`private:${this.user.channel}`, 'user')
     this.$echoAlias(`presence:${this.user.school.channel}`, 'school')
 
-    this.$channel('user', ['Scalex.Zero.Events.Message.NewMessage'])
+    this.$channel('user')
     this.$channel('school')
 
+    // TODO: Improve performance here.
     this.getCourses()
     this.getSessions()
     this.getDepartments()
@@ -49,12 +51,7 @@ export default {
 
   watch: {
     groups (groups) {
-      each(
-          groups,
-          group => this.$channel(`presence:${group.channel}`, [
-            '.Scalex.Zero.Events.Message.NewMessage'
-          ], group)
-      )
+      each(groups, group => this.$channel(`presence:${group.channel}`, undefined, group))
     }
   }
 }

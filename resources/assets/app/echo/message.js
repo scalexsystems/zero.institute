@@ -1,7 +1,10 @@
 export default {
-  NewMessage (message, store, _, group) {
-    if (group && group._type === 'group') {
-      store.dispatch('groups/addMessageToGroup', { id: group.id, messages: [message] })
+  Created (message, store) {
+    const sender = message.sender
+    if (sender._type === 'group') {
+      store.dispatch('groups/addMessageToGroup', { id: sender.id, messages: [message] })
+    } else if (sender._type === 'user') {
+      store.dispatch('messages/addMessageToUser', { id: sender.id, messages: [message] })
     }
   }
 }

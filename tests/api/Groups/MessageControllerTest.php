@@ -1,6 +1,6 @@
 <?php namespace Test\Api\Groups;
 
-use Scalex\Zero\Events\Message\NewMessage;
+use Scalex\Zero\Events\Message\Created;
 
 class MessageControllerTest extends \TestCase
 {
@@ -38,7 +38,7 @@ class MessageControllerTest extends \TestCase
 
         $group->addMembers($this->getUser());
 
-        $this->expectsEvents(NewMessage::class);
+        $this->expectsEvents(Created::class);
         $this->actingAs($this->getUser())->post('/api/groups/'.$group->id.'/messages', ['content' => 'foo'])
              ->assertResponseStatus(200)
              ->seeJsonStructure(['message' => ['id', 'content', 'sender']]);
@@ -49,7 +49,7 @@ class MessageControllerTest extends \TestCase
     {
         $group = $this->createPublicGroup();
 
-        $this->doesntExpectEvents(NewMessage::class);
+        $this->doesntExpectEvents(Created::class);
         $this->actingAs($this->getUser())->post('/api/groups/'.$group->id.'/messages', ['content' => 'foo'])
              ->assertResponseStatus(401);
     }

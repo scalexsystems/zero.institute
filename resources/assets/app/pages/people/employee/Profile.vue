@@ -64,12 +64,12 @@ export default {
   channel: 'school',
   echo: {
     namespace: 'Employee',
-    EmployeePhotoUpdated ({ id, photo }) {
+    PhotoUpdated ({ id, photo }) {
       if (id === this.employee.id) {
         this.sourcePhotoUpdated(photo)
       }
     },
-    EmployeeUpdated ({ id, uid }) {
+    Updated ({ id, uid }) {
       if (id === this.employee.id) {
         this.sourceUpdated(uid)
       }

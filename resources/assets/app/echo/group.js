@@ -1,11 +1,11 @@
 export default {
   // GroupCreated ({ group_id }, store) {},
 
-  GroupUpdated ({ group_id }, store) {
-    store.dispatch('groups/find', group_id)
+  Updated ({ group }, store) {
+    store.dispatch('groups/find', group)
   },
 
-  GroupDeleted ({ group_id }, store) {
-    store.commit('groups/REMOVE', group_id)
+  Deleted ({ group }, store) {
+    store.commit('groups/REMOVE', group)
   }
 }

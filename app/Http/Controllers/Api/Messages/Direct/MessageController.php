@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Scalex\Zero\Criteria\Message\Direct\ConversationBetween;
 use Scalex\Zero\Criteria\Message\MessageBeforeTimestamp;
 use Scalex\Zero\Criteria\OrderBy;
-use Scalex\Zero\Events\Message\NewMessage;
+use Scalex\Zero\Events\Message\Created;
 use Scalex\Zero\Http\Controllers\Controller;
 use Scalex\Zero\Models\Message;
 use Scalex\Zero\Repositories\MessageRepository;
@@ -60,7 +60,7 @@ class MessageController extends Controller
         $message = $repository->createWithUser($user, $request->all(), $request->user());
         $repository->read($message, $request->user());
 
-        broadcast(new NewMessage($message));
+        broadcast(new Created($message));
 
         return $message;
     }
