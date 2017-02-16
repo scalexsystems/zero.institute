@@ -10,7 +10,6 @@ use Scalex\Zero\Models\Course;
 use Scalex\Zero\Models\Course\Session;
 use Scalex\Zero\Models\Student;
 
-/* Uses /me Scope. */
 class EnrollmentController extends Controller
 {
     public function __construct()
@@ -23,12 +22,14 @@ class EnrollmentController extends Controller
         $this->authorize('view-enrolled-students', $session);
 
         return $session->students()->getQuery()
-                                   ->with('photo', 'user')
-                                   ->paginate();
+                       ->with('photo', 'user')
+                       ->get();
     }
 
     public function store($course, Session $session, Request $request)
     {
+        $this->authorize('enroll', $session);
+
         $this->validate($request, ['students' => 'required|array|min:1']);
 
         $students = Student::whereSchoolId($course->school_id)->findMany($request->input('students'));
@@ -42,6 +43,8 @@ class EnrollmentController extends Controller
 
     public function destroy($course, Session $session, Request $request)
     {
+        $this->authorize('expel', $session);
+
         $this->validate($request, ['students' => 'required|array|min:1']);
 
         $students = Student::whereSchoolId($course->school_id)->findMany($request->input('students'));

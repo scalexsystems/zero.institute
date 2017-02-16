@@ -12,12 +12,12 @@ use Scalex\Zero\User;
 use Znck\Repositories\Repository;
 
 /**
- * @method Message find(string|int $id)
+ * @method Message find(string | int $id)
  * @method Message findBy(string $key, $value)
  * @method Message create(array $attr)
- * @method Message update(string|int|Message $id, array $attr, array $o = [])
- * @method Message delete(string|int|Message $id)
- * @method MessageRepository validate(array $attr, Message|null $model)
+ * @method Message update(string | int | Message $id, array $attr, array $o = [])
+ * @method Message delete(string | int | Message $id)
+ * @method MessageRepository validate(array $attr, Message | null $model)
  */
 class MessageRepository extends Repository
 {
@@ -67,7 +67,9 @@ class MessageRepository extends Repository
     public function read(Message $message, User $user)
     {
         if (!$message->isReadBy($user)) {
-            $this->onUpdate(false !== $message->read($user));
+            $state = $message->read($user);
+            $this->onUpdate(false !== $state);
+            $message->setRelation('state', $state);
         }
 
         return $message;
@@ -84,7 +86,7 @@ class MessageRepository extends Repository
     public function readAll(Collection $messages, User $user)
     {
         $old = DB::table('message_reads')
-                 ->whereUserId($user->getKey())
+                 ->where('user_id', $user->getKey())
                  ->whereIn('message_id', (array)$messages->modelKeys())
                  ->get()
                  ->pluck('id')->toArray();
@@ -103,8 +105,8 @@ class MessageRepository extends Repository
         $this->onUpdate(DB::table('message_reads')->insert($entries->toArray()));
 
         return Message\MessageState::whereUserId($user->getKey())
-                          ->whereIn('message_id', $entries->pluck('message_id')->toArray())
-                          ->get();
+                                   ->whereIn('message_id', $entries->pluck('message_id')->toArray())
+                                   ->get();
     }
 
     /**
@@ -148,20 +150,20 @@ class MessageRepository extends Repository
     /**
      * Load message states.
      *
-     * @param \Illuminate\Contracts\Pagination\LengthAwarePaginator $messages
+     * @param \Illuminate\Pagination\LengthAwarePaginator|\Illuminate\Contracts\Pagination\LengthAwarePaginator $messages
      * @param \Scalex\Zero\User $user
      *
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
     public function loadMessageStatesFor($messages, User $user)
     {
-        $ids = $messages->getCollection()->modelKeys();
+        $ids = $messages->getCollection()->pluck('id')->toArray();
         $states = Message\MessageState::whereUserId($user->getKey())
                                       ->whereIn('message_id', $ids)->get()->keyBy('message_id');
 
         foreach ($messages->getCollection() as $message) {
             if ($states->has($message->getKey())) {
-                $message->setRelation('state', collect($states->get($message->getKey())));
+                $message->setRelation('state', $states->get($message->getKey()));
             }
         }
 

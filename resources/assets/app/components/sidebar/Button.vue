@@ -1,6 +1,6 @@
 <template>
   <router-link :to="route" class="c-sidebar-button card d-flex flex-row" role="button">
-    <img v-if="photo" class="mr-2 photo" :class="[type]" :src="photo">
+    <img v-if="photo" class="mr-2 photo fit-cover" :class="[type]" :src="photo">
     <div class="d-flex align-items-center flex-auto main">
       <slot></slot>
     </div>
@@ -38,15 +38,15 @@ export default {
   color: inherit;
 
   &.router-link-active {
-    background: white;
-    border: 1px solid $card-border-color;
+    background: white !important;
+    border: 1px solid $card-border-color !important;
   }
 
   &:active, &:hover, &:focus {
-    color: inherit;
+    color: inherit !important;
     text-decoration: none;
 
-    background: white;
+    background: white !important;
   }
 
   .notification {
@@ -56,7 +56,6 @@ export default {
   .photo {
     width: to-rem(28px);
     height: to-rem(28px);
-    object-fit: cover;
     overflow: hidden;
   }
 

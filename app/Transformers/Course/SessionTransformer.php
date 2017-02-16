@@ -6,27 +6,26 @@ use Znck\Transformers\Transformer;
 class SessionTransformer extends Transformer
 {
     protected $availableIncludes = [
-        'instructor',
-    ];
-
-    protected $defaultIncludes = [
         'group',
+        'instructor',
     ];
 
     public function show(Session $session)
     {
-        return [
-            'name' => (string) $session->name,
-            'started_on' => (string) $session->started_on->toIso8601String(),
-            'ended_on' => (string) $session->ended_on->toIso8601String(),
-            'group_id' => (int) $session->group_id,
-            'instructor_id' => (int) $session->instructor_id,
-        ];
+        return $this->index($session);
     }
 
     public function index(Session $session)
     {
-        return $this->show($session);
+        return [
+            'name' => (string)$session->name,
+            'syllabus' => (string)$session->syllabus,
+            'started_on' => (string)$session->started_on->toIso8601String(),
+            'ended_on' => (string)$session->ended_on->toIso8601String(),
+            'group_id' => (int)$session->group_id,
+            'course_id' => (int)$session->course_id,
+            'instructor_id' => (int)$session->instructor_id,
+        ];
     }
 
     public function includeInstructor(Session $session)

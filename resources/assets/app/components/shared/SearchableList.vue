@@ -1,12 +1,12 @@
 <template>
 <div class="container c-shared-searchable-list">
   <div class="row">
-    <div class="col-12 col-lg-8 offset-lg-2 mt-3">
+    <div :class="col">
       <slot name="header"></slot>
       <search class="form-control-lg" @input="onInput" v-bind="{ value, placeholder }"></search>
     </div>
 
-    <div class="col-12 col-lg-8 offset-lg-2">
+    <div :class="col">
       <slot></slot>
 
       <infinite-loader @infinite="any => $emit('infinite', any)"></infinite-loader>
@@ -26,6 +26,10 @@ export default {
     value: {
       type: String,
       required: true
+    },
+    col: {
+      type: String,
+      default: 'col-12 col-lg-8 offset-lg-2'
     }
   },
 

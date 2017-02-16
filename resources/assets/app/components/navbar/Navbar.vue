@@ -11,7 +11,6 @@
 
     <navbar-search class="flex-auto"></navbar-search>
 
-    <navbar-user></navbar-user>
     <navbar-apps></navbar-apps>
   </div>
 </nav>

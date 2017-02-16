@@ -1,7 +1,7 @@
 <template>
 <abstract-card v-bind="{ remove }" class="c-teacher-card" @remove="$emit('remove', teacher)">
   <div class="d-flex flex-row align-items-center">
-    <img :src="teacher.photo" class="rounded-circle c-teacher-card-photo">
+    <img :src="teacher.photo" class="rounded-circle c-teacher-card-photo fit-cover">
     <div>
       <div class="c-teacher-card-title" :class="{ 'text-muted': !teacher.name.trim() }">{{ teacher.name.trim() || 'Name not set' }}
       </div>

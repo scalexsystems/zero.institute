@@ -3,7 +3,7 @@ import store from '../vuex'
 export default {
   EmployeePhotoUpdated ({ user_id, photo }) {
     // Fetch latest if user is there in messages.
-    if (store.getters.messages.userById(user_id)) {
+    if (store.getters['messages/userById'](user_id)) {
       store.dispatch('messages/find', user_id)
     }
 

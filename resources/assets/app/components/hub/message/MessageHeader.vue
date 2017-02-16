@@ -55,6 +55,12 @@ export default {
 
       return ('$status' in message) && message.$status.message
     }
+  },
+
+  methods: {
+    openSenderProfile () {
+      this.$router.push({ name: 'user.show', params: { id: this.sender.id } })
+    }
   }
 }
 </script>

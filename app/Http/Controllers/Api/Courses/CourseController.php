@@ -24,9 +24,7 @@ class CourseController extends Controller
     {
         $this->authorize('index', Course::class);
 
-        $relations = ['photo', 'sessions', 'instructors', 'prerequisites'];
-
-        $repository->with($relations);
+        $repository->with($this->getDefaultRelations());
 
         if ($request->has('q')) {
             $repository->search($request->input('q'));
@@ -34,14 +32,16 @@ class CourseController extends Controller
             $repository->pushCriteria(new OrderBy('name'));
         }
 
-        return transform($repository->paginate(), $relations, null, true);
+        $courses = $repository->paginate();
+
+        return $this->transform($courses);
     }
 
     public function show(Request $request, Course $course)
     {
         $this->authorize('view', $course);
 
-        return transform($course, [/* TODO: Add required relations here! */], null, true);
+        return $this->transform($course);
     }
 
     public function store(Request $request, CourseRepository $repository)
@@ -50,17 +50,13 @@ class CourseController extends Controller
 
         $course = $repository->createForSchool($request->user()->school, $request->all());
 
-        if ($request->has('prerequisites')) {
-            $repository->addPrerequisites($course, (array)$request->input('prerequisites'));
-        }
-
-        if ($request->has('instructors')) {
-            $repository->addInstructors($course, (array)$request->input('instructors'));
+        if ($request->has('courses')) {
+            $repository->addPrerequisites($course, (array)$request->input('courses'));
         }
 
         broadcast(new CourseCreated($course));
 
-        return $course;
+        return $this->transform($course);
     }
 
     public function update(Request $request, Course $course, CourseRepository $repository)
@@ -69,19 +65,35 @@ class CourseController extends Controller
 
         $repository->update($course, $request->all());
 
+        if ($request->has('courses')) {
+            $repository->addPrerequisites($course, (array)$request->input('courses'));
+        }
+
         broadcast(new CourseUpdated($course));
 
-        return $course;
+        return $this->transform($course);
     }
 
     public function destroy(Request $request, Course $course)
     {
-        $this->authorize('delete', $course);
+        abort(401);
+    }
 
-        repository($course)->delete($course);
+    /**
+     * @return array
+     */
+    protected function getDefaultRelations(): array
+    {
+        return ['photo', 'prerequisites', 'sessions', 'sessions.instructor', 'instructors'];
+    }
 
-        broadcast(new CourseDeleted($course));
-
-        return $this->accepted();
+    /**
+     * @param $courses
+     *
+     * @return array
+     */
+    protected function transform($courses): array
+    {
+        return transform($courses, $this->getDefaultRelations(), null, true);
     }
 }

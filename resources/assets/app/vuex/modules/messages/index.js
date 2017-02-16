@@ -1,11 +1,11 @@
 import http from '../../api'
-import { toArray } from '../../../util'
+import { toArray, each } from '../../../util'
 import { insert, binarySearchFind, binarySearchIndex } from '../../helpers'
 import { TIMESTAMP, prepareMessages, prepareUser } from './helpers'
 
 const actions = {
   async index ({ dispatch }, page = 1) {
-    const { users, meta } = await http.get('me/users', { params: { page }})
+    const { users, meta } = await http.get('me/users', { params: { page } })
 
     if (users) await dispatch('addToStore', users)
 
@@ -76,10 +76,14 @@ const actions = {
   },
 
   async readAll ({ commit }, { id, messages }) {
-    const response = await http.put(`messages/read`, { ids: messages.map(message => message.id) })
+    if (!messages.length) return false
 
-    if (!response) {
-      messages.forEach(message => commit('MESSAGE_READ', { id, message }))
+    try {
+      await http.put(true, `messages/read`, { messages: messages.map(message => message.id) })
+
+      each(messages, message => commit('MESSAGE_READ', { id, message }))
+    } catch (e) {
+      console.warn(e)
     }
   },
 
@@ -132,8 +136,7 @@ const getters = {
 const state = () => ({
   users: [],
 
-  unread: {
-  }
+  unread: {}
 })
 
 const mutations = {
@@ -161,11 +164,16 @@ const mutations = {
   },
 
   MESSAGE_READ (state, { id, message }) {
-    const user = binarySearchFind(state.user, id)
+    const user = binarySearchFind(state.users, id)
     const msg = binarySearchFind(user.$messages, message)
 
-    // TODO: Update unread count.
-    msg.unread = true
+    if (msg.unread) {
+      state.unread[user.id] = (state.unread[user.id] || 1) - 1
+      user.$unread_count = (user.$unread_count || 1) - 1
+      user.$has_unread = user.$unread_count > 0
+    }
+
+    msg.unread = false
     msg.read_at = new Date().toISOString()
   },
 

@@ -6,8 +6,9 @@
 
   <div class="c-hub-message-list-container container d-flex flex-column justify-content-end">
     <div class="col-12 text-center" v-if="!complete">
-      <input-button class="btn btn-secondary btn-sm my-2 text-muted my-2" @click.native="onInfinite" v-if="!fetching" value="Load older messages"/>
-      <icon type="circle-o-notch" class="fa-spin" v-else />
+      <input-button class="btn btn-secondary btn-sm my-2 text-muted my-2" @click.native="onInfinite" v-if="!fetching"
+                    value="Load older messages"/>
+      <icon type="circle-o-notch" class="fa-spin" v-else/>
     </div>
     <message v-for="(message, index) in messages" :key="message" data-type="message"
              v-bind="{ message, continued: message.$continued === true }" ref="messages"
@@ -17,7 +18,7 @@
 </template>
 
 <script lang="babel">
-import { isArray, last } from '../../util'
+import { isArray, last, isImageExtension } from '../../util'
 import Message from './message'
 import PhotoBrowser from './PhotoBrowser.vue'
 
@@ -41,9 +42,7 @@ export default {
 
       if (cursor < 0) return null
 
-      return this.messages[cursor].attachments.filter(
-          any => ['png', 'gif', 'jpg', 'jpeg', 'webp', 'tiff', 'svg'].indexOf(any.extension) > -1
-      ).map(
+      return this.messages[cursor].attachments.filter(any => isImageExtension(any.extension)).map(
           (any) => {
             const links = any.links
 
@@ -126,7 +125,19 @@ export default {
 
       if (!message) return
 
-      this.$refs.list.scrollTop = - (this.offset || 0) + message.$el.offsetTop
+      this.$refs.list.scrollTop = -(this.offset || 0) + message.$el.offsetTop
+    },
+
+    checkInNextTick () {
+      this.$nextTick(() => this.$nextTick(() => {
+        if (this.messages.length === 0) {
+          this.$debug('No messages, calling infinite.')
+          this.onInfinite()
+        } else {
+          this.$debug('Scroll to bottom.')
+          this.$refs.list.scrollTop = this.$refs.list.scrollHeight
+        }
+      }))
     }
   },
 
@@ -135,24 +146,21 @@ export default {
       this.fetching = false
       this.complete = false
     })
-    this.onInfinite()
+    this.checkInNextTick()
   },
 
   components: { Message, PhotoBrowser },
 
   watch: {
     messages (messages, old) {
-      if (messages.length === 0) {
-        this.onInfinite()
-        return
-      }
-
-      if (!old.length || last(messages).id !== last(old).id) {
+      if (messages.length && old.length && last(messages).id !== last(old).id) {
+        this.$debug('Probably message new message.')
         this.$nextTick(() => {
-          if (!this.$refs || !this.$refs.list) return
-
           this.$refs.list.scrollTop = this.$refs.list.scrollHeight
         })
+      } else {
+        this.$debug('Don\'t care. Will check in next tick.')
+        this.checkInNextTick()
       }
     }
   }

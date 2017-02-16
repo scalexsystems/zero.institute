@@ -1,7 +1,7 @@
 <template>
 <container-window v-bind="{ title, subtitle, photo, scroll: false }" @action="onAction">
-  <message-browser v-if="group" ref="mb" @send="onSend"
-                   v-bind="{ messages, dest: `groups/${group.id}/attachment` }"
+  <message-browser v-if="group" ref="mb" @send="onSend" @read="onRead"
+                   v-bind="{ messages, dest: `groups/${group.id}/attachment`, unread: group.$unread_count }"
                    v-model="message" @infinite="fetchMessage"></message-browser>
 </container-window>
 </template>
@@ -57,6 +57,10 @@ export default {
       this.message = ''
     },
 
+    onRead (messages) {
+      this.readAll({ id: this.id, messages })
+    },
+
     async fetchMessage ({ loaded = () => 0, complete = () => 0 } = {}) {
       const { meta } = await this.fetchMessagesAPI({ group: this.group })
 
@@ -68,7 +72,7 @@ export default {
 
       complete()
     },
-    ...mapActions('groups', ['send']),
+    ...mapActions('groups', ['send', 'readAll']),
     ...mapActions('groups', { fetchMessagesAPI: 'messages', find: 'myFind' })
   },
 

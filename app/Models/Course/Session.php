@@ -12,7 +12,9 @@ class Session extends Model
 {
     protected $table = 'course_sessions';
 
-    protected $fillable = ['name', 'started_on', 'ended_on'];
+    protected $fillable = ['name', 'started_on', 'ended_on', 'syllabus'];
+
+    protected $extends = ['syllabus'];
 
     protected $dates = ['started_on', 'ended_on'];
 

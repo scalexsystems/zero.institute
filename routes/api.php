@@ -84,8 +84,7 @@ Route::post(    '/messages/direct/{user}/messages',   'Api\Messages\Direct\Messa
 Route::post(    '/messages/direct/{user}/attachment', 'Api\Messages\Direct\MessageAttachmentController@store');
 
 // - Messages
-Route::put(     '/messages/read',           'Api\Messages\MessageController@readAll');
-Route::put(     '/messages/{message}/read', 'Api\Messages\MessageController@read');
+Route::put(     '/messages/read', 'Api\Messages\MessageController@read');
 
 // - User Context
 Route::get(     '/me/groups',         'Api\Groups\CurrentUserController@index');

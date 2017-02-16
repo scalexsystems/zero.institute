@@ -30,16 +30,18 @@ class MessageController extends Controller
      *
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function index(Request $request, User $user)
+    public function index(Request $request, User $user, MessageRepository $repository)
     {
         $this->authorize('view-conversation', $user);
 
-        return repository(Message::class)
+        $messages = $repository
             ->pushCriteria(new ConversationBetween($user, $request->user()))
             ->pushCriteria(new MessageBeforeTimestamp($request->input('timestamp', time())))
             ->pushCriteria(new OrderBy('id', 'desc'))
             ->with(['attachments', 'sender'])
             ->paginate();
+
+        return $repository->loadMessageStatesFor($messages, $request->user());
     }
 
     /**
@@ -56,6 +58,7 @@ class MessageController extends Controller
         $this->authorize('send-message', $user);
 
         $message = $repository->createWithUser($user, $request->all(), $request->user());
+        $repository->read($message, $request->user());
 
         broadcast(new NewMessage($message));
 

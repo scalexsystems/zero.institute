@@ -38,7 +38,7 @@ class GroupController extends Controller
             $groups->search($request->query('q'));
         } else {
             $groups->pushCriteria(new OrderBy('name'));
-            $groups->pushCriteria(new MessagesCount());
+            $groups->pushCriteria(new MessagesCount($request->user()));
         }
 
         return $groups->paginate();
@@ -51,9 +51,9 @@ class GroupController extends Controller
      *
      * @return \Scalex\Zero\Models\Group
      */
-    public function show($group, GroupRepository $repository)
+    public function show(Request $request, $group, GroupRepository $repository)
     {
-        $group = $repository->pushCriteria(new MessagesCount())->find((int) $group);
+        $group = $repository->pushCriteria(new MessagesCount($request->user()))->find((int)$group);
 
         $this->authorize('view', $group);
 

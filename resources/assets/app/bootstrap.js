@@ -10,6 +10,7 @@ import VueEcho from './services/echo'
 import VueACL from './services/acl'
 import VueDebug from './services/debug'
 import components from './components'
+import directives from './directives'
 
 // Bootstrap & jQuery
 window.$ = window.jQuery = require('jquery')
@@ -45,4 +46,5 @@ if ('csrfToken' in Laravel) {
   }
 }
 
+Vue.use(directives)
 each(components, (component, name) => Vue.component(name, component))

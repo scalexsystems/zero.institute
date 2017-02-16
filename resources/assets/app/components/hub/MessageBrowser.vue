@@ -3,7 +3,7 @@
   <message-list v-bind="{ messages }" class="flex-auto p-2" ref="ml" @infinite="any => $emit('infinite', any)"/>
   <message-composer v-bind="{ value, dest }"
                     @input="v => $emit('input', v)"
-                    @focus="() => $emit('focus')"
+                    @focus="sendReadReceipts"
                     @send="v => $emit('send', v)"/>
 </div>
 </template>
@@ -16,6 +16,10 @@ export default {
   name: 'MessageBrowser',
 
   props: {
+    unread: {
+      type: Number,
+      required: true
+    },
     ...MessageComposer.props,
     ...MessageList.props
   },
@@ -23,6 +27,16 @@ export default {
   components: {
     MessageComposer,
     MessageList
+  },
+
+  methods: {
+    sendReadReceipts () {
+      this.$emit('focus')
+
+      if (this.unread > 0) {
+        this.$emit('read', this.messages.filter(message => message.unread))
+      }
+    }
   },
 
   created () {

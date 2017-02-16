@@ -1,6 +1,6 @@
 <template>
 <div class="c-shared-options-user-option d-flex flex-row align-items-center" :class="{ active, selected }">
-  <img :src="item.photo" class="rounded-circle">
+  <img :src="item.photo" class="rounded-circle fit-cover">
 
   <div>{{ item.name }}</div>
 </div>

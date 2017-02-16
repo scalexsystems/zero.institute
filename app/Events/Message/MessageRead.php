@@ -10,7 +10,7 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Scalex\Zero\Models\Message\MessageState;
 
-class MessageRead
+class MessageRead implements ShouldBroadcast
 {
     use InteractsWithSockets, SerializesModels;
 
@@ -46,6 +46,12 @@ class MessageRead
      */
     public function broadcastOn()
     {
-        return collect($this->state)->first()->message->receiver->getChannel();
+        $state = collect($this->state)->first();
+
+        if ($state) {
+            return $state->message->receiver->getChannel();
+        }
+
+        return [];
     }
 }

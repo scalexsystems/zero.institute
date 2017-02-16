@@ -1,7 +1,9 @@
 <template>
 <div class="app">
   <nav-bar></nav-bar>
-  <router-view></router-view>
+  <keep-alive>
+    <router-view></router-view>
+  </keep-alive>
 </div>
 </template>
 
@@ -21,6 +23,7 @@ export default {
     ...mapActions('disciplines', { getDisciplines: 'index' }),
     ...mapActions('semesters', { getSemesters: 'index' }),
     ...mapActions('groups', { getGroups: 'my' }),
+    ...mapActions('courses', { getSessions: 'my', getCourses: 'index' })
   },
 
   created () {
@@ -34,6 +37,8 @@ export default {
     this.$channel('user', ['Scalex.Zero.Events.Message.NewMessage'])
     this.$channel('school')
 
+    this.getCourses()
+    this.getSessions()
     this.getDepartments()
     this.getDisciplines()
     this.getSemesters()
@@ -47,7 +52,7 @@ export default {
       each(
           groups,
           group => this.$channel(`presence:${group.channel}`, [
-            'Scalex.Zero.Events.Message.NewMessage'
+            '.Scalex.Zero.Events.Message.NewMessage'
           ], group)
       )
     }

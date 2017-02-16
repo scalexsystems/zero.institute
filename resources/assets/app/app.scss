@@ -58,3 +58,15 @@ html {
   outline: none;
 }
 
+// Links with no decoration
+.no-link {
+  color: inherit;
+  &:focus, &:hover, &:active, &:visited {
+    color: inherit;
+    text-decoration: none;
+  }
+}
+
+.fit-cover {
+  object-fit: cover;
+}

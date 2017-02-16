@@ -1,7 +1,7 @@
 <template>
 <list :items="items">
   <router-link :to="{ name: 'dm' }" class="text-muted btn btn-block btn-link text-left">
-    <icon type="plus-square-o"></icon> Send a DM
+    <icon type="comments-o"></icon> Send a message
   </router-link>
 </list>
 </template>
@@ -16,7 +16,7 @@ export default {
       return this.users.map(user => ({
         text: user.name,
         photo: user.photo,
-        type: 'rounded-circle',
+        type: 'rounded',
         class: 'sidebar-list-item-user',
         hasExtra: user.$has_unread,
         extra: user.$unread_count,

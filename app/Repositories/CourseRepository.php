@@ -2,12 +2,16 @@
 
 namespace Scalex\Zero\Repositories;
 
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 use Request;
+use Scalex\Zero\Contracts\Person;
 use Scalex\Zero\Criteria\OfSchool;
 use Scalex\Zero\Models\Course;
+use Scalex\Zero\Models\Discipline;
 use Scalex\Zero\Models\School;
+use Scalex\Zero\Models\Student;
 use Scalex\Zero\Models\Teacher;
 use Scalex\Zero\User;
 use Znck\Repositories\Repository;
@@ -54,8 +58,8 @@ class CourseRepository extends Repository
                 'code' => [
                     'bail',
                     'required',
-                    'alphdash',
-                    Rule::unique('students')->where('school_id', $id),
+                    'alphadash',
+                    Rule::unique('courses')->where('school_id', $id),
                 ],
                 'department_id' => [
                     'required',
@@ -92,7 +96,7 @@ class CourseRepository extends Repository
         $rules['code'] = [
             'bail',
             'required',
-            'alphdash',
+            'alphadash',
             Rule::unique('courses')
                 ->where('school_id', $course->school_id)
                 ->ignore($course->getKey()),
@@ -119,6 +123,7 @@ class CourseRepository extends Repository
         $course->discipline()->associate($attributes['discipline_id'] ?? null);
         $course->photo()->associate($attributes['photo_id'] ?? null);
         $course->semester()->associate($attributes['semester_id'] ?? null);
+        $course->school()->associate($school);
 
         $this->onCreate($course->save());
 
@@ -149,26 +154,31 @@ class CourseRepository extends Repository
 
     public function addPrerequisites(Course $course, array $attributes)
     {
-        $constraints = Course::whereSchoolId($course->school_id)
-                             ->whereIn('id', $attributes)
-                             ->get()
-                             ->map(function (Course $course) {
-                                 return new Course\Constraint([
-                                                                  'constraint_type' => 'course',
-                                                                  'constraint_id' => $course->getKey(),
-                                                              ]);
-                             });
+        $prerequisites = Course::whereSchoolId($course->school_id)
+                               ->whereIn('id', $attributes)
+                               ->get()->modelKeys();
 
-        $course->prerequisites()->saveMany($constraints);
+        $course->prerequisites()->sync($prerequisites);
     }
 
+    /**
+     * @param \Scalex\Zero\Models\Course $course
+     * @param array $attributes
+     *
+     * @deprecated
+     */
     public function addInstructors(Course $course, array $attributes)
     {
-        $teachers = Teacher::whereSchoolId($course->school_id)
-                           ->whereIn('id', $attributes)
-                           ->get();
+        // There would be one instructor for now.
+        $teacher = Teacher::whereSchoolId($course->school_id)
+                          ->whereIn('id', $attributes)
+                          ->first();
 
-        $course->instructors()->saveMany($teachers);
+        // $course->instructors()->saveMany($teachers);
+
+        if ($teacher) {
+            $this->createSessionFor($course, $teacher);
+        }
     }
 
     public function removeInstructors(Course $course, array $attributes)
@@ -194,5 +204,27 @@ class CourseRepository extends Repository
         return $this->findSessions($course, $user)->filter(function ($session) {
             return $session->ended_on->isFuture();
         });
+    }
+
+    public function createSessionFor(Course $course, Teacher $teacher)
+    {
+        $session = new Course\Session();
+
+        $repository = $this->app->make(GroupRepository::class);
+        $group = $repository->createWithMembers($teacher->user, [
+            'name' => $course->name,
+        ], []);
+
+        $session->course()->associate($course);
+        $session->instructor()->associate($course);
+        $session->group()->associate($group);
+        // TODO: Use institute session dates.
+
+        $session->started_on = Carbon::now();
+        $session->ended_on = Carbon::now()->addYear();
+
+        $this->onCreate($session->save());
+
+        return $session;
     }
 }

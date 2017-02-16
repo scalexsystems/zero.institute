@@ -89,8 +89,8 @@ class MessageTransformer extends Transformer
      */
     protected function getReadAt(Message $message)
     {
-        if ($message->relationLoaded('states')) {
-            $state = $message->states->first();
+        if ($message->relationLoaded('state')) {
+            $state = $message->state;
 
             return $state ? $state->read_at : null;
         }

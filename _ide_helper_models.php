@@ -139,7 +139,7 @@ namespace Scalex\Zero\Models{
  * @property mixed $extended
  * @property-read \Illuminate\Database\Eloquent\Collection|\Scalex\Zero\Models\Teacher[] $instructors
  * @property-read \Scalex\Zero\Models\Attachment $photo
- * @property-read \Illuminate\Database\Eloquent\Collection|\Scalex\Zero\Models\Course\Constraint[] $prerequisites
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Scalex\Zero\Models\Course[] $prerequisites
  * @property-read \Scalex\Zero\Models\School $school
  * @property-read \Scalex\Zero\Models\Semester $semester
  * @property-read \Illuminate\Database\Eloquent\Collection|\Scalex\Zero\Models\Course\Session[] $sessions
@@ -267,7 +267,7 @@ namespace Scalex\Zero\Models{
  * @property-read \Scalex\Zero\Models\Department $department
  * @property mixed $extended
  * @property-read mixed $name
- * @property-read \Scalex\Zero\Models\Attachment $profilePhoto
+ * @property-read \Scalex\Zero\Models\Attachment $photo
  * @property-read \Scalex\Zero\Models\School $school
  * @property-read \Scalex\Zero\User $user
  * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Employee whereAdditional($value)
@@ -473,7 +473,6 @@ namespace Scalex\Zero\Models{
  * @property string $passport
  * @property string $govt_id
  * @property string $phone
- * @property string $profession
  * @property float $income
  * @property int $address_id
  * @property bool $is_disabled
@@ -720,6 +719,37 @@ namespace Scalex\Zero\Models{
 
 namespace Scalex\Zero\Models{
 /**
+ * Scalex\Zero\Models\Session
+ *
+ * @property int $id
+ * @property string $name
+ * @property string $started_on
+ * @property string $ended_on
+ * @property int $semester_id
+ * @property int $school_id
+ * @property array $additional
+ * @property string $deleted_at
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property mixed $extended
+ * @property-read \Scalex\Zero\Models\School $school
+ * @property-read \Scalex\Zero\Models\Semester $semester
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Session whereAdditional($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Session whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Session whereDeletedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Session whereEndedOn($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Session whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Session whereName($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Session whereSchoolId($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Session whereSemesterId($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Session whereStartedOn($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Session whereUpdatedAt($value)
+ */
+	class Session extends \Eloquent {}
+}
+
+namespace Scalex\Zero\Models{
+/**
  * Scalex\Zero\Models\Student
  *
  * @property int $id
@@ -862,7 +892,7 @@ namespace Scalex\Zero\Models{
  * @property-read \Scalex\Zero\Models\Department $department
  * @property mixed $extended
  * @property-read mixed $name
- * @property-read \Scalex\Zero\Models\Attachment $profilePhoto
+ * @property-read \Scalex\Zero\Models\Attachment $photo
  * @property-read \Scalex\Zero\Models\School $school
  * @property-read \Illuminate\Database\Eloquent\Collection|\Scalex\Zero\Models\Course\Session[] $sessions
  * @property-read \Scalex\Zero\User $user

@@ -42,7 +42,7 @@ class CurrentUserController extends Controller
      */
     public function show(Request $request, $group, GroupRepository $repository)
     {
-        $group = $repository->pushCriteria(new MessagesCount())->find((int) $group);
+        $group = $repository->pushCriteria(new MessagesCount($request->user()))->find((int) $group);
 
         if (!$group->isMember($request->user())) {
             abort(404);

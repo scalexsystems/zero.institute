@@ -106,6 +106,7 @@ export default {
 .p-group-photo {
   width: to-rem(160px);
   height: to-rem(160px);
+  object-fit: cover;
 }
 
 .p-group-privacy-tag {

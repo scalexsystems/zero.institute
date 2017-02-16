@@ -1,9 +1,9 @@
 <?php namespace Scalex\Zero\Http\Controllers\Api\Messages;
 
 use Illuminate\Http\Request;
-use Scalex\Zero\Criteria\Message\Direct\HaveConversationWith;
+use Scalex\Zero\Criteria\Message\Direct\HaveConversationWithMessageCount;
 use Scalex\Zero\Criteria\Message\Direct\MessagesCountMultipleUser;
-use Scalex\Zero\Criteria\Message\Direct\MessagesCountSingleUser;
+use Scalex\Zero\Criteria\Message\Direct\MessagesCount;
 use Scalex\Zero\Http\Controllers\Controller;
 use Scalex\Zero\Http\Requests;
 use Scalex\Zero\Repositories\UserRepository;
@@ -28,8 +28,7 @@ class CurrentUserController extends Controller
         $request->query->set('with', 'person');
 
         $repository->with(['person', 'photo'])
-                   ->pushCriteria(new HaveConversationWith($request->user()))
-                   ->pushCriteria(new MessagesCountMultipleUser());
+                   ->pushCriteria(new HaveConversationWithMessageCount($request->user()));
 
         $users = $repository->paginate();
 
@@ -45,11 +44,11 @@ class CurrentUserController extends Controller
      */
     public function show($user, UserRepository $repository, Request $request)
     {
-        if ($request->user()->id === (int) $user) {
+        if ($request->user()->id === (int)$user) {
             return transform($request->user(), ['person'], null, true);
         }
 
-        $user = $repository->pushCriteria(new MessagesCountSingleUser())->find($user);
+        $user = $repository->pushCriteria(new HaveConversationWithMessageCount($request->user()))->find($user);
 
         return transform($user, ['person'], null, true);
     }

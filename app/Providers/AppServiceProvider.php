@@ -4,6 +4,7 @@ namespace Scalex\Zero\Providers;
 
 use DB;
 use Event;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
@@ -70,7 +71,7 @@ class AppServiceProvider extends ServiceProvider
         Event::listen('kernel.handled', function () {
             if (config('app.debug')) {
                 foreach ($this->logs as $log) {
-                    Log::debug('DB QUERY', $log);
+                    Log::debug('DB QUERY: '.\Request::url(), $log);
                 }
             } else {
                 Log::info('DB QUERIES', $this->logs);
@@ -129,8 +130,12 @@ class AppServiceProvider extends ServiceProvider
                  */
                 'group' => Models\Group::class,
                 'message' => Models\Message::class,
+
+                /**
+                 * Academics
+                 */
                 'course' => Models\Course::class,
-                'semester' => Models\Semester::class,
+                'session' => Models\Course\Session::class,
             ]
         );
     }

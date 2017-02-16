@@ -1,5 +1,6 @@
 <?php namespace Scalex\Zero\Transformers;
 
+use Gate;
 use Scalex\Zero\Models\Course;
 use Znck\Transformers\Transformer;
 use Carbon\Carbon;
@@ -14,12 +15,7 @@ class CourseTransformer extends Transformer
         'session',
         'semester',
         'prerequisites',
-    ];
-
-    protected $defaultIncludes = [
         'sessions',
-        'active_sessions',
-        'future_sessions',
         'instructors',
     ];
 
@@ -31,26 +27,31 @@ class CourseTransformer extends Transformer
     public function index(Course $course)
     {
         return [
-            'name' => (string) $course->name,
-            'code' => (string) $course->code,
-            'photo' => (string) attach_url($course->photo),
-            'description' => (string) $course->description,
-            'department_id' => (int) $course->department_id,
-            'discipline_id' => $course->discipline_id ? (int) $course->discipline_id : null,
-            'year_id' => (int) $course->year_id,
+            'name' => (string)$course->name,
+            'code' => (string)$course->code,
+            'photo' => (string)$course->getPhotoUrl(),
+            'description' => (string)$course->description,
+            'department_id' => (int)$course->department_id,
+            'discipline_id' => $course->discipline_id ? (int)$course->discipline_id : null,
+            'year_id' => (int)$course->year_id,
             'year_text' => $this->getYear($course->year_id),
-            'semester_id' => $course->semester_id ? (int) $course->semester_id : null,
+            'semester_id' => $course->semester_id ? (int)$course->semester_id : null,
         ];
     }
 
     protected function getYear($year)
     {
         switch ($year) {
-            case 1: return 'First Year';
-            case 2: return 'Second Year';
-            case 3: return 'Third Year';
-            case 4: return 'Fourth Year';
-            default: return 'Any Year';
+            case 1:
+                return 'First Year';
+            case 2:
+                return 'Second Year';
+            case 3:
+                return 'Third Year';
+            case 4:
+                return 'Fourth Year';
+            default:
+                return 'Any Year';
         }
     }
 
@@ -95,7 +96,11 @@ class CourseTransformer extends Transformer
 
     public function includeInstructors(Course $course)
     {
-        return $this->collection($course->instructors);
+        if (Gate::allows('view-instructors', $course)) {
+            return $this->collection($course->instructors);
+        }
+
+        return $this->collection([]);
     }
 
     public function includePrerequisites(Course $course)

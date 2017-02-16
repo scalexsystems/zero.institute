@@ -18,9 +18,9 @@ use Znck\Repositories\Repository;
  * @method Session find(int $id)
  * @method Session findBy(string $key, $value)
  * @method Session create(array $attr)
- * @method Session update(int|Session $id, array $attr, array $o = [])
- * @method Session delete(int|Session $id)
- * @method SessionRepository validate(array $attr, Session|null $model)
+ * @method Session update(int | Session $id, array $attr, array $o = [])
+ * @method Session delete(int | Session $id)
+ * @method SessionRepository validate(array $attr, Session | null $model)
  */
 class SessionRepository extends Repository
 {
@@ -51,7 +51,7 @@ class SessionRepository extends Repository
      *
      * @return array
      */
-    protected function getUpdateRules(array $rules, array $attributes, $session)
+    public function getUpdateRules(array $rules, array $attributes, $session)
     {
         return array_only(
             $rules + $this->getRulesForSchool($session->course->school),
@@ -65,12 +65,13 @@ class SessionRepository extends Repository
 
         $instructor = Teacher::find($attributes['instructor_id']);
 
-        if ($instructor->user)
-        {
+        if ($instructor->user) {
             throw new StoreResourceException('Instructor does not have an account on Zero.');
         }
 
         $session = new Session($attributes);
+
+//        $session->name = TODO: Create a default session name.
 
         $session->course()->associate($course);
         $session->instructor()->associate($instructor);
@@ -83,7 +84,9 @@ class SessionRepository extends Repository
 
     public function updating(Session $session, array $attributes)
     {
-        if (isset($attributes['private'])) unset($attributes['private']);
+        if (isset($attributes['private'])) {
+            unset($attributes['private']);
+        }
 
         $session->instructor()->associate($attributes['instructor_id'] ?? $session->instructor_id);
 
@@ -124,7 +127,7 @@ class SessionRepository extends Repository
             'instructor_id' => [
                 'bail',
                 'required',
-                Rule::exists('teachers', 'id')->where('school_id', $school->getKey())
+                Rule::exists('teachers', 'id')->where('school_id', $school->getKey()),
             ],
         ];
     }
@@ -149,5 +152,5 @@ class SessionRepository extends Repository
         $this->onCreate($group->save());
 
         return $group;
-}
+    }
 }

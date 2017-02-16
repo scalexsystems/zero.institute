@@ -22,24 +22,6 @@ class MessageController extends Controller
     }
 
     /**
-     * Update message state.
-     *
-     * @param \Scalex\Zero\Models\Message $message
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function read(Request $request, Message $message, MessageRepository $repository)
-    {
-        $this->authorize('read', $message);
-
-        $state = $repository->read($message, $request->user());
-
-        broadcast(new MessageRead($state));
-
-        return $this->accepted();
-    }
-
-    /**
      * Mark messages as read in bulk.
      *
      * @param \Illuminate\Http\Request $request
@@ -47,7 +29,7 @@ class MessageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function readAll(Request $request, MessageRepository $repository)
+    public function read(Request $request, MessageRepository $repository)
     {
         $this->validate($request, ['messages' => 'required']);
 

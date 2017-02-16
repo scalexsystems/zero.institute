@@ -1,7 +1,9 @@
 import scrollbar from 'perfect-scrollbar'
 
-export default {
+const isMobile = 'ontouchstart' in window || window.DocumentTouch && document instanceof DocumentTouch
+const isMac = navigator.userAgent.indexOf('Mac OS X') !== -1
 
+export default {
   data () {
     return {
       bars: false
@@ -13,6 +15,8 @@ export default {
      * Add scrollbar if required.
      */
     addBars () {
+      if (isMac || isMobile) return
+
       if (this.scroll === false || this.bars) return
 
       const el = this.scrollSelector === true ? this.$el : this.$el.querySelector(this.scrollSelector)

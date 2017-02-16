@@ -20,6 +20,8 @@ abstract class AbstractEmployeeEvent implements ShouldBroadcast
 
     public $uid;
 
+    public $user_id;
+
     /**
      * Create event.
      *
@@ -28,7 +30,7 @@ abstract class AbstractEmployeeEvent implements ShouldBroadcast
     public function __construct(Employee $employee)
     {
         $this->employee = $employee;
-
+        $this->user_id = $employee->user->id;
         $this->id = $employee->getKey();
         $this->uid = $employee->getRouteKey();
     }

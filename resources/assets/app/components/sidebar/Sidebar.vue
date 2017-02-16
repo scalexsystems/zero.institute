@@ -1,27 +1,21 @@
 <template>
-<div class="c-sidebar" @click="onClick">
+<div class="c-sidebar py-2" @click="onClick">
 
-  <div class="btn-group flex-row d-flex mt-2">
-    <div class="btn" role="button" :class="[group ? 'btn-secondary' : 'btn-outline-secondary']" @click="group = true">Groups</div>
-    <div class="btn btn-block" role="button" :class="[group ? 'btn-outline-secondary' : 'btn-secondary']" @click="group = false">People</div>
-  </div>
+  <slot>
+    <course-list class="my-3"/>
+    <user-group-list class="mt-3" />
+  </slot>
 
-  <group-list v-show="group"></group-list>
-  <user-list v-show="!group"></user-list>
 </div>
 </template>
 
 <script lang="babel">
 import scrollbar from '../mixins/scrollbar'
-import GroupList from './GroupList.vue'
-import UserList from './UserList.vue'
+import UserGroupList from './UserGroupList.vue'
+import CourseList from './CourseList.vue'
 
 export default {
   name: 'Sidebar',
-
-  data: () => ({
-    group: true
-  }),
 
   computed: {
     scroll: () => true,
@@ -40,8 +34,9 @@ export default {
     }
   },
 
-  components: { GroupList, UserList },
-  mixins: [scrollbar]
+  components: { UserGroupList, CourseList },
+
+  mixins: [scrollbar],
 }
 </script>
 

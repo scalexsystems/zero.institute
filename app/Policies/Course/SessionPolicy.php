@@ -14,14 +14,20 @@ class SessionPolicy
     protected function isInstructor($instructor, Session $session)
     {
         return $instructor instanceof Teacher
-            and $instructor->getKey() === (int) $session->instructor_id;
+               and $instructor->getKey() === (int)$session->instructor_id;
+    }
+
+    public function viewEnrolledStudents(User $user, Session $session)
+    {
+        return $this->isInstructor($user->person, $session) or $session->group->isMember($user);
     }
 
     /**
      * Determine whether the user can update the session.
      *
-     * @param  \Scalex\Zero\User  $user
-     * @param  \Scalex\Zero\Session  $session
+     * @param  \Scalex\Zero\User $user
+     * @param  \Scalex\Zero\Session $session
+     *
      * @return mixed
      */
     public function enroll(User $user, Session $session)
@@ -32,11 +38,12 @@ class SessionPolicy
     /**
      * Determine whether the user can delete the session.
      *
-     * @param  \Scalex\Zero\User  $user
-     * @param  \Scalex\Zero\Session  $session
+     * @param  \Scalex\Zero\User $user
+     * @param  \Scalex\Zero\Session $session
+     *
      * @return mixed
      */
-    public function deroll(User $user, Session $session)
+    public function expel(User $user, Session $session)
     {
         return $this->isInstructor($user->person, $session);
     }

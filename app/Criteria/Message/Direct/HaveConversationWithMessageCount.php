@@ -1,11 +1,12 @@
 <?php namespace Scalex\Zero\Criteria\Message\Direct;
 
+use DB;
 use Illuminate\Database\Query\JoinClause;
 use Scalex\Zero\User;
 use Znck\Repositories\Contracts\Criteria;
 use Znck\Repositories\Contracts\Repository;
 
-class HaveConversationWith implements Criteria
+class HaveConversationWithMessageCount implements Criteria
 {
     /**
      * @var \Scalex\Zero\User
@@ -28,6 +29,8 @@ class HaveConversationWith implements Criteria
      */
     public function apply($query, Repository $repository)
     {
+        $query->addSelect(DB::raw('users.*, count(messages.id) - count(message_reads.id) as messages_count, coalesce(MAX(messages.id), 0) as last_message_id'));
+
         $query->join('messages', function (JoinClause $join) {
             $join->on(function (JoinClause $join) {
                 $join->on('users.id', '=', 'messages.sender_id')
@@ -40,6 +43,13 @@ class HaveConversationWith implements Criteria
             })->orderBy('messages.created_at', 'desc');
         });
 
-        $query->groupBy('users.id');
+        $query->leftJoin('message_reads', function (JoinClause $join) {
+            $join->on('messages.id', '=', 'message_reads.message_id')
+                 ->where('message_reads.user_id', $this->user->getKey());
+        });
+
+        $query->groupBy('users.id')
+              ->orderBy('last_message_id', 'desc')
+              ->orderBy('name', 'asc');
     }
 }

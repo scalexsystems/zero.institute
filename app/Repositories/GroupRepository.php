@@ -127,7 +127,7 @@ class GroupRepository extends Repository
 
         $query->with('photo')->orderBy('name');
 
-        $count = new MessagesCount();
+        $count = new MessagesCount($user);
 
         $count->apply($query, $this);
 

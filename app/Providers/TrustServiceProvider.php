@@ -11,6 +11,7 @@ class TrustServiceProvider extends OriginalTrustServiceProvider
         [Models\Employee::class, ['invite']],
         [Models\School::class, []],
         Models\Course::class,
+        Models\Session::class,
     ];
 
     protected $permissions = [
@@ -20,6 +21,9 @@ class TrustServiceProvider extends OriginalTrustServiceProvider
 
         // Courses
         'course.app' => 'Access course management',
+
+        // Settings
+        'settings.app' => 'Access school settings',
     ];
 
     protected $roles = [

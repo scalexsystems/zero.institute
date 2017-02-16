@@ -1,5 +1,5 @@
 <template>
-<img class="c-hub-message-user-icon user" :src="photo">
+<img class="c-hub-message-user-icon user fit-cover" :src="photo" @click="onSender">
 </template>
 
 <script lang="babel">
@@ -16,6 +16,12 @@ export default {
   computed: {
     photo () {
       return this.sender.photo
+    }
+  },
+
+  methods: {
+    onSender () {
+      this.$router.push({ name: 'user.show', params: { id: this.sender.id } })
     }
   }
 }

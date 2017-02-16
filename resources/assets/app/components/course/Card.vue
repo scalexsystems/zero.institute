@@ -1,7 +1,7 @@
 <template>
 <abstract-card class="c-course-card" v-bind="{ remove }" @remove="$emit('remove', course)">
-  <div class="d-flex flex-row align-items-center">
-    <img v-if="course.photo" :src="course.photo" class="rounded-circle c-course-card-photo">
+  <div class="d-flex flex-row align-items-start">
+    <img v-if="course.photo" :src="course.photo" class="rounded c-course-card-photo">
     <div>
       <div class="c-course-card-title">{{ course.code }} - {{ course.name }}</div>
       <div class="c-course-card-subtitle">
@@ -32,9 +32,9 @@ export default {
 
   computed: {
     department () {
-      return this.courseById(this.course.id) || {}
+      return this.departmentById(this.course.department_id) || {}
     },
-    ...mapGetters('courses', ['courseById'])
+    ...mapGetters('departments', ['departmentById'])
   }
 }
 </script>
@@ -43,7 +43,6 @@ export default {
 @import '../../styles/methods';
 
 .c-course-card {
-
   &-photo {
     width: to-rem(48px);
     height: to-rem(48px);
@@ -56,10 +55,6 @@ export default {
 
   &-subtitle {
     font-size: .75rem;
-  }
-
-  &-block {
-    padding: .64286rem .71429rem;
   }
 }
 </style>

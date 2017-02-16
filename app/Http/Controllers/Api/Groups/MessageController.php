@@ -59,6 +59,7 @@ class MessageController extends Controller
         $this->authorize('send-message', $group);
 
         $message = $repository->createWithGroup($group, $request->all(), $request->user());
+        $repository->read($message, $request->user());
 
         broadcast(new NewMessage($message));
 

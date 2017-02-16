@@ -9,7 +9,7 @@
   <div class="container mt-3">
     <div class="row">
       <div class="col-12 col-lg-8 offset-lg-2 my-2">
-        <alert v-if="formStatus" type="danger" v-html="formStatus" />
+        <alert v-if="formStatus" type="danger" v-html="formStatus" v-autofocus/>
 
         <form class="row">
           <input type="submit" hidden>
@@ -31,43 +31,49 @@
           </div>
 
           <div class="col-12">
+            <input-typeahead title="Instructor" component="SelectOptionUser" v-model="attributes.instructors"
+                             v-bind="{ suggestions: teachers }" @select="onInstructorSelect"
+                             @search="onInstructorSearch"/>
+          </div>
+
+          <div class="col-12">
             <input-textarea title="Brief description" v-model="attributes.description" v-bind="{ errors }"
                             subtitle="A brief description of the course. This is not course syllabus (Instructors can add course syllabus later)."/>
           </div>
 
-          <h6 class="col-12 my-3 text-center text-uppercase text-muted">Instructors</h6>
+          <!--<h6 class="col-12 my-3 text-center text-uppercase text-muted">Instructors</h6>-->
 
-          <div class="col-12">
-            <div class="form-group">
-              <label>Instructors</label>
-              <typeahead v-bind="{ suggestions: teachers, value: [] }" @select="onInstructorSelect"
-                         @search="onInstructorSearch"/>
-            </div>
-          </div>
+          <!--<div class="col-12">-->
+          <!--<div class="form-group">-->
+          <!--<label>Instructors</label>-->
+          <!--<typeahead v-bind="{ suggestions: teachers, value: [] }" @select="onInstructorSelect"-->
+          <!--@search="onInstructorSearch"/>-->
+          <!--</div>-->
+          <!--</div>-->
 
-          <div class="col-12 col-lg-6 mb-3" v-for="teacher in instructors">
-            <teacher-card v-bind="{ teacher }" remove @remove="onInstructorRemove"/>
-          </div>
+          <!--<div class="col-12 col-lg-6 mb-3" v-for="teacher in instructors">-->
+          <!--<teacher-card v-bind="{ teacher }" remove @remove="onInstructorRemove"/>-->
+          <!--</div>-->
 
-          <div v-if="instructors.length === 0" class="col-12 text-center text-muted" style="padding: 64px 0">
-            No instructors.
-          </div>
+          <!--<div v-if="instructors.length === 0" class="col-12 text-center text-muted" style="padding: 64px 0">-->
+          <!--No instructors.-->
+          <!--</div>-->
 
           <h6 class="col-12 my-3 text-center text-uppercase text-muted">Constraints & Requisites</h6>
 
-          <div class="col-12">
-            <input-typeahead title="Discipline" v-model="attributes.disciplines"
-                             v-bind="{ errors, suggestions: disciplines }"/>
-          </div>
+          <!--<div class="col-12">-->
+          <!--<input-typeahead title="Discipline" v-model="attributes.disciplines"-->
+          <!--v-bind="{ errors, suggestions: disciplines }"/>-->
+          <!--</div>-->
 
-          <div class="col-12 col-lg-6">
-            <input-typeahead title="Year" v-model="attributes.years" v-bind="{ errors, suggestions: years }"/>
-          </div>
+          <!--<div class="col-12 col-lg-6">-->
+          <!--<input-typeahead title="Year" v-model="attributes.years" v-bind="{ errors, suggestions: years }"/>-->
+          <!--</div>-->
 
-          <div class="col-12 col-lg-6">
-            <input-typeahead title="Semester" v-model="attributes.semester_id"
-                             v-bind="{ errors, suggestions: semesters }"/>
-          </div>
+          <!--<div class="col-12 col-lg-6">-->
+          <!--<input-typeahead title="Semester" v-model="attributes.semester_id"-->
+          <!--v-bind="{ errors, suggestions: semesters }"/>-->
+          <!--</div>-->
 
           <div class="col-12">
             <div class="form-group">
@@ -106,10 +112,10 @@ export default {
       name: '',
       code: '',
       department_id: '',
-      semester_id: '',
-      disciplines: [],
-      instructors: [],
-      years: [],
+//      semester_id: '',
+//      disciplines: [],
+      instructors: '', // TODO: Change to array for multiple.
+//      years: [],
       courses: []
     },
     instructors: [],
@@ -137,25 +143,33 @@ export default {
     })
   },
   methods: {
-    async create () {
-      this.$refs.submit.$el.classList.add('disabled')
-      const { course, errors, response } = await this.store(this.attributes)
-
+    processResponse: function (course, errors, response) {
       if (course) {
-        // Course created!.
+        this.$router.replace({ name: 'course.show', params: { id: course.id } })
       } else if (errors) {
         this.setErrors(errors)
         this.formStatus = errors.$message
       } else if (response) {
         this.formStatus = 'Ah! Oh! This is unexpected. Call support now!'
       }
-      this.$refs.submit.$el.classList.remove('disabled')
     },
+
+    async create () {
+      this.clearErrors()
+
+      this.$refs.submit.$el.classList.add('disabled')
+      const { course, errors, response } = await this.store(this.attributes)
+      this.$refs.submit.$el.classList.remove('disabled')
+
+      this.processResponse(course, errors, response)
+    },
+
     onCourseSelect (course) {
       if (this.attributes.courses.indexOf(course.id) < 0) {
         this.attributes.courses.push(course.id)
       }
     },
+
     onCourseRemove (course) {
       const index = this.attributes.courses.indexOf(course.id)
 
