@@ -5,14 +5,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Scalex\Zero\Contracts\Database\BelongsToSchool;
 use Scalex\Zero\Contracts\Person;
 use Scalex\Zero\Database\BaseModel;
-use Scalex\Zero\Models\Geo\Address;
-use Scalex\Zero\Models\Course\Session;
-use Scalex\Zero\Others\FoodHabitTrait;
+use Scalex\Zero\Models\Address;
+use Scalex\Zero\Models\CourseSession;
+use Scalex\Zero\ModelTraits\FoodHabitTrait;
 use Scalex\Zero\User;
 
 class Teacher extends BaseModel implements BelongsToSchool, Person
 {
-    use SoftDeletes, FoodHabitTrait;
+    use SoftDeletes, Scalex\Zero\ModelTraits\FoodHabitTrait;
 
     protected $fillable = [
         // Basic Information
@@ -153,7 +153,7 @@ class Teacher extends BaseModel implements BelongsToSchool, Person
 
     public function sessions()
     {
-        return $this->hasMany(Session::class, 'instructor_id');
+        return $this->hasMany(CourseSession::class, 'instructor_id');
     }
 
     public function getRouteKeyName()

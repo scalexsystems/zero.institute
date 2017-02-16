@@ -5,6 +5,11 @@ namespace Scalex\Zero\Models\Course;
 use Scalex\Zero\Database\BaseModel as Model;
 use Scalex\Zero\Models\Course;
 
+/**
+ * Class Constraint
+ *
+ * @deprecated
+ */
 class Constraint extends Model
 {
     protected $table = 'course_constraints';

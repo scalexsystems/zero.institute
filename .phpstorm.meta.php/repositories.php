@@ -13,10 +13,10 @@ namespace PHPSTORM_META {
             '\Scalex\Zero\Models\Teacher' instanceof \Scalex\Zero\Repositories\TeacherRepository,
             '\Scalex\Zero\Models\Employee' instanceof \Scalex\Zero\Repositories\EmployeeRepository,
             '\Scalex\Zero\Models\Guardian' instanceof \Scalex\Zero\Repositories\GuardianRepository,
-            '\Scalex\Zero\Models\Geo\City' instanceof \Scalex\Zero\Repositories\Geo\CityRepository,
-            '\Scalex\Zero\Models\Geo\Address' instanceof \Scalex\Zero\Repositories\Geo\AddressRepository,
+            '\Scalex\Zero\Models\Geo\City' instanceof \Scalex\Zero\Repositories\CityRepository,
+            '\Scalex\Zero\Models\Geo\Address' instanceof \Scalex\Zero\Repositories\AddressRepository,
             '\Scalex\Zero\Models\Course' instanceof \Scalex\Zero\Repositories\CourseRepository,
-            '\Scalex\Zero\Models\Course\Session' instanceof \Scalex\Zero\Repositories\Course\SessionRepository,
+            '\Scalex\Zero\Models\Course\Session' instanceof \Scalex\Zero\Repositories\CourseSessionRepository,
         ]
     ];
 };

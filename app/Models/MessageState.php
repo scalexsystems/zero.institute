@@ -1,9 +1,8 @@
 <?php
 
-namespace Scalex\Zero\Models\Message;
+namespace Scalex\Zero\Models;
 
 use Scalex\Zero\Database\BaseModel;
-use Scalex\Zero\Models\Message;
 use Scalex\Zero\User;
 
 class MessageState extends BaseModel

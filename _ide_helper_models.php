@@ -84,8 +84,9 @@ namespace Scalex\Zero\Models\Course{
 namespace Scalex\Zero\Models\Course{
 /**
  * Scalex\Zero\Models\Course\Session
- *
- * @property int $id
+
+*
+*@property int $id
  * @property string $name
  * @property int $course_id
  * @property int $group_id
@@ -101,17 +102,17 @@ namespace Scalex\Zero\Models\Course{
  * @property-read \Scalex\Zero\Models\Group $group
  * @property-read \Scalex\Zero\Models\Teacher $instructor
  * @property-read \Illuminate\Database\Eloquent\Collection|\Scalex\Zero\Models\Student[] $students
- * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Course\Session whereAdditional($value)
- * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Course\Session whereCourseId($value)
- * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Course\Session whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Course\Session whereDeletedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Course\Session whereEndedOn($value)
- * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Course\Session whereGroupId($value)
- * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Course\Session whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Course\Session whereInstructorId($value)
- * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Course\Session whereName($value)
- * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Course\Session whereStartedOn($value)
- * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Course\Session whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\CourseSession whereAdditional($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\CourseSession whereCourseId($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\CourseSession whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\CourseSession whereDeletedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\CourseSession whereEndedOn($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\CourseSession whereGroupId($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\CourseSession whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\CourseSession whereInstructorId($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\CourseSession whereName($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\CourseSession whereStartedOn($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\CourseSession whereUpdatedAt($value)
  */
 	class Session extends \Eloquent {}
 }
@@ -119,8 +120,9 @@ namespace Scalex\Zero\Models\Course{
 namespace Scalex\Zero\Models{
 /**
  * Scalex\Zero\Models\Course
- *
- * @property int $id
+
+*
+*@property int $id
  * @property string $name
  * @property string $code
  * @property string $description
@@ -142,7 +144,7 @@ namespace Scalex\Zero\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection|\Scalex\Zero\Models\Course[] $prerequisites
  * @property-read \Scalex\Zero\Models\School $school
  * @property-read \Scalex\Zero\Models\Semester $semester
- * @property-read \Illuminate\Database\Eloquent\Collection|\Scalex\Zero\Models\Course\Session[] $sessions
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Scalex\Zero\Models\CourseSession[] $sessions
  * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Course whereAdditional($value)
  * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Course whereCode($value)
  * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Course whereCreatedAt($value)
@@ -221,8 +223,9 @@ namespace Scalex\Zero\Models{
 namespace Scalex\Zero\Models{
 /**
  * Scalex\Zero\Models\Employee
- *
- * @property int $id
+
+*
+*@property int $id
  * @property int $photo_id
  * @property string $first_name
  * @property string $middle_name
@@ -263,7 +266,7 @@ namespace Scalex\Zero\Models{
  * @property string $deleted_at
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
- * @property-read \Scalex\Zero\Models\Geo\Address $address
+ * @property-read \Scalex\Zero\Models\Address $address
  * @property-read \Scalex\Zero\Models\Department $department
  * @property mixed $extended
  * @property-read mixed $name
@@ -317,9 +320,10 @@ namespace Scalex\Zero\Models{
 
 namespace Scalex\Zero\Models\Geo{
 /**
- * Scalex\Zero\Models\Geo\Address
- *
- * @property int $id
+ * Scalex\Zero\Models\Address
+
+*
+*@property int $id
  * @property string $address_line1
  * @property string $address_line2
  * @property string $landmark
@@ -334,86 +338,89 @@ namespace Scalex\Zero\Models\Geo{
  * @property int $addressee_id
  * @property array $additional
  * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $addressee
- * @property-read \Scalex\Zero\Models\Geo\City $city
+ * @property-read \Scalex\Zero\Models\City $city
  * @property mixed $extended
- * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Geo\Address whereAdditional($value)
- * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Geo\Address whereAddressLine1($value)
- * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Geo\Address whereAddressLine2($value)
- * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Geo\Address whereAddresseeId($value)
- * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Geo\Address whereAddresseeType($value)
- * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Geo\Address whereCityId($value)
- * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Geo\Address whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Geo\Address whereDeletedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Geo\Address whereEmail($value)
- * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Geo\Address whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Geo\Address whereLandmark($value)
- * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Geo\Address wherePhone($value)
- * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Geo\Address wherePinCode($value)
- * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Geo\Address whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Address whereAdditional($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Address whereAddressLine1($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Address whereAddressLine2($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Address whereAddresseeId($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Address whereAddresseeType($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Address whereCityId($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Address whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Address whereDeletedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Address whereEmail($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Address whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Address whereLandmark($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Address wherePhone($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Address wherePinCode($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Address whereUpdatedAt($value)
  */
 	class Address extends \Eloquent {}
 }
 
 namespace Scalex\Zero\Models\Geo{
 /**
- * Scalex\Zero\Models\Geo\City
- *
- * @property int $id
+ * Scalex\Zero\Models\City
+
+*
+*@property int $id
  * @property string $name
  * @property string $code
  * @property int $state_id
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property mixed $extended
- * @property-read \Scalex\Zero\Models\Geo\State $state
- * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Geo\City whereCode($value)
- * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Geo\City whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Geo\City whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Geo\City whereName($value)
- * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Geo\City whereStateId($value)
- * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Geo\City whereUpdatedAt($value)
+ * @property-read \Scalex\Zero\Models\State $state
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\City whereCode($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\City whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\City whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\City whereName($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\City whereStateId($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\City whereUpdatedAt($value)
  */
 	class City extends \Eloquent {}
 }
 
 namespace Scalex\Zero\Models\Geo{
 /**
- * Scalex\Zero\Models\Geo\Country
- *
- * @property int $id
+ * Scalex\Zero\Models\Country
+
+*
+*@property int $id
  * @property string $name
  * @property string $code
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property mixed $extended
- * @property-read \Illuminate\Database\Eloquent\Collection|\Scalex\Zero\Models\Geo\State[] $states
- * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Geo\Country whereCode($value)
- * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Geo\Country whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Geo\Country whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Geo\Country whereName($value)
- * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Geo\Country whereUpdatedAt($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Scalex\Zero\Models\State[] $states
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Country whereCode($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Country whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Country whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Country whereName($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Country whereUpdatedAt($value)
  */
 	class Country extends \Eloquent {}
 }
 
 namespace Scalex\Zero\Models\Geo{
 /**
- * Scalex\Zero\Models\Geo\State
- *
- * @property int $id
+ * Scalex\Zero\Models\State
+
+*
+*@property int $id
  * @property string $name
  * @property string $code
  * @property int $country_id
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
- * @property-read \Scalex\Zero\Models\Geo\Country $country
+ * @property-read \Scalex\Zero\Models\Country $country
  * @property mixed $extended
- * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Geo\State whereCode($value)
- * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Geo\State whereCountryId($value)
- * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Geo\State whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Geo\State whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Geo\State whereName($value)
- * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Geo\State whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\State whereCode($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\State whereCountryId($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\State whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\State whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\State whereName($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\State whereUpdatedAt($value)
  */
 	class State extends \Eloquent {}
 }
@@ -458,8 +465,9 @@ namespace Scalex\Zero\Models{
 namespace Scalex\Zero\Models{
 /**
  * Scalex\Zero\Models\Guardian
- *
- * @property int $id
+
+*
+*@property int $id
  * @property int $photo_id
  * @property string $first_name
  * @property string $middle_name
@@ -489,7 +497,7 @@ namespace Scalex\Zero\Models{
  * @property string $deleted_at
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
- * @property-read \Scalex\Zero\Models\Geo\Address $address
+ * @property-read \Scalex\Zero\Models\Address $address
  * @property mixed $extended
  * @property-read mixed $name
  * @property-read \Scalex\Zero\Models\Attachment $profilePhoto
@@ -567,19 +575,20 @@ namespace Scalex\Zero\Models{
 
 namespace Scalex\Zero\Models\Message{
 /**
- * Scalex\Zero\Models\Message\MessageState
- *
- * @property int $message_id
+ * Scalex\Zero\Models\MessageState
+
+*
+*@property int $message_id
  * @property int $user_id
  * @property \Carbon\Carbon $read_at
  * @property int $id
  * @property mixed $extended
  * @property-read \Scalex\Zero\Models\Message $message
  * @property-read \Scalex\Zero\User $user
- * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Message\MessageState whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Message\MessageState whereMessageId($value)
- * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Message\MessageState whereReadAt($value)
- * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Message\MessageState whereUserId($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\MessageState whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\MessageState whereMessageId($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\MessageState whereReadAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\MessageState whereUserId($value)
  */
 	class MessageState extends \Eloquent {}
 }
@@ -587,8 +596,9 @@ namespace Scalex\Zero\Models\Message{
 namespace Scalex\Zero\Models{
 /**
  * Scalex\Zero\Models\Message
- *
- * @property int $id
+
+*
+*@property int $id
  * @property string $type
  * @property string $content
  * @property int $sender_id
@@ -605,7 +615,7 @@ namespace Scalex\Zero\Models{
  * @property-read \Scalex\Zero\User $intended
  * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $receiver
  * @property-read \Scalex\Zero\User $sender
- * @property-read \Illuminate\Database\Eloquent\Collection|\Scalex\Zero\Models\Message\MessageState[] $states
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Scalex\Zero\Models\MessageState[] $states
  * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Message whereAdditional($value)
  * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Message whereContent($value)
  * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Message whereCreatedAt($value)
@@ -649,8 +659,9 @@ namespace Scalex\Zero\Models{
 namespace Scalex\Zero\Models{
 /**
  * Scalex\Zero\Models\School
- *
- * @property int $id
+
+*
+*@property int $id
  * @property string $name
  * @property string $slug
  * @property int $address_id
@@ -668,7 +679,7 @@ namespace Scalex\Zero\Models{
  * @property string $deleted_at
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
- * @property-read \Scalex\Zero\Models\Geo\Address $address
+ * @property-read \Scalex\Zero\Models\Address $address
  * @property mixed $extended
  * @property-read \Scalex\Zero\Models\Attachment $logo
  * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\School whereAdditional($value)
@@ -751,8 +762,9 @@ namespace Scalex\Zero\Models{
 namespace Scalex\Zero\Models{
 /**
  * Scalex\Zero\Models\Student
- *
- * @property int $id
+
+*
+*@property int $id
  * @property int $photo_id
  * @property string $first_name
  * @property string $middle_name
@@ -789,7 +801,7 @@ namespace Scalex\Zero\Models{
  * @property string $deleted_at
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
- * @property-read \Scalex\Zero\Models\Geo\Address $address
+ * @property-read \Scalex\Zero\Models\Address $address
  * @property-read \Scalex\Zero\Models\Department $department
  * @property-read \Scalex\Zero\Models\Discipline $discipline
  * @property-read \Scalex\Zero\Models\Guardian $father
@@ -799,7 +811,7 @@ namespace Scalex\Zero\Models{
  * @property-read \Scalex\Zero\Models\Guardian $mother
  * @property-read \Scalex\Zero\Models\Attachment $photo
  * @property-read \Scalex\Zero\Models\School $school
- * @property-read \Illuminate\Database\Eloquent\Collection|\Scalex\Zero\Models\Course\Session[] $sessions
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Scalex\Zero\Models\CourseSession[] $sessions
  * @property-read \Scalex\Zero\User $user
  * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Student whereAdditional($value)
  * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Student whereAddressId($value)
@@ -845,8 +857,9 @@ namespace Scalex\Zero\Models{
 namespace Scalex\Zero\Models{
 /**
  * Scalex\Zero\Models\Teacher
- *
- * @property int $id
+
+*
+*@property int $id
  * @property int $photo_id
  * @property string $first_name
  * @property string $middle_name
@@ -888,13 +901,13 @@ namespace Scalex\Zero\Models{
  * @property string $deleted_at
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
- * @property-read \Scalex\Zero\Models\Geo\Address $address
+ * @property-read \Scalex\Zero\Models\Address $address
  * @property-read \Scalex\Zero\Models\Department $department
  * @property mixed $extended
  * @property-read mixed $name
  * @property-read \Scalex\Zero\Models\Attachment $photo
  * @property-read \Scalex\Zero\Models\School $school
- * @property-read \Illuminate\Database\Eloquent\Collection|\Scalex\Zero\Models\Course\Session[] $sessions
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Scalex\Zero\Models\CourseSession[] $sessions
  * @property-read \Scalex\Zero\User $user
  * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Teacher whereAdditional($value)
  * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Teacher whereAddressId($value)

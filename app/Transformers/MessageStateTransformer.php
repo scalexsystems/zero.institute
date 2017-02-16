@@ -1,6 +1,6 @@
-<?php namespace Scalex\Zero\Transformers\Message;
+<?php namespace Scalex\Zero\Transformers;
 
-use Scalex\Zero\Models\Message\MessageState;
+use Scalex\Zero\Models\MessageState;
 use Znck\Transformers\Transformer;
 
 
@@ -11,7 +11,7 @@ class MessageStateTransformer extends Transformer
         return $model->toArray();
     }
 
-    public function index(MessageState $model)
+    public function index(\Scalex\Zero\Models\MessageState $model)
     {
         return $model->toArray();
     }

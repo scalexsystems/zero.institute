@@ -6,7 +6,7 @@ use Request;
 use Scalex\Zero\Criteria\OfSchool;
 use Scalex\Zero\Models\Attachment;
 use Scalex\Zero\Models\Employee;
-use Scalex\Zero\Models\Geo\Address;
+use Scalex\Zero\Models\Address;
 use Scalex\Zero\Models\School;
 use Scalex\Zero\User;
 use UnexpectedValueException;

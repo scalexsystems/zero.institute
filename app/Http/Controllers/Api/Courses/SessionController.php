@@ -8,7 +8,7 @@ use Scalex\Zero\Events\Course\Session\SessionDeleted;
 use Scalex\Zero\Events\Course\Session\SessionUpdated;
 use Scalex\Zero\Http\Controllers\Controller;
 use Scalex\Zero\Models\Course;
-use Scalex\Zero\Models\Course\Session;
+use Scalex\Zero\Models\CourseSession;
 
 class SessionController extends Controller
 {
@@ -24,7 +24,7 @@ class SessionController extends Controller
         return $course->sessions()->paginate();
     }
 
-    public function show(Course $course, Session $session)
+    public function show(Course $course, CourseSession $session)
     {
         $this->authorize('view-sessions', $course);
 
@@ -35,29 +35,29 @@ class SessionController extends Controller
     {
         $this->authorize('create-session', $course);
 
-        $session = repository(Session::class)->createForCourse($course, $request->all());
+        $session = repository(CourseSession::class)->createForCourse($course, $request->all());
 
         broadcast(new SessionCreated($session));
 
         return $session;
     }
 
-    public function update($course, Session $session, Request $request)
+    public function update($course, CourseSession $session, Request $request)
     {
         $this->authorize('update', $session);
 
-        $session = repository(Session::class)->update($session, $request->all());
+        $session = repository(CourseSession::class)->update($session, $request->all());
 
         broadcast(new SessionUpdated($session));
 
         return $session;
     }
 
-    public function destroy($course, Session $session)
+    public function destroy($course, CourseSession $session)
     {
         $this->authorize('delete', $session);
 
-        repository(Session::class)->delete($session);
+        repository(CourseSession::class)->delete($session);
 
         broadcast(new SessionDeleted($session));
 

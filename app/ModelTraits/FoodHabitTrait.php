@@ -1,4 +1,4 @@
-<?php namespace Scalex\Zero\Others;
+<?php namespace Scalex\Zero\ModelTraits;
 
 trait FoodHabitTrait
 {

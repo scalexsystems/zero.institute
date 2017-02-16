@@ -1,14 +1,10 @@
 <?php
 
-namespace Scalex\Zero\Models\Course;
+namespace Scalex\Zero\Models;
 
-use Scalex\Zero\Database\BaseModel as Model;
-use Scalex\Zero\Models\Group;
-use Scalex\Zero\Models\Course;
-use Scalex\Zero\Models\Teacher;
-use Scalex\Zero\Models\Student;
+use Scalex\Zero\Database\BaseModel;
 
-class Session extends Model
+class CourseSession extends BaseModel
 {
     protected $table = 'course_sessions';
 

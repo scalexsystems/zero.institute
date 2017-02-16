@@ -1,6 +1,7 @@
-<?php namespace Scalex\Zero\Models\Geo;
+<?php namespace Scalex\Zero\Models;
 
 use Scalex\Zero\Database\ExtendibleModel;
+use Scalex\Zero\Models\Country;
 
 class State extends ExtendibleModel
 {

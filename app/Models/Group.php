@@ -4,13 +4,13 @@ use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Scalex\Zero\Contracts\Communication\ReceivesMessage;
 use Scalex\Zero\Database\BaseModel;
-use Scalex\Zero\Others\GroupTrait;
+use Scalex\Zero\ModelTraits\GroupTrait;
 use Scalex\Zero\Database\Relation\LastMessage;
 use Scalex\Zero\User;
 
 class Group extends BaseModel implements ReceivesMessage
 {
-    use SoftDeletes, GroupTrait;
+    use SoftDeletes, Scalex\Zero\ModelTraits\GroupTrait;
 
     /**
      * Mass fillable fields.

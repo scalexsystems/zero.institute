@@ -1,23 +1,23 @@
 <?php
 
-namespace Scalex\Zero\Policies\Course;
+namespace Scalex\Zero\Policies;
 
 use Scalex\Zero\User;
-use Scalex\Zero\Models\Course\Session;
+use Scalex\Zero\Models\CourseSession;
 use Scalex\Zero\Models\Teacher;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class SessionPolicy
+class CourseSessionPolicy
 {
     use HandlesAuthorization;
 
-    protected function isInstructor($instructor, Session $session)
+    protected function isInstructor($instructor, \Scalex\Zero\Models\CourseSession $session)
     {
         return $instructor instanceof Teacher
                and $instructor->getKey() === (int)$session->instructor_id;
     }
 
-    public function viewEnrolledStudents(User $user, Session $session)
+    public function viewEnrolledStudents(User $user, \Scalex\Zero\Models\CourseSession $session)
     {
         return $this->isInstructor($user->person, $session) or $session->group->isMember($user);
     }
@@ -30,7 +30,7 @@ class SessionPolicy
      *
      * @return mixed
      */
-    public function enroll(User $user, Session $session)
+    public function enroll(User $user, \Scalex\Zero\Models\CourseSession $session)
     {
         return $this->isInstructor($user->person, $session);
     }
@@ -43,7 +43,7 @@ class SessionPolicy
      *
      * @return mixed
      */
-    public function expel(User $user, Session $session)
+    public function expel(User $user, \Scalex\Zero\Models\CourseSession $session)
     {
         return $this->isInstructor($user->person, $session);
     }

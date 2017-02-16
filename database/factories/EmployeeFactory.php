@@ -21,7 +21,7 @@ $factory->define(Scalex\Zero\Models\Employee::class, function (Faker\Generator $
         'religion' => $f->optional()->word,
         'language' => $f->optional()->word,
         'address_id' => function () {
-            return factory(Scalex\Zero\Models\Geo\Address::class)->create()->id;
+            return factory(\Scalex\Zero\Models\Address::class)->create()->id;
         },
         'bank' => $f->optional()->word,
         'beneficiary_name' => $f->optional()->word,

@@ -1,6 +1,7 @@
-<?php namespace Scalex\Zero\Models\Geo;
+<?php namespace Scalex\Zero\Models;
 
 use Scalex\Zero\Database\BaseModel;
+use Scalex\Zero\Models\State;
 
 class City extends BaseModel
 {

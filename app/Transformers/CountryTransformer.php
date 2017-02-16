@@ -1,6 +1,6 @@
-<?php namespace Scalex\Zero\Transformers\Geo;
+<?php namespace Scalex\Zero\Transformers;
 
-use Scalex\Zero\Models\Geo\Country;
+use Scalex\Zero\Models\Country;
 use Znck\Transformers\Transformer;
 
 class CountryTransformer extends Transformer

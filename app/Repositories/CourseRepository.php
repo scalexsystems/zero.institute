@@ -208,7 +208,7 @@ class CourseRepository extends Repository
 
     public function createSessionFor(Course $course, Teacher $teacher)
     {
-        $session = new Course\Session();
+        $session = new \Scalex\Zero\Models\CourseSession();
 
         $repository = $this->app->make(GroupRepository::class);
         $group = $repository->createWithMembers($teacher->user, [

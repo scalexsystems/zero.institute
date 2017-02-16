@@ -8,7 +8,7 @@ use Scalex\Zero\Events\CourseDeleted;
 use Scalex\Zero\Events\CourseUpdated;
 use Scalex\Zero\Http\Controllers\Controller;
 use Scalex\Zero\Models\Course;
-use Scalex\Zero\Models\Course\Session;
+use Scalex\Zero\Models\CourseSession;
 use Scalex\Zero\Criteria\OrderBy;
 use Carbon\Carbon;
 use Scalex\Zero\Repositories\CourseRepository;

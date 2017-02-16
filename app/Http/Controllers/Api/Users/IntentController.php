@@ -8,6 +8,9 @@ use Scalex\Zero\Http\Requests;
 use Scalex\Zero\Models\Intent;
 use Scalex\Zero\Services\IntentService;
 
+/**
+ * @deprecated 
+ */
 class IntentController extends Controller
 {
     public function index(Request $request)

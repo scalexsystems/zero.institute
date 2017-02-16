@@ -2,7 +2,7 @@
 
 use Scalex\Zero\Action;
 use Scalex\Zero\Events\Student\StudentAddressUpdated;
-use Scalex\Zero\Models\Geo\Address;
+use Scalex\Zero\Models\Address;
 
 class AddressControllerTest extends \TestCase
 {

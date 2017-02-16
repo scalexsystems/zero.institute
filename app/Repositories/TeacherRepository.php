@@ -5,7 +5,7 @@ use Illuminate\Validation\Rule;
 use Ramsey\Uuid\Uuid;
 use Request;
 use Scalex\Zero\Criteria\OfSchool;
-use Scalex\Zero\Models\Geo\Address;
+use Scalex\Zero\Models\Address;
 use Scalex\Zero\Models\School;
 use Scalex\Zero\Models\Teacher;
 use Scalex\Zero\User;

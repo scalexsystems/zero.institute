@@ -1,6 +1,6 @@
-<?php namespace Scalex\Zero\Transformers\Geo;
+<?php namespace Scalex\Zero\Transformers;
 
-use Scalex\Zero\Models\Geo\State;
+use Scalex\Zero\Models\State;
 use Znck\Transformers\Transformer;
 
 class StateTransformer extends Transformer
@@ -16,7 +16,7 @@ class StateTransformer extends Transformer
         ];
     }
 
-    public function includeCountry(State $state)
+    public function includeCountry(\Scalex\Zero\Models\State $state)
     {
         return $this->item($state->country);
     }

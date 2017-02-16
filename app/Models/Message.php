@@ -3,7 +3,7 @@
 use Carbon\Carbon;
 use Scalex\Zero\Database\BaseModel;
 use Scalex\Zero\Database\Relation\MessageReadAt;
-use Scalex\Zero\Models\Message\MessageState;
+use Scalex\Zero\Models\MessageState;
 use Scalex\Zero\User;
 
 class Message extends BaseModel
@@ -118,10 +118,13 @@ class Message extends BaseModel
 
     /**
      * Get message read state for the user.
-     *
-     * @param \Scalex\Zero\User $user
-     *
-     * @return \Scalex\Zero\Models\Message\MessageState|mixed|null
+
+*
+*@param \Scalex\Zero\User $user
+
+
+*
+*@return \Scalex\Zero\Models\MessageState|mixed|null
      */
     public function readAt(User $user)
     {

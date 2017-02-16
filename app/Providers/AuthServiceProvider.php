@@ -33,7 +33,7 @@ class AuthServiceProvider extends ServiceProvider
         \Znck\Trust\Models\Role::class => Policies\RolePolicy::class,
         /** Course */
         Models\Course::class => Policies\CoursePolicy::class,
-        Models\Course\Session::class => Policies\Course\SessionPolicy::class,
+        Models\CourseSession::class => Policies\CourseSessionPolicy::class,
     ];
 
     /**

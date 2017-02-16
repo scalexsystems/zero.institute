@@ -82,14 +82,14 @@ class CourseTransformer extends Transformer
 
     public function includeActiveSessions(Course $course)
     {
-        return $this->collection($course->sessions->filter(function (Course\Session $session) {
+        return $this->collection($course->sessions->filter(function (\Scalex\Zero\Models\CourseSession $session) {
             return $session->started_on->isPast() and $session->ended_on->isFuture();
         }));
     }
 
     public function includeFutureSessions(Course $course)
     {
-        return $this->collection($course->sessions->filter(function (Course\Session $session) {
+        return $this->collection($course->sessions->filter(function (\Scalex\Zero\Models\CourseSession $session) {
             return $session->started_on->isFuture();
         }));
     }

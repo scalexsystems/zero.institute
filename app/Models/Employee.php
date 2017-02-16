@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Scalex\Zero\Contracts\Database\BelongsToSchool;
 use Scalex\Zero\Contracts\Person;
 use Scalex\Zero\Database\BaseModel;
-use Scalex\Zero\Models\Geo\Address;
+use Scalex\Zero\Models\Address;
 use Scalex\Zero\User;
 
 class Employee extends BaseModel implements BelongsToSchool, Person

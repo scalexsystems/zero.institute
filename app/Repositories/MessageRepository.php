@@ -104,9 +104,9 @@ class MessageRepository extends Repository
 
         $this->onUpdate(DB::table('message_reads')->insert($entries->toArray()));
 
-        return Message\MessageState::whereUserId($user->getKey())
-                                   ->whereIn('message_id', $entries->pluck('message_id')->toArray())
-                                   ->get();
+        return \Scalex\Zero\Models\MessageState::whereUserId($user->getKey())
+                                               ->whereIn('message_id', $entries->pluck('message_id')->toArray())
+                                               ->get();
     }
 
     /**
@@ -158,8 +158,8 @@ class MessageRepository extends Repository
     public function loadMessageStatesFor($messages, User $user)
     {
         $ids = $messages->getCollection()->pluck('id')->toArray();
-        $states = Message\MessageState::whereUserId($user->getKey())
-                                      ->whereIn('message_id', $ids)->get()->keyBy('message_id');
+        $states = \Scalex\Zero\Models\MessageState::whereUserId($user->getKey())
+                                                  ->whereIn('message_id', $ids)->get()->keyBy('message_id');
 
         foreach ($messages->getCollection() as $message) {
             if ($states->has($message->getKey())) {

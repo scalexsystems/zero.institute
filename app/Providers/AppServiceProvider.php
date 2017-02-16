@@ -120,10 +120,10 @@ class AppServiceProvider extends ServiceProvider
                  * Others
                  */
                 'attachment' => Models\Attachment::class,
-                'address' => Models\Geo\Address::class,
-                'country' => Models\Geo\Country::class,
-                'state' => Models\Geo\State::class,
-                'city' => Models\Geo\City::class,
+                'address' => Models\Address::class,
+                'country' => Models\Country::class,
+                'state' => Models\State::class,
+                'city' => Models\City::class,
                 'intent' => Models\Intent::class,
                 /**
                  * Communication
@@ -135,7 +135,7 @@ class AppServiceProvider extends ServiceProvider
                  * Academics
                  */
                 'course' => Models\Course::class,
-                'session' => Models\Course\Session::class,
+                'session' => Models\CourseSession::class,
             ]
         );
     }

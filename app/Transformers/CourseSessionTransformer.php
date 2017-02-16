@@ -1,21 +1,21 @@
-<?php namespace Scalex\Zero\Transformers\Course;
+<?php namespace Scalex\Zero\Transformers;
 
-use Scalex\Zero\Models\Course\Session;
+use Scalex\Zero\Models\CourseSession;
 use Znck\Transformers\Transformer;
 
-class SessionTransformer extends Transformer
+class CourseSessionTransformer extends Transformer
 {
     protected $availableIncludes = [
         'group',
         'instructor',
     ];
 
-    public function show(Session $session)
+    public function show(CourseSession $session)
     {
         return $this->index($session);
     }
 
-    public function index(Session $session)
+    public function index(CourseSession $session)
     {
         return [
             'name' => (string)$session->name,
@@ -28,12 +28,12 @@ class SessionTransformer extends Transformer
         ];
     }
 
-    public function includeInstructor(Session $session)
+    public function includeInstructor(CourseSession $session)
     {
         return $this->item($session->instructor);
     }
 
-    public function includeGroup(Session $session)
+    public function includeGroup(CourseSession $session)
     {
         return $this->item($session->group);
     }

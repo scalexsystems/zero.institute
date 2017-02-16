@@ -1,16 +1,7 @@
 <?php namespace Scalex\Zero\Models;
 
-use Scalex\Zero\Database\BaseModel;
 use Scalex\Zero\Contracts\Database\BelongsToSchool;
-use Scalex\Zero\Models\Group;
-use Scalex\Zero\Models\School;
-use Scalex\Zero\Models\Teacher;
-use Scalex\Zero\Models\Department;
-use Scalex\Zero\Models\Discipline;
-use Scalex\Zero\Models\Attachment;
-use Scalex\Zero\Models\Course\Session;
-use Scalex\Zero\Models\Course\Constraint;
-use Scalex\Zero\Models\Semester;
+use Scalex\Zero\Database\BaseModel;
 
 class Course extends BaseModel implements BelongsToSchool
 {
@@ -49,7 +40,7 @@ class Course extends BaseModel implements BelongsToSchool
      */
     public function sessions()
     {
-        return $this->hasMany(Session::class)->orderBy('started_on');
+        return $this->hasMany(CourseSession::class)->orderBy('started_on');
     }
 
     public function prerequisites()

@@ -1,6 +1,6 @@
 <?php namespace Test\Api;
 
-use Scalex\Zero\Models\Geo\City;
+use Scalex\Zero\Models\City;
 
 class CitiesControllerTest extends \TestCase
 {
@@ -29,11 +29,14 @@ class CitiesControllerTest extends \TestCase
 
     /**
      * Create cities
-     *
-     * @param int $count
+  
+*
+*@param int $count
      * @param array $attributes
-     *
-     * @return \Scalex\Zero\Models\Geo\City|\Illuminate\Database\Eloquent\Collection
+     
+      
+*
+*@return \Scalex\Zero\Models\City|\Illuminate\Database\Eloquent\Collection
      */
     protected function getCity($count = 1, array $attributes = [])
     {

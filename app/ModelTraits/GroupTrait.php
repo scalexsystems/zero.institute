@@ -1,4 +1,4 @@
-<?php namespace Scalex\Zero\Others;
+<?php namespace Scalex\Zero\ModelTraits;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;

@@ -1,6 +1,6 @@
-<?php namespace Scalex\Zero\Transformers\Geo;
+<?php namespace Scalex\Zero\Transformers;
 
-use Scalex\Zero\Models\Geo\Address;
+use Scalex\Zero\Models\Address;
 use Znck\Transformers\Transformer;
 
 class AddressTransformer extends Transformer
@@ -9,7 +9,7 @@ class AddressTransformer extends Transformer
 
     public $defaultIncludes = ['city'];
 
-    public function show(Address $address)
+    public function show(\Scalex\Zero\Models\Address $address)
     {
         return [
             'address_line1' => (string)$address->address_line1,
@@ -22,7 +22,7 @@ class AddressTransformer extends Transformer
         ];
     }
 
-    public function includeCity(Address $address)
+    public function includeCity(\Scalex\Zero\Models\Address $address)
     {
         return $this->item($address->city);
     }

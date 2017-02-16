@@ -1,7 +1,8 @@
-<?php namespace Scalex\Zero\Models\Geo;
+<?php namespace Scalex\Zero\Models;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Scalex\Zero\Database\ExtendibleModel;
+use Scalex\Zero\Models\City;
 
 class Address extends ExtendibleModel
 {

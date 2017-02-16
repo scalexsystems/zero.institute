@@ -1,11 +1,11 @@
 <?php
 
-namespace Scalex\Zero\Repositories\Course;
+namespace Scalex\Zero\Repositories;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Validation\Rule;
 use Scalex\Zero\Models\Course;
-use Scalex\Zero\Models\Course\Session;
+use Scalex\Zero\Models\CourseSession;
 use Scalex\Zero\Models\Group;
 use Scalex\Zero\Models\School;
 use Scalex\Zero\Models\Student;
@@ -15,21 +15,21 @@ use Znck\Repositories\Exceptions\StoreResourceException;
 use Znck\Repositories\Repository;
 
 /**
- * @method Session find(int $id)
- * @method Session findBy(string $key, $value)
- * @method Session create(array $attr)
- * @method Session update(int | Session $id, array $attr, array $o = [])
- * @method Session delete(int | Session $id)
- * @method SessionRepository validate(array $attr, Session | null $model)
+ * @method \Scalex\Zero\Models\CourseSession find(int $id)
+ * @method CourseSession findBy(string $key, $value)
+ * @method \Scalex\Zero\Models\CourseSession create(array $attr)
+ * @method \Scalex\Zero\Models\CourseSession update(int | \Scalex\Zero\Models\CourseSession $id, array $attr, array $o = [])
+ * @method \Scalex\Zero\Models\CourseSession delete(int | \Scalex\Zero\Models\CourseSession $id)
+ * @method CourseSessionRepository validate(array $attr, \Scalex\Zero\Models\CourseSession | null $model)
  */
-class SessionRepository extends Repository
+class CourseSessionRepository extends Repository
 {
     /**
      * Class name of the Eloquent model.
      *
      * @var string
      */
-    protected $model = Session::class;
+    protected $model = \Scalex\Zero\Models\CourseSession::class;
 
     /**
      * Validation rules.
@@ -44,12 +44,16 @@ class SessionRepository extends Repository
 
     /**
      * Get update rules.
-     *
-     * @param array $rules
+
+*
+*@param array $rules
      * @param array $attributes
-     * @param \Scalex\Zero\Models\Course\Session $session
-     *
-     * @return array
+     * @param \Scalex\Zero\Models\CourseSession $session
+
+
+
+*
+*@return array
      */
     public function getUpdateRules(array $rules, array $attributes, $session)
     {
@@ -69,7 +73,7 @@ class SessionRepository extends Repository
             throw new StoreResourceException('Instructor does not have an account on Zero.');
         }
 
-        $session = new Session($attributes);
+        $session = new \Scalex\Zero\Models\CourseSession($attributes);
 
 //        $session->name = TODO: Create a default session name.
 
@@ -82,7 +86,7 @@ class SessionRepository extends Repository
         return $session;
     }
 
-    public function updating(Session $session, array $attributes)
+    public function updating(\Scalex\Zero\Models\CourseSession $session, array $attributes)
     {
         if (isset($attributes['private'])) {
             unset($attributes['private']);
@@ -93,7 +97,7 @@ class SessionRepository extends Repository
         return $session->update($attributes);
     }
 
-    public function enroll(Session $session, Collection $students)
+    public function enroll(\Scalex\Zero\Models\CourseSession $session, Collection $students)
     {
         $duplicates = $session->students()->wherePivotIn('student_id', $students->modelKeys())->get()->keyBy('id');
 
@@ -110,7 +114,7 @@ class SessionRepository extends Repository
         $session->group->addMembers($users);
     }
 
-    public function expel(Session $session, Collection $students)
+    public function expel(\Scalex\Zero\Models\CourseSession $session, Collection $students)
     {
         $session->students()->detach($students);
 

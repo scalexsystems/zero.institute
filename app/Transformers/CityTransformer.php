@@ -1,6 +1,6 @@
-<?php namespace Scalex\Zero\Transformers\Geo;
+<?php namespace Scalex\Zero\Transformers;
 
-use Scalex\Zero\Models\Geo\City;
+use Scalex\Zero\Models\City;
 use Znck\Transformers\Transformer;
 
 class CityTransformer extends Transformer
@@ -18,12 +18,12 @@ class CityTransformer extends Transformer
         ];
     }
 
-    public function show(City $city)
+    public function show(\Scalex\Zero\Models\City $city)
     {
         return $this->index($city);
     }
 
-    public function includeState(City $city)
+    public function includeState(\Scalex\Zero\Models\City $city)
     {
         return $this->item($city->state);
     }

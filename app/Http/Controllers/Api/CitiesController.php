@@ -5,8 +5,8 @@ use Scalex\Zero\Criteria\ExactMatch;
 use Scalex\Zero\Criteria\OrderBy;
 use Scalex\Zero\Http\Controllers\Controller;
 use Scalex\Zero\Http\Requests;
-use Scalex\Zero\Models\Geo\City;
-use Scalex\Zero\Repositories\Geo\CityRepository;
+use Scalex\Zero\Models\City;
+use Scalex\Zero\Repositories\CityRepository;
 
 class CitiesController extends Controller
 {
@@ -17,11 +17,14 @@ class CitiesController extends Controller
 
     /**
      * List all cities (paginated).
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param \Scalex\Zero\Repositories\Geo\CityRepository $repository
-     *
-     * @return \Illuminate\Contracts\Pagination\Paginator
+
+*
+*@param \Illuminate\Http\Request $request
+     * @param \Scalex\Zero\Repositories\CityRepository $repository
+
+
+*
+*@return \Illuminate\Contracts\Pagination\Paginator
      */
     public function index(Request $request, CityRepository $repository)
     {
@@ -36,11 +39,12 @@ class CitiesController extends Controller
 
     /**
      * Get a city by ID.
+
+*
+*@param \Illuminate\Http\Request $request
+     * @param \Scalex\Zero\Models\City $city
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Scalex\Zero\Models\Geo\City $city
-     *
-     * @return \Scalex\Zero\Models\Geo\City
+*@return \Scalex\Zero\Models\City
      */
     public function show(Request $request, City $city)
     {

@@ -1,7 +1,7 @@
 <?php namespace Scalex\Zero\Observers;
 
 use Scalex\Zero\Events\Message\MessageRead;
-use Scalex\Zero\Models\Message\MessageState;
+use Scalex\Zero\Models\MessageState;
 
 class MessageStateObserver
 {
