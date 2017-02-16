@@ -1,26 +1,26 @@
 <?php namespace Scalex\Zero\Events\Teacher;
 
 
-use Scalex\Zero\Models\Teacher;
 use Illuminate\Broadcasting\Channel;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Scalex\Zero\Events\Event;
+use Scalex\Zero\Models\Teacher;
 
-class AbstractTeacherEvent implements ShouldBroadcast
+class AbstractTeacherEvent extends Event
 {
-    use InteractsWithSockets, SerializesModels;
-
     /**
      * @var \Scalex\Zero\Models\Teacher
      */
-    protected $teacher;
+    public $teacher;
 
-    public $id;
+    /**
+     * @var \Scalex\Zero\User
+     */
+    public $user;
 
+    /**
+     * @var string
+     */
     public $uid;
-
-    public $user_id;
 
     /**
      * Create event.
@@ -30,8 +30,7 @@ class AbstractTeacherEvent implements ShouldBroadcast
     public function __construct(Teacher $teacher)
     {
         $this->teacher = $teacher;
-        $this->user_id = $teacher->user->id;
-        $this->id = $teacher->getKey();
+        $this->user = $teacher->user;
         $this->uid = $teacher->getRouteKey();
     }
 

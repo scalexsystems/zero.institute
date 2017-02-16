@@ -2,7 +2,7 @@
 
 namespace Scalex\Zero\Events\Group;
 
-class GroupCreated extends AbstractGroupEvent
+class Created extends AbstractGroupEvent
 {
     protected $toGroup = false;
 

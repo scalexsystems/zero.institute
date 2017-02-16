@@ -2,7 +2,7 @@
 
 
 
-use Scalex\Zero\Events\Employee\EmployeePhotoUpdated;
+use Scalex\Zero\Events\Employee\PhotoUpdated;
 
 class PhotoControllerTest extends \TestCase
 {
@@ -23,7 +23,7 @@ class PhotoControllerTest extends \TestCase
     {
         $employee = $this->createEmployeeAndUser();
 
-        $this->expectsEvents(EmployeePhotoUpdated::class);
+        $this->expectsEvents(PhotoUpdated::class);
 
         $this->actingAs($employee->user)
             ->postFile('/api/people/employees/'.$employee->uid.'/photo', ['photo' => $this->getSomeFile('photo.jpg')]);

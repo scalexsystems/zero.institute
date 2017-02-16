@@ -3,7 +3,7 @@
 namespace Scalex\Zero\Http\Controllers\Api\Courses;
 
 use Illuminate\Http\Request;
-use Scalex\Zero\Events\Course\Session\StudentsEnrolled;
+use Scalex\Zero\Events\CourseSession\EnrolledStudents;
 use Scalex\Zero\Events\Course\Session\StudentsExpelled;
 use Scalex\Zero\Http\Controllers\Controller;
 use Scalex\Zero\Models\Course;
@@ -36,7 +36,7 @@ class EnrollmentController extends Controller
 
         repository(CourseSession::class)->enroll($session, $students);
 
-        broadcast(new StudentsEnrolled($session, $students));
+        broadcast(new EnrolledStudents($session, $students));
 
         return $this->accepted();
     }

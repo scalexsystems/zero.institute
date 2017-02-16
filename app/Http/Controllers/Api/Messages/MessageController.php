@@ -5,7 +5,7 @@ use Illuminate\Http\Request;
 use Scalex\Zero\Criteria\Message\Direct\ConversationBetween;
 use Scalex\Zero\Criteria\OrderBy;
 use Scalex\Zero\Events\Message\NewMessage;
-use Scalex\Zero\Events\Message\MessageRead;
+use Scalex\Zero\Events\Message\Read;
 use Scalex\Zero\Http\Controllers\Controller;
 use Scalex\Zero\Models\Message;
 use Scalex\Zero\Repositories\MessageRepository;
@@ -40,7 +40,7 @@ class MessageController extends Controller
 
         $states = $repository->readAll($messages, $request->user());
 
-        broadcast(new MessageRead($states));
+        broadcast(new Read($states));
 
         return $this->accepted();
     }

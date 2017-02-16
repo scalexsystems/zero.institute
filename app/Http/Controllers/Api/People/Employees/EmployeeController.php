@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Scalex\Zero\Criteria\OrderBy;
-use Scalex\Zero\Events\Employee\EmployeeUpdated;
+use Scalex\Zero\Events\Employee\Updated;
 use Scalex\Zero\Http\Controllers\Controller;
 use Scalex\Zero\Mail\InvitationMail;
 use Scalex\Zero\Models\Employee;
@@ -43,7 +43,7 @@ class EmployeeController extends Controller
 
         repository(Employee::class)->update($employee, $request->all());
 
-        broadcast(new EmployeeUpdated($employee));
+        broadcast(new Updated($employee));
 
         return $employee;
     }

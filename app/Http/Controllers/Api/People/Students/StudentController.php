@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Mail;
 use Scalex\Zero\Criteria\OfDepartment;
 use Scalex\Zero\Criteria\OfDiscipline;
 use Scalex\Zero\Criteria\OrderBy;
-use Scalex\Zero\Events\Student\StudentUpdated;
+use Scalex\Zero\Events\Student\Updated;
 use Scalex\Zero\Http\Controllers\Controller;
 use Scalex\Zero\Http\Requests;
 use Scalex\Zero\Models\Student;
@@ -54,7 +54,7 @@ class StudentController extends Controller
 
         repository(Student::class)->update($student, $request->all());
 
-        broadcast(new StudentUpdated($student));
+        broadcast(new Updated($student));
 
         return $student;
     }

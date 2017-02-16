@@ -3,12 +3,12 @@
 use Illuminate\Mail\Message;
 use Mail;
 use Scalex\Zero\Events\User\AccountIntentSubmitted;
-use Scalex\Zero\Events\User\UserEmailUpdated;
+use Scalex\Zero\Events\User\EmailUpdated;
 use Scalex\Zero\Notifications\VerificationEmailSent;
 
 class UserEventSubscriber
 {
-    public function onEmailUpdate(UserEmailUpdated $event)
+    public function onEmailUpdate(EmailUpdated $event)
     {
         $token = $event->getUser()->other_verification_token;
         $email = $event->getUser()->email;
@@ -37,7 +37,7 @@ class UserEventSubscriber
      */
     public function subscribe($events)
     {
-        $events->listen(UserEmailUpdated::class, self::class.'@onEmailUpdate');
+        $events->listen(EmailUpdated::class, self::class.'@onEmailUpdate');
         $events->listen(AccountIntentSubmitted::class, self::class.'@onNewAccountRequest');
     }
 }

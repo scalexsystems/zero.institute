@@ -1,7 +1,7 @@
 <?php namespace Scalex\Zero\Http\Controllers\Api\People\Employees;
 
 use Illuminate\Http\Request;
-use Scalex\Zero\Events\Employee\EmployeeUpdated;
+use Scalex\Zero\Events\Employee\Updated;
 use Scalex\Zero\Http\Controllers\Controller;
 use Scalex\Zero\Models\Employee;
 use Scalex\Zero\Repositories\EmployeeRepository;
@@ -26,7 +26,7 @@ class AddressController extends Controller
 
         $repository->updateAddress($employee, $request->all());
 
-        broadcast(new EmployeeUpdated($employee));
+        broadcast(new Updated($employee));
 
         return $employee->address;
     }

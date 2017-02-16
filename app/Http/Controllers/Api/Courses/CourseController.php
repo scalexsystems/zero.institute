@@ -3,9 +3,9 @@
 namespace Scalex\Zero\Http\Controllers\Api\Courses;
 
 use Illuminate\Http\Request;
-use Scalex\Zero\Events\CourseCreated;
-use Scalex\Zero\Events\CourseDeleted;
-use Scalex\Zero\Events\CourseUpdated;
+use Scalex\Zero\Events\Course\Created;
+use Scalex\Zero\Events\Course\Deleted;
+use Scalex\Zero\Events\Course\Updated;
 use Scalex\Zero\Http\Controllers\Controller;
 use Scalex\Zero\Models\Course;
 use Scalex\Zero\Models\CourseSession;
@@ -54,7 +54,7 @@ class CourseController extends Controller
             $repository->addPrerequisites($course, (array)$request->input('courses'));
         }
 
-        broadcast(new CourseCreated($course));
+        broadcast(new Created($course));
 
         return $this->transform($course);
     }
@@ -69,7 +69,7 @@ class CourseController extends Controller
             $repository->addPrerequisites($course, (array)$request->input('courses'));
         }
 
-        broadcast(new CourseUpdated($course));
+        broadcast(new Updated($course));
 
         return $this->transform($course);
     }

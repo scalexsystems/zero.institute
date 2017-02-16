@@ -1,7 +1,7 @@
 <?php namespace Test\Api\People\Teachers;
 
 
-use Scalex\Zero\Events\Teacher\TeacherPhotoUpdated;
+use Scalex\Zero\Events\Teacher\PhotoUpdated;
 
 class PhotoControllerTest extends \TestCase
 {
@@ -22,7 +22,7 @@ class PhotoControllerTest extends \TestCase
     {
         $teacher = $this->createTeacherAndUser();
 
-        $this->expectsEvents(TeacherPhotoUpdated::class);
+        $this->expectsEvents(PhotoUpdated::class);
 
         $this->actingAs($teacher->user)
             ->postFile('/api/people/teachers/'.$teacher->uid.'/photo', ['photo' => $this->getSomeFile('photo.jpg')]);

@@ -2,7 +2,7 @@
 
 use Scalex\Zero\Models\Student;
 
-class StudentPhotoUpdated extends AbstractStudentEvent
+class PhotoUpdated extends AbstractStudentEvent
 {
     public $photo;
 

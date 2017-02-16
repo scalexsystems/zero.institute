@@ -3,28 +3,12 @@
 namespace Scalex\Zero\Events\Message;
 
 use Illuminate\Broadcasting\Channel;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use Scalex\Zero\Models\MessageState;
+use Scalex\Zero\Events\Event;
 
-class MessageRead implements ShouldBroadcast
+class Read extends Event
 {
-    use InteractsWithSockets, SerializesModels;
-
-    /**
-     * @var \Scalex\Zero\Models\MessageState|\Illuminate\Database\Eloquent\Collection
-     */
     protected $state;
 
-    /**
-     * MessageRead constructor.
-  
-*
-*@param \Scalex\Zero\Models\MessageState|\Illuminate\Database\Eloquent\Collection $state
-     */
     public function __construct($state)
     {
         $this->state = $state;

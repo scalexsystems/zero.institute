@@ -1,6 +1,6 @@
 <?php namespace Scalex\Zero\Events\Student;
 
-class StudentCreated extends AbstractStudentEvent
+class Deleted extends AbstractStudentEvent
 {
 
 }

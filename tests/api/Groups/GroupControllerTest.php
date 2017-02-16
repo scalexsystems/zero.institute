@@ -2,9 +2,9 @@
 
 namespace Test\Api\Groups;
 
-use Scalex\Zero\Events\Group\GroupCreated;
-use Scalex\Zero\Events\Group\GroupDeleted;
-use Scalex\Zero\Events\Group\GroupUpdated;
+use Scalex\Zero\Events\Group\Created;
+use Scalex\Zero\Events\Group\Deleted;
+use Scalex\Zero\Events\Group\Updated;
 use Scalex\Zero\Models\Group;
 use Scalex\Zero\Providers\AppServiceProvider;
 
@@ -133,7 +133,7 @@ class GroupControllerTest extends \TestCase
     public function test_store_can_create_group()
     {
         $this->expectsModelEvents(Group::class, 'created');
-        $this->expectsEvents(GroupCreated::class);
+        $this->expectsEvents(Created::class);
         $this->actingAs($this->getUserWithPerson())->post('/api/groups', ['name' => 'Foo'])
              ->assertResponseStatus(200)
              ->seeJsonStructure(['group' => ['id', 'name']]);
@@ -152,7 +152,7 @@ class GroupControllerTest extends \TestCase
         $group = $this->createPublicGroup();
 
         $this->expectsModelEvents(Group::class, 'updated');
-        $this->expectsEvents(GroupUpdated::class);
+        $this->expectsEvents(Updated::class);
         $this->actingAs($group->owner)->put('/api/groups/'.$group->id, ['name' => 'Foo'])
              ->assertResponseStatus(200)
              ->seeJsonStructure(['group' => ['id', 'name']]);
@@ -183,7 +183,7 @@ class GroupControllerTest extends \TestCase
         $group = $this->createCourseGroup();
 
         $this->doesntExpectModelEvents(Group::class, 'updated');
-        $this->expectsEvents(GroupUpdated::class);
+        $this->expectsEvents(Updated::class);
         $this->actingAs($group->owner)->put('/api/groups/'.$group->id, ['private' => false])
              ->assertResponseStatus(200);
         $this->seeInDatabase('groups', ['private' => true]);
@@ -194,7 +194,7 @@ class GroupControllerTest extends \TestCase
         $group = $this->createPublicGroup();
 
         $this->expectsModelEvents(Group::class, 'deleted');
-        $this->expectsEvents(GroupDeleted::class);
+        $this->expectsEvents(Deleted::class);
         $this->actingAs($group->owner)->delete('/api/groups/'.$group->id)
              ->assertResponseStatus(202);
 

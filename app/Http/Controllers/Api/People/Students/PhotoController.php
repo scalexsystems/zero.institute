@@ -1,7 +1,7 @@
 <?php namespace Scalex\Zero\Http\Controllers\Api\People\Students;
 
 use Illuminate\Http\Request;
-use Scalex\Zero\Events\Student\StudentPhotoUpdated;
+use Scalex\Zero\Events\Student\PhotoUpdated;
 use Scalex\Zero\Http\Controllers\Controller;
 use Scalex\Zero\Models\Student;
 use Scalex\Zero\Repositories\StudentRepository;
@@ -34,7 +34,7 @@ class PhotoController extends Controller
             $user->save();
         }
 
-        broadcast(new StudentPhotoUpdated($student));
+        broadcast(new PhotoUpdated($student));
 
         return $this->accepted($student->getPhotoUrl());
     }

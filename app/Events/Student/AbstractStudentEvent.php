@@ -8,22 +8,25 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Scalex\Zero\Events\Event;
 use Scalex\Zero\Models\Student;
 
-abstract class AbstractStudentEvent implements ShouldBroadcast
+abstract class AbstractStudentEvent extends Event
 {
-    use InteractsWithSockets, SerializesModels;
-
     /**
      * @var \Scalex\Zero\Models\Student
      */
-    protected $student;
+    public $student;
 
-    public $id;
+    /**
+     * @var \Scalex\Zero\User
+     */
+    public $user;
 
+    /**
+     * @var string
+     */
     public $uid;
-
-    public $user_id;
 
     /**
      * Create event.
@@ -33,8 +36,7 @@ abstract class AbstractStudentEvent implements ShouldBroadcast
     public function __construct(Student $student)
     {
         $this->student = $student;
-        $this->user_id = $student->user->id;
-        $this->id = $student->getKey();
+        $this->user = $student->user;
         $this->uid = $student->getRouteKey();
     }
 

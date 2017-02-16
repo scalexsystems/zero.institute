@@ -4,12 +4,11 @@ use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Queue\SerializesModels;
+use Scalex\Zero\Events\Event;
 use Scalex\Zero\Models\Group;
 
-abstract class AbstractGroupEvent implements ShouldBroadcast
+abstract class AbstractGroupEvent extends Event
 {
-    use InteractsWithSockets, SerializesModels;
-
     /**
      * Send event to school.
      *
@@ -29,14 +28,7 @@ abstract class AbstractGroupEvent implements ShouldBroadcast
      *
      * @var \Scalex\Zero\Models\Group
      */
-    protected $group;
-
-    /**
-     * Group ID
-     *
-     * @var int
-     */
-    public $group_id;
+    public $group;
 
     /**
      * AbstractGroupEvent constructor.
@@ -46,7 +38,6 @@ abstract class AbstractGroupEvent implements ShouldBroadcast
     public function __construct(Group $group)
     {
         $this->group = $group;
-        $this->group_id = $group->getKey();
     }
 
     /**
@@ -66,16 +57,6 @@ abstract class AbstractGroupEvent implements ShouldBroadcast
             $channels->push($this->group->getChannel());
         }
 
-        return [$this->group->getChannel()];
-    }
-
-    /**
-     * Group of the event.
-     *
-     * @return \Scalex\Zero\Models\Group
-     */
-    public function getGroup(): Group
-    {
-        return $this->group;
+        return $channels->toArray();
     }
 }

@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Ramsey\Uuid\Uuid;
-use Scalex\Zero\Events\Teacher\TeacherPhotoUpdated;
+use Scalex\Zero\Events\Teacher\PhotoUpdated;
 use Scalex\Zero\Http\Controllers\Controller;
 use Scalex\Zero\Models\Student;
 use Scalex\Zero\Models\Teacher;
@@ -38,7 +38,7 @@ class PhotoController extends Controller
             $user->save();
         }
 
-        broadcast(new TeacherPhotoUpdated($teacher));
+        broadcast(new PhotoUpdated($teacher));
 
         return $this->accepted($teacher->getPhotoUrl());
     }

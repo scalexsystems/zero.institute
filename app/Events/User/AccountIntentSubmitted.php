@@ -9,6 +9,9 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Queue\SerializesModels;
 use Scalex\Zero\Models\Intent;
 
+/**
+ * @deprecated 
+ */
 class AccountIntentSubmitted implements ShouldBroadcast
 {
     use InteractsWithSockets, SerializesModels;

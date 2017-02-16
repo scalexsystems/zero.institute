@@ -1,7 +1,7 @@
 <?php namespace Scalex\Zero\Events\Teacher;
 
 
-class TeacherUpdated extends AbstractTeacherEvent
+class Updated extends AbstractTeacherEvent
 {
 
 }

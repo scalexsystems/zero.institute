@@ -1,6 +1,6 @@
 <?php
 
-namespace Scalex\Zero\Events\Group;
+namespace Scalex\Zero\Events\CourseSession;
 
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
@@ -9,7 +9,6 @@ use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class GroupDeleted extends AbstractGroupEvent
+class Deleted extends AbstractCourseSessionEvent
 {
-    protected $toSchool = true;
 }

@@ -3,7 +3,7 @@
 
 use Scalex\Zero\Models\Employee;
 
-class EmployeePhotoUpdated extends AbstractEmployeeEvent
+class PhotoUpdated extends AbstractEmployeeEvent
 {
     public $photo;
 

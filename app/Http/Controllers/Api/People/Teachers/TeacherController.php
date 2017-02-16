@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use Scalex\Zero\Criteria\OfDepartment;
 use Scalex\Zero\Criteria\OrderBy;
-use Scalex\Zero\Events\Teacher\TeacherUpdated;
+use Scalex\Zero\Events\Teacher\Updated;
 use Scalex\Zero\Http\Controllers\Controller;
 use Scalex\Zero\Models\Teacher;
 use Scalex\Zero\Jobs\SendInvitations;
@@ -50,7 +50,7 @@ class TeacherController extends Controller
 
         repository(Teacher::class)->update($teacher, $request->all());
 
-        broadcast(new TeacherUpdated($teacher));
+        broadcast(new Updated($teacher));
 
         return $teacher;
 

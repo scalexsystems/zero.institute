@@ -5,45 +5,35 @@ use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Queue\SerializesModels;
+use Scalex\Zero\Events\Event;
 use Scalex\Zero\Models\Employee;
 
-abstract class AbstractEmployeeEvent implements ShouldBroadcast
+abstract class AbstractEmployeeEvent extends Event
 {
-    use InteractsWithSockets, SerializesModels;
-
     /**
      * @var \Scalex\Zero\Models\Teacher
      */
-    protected $employee;
-
-    public $id;
-
-    public $uid;
-
-    public $user_id;
+    public $employee;
 
     /**
-     * Create event.
-     *
-     * @param \Scalex\Zero\Models\Employee $employee
+     * @var \Scalex\Zero\User
      */
+    public $user;
+
+    /**
+     * @var string
+     */
+    public $uid;
+
     public function __construct(Employee $employee)
     {
         $this->employee = $employee;
-        $this->user_id = $employee->user->id;
-        $this->id = $employee->getKey();
+        $this->user = $employee->user;
         $this->uid = $employee->getRouteKey();
     }
 
-    /**
-     * Get the channels the event should broadcast on.
-     *
-     * @return Channel|array
-     */
     public function broadcastOn()
     {
-        return $this->employee->school->getChannel();
+        return [$this->employee->school->getChannel()];
     }
-
-
 }

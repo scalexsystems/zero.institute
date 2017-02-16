@@ -4,9 +4,9 @@ use Illuminate\Http\Request;
 use Scalex\Zero\Criteria\Group\MessagesCount;
 use Scalex\Zero\Criteria\Group\PrivateGroup;
 use Scalex\Zero\Criteria\OrderBy;
-use Scalex\Zero\Events\Group\GroupCreated;
-use Scalex\Zero\Events\Group\GroupDeleted;
-use Scalex\Zero\Events\Group\GroupUpdated;
+use Scalex\Zero\Events\Group\Created;
+use Scalex\Zero\Events\Group\Deleted;
+use Scalex\Zero\Events\Group\Updated;
 use Scalex\Zero\Http\Controllers\Controller;
 use Scalex\Zero\Http\Requests;
 use Scalex\Zero\Models\Group;
@@ -78,7 +78,7 @@ class GroupController extends Controller
             (array)$request->input('members')
         );
 
-        event(new GroupCreated($group));
+        event(new Created($group));
 
         return $group;
     }
@@ -104,7 +104,7 @@ class GroupController extends Controller
 
         $repository->update($group, $attributes);
 
-        event(new GroupUpdated($group));
+        event(new Updated($group));
 
         return $group;
     }
@@ -119,7 +119,7 @@ class GroupController extends Controller
 
         $repository->delete($group);
 
-        event(new GroupDeleted($group));
+        event(new Deleted($group));
 
         return $this->accepted();
     }

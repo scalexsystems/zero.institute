@@ -3,9 +3,9 @@
 namespace Scalex\Zero\Http\Controllers\Api\Courses;
 
 use Illuminate\Http\Request;
-use Scalex\Zero\Events\Course\Session\SessionCreated;
-use Scalex\Zero\Events\Course\Session\SessionDeleted;
-use Scalex\Zero\Events\Course\Session\SessionUpdated;
+use Scalex\Zero\Events\CourseSession\Created;
+use Scalex\Zero\Events\CourseSession\Deleted;
+use Scalex\Zero\Events\CourseSession\Updated;
 use Scalex\Zero\Http\Controllers\Controller;
 use Scalex\Zero\Models\Course;
 use Scalex\Zero\Models\CourseSession;
@@ -37,7 +37,7 @@ class SessionController extends Controller
 
         $session = repository(CourseSession::class)->createForCourse($course, $request->all());
 
-        broadcast(new SessionCreated($session));
+        broadcast(new Created($session));
 
         return $session;
     }
@@ -48,7 +48,7 @@ class SessionController extends Controller
 
         $session = repository(CourseSession::class)->update($session, $request->all());
 
-        broadcast(new SessionUpdated($session));
+        broadcast(new Updated($session));
 
         return $session;
     }
@@ -59,7 +59,7 @@ class SessionController extends Controller
 
         repository(CourseSession::class)->delete($session);
 
-        broadcast(new SessionDeleted($session));
+        broadcast(new Deleted($session));
 
         return $this->accepted();
     }

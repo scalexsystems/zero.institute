@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Scalex\Zero\Events\Student\StudentAddressUpdated;
-use Scalex\Zero\Events\Student\StudentUpdated;
+use Scalex\Zero\Events\Student\Updated;
 use Scalex\Zero\Http\Controllers\Controller;
 use Scalex\Zero\Models\Student;
 use Scalex\Zero\Repositories\StudentRepository;
@@ -27,7 +27,7 @@ class AddressController extends Controller
 
         $repository->updateAddress($student, $request->all());
 
-        broadcast(new StudentUpdated($student));
+        broadcast(new Updated($student));
 
         return $student->address;
     }
