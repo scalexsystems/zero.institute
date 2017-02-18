@@ -22,6 +22,30 @@ const actions = {
     return { semester }
   },
 
+  async store ({ dispatch }, payload) {
+    try {
+      const { semester } = await http.post(true, 'semesters', payload)
+
+      await dispatch('addToStore', [semester])
+
+      return { semester }
+    } catch (e) {
+      return e
+    }
+  },
+
+  async update ({ dispatch }, { id, payload} ) {
+    try {
+      const { semester } = await http.put(true, `semesters/${id}`, payload)
+
+      await dispatch('addToStore', [semester])
+
+      return { semester }
+    } catch (e) {
+      return e
+    }
+  },
+
   async addToStore({ commit }, items) {
     if (items) commit('INSERT', items)
   }

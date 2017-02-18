@@ -27,7 +27,7 @@ export default [
   {
     name: 'settings.semesters',
     path: '/settings/semesters',
-    component: require('../pages/settings/Dashboard.vue')
+    component: require('../pages/settings/Semesters.vue')
   },
   {
     name: 'settings.sessions',
