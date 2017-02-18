@@ -7,8 +7,6 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Scalex\Zero\Events\School\InvitationRequest;
-use Scalex\Zero\Jobs\InstituteInvitationMailer;
-use Scalex\Zero\Mail\InstituteInvitationMail;
 
 class HomeController extends Controller
 {
@@ -36,7 +34,7 @@ class HomeController extends Controller
         }
 
         $count = Cache::rememberForever('requests.count', function () {
-                       return DB::connection('sqlite')
+            return DB::connection('sqlite')
                                  ->table('requests')->count();
         });
 
@@ -81,7 +79,6 @@ class HomeController extends Controller
                 ->insert(compact('email', 'name', 'created_at'));
             Cache::forget('requests.count');
 
-            dispatch(new InstituteInvitationMailer($name, $email));
             event(new InvitationRequest($name, $email));
         }
 

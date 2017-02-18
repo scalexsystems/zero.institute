@@ -1,6 +1,7 @@
 <?php namespace Scalex\Zero\Policies;
 
 use Scalex\Zero\Action;
+use Scalex\Zero\Models\Discipline;
 use Scalex\Zero\Policies\Traits\VerifiesSchool;
 use Scalex\Zero\User;
 
@@ -10,11 +11,11 @@ class DisciplinePolicy extends AbstractPolicy
 
     public function store(User $user)
     {
-        return trust($user)->to(Action::UPDATE_DISCIPLINE);
+        return trust($user)->to('discipline.create');
     }
 
-    public function update(User $user)
+    public function update(User $user, Discipline $discipline)
     {
-        return trust($user)->to(Action::UPDATE_DISCIPLINE);
+        return $user->school_id === $discipline->school_id and trust($user)->to('discipline.update');
     }
 }

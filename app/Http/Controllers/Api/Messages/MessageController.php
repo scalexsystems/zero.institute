@@ -2,72 +2,45 @@
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Scalex\Zero\Criteria\MessageBetween;
+use Scalex\Zero\Criteria\Message\Direct\ConversationBetween;
 use Scalex\Zero\Criteria\OrderBy;
-use Scalex\Zero\Events\NewMessage;
+use Scalex\Zero\Events\Message\Created;
+use Scalex\Zero\Events\Message\Read;
 use Scalex\Zero\Http\Controllers\Controller;
 use Scalex\Zero\Models\Message;
+use Scalex\Zero\Repositories\MessageRepository;
 use Scalex\Zero\User;
 
 class MessageController extends Controller
 {
+    /**
+     * Add auth middleware to all routes.
+     */
     public function __construct()
     {
         $this->middleware('auth:api,web');
     }
 
     /**
-     * Get messages from the user.
-     * GET /messages/users/{user}
-     * Required: auth
+     * Mark messages as read in bulk.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \Scalex\Zero\Repositories\MessageRepository $repository
+     *
+     * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, User $user)
+    public function read(Request $request, MessageRepository $repository)
     {
-        return repository(Message::class)
-            ->pushCriteria(new MessageBetween($user, $request->user()))
-            ->pushCriteria(new OrderBy('id', 'desc'))
-            ->pushCriteria(criteria(function ($query) use ($request) {
-                /** @var \Illuminate\Database\Query\Builder $query */
-                $query->where('id', '<', (int)$request->input('before', 2147483647));
-            }))
-            ->with(['attachments', 'sender'])
-            ->paginate();
-    }
+        $this->validate($request, ['messages' => 'required']);
 
-    /**
-     * Send message to user.
-     * POST /messages/users/{user}
-     * Required: auth
-     */
-    public function store(Request $request, User $user)
-    {
-        $message = repository(Message::class)->create(
-            [
-                'sender' => $request->user(),
-                'sender_id' => $request->user()->id,
-                'receiver' => $user,
-                'type' => 'text',
-                'content' => $request->input('content'),
-            ] + $request->except('intended_for'));
+        $messages = $repository->with('receiver')->findMany((array)$request->input('messages'));
+        $messages->each(function ($message) {
+            $this->authorize('read', $message);
+        });
 
-        event(new NewMessage($message));
+        $states = $repository->readAll($messages, $request->user());
 
-        return $message;
-    }
-
-    /**
-     * Mark message as read.
-     * POST /messages/{message}/read
-     * Required: auth
-     */
-    public function read(Message $message)
-    {
-        $this->authorize('read', $message);
-
-        if (is_null($message->read_at)) {
-            $message->read_at = Carbon::now();
-            repository($message)->update($message, []);
-        }
+        broadcast(new Read($states));
 
         return $this->accepted();
     }

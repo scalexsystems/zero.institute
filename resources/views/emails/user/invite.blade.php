@@ -12,9 +12,10 @@
       </a>
     </p>
 
+    <p>Click on the video to learn more about Zero.</p>
 
     <p>
-        <img src="{{ asset('/img/web/zero.png') }}">
+        <iframe width="853" height="480" src="https://www.youtube.com/embed/Q0FRHSRaLE8?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
     </p>
 
     <p>If you have any problem logging in, contact us here: support@zero.institute</p>

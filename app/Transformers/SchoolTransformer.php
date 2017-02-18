@@ -12,7 +12,6 @@ class SchoolTransformer extends Transformer
         return [
             'name' => $school->name,
             'logo' => $this->logo($school),
-            'logo_id' => (string)$school->logo_id,
             'email' => (string)$school->email,
             'fax' => (string)$school->fax,
             'medium' => (string)$school->medium,
@@ -20,7 +19,9 @@ class SchoolTransformer extends Transformer
             'university' => (string)$school->university,
             'institute_type' => (string)$school->institute_type,
             'verified' => (boolean)$school->verified,
+            'channel' => (string)$school->getChannelName(),
             'slug' => $school->slug,
+            'session_id' => (int)$school->session_id,
         ];
     }
 

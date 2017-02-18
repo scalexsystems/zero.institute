@@ -3,7 +3,7 @@
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Scalex\Zero\Contracts\Person;
 use Scalex\Zero\Database\ExtendibleModel;
-use Scalex\Zero\Models\Geo\Address;
+use Scalex\Zero\Models\Address;
 
 class Guardian extends ExtendibleModel implements Person
 {
@@ -25,6 +25,7 @@ class Guardian extends ExtendibleModel implements Person
         // Personal Information.
         'income',
         'phone',
+        'profession',
 
         // Medical Information.
         'is_disabled',
@@ -45,6 +46,10 @@ class Guardian extends ExtendibleModel implements Person
         'school_id',
     ];
 
+    protected $extends = [
+        'profession'
+    ];
+
     protected $dates = ['date_of_birth'];
 
     protected $appends = ['name'];
@@ -54,7 +59,7 @@ class Guardian extends ExtendibleModel implements Person
         return str_replace(
             '  ', ' ',
             $this->attributes['first_name'].' '.
-            $this->attributes['middle_name'].' '.
+            ($this->attributes['middle_name'] ?? '').' '.
             $this->attributes['last_name']
         );
     }

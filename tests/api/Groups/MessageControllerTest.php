@@ -1,69 +1,56 @@
-<?php
-use Scalex\Zero\Models\Group;
-use Scalex\Zero\Models\Message;
+<?php namespace Test\Api\Groups;
 
-class MessageControllerTest extends TestCase
+use Scalex\Zero\Events\Message\Created;
+
+class MessageControllerTest extends \TestCase
 {
-    public function createGroup($attributes = [])
+    use MessagingTestHelper;
+
+    public function test_index_can_get_group_messages()
     {
-        return factory(Group::class)->create($attributes);
+        $group = $this->createPublicGroup();
+
+        $group->addMembers($this->getUser());
+
+        $messages = $this->sendMessageTo($group, 2);
+
+        $this->seeInDatabase('messages', []);
+        $this->actingAs($this->getUser())->get('/api/groups/'.$group->id.'/messages')
+             ->assertResponseStatus(200)
+             ->seeJsonStructure(['messages' => ['*' => ['id', 'content', 'sender']]])
+             ->seeResources('messages', $messages->modelKeys());
     }
 
-    public function test_it_can_list_all_messages()
+    public function test_index_cannot_serve_group_messages_to_non_members()
     {
-        $user = $this->createAnUser();
-        $group = $this->createGroup(['school_id' => $user->school_id]);
-        $group->addMembers([$user->id]);
-        $messages = factory(Message::class, 2)->create([
-            'sender_id' => $user->id,
-            'receiver_id' => $group->id,
-            'receiver_type' => 'group',
-        ]);
+        $group = $this->createPublicGroup();
 
-        $this->actingAs($user)
-            ->json('GET', "/api/groups/{$group->id}/messages")
-            ->seeStatusCode(200)
-            ->seeJsonContains(transform($messages));
+        $this->sendMessageTo($group, 2);
+
+        $this->seeInDatabase('messages', []);
+        $this->actingAs($this->getUser())->get('/api/groups/'.$group->id.'/messages')
+             ->assertResponseStatus(401);
     }
 
-    public function test_it_can_send_a_message()
+    public function test_store_can_send_message()
     {
-        $user = $this->createAnUser();
-        $group = $this->createGroup(['school_id' => $user->school_id]);
-        $group->addMembers([$user->id]);
-        $data = [
-            'content' => 'Test Message',
-        ];
+        $group = $this->createPublicGroup();
 
-        $this->actingAs($user)
-            ->json('POST', "/api/groups/{$group->id}/messages", $data)
-            ->seeStatusCode(200)
-            ->seeJsonContains($data)
-            ->seeInDatabase('messages', [
-                'sender_id' => $user->id,
-                'receiver_id' => $group->id,
-            ]);
+        $group->addMembers($this->getUser());
+
+        $this->expectsEvents(Created::class);
+        $this->actingAs($this->getUser())->post('/api/groups/'.$group->id.'/messages', ['content' => 'foo'])
+             ->assertResponseStatus(200)
+             ->seeJsonStructure(['message' => ['id', 'content', 'sender']]);
+        $this->seeInDatabase('messages', ['content' => 'foo']);
     }
 
-    public function test_it_can_set_message_read()
+    public function test_store_cannot_send_message_for_non_member()
     {
-        $user = $this->createAnUser();
-        $other = $this->createAnUser(['school_id' => $user->school_id]);
-        $group = $this->createGroup(['school_id' => $user->school_id]);
-        $group->addMembers([$user->id, $other->id]);
+        $group = $this->createPublicGroup();
 
-        $message = factory(Message::class)->create([
-            'sender_id' => $other->id,
-            'receiver_id' => $group->id,
-            'receiver_type' => 'group',
-        ]);
-
-        $this->actingAs($user)
-            ->json('PUT', "/api/groups/{$group->id}/messages/{$message->id}/read")
-            ->seeStatusCode(202)
-            ->seeInDatabase('message_reads', [
-                'user_id' => $user->id,
-                'message_id' => $message->id,
-            ]);
+        $this->doesntExpectEvents(Created::class);
+        $this->actingAs($this->getUser())->post('/api/groups/'.$group->id.'/messages', ['content' => 'foo'])
+             ->assertResponseStatus(401);
     }
 }

@@ -4,6 +4,11 @@ use Illuminate\Http\Request;
 use Scalex\Zero\Models\Intent;
 use Validator;
 
+/**
+ * Class IntentService
+ *
+ * @deprecated
+ */
 class IntentService
 {
     protected function transformAccountIntent(Intent $intent)

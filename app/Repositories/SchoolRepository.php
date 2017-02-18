@@ -3,7 +3,7 @@
 use Illuminate\Database\Eloquent\Model;
 use Log;
 use Scalex\Zero\Models\Attachment;
-use Scalex\Zero\Models\Geo\Address;
+use Scalex\Zero\Models\Address;
 use Scalex\Zero\Models\School;
 use Znck\Repositories\Repository;
 

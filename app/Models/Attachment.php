@@ -30,9 +30,9 @@ class Attachment extends ExtendibleModel implements AttachmentContract
         'variations' => 'array',
     ];
 
-    public function owner() : BelongsTo
+    public function owner(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function related()

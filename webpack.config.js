@@ -57,7 +57,11 @@ if (Mix.js.vendor) {
  |
  */
 
-module.exports.output = Mix.output()
+module.exports.output = {
+  path: Mix.hmr ? '/' : Mix.publicPath,
+  filename: Mix.inProduction ? '[name].[hash].js' : '[name].js',
+  publicPath: Mix.hmr ? 'http://localhost:8080/' : './'
+}
 
 /*
  |--------------------------------------------------------------------------
@@ -84,6 +88,11 @@ module.exports.module = {
             loader: 'css-loader!sass-loader',
             fallbackLoader: 'vue-style-loader'
           })
+        },
+
+        cssModules: {
+          localIdentName: '[path][name]---[local]---[hash:base64:5]',
+          camelCase: true
         },
 
         postcss: [
@@ -123,8 +132,8 @@ module.exports.module = {
   ]
 }
 
-if (Mix.cssPreprocessor) {
-  Mix[Mix.cssPreprocessor].forEach(toCompile => {
+if (Mix.preprocessors) {
+  Mix.preprocessors.forEach(toCompile => {
     const extractPlugin = new plugins.ExtractTextPlugin(
             Mix.cssOutput(toCompile)
         )
@@ -133,7 +142,7 @@ if (Mix.cssPreprocessor) {
       test: new RegExp(toCompile.src.file),
       loader: extractPlugin.extract({
         fallbackLoader: 'style-loader',
-        loader: [
+        use: [
           'css-loader',
           'postcss-loader',
           'resolve-url-loader',
@@ -268,16 +277,6 @@ if (Mix.notifications) {
           title: 'Laravel Mix',
           alwaysNotify: true,
           contentImage: 'node_modules/laravel-mix/icons/laravel.png'
-        })
-    )
-}
-
-if (Mix.versioning) {
-  Mix.versioning.record()
-
-  module.exports.plugins.push(
-        new plugins.WebpackOnBuildPlugin(() => {
-          Mix.versioning.prune(Mix.publicPath)
         })
     )
 }

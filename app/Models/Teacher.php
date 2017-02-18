@@ -5,13 +5,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Scalex\Zero\Contracts\Database\BelongsToSchool;
 use Scalex\Zero\Contracts\Person;
 use Scalex\Zero\Database\BaseModel;
-use Scalex\Zero\Models\Geo\Address;
-use Scalex\Zero\Models\Course\Session;
+use Scalex\Zero\Models\Address;
+use Scalex\Zero\Models\CourseSession;
+use Scalex\Zero\ModelTraits\FoodHabitTrait;
 use Scalex\Zero\User;
 
 class Teacher extends BaseModel implements BelongsToSchool, Person
 {
-    use SoftDeletes;
+    use SoftDeletes, FoodHabitTrait;
 
     protected $fillable = [
         // Basic Information
@@ -98,6 +99,8 @@ class Teacher extends BaseModel implements BelongsToSchool, Person
         );
     }
 
+
+
     /**
      * School of the employee.
      *
@@ -129,11 +132,11 @@ class Teacher extends BaseModel implements BelongsToSchool, Person
     }
 
     /**
-     * Profile photo of the student.
+     * Profile photo of the teacher.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function profilePhoto()
+    public function photo()
     {
         return $this->belongsTo(Attachment::class, 'photo_id');
     }
@@ -150,7 +153,7 @@ class Teacher extends BaseModel implements BelongsToSchool, Person
 
     public function sessions()
     {
-        return $this->hasMany(Session::class, 'instructor_id');
+        return $this->hasMany(CourseSession::class, 'instructor_id');
     }
 
     public function getRouteKeyName()
@@ -158,11 +161,18 @@ class Teacher extends BaseModel implements BelongsToSchool, Person
         return 'uid';
     }
 
-    public function setDateOfJoiningAttribute($value) {
+    public function getPhotoUrl()
+    {
+        return attach_url($this->photo) ?? asset('img/placeholder.jpg');
+    }
+
+    public function setDateOfJoiningAttribute($value)
+    {
         $this->attributes['date_of_joining'] = Carbon::parse($value);
     }
 
-    public function setDateOfBirthAttribute($value) {
+    public function setDateOfBirthAttribute($value)
+    {
         $this->attributes['date_of_birth'] = Carbon::parse($value);
     }
 }

@@ -2,24 +2,28 @@
 
 namespace Scalex\Zero\Repositories;
 
-use Scalex\Zero\Models\Group;
+use Carbon\Carbon;
+use Illuminate\Support\Collection;
+use Illuminate\Validation\Rule;
+use Request;
+use Scalex\Zero\Contracts\Person;
+use Scalex\Zero\Criteria\OfSchool;
 use Scalex\Zero\Models\Course;
+use Scalex\Zero\Models\CourseSession;
+use Scalex\Zero\Models\Discipline;
+use Scalex\Zero\Models\School;
 use Scalex\Zero\Models\Student;
 use Scalex\Zero\Models\Teacher;
-use Scalex\Zero\Models\Attachment;
-use Scalex\Zero\Models\Course\Constraint;
-use Scalex\Zero\Criteria\OfSchool;
 use Scalex\Zero\User;
-use Illuminate\Support\Collection;
 use Znck\Repositories\Repository;
 
 /**
- * @method Course find(string|int $id)
+ * @method Course find(string | int $id)
  * @method Course findBy(string $key, $value)
  * @method Course create(array $attr)
- * @method Course update(string|int|Course $id, array $attr, array $o = [])
- * @method Course delete(string|int|Course $id)
- * @method CourseRepository validate(array $attr, Course|null $model)
+ * @method Course update(string | int | Course $id, array $attr, array $o = [])
+ * @method Course delete(string | int | Course $id)
+ * @method CourseRepository validate(array $attr, Course | null $model)
  */
 class CourseRepository extends Repository
 {
@@ -37,149 +41,152 @@ class CourseRepository extends Repository
      */
     protected $rules = [
         'name' => 'required|max:255',
-        'code' => 'required|max:255',
         'description' => 'nullable|max:65535',
-
-        'school_id' => 'required|exists:schools,id',
-        'group_id' => 'nullable|exists:groups,id',
-        'discipline_id' => 'nullable|exists:disciplines,id',
-        'department_id' => 'required|exists:departments,id',
-        'photo_id' => 'nullable|exists:attachments,id',
     ];
 
     public function boot()
     {
-        if (current_user()) {
-            $this->pushCriteria(new OfSchool(current_user()->school));
+        if ($user = Request::user()) {
+            $this->pushCriteria(new OfSchool($user->school));
         }
     }
 
-    public function creating(Course $course, array $attributes)
+    public function getRulesForSchool(School $school)
     {
-        $course->fill($attributes);
-        $school = $attributes['school_id'];
-        $course->department()->associate(find($attributes, 'department_id'));
-        if (array_has($attributes, 'discipline_id')) {
-            $course->discipline()->associate(find($attributes, 'discipline_id'));
-        }
-        $course->school()->associate($school);
-        if (array_has($attributes, 'semester_id')) {
-            $course->semester()->associate(find($attributes, 'semester_id'));
-        }
-        if (array_has($attributes, 'year_id')) {
-            $course->year_id = (int) $attributes['year_id'];
-        }
+        $id = $school->getKey();
 
-        $status = $course->save();
-
-        if ($status) {
-            $instructors = $this->getInstructorIds((array) array_get($attributes, 'instructors'), $school);
-
-            if (count($instructors) > 0) {
-                $course->instructors()->attach($instructors);
-            }
-
-            $prerequisites = $this->getCourseIds((array) array_get($attributes, 'prerequisites'), $school);
-
-            if (count($prerequisites) > 0) {
-                $course->prerequisites()->saveMany(
-                    collect($prerequisites)->map(function ($id) {
-                        return new Constraint([
-                            'constraint_type' => 'course',
-                            'constraint_id' => $id,
-                        ]);
-                    })
-                );
-            }
-        }
-
-        return $status;
+        return $this->rules + [
+                'code' => [
+                    'bail',
+                    'required',
+                    'alphadash',
+                    Rule::unique('courses')->where('school_id', $id),
+                ],
+                'department_id' => [
+                    'required',
+                    Rule::exists('departments', 'id')->where('school_id', $id),
+                ],
+                'discipline_id' => [
+                    'nullable',
+                    Rule::exists('disciplines', 'id')->where('school_id', $id),
+                ],
+                'photo_id' => [
+                    'nullable',
+                    Rule::exists('attachments', 'id')->where('school_id', $id),
+                ],
+                'semester_id' => [
+                    'nullable',
+                    Rule::exists('semesters', 'id')->where('school_id', $id),
+                ],
+            ];
     }
 
+    /**
+     * Get update rules.
+     *
+     * @param array $rules
+     * @param array $attributes
+     * @param \Scalex\Zero\Models\Course $course
+     *
+     * @return array
+     */
+    public function getUpdateRules(array $rules, array $attributes, $course)
+    {
+        $rules = $this->getRulesForSchool($course->school);
+
+        $rules['code'] = [
+            'bail',
+            'required',
+            'alphadash',
+            Rule::unique('courses')
+                ->where('school_id', $course->school_id)
+                ->ignore($course->getKey()),
+        ];
+
+        return array_only($rules, array_keys($attributes));
+    }
+
+    /**
+     * Create a course in the school.
+     *
+     * @param \Scalex\Zero\Models\School $school
+     * @param array $attributes
+     *
+     * @return \Scalex\Zero\Models\Course
+     */
+    public function createForSchool(School $school, array $attributes)
+    {
+        $this->validateWith($attributes, $this->getRulesForSchool($school));
+
+        $course = new Course($attributes);
+
+        $course->department()->associate($attributes['department_id']);
+        $course->photo()->associate($attributes['photo_id'] ?? null);
+        $course->school()->associate($school);
+
+        $this->onCreate($course->save());
+
+        if ($course->photo) {
+            $course->photo->related()->save($course);
+        }
+
+        return $course;
+    }
+
+    /**
+     * Update a course.
+     *
+     * @param \Scalex\Zero\Models\Course $course
+     * @param array $attributes
+     *
+     * @return bool
+     */
     public function updating(Course $course, array $attributes)
     {
-        $course->fill($attributes);
-        $school = $course->school_id;
-        if (array_has($attributes, 'department_id')) {
-            $course->department()->associate(find($attributes, 'department_id'));
-        }
-        if (array_has($attributes, 'discipline_id')) {
-            $course->discipline()->associate(find($attributes, 'discipline_id'));
-        }
-        if (array_has($attributes, 'photo_id')) {
-            attach_attachment($course, 'photo', find($attributes, 'photo_id', Attachment::class));
-        }
-        if (array_has($attributes, 'semester_id')) {
-            $course->semester()->associate(find($attributes, 'semester_id'));
-        }
-        if (array_has($attributes, 'year_id')) {
-            $course->year_id = (int) $attributes['year_id'];
-        }
+        $course->department()->associate($attributes['department_id'] ?? $course->department_id);
+        $course->photo()->associate($attributes['photo_id'] ?? $course->photo_id);
 
-        $instructors = $this->getInstructorIds((array) array_get($attributes, 'instructors'), $school);
-        $course->instructors()->sync($instructors);
-
-        $prerequisites = $this->getCourseIds((array) array_get($attributes, 'prerequisites'), $school);
-
-        if (count($prerequisites) > 0) {
-            $all = array_flip($course->prerequisites->pluck('id')->toArray());
-            $create = [];
-
-            foreach ($prerequisites as $id) {
-                if (array_key_exists($id, $all)) {
-                    unset($all[$id]);
-                } else {
-                    $create[] = $id;
-                }
-            }
-
-            if (count($all)) {
-                $course->prerequisites()->whereIn('id', array_keys($all))->delete();
-            }
-
-            if (count($create)) {
-                $course->prerequisites()->saveMany(
-                    collect($create)->map(function ($id) {
-                        return new Constraint([
-                            'constraint_type' => 'course',
-                            'constraint_id' => $id,
-                        ]);
-                    })
-                );
-            }
-        }
-
-        return $course->update();
+        return $course->update($attributes);
     }
 
-    protected function getInstructorIds(array $instructors, int $school)
+    public function addPrerequisites(Course $course, array $attributes)
     {
-        if (count($instructors) === 0) {
-            return [];
-        }
+        $prerequisites = Course::whereSchoolId($course->school_id)
+                               ->whereIn('id', $attributes)
+                               ->get()->modelKeys();
 
-        return \DB::table('teachers')->select('id')
-            ->where('school_id', $school)
-            ->whereIn('id', $instructors)
-            ->get()->pluck('id')->toArray();
+        $course->prerequisites()->sync($prerequisites);
     }
 
-    protected function getCourseIds(array $courses, int $school)
+    /**
+     * @param \Scalex\Zero\Models\Course $course
+     * @param Teacher $teacher
+     */
+    public function addInstructors(Course $course, $teacher)
     {
-        if (count($courses) === 0) {
-            return [];
+        $teacher = Teacher::where('school_id', $course->school_id)->find($teacher);
+
+        if (!$teacher) {
+            return;
         }
 
-        return \DB::table('courses')->select('id')
-            ->where('school_id', $school)
-            ->whereIn('id', $courses)
-            ->get()->pluck('id')->toArray();
+        $session = $this->findCourseSession($course, $teacher);
+
+        if ($session) {
+            $session->instructor()->associate($teacher);
+            $this->onUpdate($session->update());
+
+            $session->group->owner()->associate($teacher->user);
+            $this->onUpdate($session->group->update());
+        } else {
+            $this->createSessionFor($course, $teacher);
+        }
     }
 
     public function findSessions(Course $course, User $user): Collection
     {
         if ($user->person instanceof Teacher or $user->person instanceof Student) {
-            return $user->person->sessions()->whereCourseId($course->getKey())->get();
+            return $user->person->sessions()->getQuery()->where('course_id', $course->getKey())->get();
         }
 
         return collect([]);
@@ -190,5 +197,38 @@ class CourseRepository extends Repository
         return $this->findSessions($course, $user)->filter(function ($session) {
             return $session->ended_on->isFuture();
         });
+    }
+
+    public function createSessionFor(Course $course, Teacher $teacher)
+    {
+        $session = new CourseSession();
+
+        $repository = $this->app->make(GroupRepository::class);
+        $group = $repository->createWithMembers($teacher->user, [
+            'name' => $course->name,
+        ], []);
+
+        $session->course()->associate($course);
+        $session->instructor()->associate($teacher);
+        $session->group()->associate($group);
+        $session->session()->associate($teacher->school->session);
+        $session->name = $teacher->school->session->name;
+        $session->started_on = $teacher->school->session->started_on;
+        $session->ended_on = $teacher->school->session->ended_on;
+
+        $this->onCreate($session->save());
+
+        return $session;
+    }
+
+    /**
+     * @param \Scalex\Zero\Models\Course $course
+     * @param \Scalex\Zero\Models\Teacher $teacher
+     *
+     * @return \Scalex\Zero\Models\CourseSession|mixed
+     */
+    protected function findCourseSession(Course $course, Teacher $teacher)
+    {
+        return $course->sessions()->where('session_id', $teacher->school->session_id)->first();
     }
 }

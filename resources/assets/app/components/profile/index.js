@@ -1,0 +1,6 @@
+export { default as ContactInformation } from './ContactInformation.vue'
+export { default as GuardianInformation } from './GuardianInformation.vue'
+export { default as MedicalInformation } from './MedicalInformation.vue'
+export { default as PersonalInformation } from './PersonalInformation.vue'
+export { default as SchoolRelatedInformation } from './SchoolRelatedInformation.vue'
+export { default as ProfileCard } from './ProfileCard.vue'

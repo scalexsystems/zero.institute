@@ -1,8 +1,9 @@
 <?php namespace Scalex\Zero\Models;
 
+use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Scalex\Zero\Database\BaseModel;
-use Scalex\Zero\Models\Geo\Address;
+use Scalex\Zero\Models\Address;
 
 class School extends BaseModel
 {
@@ -46,5 +47,20 @@ class School extends BaseModel
     public function logo()
     {
         return $this->belongsTo(Attachment::class);
+    }
+
+    public function session()
+    {
+        return $this->belongsTo(Session::class);
+    }
+
+    public function getChannelName(): string
+    {
+        return $this->getMorphClass().'-'.$this->getKey();
+    }
+
+    public function getChannel()
+    {
+        return new PresenceChannel($this->getChannelName());
     }
 }

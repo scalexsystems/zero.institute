@@ -5,12 +5,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Scalex\Zero\Contracts\Database\BelongsToSchool;
 use Scalex\Zero\Contracts\Person;
 use Scalex\Zero\Database\BaseModel;
-use Scalex\Zero\Models\Geo\Address;
+use Scalex\Zero\ModelTraits\FoodHabitTrait;
 use Scalex\Zero\User;
 
 class Employee extends BaseModel implements BelongsToSchool, Person
 {
-    use SoftDeletes;
+    use SoftDeletes, FoodHabitTrait;
 
     protected $fillable = [
         // Basic Information
@@ -132,7 +132,7 @@ class Employee extends BaseModel implements BelongsToSchool, Person
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function profilePhoto()
+    public function photo()
     {
         return $this->belongsTo(Attachment::class, 'photo_id');
     }
@@ -152,11 +152,18 @@ class Employee extends BaseModel implements BelongsToSchool, Person
         return 'uid';
     }
 
-    public function setDateOfJoiningAttribute($value) {
+    public function getPhotoUrl()
+    {
+        return attach_url($this->photo) ?? asset('img/placeholder.jpg');
+    }
+
+    public function setDateOfJoiningAttribute($value)
+    {
         $this->attributes['date_of_joining'] = Carbon::parse($value);
     }
 
-    public function setDateOfBirthAttribute($value) {
+    public function setDateOfBirthAttribute($value)
+    {
         $this->attributes['date_of_birth'] = Carbon::parse($value);
     }
 }
