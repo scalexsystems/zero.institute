@@ -3,7 +3,6 @@
 use Scalex\Zero\Models\MessageState;
 use Znck\Transformers\Transformer;
 
-
 class MessageStateTransformer extends Transformer
 {
     public function show(MessageState $model)

@@ -1,4 +1,4 @@
-export function PhotoUpdated({ user, photo }, store) {
+export function PhotoUpdated ({ user, photo }, store) {
   // Fetch latest if user is there in messages.
   if (store.getters['messages/userById'](user)) {
     store.dispatch('messages/find', user)

@@ -1,11 +1,10 @@
 <?php namespace Test\Api\People\Employees;
 
-
 use Scalex\Zero\Action;
 
 class EmployeeControllerTest extends \TestCase
 {
- use EmployeeTestHelper;
+    use EmployeeTestHelper;
 
     const INDEX = [
         'id',
@@ -86,5 +85,4 @@ class EmployeeControllerTest extends \TestCase
         $this->assertResponseStatus(200)
             ->seeJsonStructure(['employee' => []]);
     }
-
 }

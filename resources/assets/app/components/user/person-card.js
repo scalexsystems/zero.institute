@@ -26,5 +26,5 @@ export default {
       case 'employee':
         return h(EmployeeCard, ctx.data, ctx.children)
     }
-  },
+  }
 }

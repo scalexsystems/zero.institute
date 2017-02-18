@@ -12,7 +12,6 @@ class OfDiscipline implements Criteria
 
     public function __construct($ids)
     {
-
         $this->ids = $ids;
     }
 

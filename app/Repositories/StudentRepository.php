@@ -217,7 +217,8 @@ class StudentRepository extends Repository
         $attributes['slug'] = $attributes['slug'] ?? Uuid::uuid4();
 
         // Prepare uploader.
-        $uploader = Builder::makeFromFile($photo)->resize(360, 'preview', 360);;
+        $uploader = Builder::makeFromFile($photo)->resize(360, 'preview', 360);
+        ;
 
         // Upload & get attachment.
         $attachment = $uploader->upload($attributes)->getAttachment();

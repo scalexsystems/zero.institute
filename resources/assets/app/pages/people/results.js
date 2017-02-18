@@ -25,7 +25,7 @@ export default {
   },
 
   methods: {
-    onInput: throttle(function onInput() {
+    onInput: throttle(function onInput () {
       this.page = 1
       this.fetch()
     }, 400),
@@ -81,7 +81,7 @@ export default {
         this.ignoreChanges = false
       })
       this.fetch()
-    },
+    }
   },
 
   created () {

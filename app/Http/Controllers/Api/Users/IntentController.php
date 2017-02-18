@@ -9,7 +9,7 @@ use Scalex\Zero\Models\Intent;
 use Scalex\Zero\Services\IntentService;
 
 /**
- * @deprecated 
+ * @deprecated
  */
 class IntentController extends Controller
 {

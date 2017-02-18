@@ -1,6 +1,5 @@
 <?php namespace Test\Api\People\Teachers;
 
-
 use Scalex\Zero\Models\Teacher;
 
 trait TeacherTestHelper

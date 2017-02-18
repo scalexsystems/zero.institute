@@ -2,7 +2,6 @@
 
 namespace Scalex\Zero\Models;
 
-
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Scalex\Zero\Database\BaseModel;
 

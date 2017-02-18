@@ -1,11 +1,11 @@
 import http from '../api'
 import sortBy from 'lodash.sortby'
 import { insert, remove, binarySearchFind } from '../helpers'
-import { notLastPage, each } from '../../util'
+import { notLastPage } from '../../util'
 
 const actions = {
   async index ({ dispatch }, { page = 1 } = {}) {
-    const { courses, meta } = await http.get('courses', { params: { page } })
+    const { courses, meta } = await http.get('courses', { params: { page }})
 
     if (courses) await dispatch('addToStore', courses)
 
@@ -74,7 +74,7 @@ const actions = {
     }
   },
 
-  async addToStore({ commit }, items) {
+  async addToStore ({ commit }, items) {
     if (items) commit('INSERT', items)
   },
 
@@ -92,7 +92,7 @@ const getters = {
 
   sessions: state => sortBy(state.sessions, 'name'),
 
-  sessionById: state => (id) => binarySearchFind(state.sessions, id),
+  sessionById: state => (id) => binarySearchFind(state.sessions, id)
 }
 
 const state = () => ({

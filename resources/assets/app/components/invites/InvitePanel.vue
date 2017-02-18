@@ -36,51 +36,48 @@ export default {
     type: {
       type: String,
       required: true
-    },
+    }
   },
-    data: () => ({
+  data: () => ({
     invited: 0,
     emails: '',
-    errors: null,
+    errors: null
   }),
   computed: {
-    placeholder() {
+    placeholder () {
       return `enter alias address e.g. ${this.type}@domain.com`
     }
   },
 
   methods: {
-    cancel() {
-     this.emails = '';
+    cancel () {
+      this.emails = ''
     },
     async sendInvite () {
-          const emails = this.getArrayFromString(this.emails)
-          if (emails) {
-              const entries = this.validateEmails(emails)
-              if (entries.length) {
-                const { errors } = await this.store({ emails: entries });
-                if(errors) {
-                    this.errors = errors;
-                } else {
-                   this.invited += entries.length;
-                   this.emails = '';
-                }
-            }
+      const emails = this.getArrayFromString(this.emails)
+      if (emails) {
+        const entries = this.validateEmails(emails)
+        if (entries.length) {
+          const { errors } = await this.store({ emails: entries })
+          if (errors) {
+            this.errors = errors
+          } else {
+            this.invited += entries.length
+            this.emails = ''
+          }
         }
-    },
-    cancel (type) {
-      this[type] = ''
+      }
     },
     getArrayFromString (string) {
-          return string.split(/[;,\s\r\n\t]+/g)
+      return string.split(/[;,\s\r\n\t]+/g)
     },
     validateEmails (emails) {
       const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
       return emails.filter(email => re.test(email))
     },
 
-    ...mapActions('invitations', ['store']),
-  },
+    ...mapActions('invitations', ['store'])
+  }
 }
 </script>
 

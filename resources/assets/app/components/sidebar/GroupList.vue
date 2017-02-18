@@ -7,7 +7,7 @@
 </template>
 
 <script lang="babel">
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 import List from './List.vue'
 
 export default {

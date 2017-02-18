@@ -1,6 +1,5 @@
 <?php namespace Test\Api\People\Teachers;
 
-
 use Scalex\Zero\Action;
 
 class TeacherControllerTest extends \Testcase
@@ -85,8 +84,4 @@ class TeacherControllerTest extends \Testcase
         $this->assertResponseStatus(200)
             ->seeJsonStructure(['teacher' => []]);
     }
-
-
-
-
 }

@@ -4,7 +4,7 @@ import { insert, remove, binarySearchFind } from '../helpers'
 
 const actions = {
   async index ({ dispatch }, { page = 1 } = {}) {
-    const { departments, meta } = await http.get('departments', { params: { page } })
+    const { departments, meta } = await http.get('departments', { params: { page }})
 
     if (departments) await dispatch('addToStore', departments)
 
@@ -35,7 +35,7 @@ const actions = {
     }
   },
 
-  async update ({ dispatch }, { id, payload} ) {
+  async update ({ dispatch }, { id, payload }) {
     try {
       const { department } = await http.put(true, `departments/${id}`, payload)
 
@@ -47,7 +47,7 @@ const actions = {
     }
   },
 
-  async addToStore({ commit }, items) {
+  async addToStore ({ commit }, items) {
     if (items) commit('INSERT', items)
   }
 }
@@ -57,7 +57,7 @@ const getters = {
 
   academic: (_, getters) => getters.departments.filter(d => d.academic),
 
-  departmentById: state => (id) => binarySearchFind(state.departments, id),
+  departmentById: state => (id) => binarySearchFind(state.departments, id)
 }
 
 const state = () => ({

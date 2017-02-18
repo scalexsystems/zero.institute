@@ -38,7 +38,7 @@ export default {
 
     sourceUpdated (uid) {
       if (uid !== this.source.uid) {
-        this.$router.replace({ params: { uid } })
+        this.$router.replace({ params: { uid }})
 
         return
       }
@@ -77,5 +77,5 @@ export default {
 
       this.fetch()
     }
-  },
+  }
 }

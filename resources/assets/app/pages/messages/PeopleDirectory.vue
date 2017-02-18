@@ -12,9 +12,8 @@
 </template>
 
 <script lang="babel">
-import Sifter from 'sifter'
 import throttle from 'lodash.throttle'
-import { mapGetters, mapActions } from 'vuex'
+import { mapActions } from 'vuex'
 
 import UserCard from '../../components/user/Card.vue'
 

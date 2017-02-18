@@ -15,7 +15,6 @@ const actions = {
 
       return { student }
     } catch (error) {
-
       return error
     }
   },

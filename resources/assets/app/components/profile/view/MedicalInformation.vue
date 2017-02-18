@@ -48,8 +48,7 @@
 </template>
 
 <script lang="babel">
-import moment from 'moment'
-import { isObject } from '../../../util'
+import { dateForHumans } from '../../../filters'
 
 const foodHabits = [
   { id: 'veg', name: 'Vegetarian' },
@@ -57,7 +56,7 @@ const foodHabits = [
   { id: 'egg', name: 'Egg & Egg Products' },
   { id: 'vegan', name: 'Vegan' },
   { id: 'fish', name: 'Fish & Fish Products' },
-  { id: 'sea', name: 'Sea Food' },
+  { id: 'sea', name: 'Sea Food' }
 ]
 
 export default {
@@ -75,9 +74,7 @@ export default {
   },
 
   filters: {
-    dateForHumans (value) {
-      return value ? moment(value).format('D MMMM YYYY') : ''
-    },
+    dateForHumans,
 
     habits (value) {
       return (value || []).map(v => {

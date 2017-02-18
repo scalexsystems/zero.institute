@@ -31,8 +31,6 @@
 </template>
 
 <script lang="babel">
-import moment from 'moment'
-import { mapGetters } from 'vuex'
 import { dateForHumans } from '../../../filters'
 import TeacherCard from '../../teacher/Card.vue'
 

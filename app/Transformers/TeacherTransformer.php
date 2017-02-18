@@ -56,7 +56,6 @@ class TeacherTransformer extends Transformer
             'passport' => (string)$teacher->passport,
             'govt_id' => (string)$teacher->govt_id,
         ];
-
     }
 
     public function getSchoolRelatedInfo(Teacher $teacher)
@@ -117,7 +116,6 @@ class TeacherTransformer extends Transformer
             'food_habit' => (array)$teacher->food_habit,
             'medical_remarks' => (string)$teacher->medical_remarks,
         ];
-
     }
 
     public function includeUser(Teacher $teacher)

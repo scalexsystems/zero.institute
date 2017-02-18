@@ -135,7 +135,6 @@ class EmployeeRepository extends Repository
                 ->ignore($employee->getKey()),
         ];
         return array_only($rules, array_keys($attributes));
-
     }
 
     public function creating(Employee $employee, array $attributes)
@@ -160,7 +159,8 @@ class EmployeeRepository extends Repository
         $attributes['slug'] = $attributes['slug'] ?? Uuid::uuid4();
 
         // Prepare uploader.
-        $uploader = Builder::makeFromFile($photo)->resize(360, 'preview', 360);;
+        $uploader = Builder::makeFromFile($photo)->resize(360, 'preview', 360);
+        ;
 
         // Upload & get attachment.
         $attachment = $uploader->upload($attributes)->getAttachment();
@@ -176,7 +176,6 @@ class EmployeeRepository extends Repository
         $this->onUpdate($employee->save());
 
         return $attachment;
-
     }
 
     protected function getPhotoUploadPath(Employee $employee)
@@ -215,6 +214,4 @@ class EmployeeRepository extends Repository
 
         return $employee;
     }
-
-
 }

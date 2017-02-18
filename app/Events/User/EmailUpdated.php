@@ -5,5 +5,4 @@ use Scalex\Zero\User;
 
 class EmailUpdated extends AbstractUserEvent
 {
-
 }

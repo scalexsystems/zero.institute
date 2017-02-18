@@ -19,7 +19,8 @@ export function ID_SORT_COMPARE (a, b) {
 }
 
 export function binarySearch (haystack, needle) {
-  let start = 0, end = haystack.length - 1
+  let start = 0
+  let end = haystack.length - 1
 
   while (start <= end) {
     const mid = start + parseInt((end - start) / 2, 10)

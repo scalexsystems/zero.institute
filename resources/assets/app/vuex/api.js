@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-async function format(response) {
+async function format (response) {
   if (/(text|application)\/json/i.test(response.headers.get('Content-Type'))) {
     return await response.json()
   }
@@ -8,7 +8,7 @@ async function format(response) {
   return response
 }
 
-async function process(response) {
+async function process (response) {
   const result = await format(response)
 
   if (response.status === 422) {
@@ -65,7 +65,11 @@ export default {
     } catch (error) {
       const errors = await process(error)
 
-      if (shouldThrow) throw { errors, response: error }
+      if (shouldThrow) {
+        const e = { errors, response: error }
+
+        throw e
+      }
 
       return {}
     }

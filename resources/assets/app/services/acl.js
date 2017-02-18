@@ -25,7 +25,7 @@ export default function (Vue) {
   }
 }
 
-function resolver(resource, policies, rootPolices) {
+function resolver (resource, policies, rootPolices) {
   const type = isObject(resource) ? resource._type : (isString(resource) ? resource : null)
 
   if (type in policies) return policies[type]
@@ -37,7 +37,7 @@ function resolver(resource, policies, rootPolices) {
   return null
 }
 
-function wrap(user) {
+function wrap (user) {
   return {
     hasPermission (name) {
       return (user.permissions || []).indexOf(name) > -1
@@ -54,13 +54,13 @@ function wrap(user) {
     isPerson (type, id) {
       return user.person._type === type && user.person.id === id
     },
-    get id() {
+    get id () {
       return user.id
     }
   }
 }
 
-function check(policy, rule, user, resource) {
+function check (policy, rule, user, resource) {
   const camel = rule.replace(/-(.)/g, m => m[1].toLocaleUpperCase())
 
   const callable = policy[camel] || policy[rule]

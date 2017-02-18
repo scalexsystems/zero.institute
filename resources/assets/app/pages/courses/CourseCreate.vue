@@ -127,7 +127,7 @@ export default {
   methods: {
     processResponse: function (course, errors, response) {
       if (course) {
-        this.$router.replace({ name: 'course.show', params: { id: course.id } })
+        this.$router.replace({ name: 'course.show', params: { id: course.id }})
       } else if (errors) {
         this.setErrors(errors)
         this.formStatus = errors.$message

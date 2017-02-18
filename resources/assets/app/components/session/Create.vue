@@ -41,7 +41,6 @@
 <script lang="babel">
 import { mapActions, mapGetters } from 'vuex'
 import { formHelper } from 'bootstrap-for-vue'
-import throttle from 'lodash.throttle'
 import moment from 'moment'
 
 export default {
@@ -93,7 +92,7 @@ export default {
     },
 
 
-    ...mapActions('sessions', ['store']),
+    ...mapActions('sessions', ['store'])
   },
 
   watch: {

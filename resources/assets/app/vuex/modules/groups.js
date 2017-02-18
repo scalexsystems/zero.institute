@@ -8,7 +8,7 @@ const actions = {
    * Search or list groups
    */
   async index ({ dispatch }, { page = 1, query, type } = {}) {
-    const { groups, meta } = await http.get('groups', { params: { page, q: query, type } })
+    const { groups, meta } = await http.get('groups', { params: { page, q: query, type }})
 
     if (!query) {
       await dispatch('addToStore', groups)
@@ -79,7 +79,7 @@ const actions = {
    * Fetch members.
    */
   async members ({ dispatch }, { group }) {
-    const { users, meta } = await http.get(`groups/${group.id}/members`, { params: { page: group.$members_page } })
+    const { users, meta } = await http.get(`groups/${group.id}/members`, { params: { page: group.$members_page }})
 
     if (users) {
       await dispatch('addMembersToStore', { members: users, id: group.id, page: meta.pagination.current_page + 1 })
@@ -111,7 +111,7 @@ const actions = {
   },
 
   async my ({ dispatch }, page = 1) {
-    const { groups, meta } = await http.get('me/groups', { params: { page } })
+    const { groups, meta } = await http.get('me/groups', { params: { page }})
 
     if (groups) await dispatch('addToStore', groups)
 
@@ -126,7 +126,7 @@ const actions = {
     return group
   },
 
-  async messages ({ dispatch }, { group, params = {} }) {
+  async messages ({ dispatch }, { group, params = {}}) {
     const options = {
       params: {
         before: TIMESTAMP,
@@ -210,7 +210,7 @@ const actions = {
   /**
    * @private
    */
-  async addMembersToStore ({ commit, state }, { id, members, page, _isRetry }) {
+  async addMembersToStore ({ commit, state, dispatch }, { id, members, page, _isRetry }) {
     const group = binarySearchFind(state.groups, id)
 
     if (group) {

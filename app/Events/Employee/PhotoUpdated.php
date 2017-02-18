@@ -1,6 +1,5 @@
 <?php namespace Scalex\Zero\Events\Employee;
 
-
 use Scalex\Zero\Models\Employee;
 
 class PhotoUpdated extends AbstractEmployeeEvent
@@ -13,6 +12,4 @@ class PhotoUpdated extends AbstractEmployeeEvent
 
         $this->photo = $employee->getPhotoUrl();
     }
-
-
 }

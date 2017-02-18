@@ -1,12 +1,12 @@
-function isMe(user, employee) {
+function isMe (user, employee) {
   return user.id === employee.user_id
 }
 
-function canViewEmployee(user) {
+function canViewEmployee (user) {
   return user.hasPermission('employee.read')
 }
 
-function canUpdateEmployee(user) {
+function canUpdateEmployee (user) {
   return user.hasPermission('employee.update')
 }
 

@@ -2,7 +2,7 @@ import http from '../api'
 
 const actions = {
   async index (_, { page = 1, q }) {
-    return await http.get('people/employees', { params: { page, q } })
+    return await http.get('people/employees', { params: { page, q }})
   },
 
   async find (_, uid) {
@@ -15,7 +15,6 @@ const actions = {
 
       return { employee }
     } catch (e) {
-
       return e
     }
   },

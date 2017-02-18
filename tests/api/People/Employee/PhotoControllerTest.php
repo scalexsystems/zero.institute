@@ -1,12 +1,9 @@
 <?php namespace Test\Api\People\Employees;
 
-
-
 use Scalex\Zero\Events\Employee\PhotoUpdated;
 
 class PhotoControllerTest extends \TestCase
 {
-
     use EmployeeTestHelper;
 
     public function test_show_can_return_photo()

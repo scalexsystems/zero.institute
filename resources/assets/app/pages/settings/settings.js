@@ -1,5 +1,5 @@
-import SettingsCard  from '../../components/settings/SettingsCard.vue'
-import SettingsHeader  from '../../components/settings/SettingsHeader.vue'
+import SettingsCard from '../../components/settings/SettingsCard.vue'
+import SettingsHeader from '../../components/settings/SettingsHeader.vue'
 
 export default {
   props: {},
@@ -9,11 +9,11 @@ export default {
     error: false,
     sourceChanged: true,
     editing: 0,
-    trigger: false,
+    trigger: false
   }),
 
   methods: {
-    async fetch() {
+    async fetch () {
       this.sourceChanged = false
       const result = await this.callAPI()
 
@@ -24,14 +24,14 @@ export default {
         this.error = true
       }
     },
-    sourceUpdated() {
+    sourceUpdated () {
       if (this.editing > 0) {
         this.sourceChanged = true
       } else {
-        this.fetch();
+        this.fetch()
       }
     },
-    onAdd(){
+    onAdd () {
       this.trigger = true
     },
     onCancel () {
@@ -39,18 +39,18 @@ export default {
       this.source = null
     },
 
-    sourceClicked(index, source){
+    sourceClicked (index, source) {
 
     }
   },
-  created() {
-    this.fetch();
+  created () {
+    this.fetch()
   },
 
   components: {
     SettingsHeader,
-    SettingsCard,
-  },
+    SettingsCard
+  }
 
 }
 

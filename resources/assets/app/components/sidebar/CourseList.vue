@@ -8,7 +8,7 @@
 </template>
 
 <script lang="babel">
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 import List from './List.vue'
 
 export default {
@@ -30,7 +30,7 @@ export default {
           class: 'sidebar-list-item-course',
           hasExtra: groups[i].$has_unread,
           extra: groups[i].$unread_count,
-          route: { name: 'course.session', params: { id: sessions[i].id } }
+          route: { name: 'course.session', params: { id: sessions[i].id }}
         })
       }
 

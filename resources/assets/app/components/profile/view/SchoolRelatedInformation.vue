@@ -62,7 +62,6 @@
 <script lang="babel">
 import moment from 'moment'
 import { mapGetters } from 'vuex'
-import { isObject } from '../../../util'
 import SourceType from './type'
 
 export default {

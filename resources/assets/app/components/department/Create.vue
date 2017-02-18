@@ -80,7 +80,7 @@ export default {
       }
     },
 
-    onSearch: throttle(function onSearch(q) {
+    onSearch: throttle(function onSearch (q) {
       this.fetch(q)
     }, 400),
 

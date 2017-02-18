@@ -2,5 +2,4 @@
 
 class Deleted extends AbstractStudentEvent
 {
-
 }

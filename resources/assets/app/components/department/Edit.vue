@@ -67,7 +67,7 @@ export default {
       const teachers = this.teachers
 
       return selected.concat(teachers)
-    },
+    }
   },
 
   methods: {

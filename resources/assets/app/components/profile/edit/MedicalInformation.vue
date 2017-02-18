@@ -36,7 +36,6 @@
 </template>
 
 <script lang="babel">
-import { mapGetters } from 'vuex'
 import { only } from '../../../util'
 import mixin from './mixin'
 import MedicalInformation from '../view/MedicalInformation.vue'

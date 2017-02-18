@@ -4,7 +4,7 @@ import { insert, remove, binarySearchFind } from '../helpers'
 
 const actions = {
   async index ({ dispatch }, { page = 1 } = {}) {
-    const { sessions, meta } = await http.get('sessions', { params: { page } })
+    const { sessions, meta } = await http.get('sessions', { params: { page }})
 
     if (sessions) await dispatch('addToStore', sessions)
 
@@ -47,14 +47,14 @@ const actions = {
     }
   },
 
-  async addToStore({ commit }, items) {
+  async addToStore ({ commit }, items) {
     if (items) commit('INSERT', items)
   }
 }
 
 const getters = {
   sessions: state => sort(state.sessions.slice(), 'started_on').reverse(),
-  sessionById: state => (id) => binarySearchFind(state.sessions, id),
+  sessionById: state => (id) => binarySearchFind(state.sessions, id)
 }
 
 const state = () => ({

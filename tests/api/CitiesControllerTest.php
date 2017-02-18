@@ -29,12 +29,12 @@ class CitiesControllerTest extends \TestCase
 
     /**
      * Create cities
-  
+
 *
 *@param int $count
      * @param array $attributes
-     
-      
+
+
 *
 *@return \Scalex\Zero\Models\City|\Illuminate\Database\Eloquent\Collection
      */

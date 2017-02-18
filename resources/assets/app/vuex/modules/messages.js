@@ -5,7 +5,7 @@ import { TIMESTAMP, prepareMessages, prepareUser } from './messages/helpers'
 
 const actions = {
   async index ({ dispatch }, page = 1) {
-    const { users, meta } = await http.get('me/users', { params: { page } })
+    const { users, meta } = await http.get('me/users', { params: { page }})
 
     if (users) await dispatch('addToStore', users)
 

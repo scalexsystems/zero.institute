@@ -28,7 +28,7 @@ export default {
       this.$emit('edited')
     },
 
-    onUpdated() {
+    onUpdated () {
       this.waiting = false
     },
 

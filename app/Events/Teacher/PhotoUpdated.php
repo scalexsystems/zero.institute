@@ -2,7 +2,6 @@
 
 namespace Scalex\Zero\Events\Teacher;
 
-
 use Scalex\Zero\Models\Teacher;
 
 class PhotoUpdated extends AbstractTeacherEvent
@@ -19,5 +18,4 @@ class PhotoUpdated extends AbstractTeacherEvent
 
         $this->photo = $teacher->getPhotoUrl();
     }
-
 }

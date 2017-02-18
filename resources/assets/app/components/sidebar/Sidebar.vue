@@ -29,7 +29,7 @@ export default {
     }
   },
 
-  mixins: [scrollbar],
+  mixins: [scrollbar]
 }
 </script>
 

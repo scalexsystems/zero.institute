@@ -46,7 +46,7 @@ export default {
   name: 'Employee',
 
   computed: {
-    employee() {
+    employee () {
       return this.source
     }
   },
@@ -55,7 +55,7 @@ export default {
     async callAPI () {
       const { employee } = await this.$store.dispatch('employees/find', this.uid)
 
-      return employee;
+      return employee
     },
 
     ...mapActions('employees', ['update', 'updateAddress'])

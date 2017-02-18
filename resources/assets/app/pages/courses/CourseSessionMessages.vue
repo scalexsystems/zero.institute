@@ -59,7 +59,7 @@ export default {
 
     onAction (type) {
       if (type === 'subtitle' && !this.group.description) {
-        this.$router.push({ name: 'group.edit', params: { id: this.group.id } })
+        this.$router.push({ name: 'group.edit', params: { id: this.group.id }})
 
         return //
       }

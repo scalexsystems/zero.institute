@@ -1,6 +1,6 @@
 import scrollbar from 'perfect-scrollbar'
 
-const isMobile = 'ontouchstart' in window || window.DocumentTouch && document instanceof DocumentTouch
+const isMobile = 'ontouchstart' in window || window.DocumentTouch && document instanceof window.DocumentTouch
 const isMac = navigator.userAgent.indexOf('Mac OS X') !== -1
 
 export default {

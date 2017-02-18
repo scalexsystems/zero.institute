@@ -56,7 +56,6 @@ class EmployeeTransformer extends Transformer
             'passport' => (string)$employee->passport,
             'govt_id' => (string)$employee->govt_id,
         ];
-
     }
 
     public function getSchoolRelatedInfo(Employee $employee)
@@ -117,7 +116,6 @@ class EmployeeTransformer extends Transformer
             'food_habit' => (array)$employee->food_habit,
             'medical_remarks' => (string)$employee->medical_remarks,
         ];
-
     }
 
     public function includeUser(Employee $employee)

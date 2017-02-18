@@ -7,7 +7,6 @@ use Znck\Repositories\Contracts\Repository;
 
 class MessagesCount implements Criteria
 {
-
     protected $id;
 
     /**

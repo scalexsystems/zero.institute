@@ -24,12 +24,12 @@ import InvitePanel from '../../components/invites/invitePanel.vue'
 import Sidebar from '../../components/settings/Sidebar.vue'
 
 export default{
-    name: 'InstituteInvite',
-    data () {
-        return {
-        }
-    },
-    components: { InvitePanel, Sidebar },
+  name: 'InstituteInvite',
+  data () {
+    return {
+    }
+  },
+  components: { InvitePanel, Sidebar }
 }
 </script>
 <style>

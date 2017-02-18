@@ -10,7 +10,7 @@ use Illuminate\Queue\SerializesModels;
 use Scalex\Zero\Models\Intent;
 
 /**
- * @deprecated 
+ * @deprecated
  */
 class AccountIntentSubmitted implements ShouldBroadcast
 {

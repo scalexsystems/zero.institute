@@ -1,6 +1,5 @@
 <?php namespace Scalex\Zero\Events\Teacher;
 
-
 use Illuminate\Broadcasting\Channel;
 use Scalex\Zero\Events\Event;
 use Scalex\Zero\Models\Teacher;
@@ -43,5 +42,4 @@ class AbstractTeacherEvent extends Event
     {
         return $this->teacher->school->getChannel();
     }
-
 }

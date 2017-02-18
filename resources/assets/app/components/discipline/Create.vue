@@ -32,7 +32,6 @@
 <script lang="babel">
 import { mapActions } from 'vuex'
 import { formHelper } from 'bootstrap-for-vue'
-import throttle from 'lodash.throttle'
 
 export default {
   name: 'EditDiscipline',
@@ -40,7 +39,7 @@ export default {
   data: () => ({
     attributes: {
       name: '',
-      short_name: '',
+      short_name: ''
     },
 
     teachers: [],
@@ -65,7 +64,7 @@ export default {
       }
     },
 
-    ...mapActions('disciplines', ['store']),
+    ...mapActions('disciplines', ['store'])
   },
 
   mixins: [formHelper]

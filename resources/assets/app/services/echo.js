@@ -37,7 +37,7 @@ export default function (Vue, options) {
     let name
 
     try {
-       name = parseChannel(any).name
+      name = parseChannel(any).name
     } catch (e) {
       name = any
     }
@@ -60,7 +60,8 @@ export default function (Vue, options) {
 
     const events = isArray(names) ? only(this._echoEvents, names) : this._echoEvents
 
-    const ctx = { channel: echo[type].call(echo, name), handlers: {} }
+    // eslint-disable-next-line
+    const ctx = { channel: echo[type].call(echo, name), handlers: {}}
     this.$debug(`[echo] Subscribe channel: ${name}`)
 
     each(events, (cb, event) => {
@@ -83,7 +84,7 @@ export default function (Vue, options) {
  * @param {string} channel
  * @return {{type: {string}, name: {string}}}
  */
-function parseChannel(channel) {
+function parseChannel (channel) {
   channel = aliases[channel] || channel || ''
   const re = /^(private|public|presence):(.*)$/
   const [, type, name] = re.exec(channel) || []
@@ -107,7 +108,7 @@ function parseChannel(channel) {
  * @param {Object} module
  * @return {*}
  */
-function normalize(namespace, root, module) {
+function normalize (namespace, root, module) {
   if ('namespace' in module) {
     if (namespace === '' || module.namespace[0] === '.') {
       namespace = module.namespace

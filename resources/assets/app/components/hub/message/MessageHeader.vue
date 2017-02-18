@@ -59,7 +59,7 @@ export default {
 
   methods: {
     openSenderProfile () {
-      this.$router.push({ name: 'user.show', params: { id: this.sender.id } })
+      this.$router.push({ name: 'user.show', params: { id: this.sender.id }})
     }
   }
 }

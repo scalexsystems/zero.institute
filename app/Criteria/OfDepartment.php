@@ -12,7 +12,6 @@ class OfDepartment implements Criteria
 
     public function __construct($ids)
     {
-
         $this->ids = $ids;
     }
 

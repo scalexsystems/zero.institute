@@ -9,7 +9,7 @@ export default {
   },
 
   methods: {
-    onSearchInput: throttle(function onSearchInput() {
+    onSearchInput: throttle(function onSearchInput () {
       this.fetch()
     }, 400),
 
@@ -28,11 +28,11 @@ export default {
     },
 
     onSearch () {
-      this.$router.push({ name: `${this.type}.index`, query: { q: this.query } })
+      this.$router.push({ name: `${this.type}.index`, query: { q: this.query }})
     },
 
     onSelect ({ uid }) {
-      this.$router.push({ name: `${this.type}.show`, params: { uid } })
+      this.$router.push({ name: `${this.type}.show`, params: { uid }})
     }
   },
 

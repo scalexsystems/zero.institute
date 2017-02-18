@@ -52,5 +52,4 @@ class EmployeeController extends Controller
     {
         abort(401);
     }
-
 }

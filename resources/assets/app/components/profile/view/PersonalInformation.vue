@@ -42,8 +42,6 @@
 </template>
 
 <script lang="babel">
-import moment from 'moment'
-import { isObject } from '../../../util'
 import { dateForHumans } from '../../../filters'
 
 const categories = [
@@ -51,7 +49,7 @@ const categories = [
   { id: 'sc', name: 'Scheduled Castes (SC)' },
   { id: 'st', name: 'Scheduled Tribes (ST)' },
   { id: 'obc', name: 'Other Backward Classes (OBC)' },
-  { id: 'sbc', name: 'Special Backward Classes (SBC)' },
+  { id: 'sbc', name: 'Special Backward Classes (SBC)' }
 ]
 
 export default {

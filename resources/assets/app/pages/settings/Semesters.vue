@@ -36,34 +36,34 @@
     import EditSemester from '../../components/semester/Edit.vue'
 
     export default {
-        name: 'InstituteSemesters',
+      name: 'InstituteSemesters',
 
-        data: () => ({
-            current: null
-        }),
+      data: () => ({
+        current: null
+      }),
 
-        computed: {
-            sidebarId: () => 'settings.semesters',
-            ...mapGetters('semesters', ['semesters'])
+      computed: {
+        sidebarId: () => 'settings.semesters',
+        ...mapGetters('semesters', ['semesters'])
+      },
+
+      methods: {
+        edit (semester) {
+          this.current = semester
+
+          this.onEdit()
         },
 
-        methods: {
-            edit (semester) {
-                this.current = semester
+        create () {
+          this.current = null
 
-                this.onEdit()
-            },
+          this.onEdit()
+        }
+      },
 
-            create () {
-                this.current = null
+      components: { CreateSemester, SemesterCard, EditSemester },
 
-                this.onEdit()
-            }
-        },
-
-        components: { CreateSemester, SemesterCard, EditSemester },
-
-        mixins: [Sidebar]
+      mixins: [Sidebar]
     }
 </script>
 

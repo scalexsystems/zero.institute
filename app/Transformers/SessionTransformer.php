@@ -4,10 +4,8 @@ use Auth;
 use Scalex\Zero\Models\Session;
 use Znck\Transformers\Transformer;
 
-
 class SessionTransformer extends Transformer
 {
-
     public function show(Session $session)
     {
         return $this->index($session);

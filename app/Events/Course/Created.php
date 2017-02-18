@@ -12,5 +12,4 @@ use Scalex\Zero\Events\Event;
 
 class Created extends AbstractCourseEvent
 {
-
 }

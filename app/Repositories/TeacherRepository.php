@@ -13,7 +13,6 @@ use UnexpectedValueException;
 use Znck\Attach\Builder;
 use Znck\Repositories\Repository;
 
-
 /**
  * @method Teacher find(string|int $id)
  * @method Teacher findBy(string $key, $value)
@@ -188,7 +187,8 @@ class TeacherRepository extends Repository
         $attributes['slug'] = $attributes['slug'] ?? Uuid::uuid4();
 
         // Prepare uploader.
-        $uploader = Builder::makeFromFile($photo)->resize(360, 'preview', 360);;
+        $uploader = Builder::makeFromFile($photo)->resize(360, 'preview', 360);
+        ;
 
         // Upload & get attachment.
         $attachment = $uploader->upload($attributes)->getAttachment();
@@ -204,12 +204,10 @@ class TeacherRepository extends Repository
         $this->onUpdate($teacher->save());
 
         return $attachment;
-
     }
 
     protected function getPhotoUploadPath(Teacher $teacher)
     {
         return "schools/{$teacher->school_id}/teachers/photo/{$teacher->id}";
     }
-
 }

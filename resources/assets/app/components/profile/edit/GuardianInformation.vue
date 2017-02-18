@@ -25,7 +25,6 @@
 </template>
 
 <script lang="babel">
-import { mapGetters } from 'vuex'
 import { only } from '../../../util'
 import GuardianInformation from '../view/GuardianInformation.vue'
 import mixin from './mixin'

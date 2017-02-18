@@ -42,7 +42,7 @@
 </template>
 
 <script lang="babel">
-import { mapGetters, mapActions } from 'vuex'
+import { mapActions } from 'vuex'
 import { clone } from '../../util'
 import GroupRoute from './mixins/route'
 import GroupMembers from './mixins/members'

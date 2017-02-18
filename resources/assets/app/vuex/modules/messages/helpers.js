@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { isImageExtension, isArray } from '../../../util'
+import { isImageExtension } from '../../../util'
 
 export function prepareGroup (any) {
   any.$messages = []

@@ -53,7 +53,6 @@
 </template>
 
 <script lang='babel'>
-import { toArray } from '../../util'
 import http from '../../vuex/api'
 
 export default{
@@ -115,7 +114,7 @@ export default{
       const uploads = []
       for (let index = 0; index < files.length; index += 1) {
         const file = files[index]
-        const payload = new FormData()
+        const payload = new window.FormData()
         const filename = file.name
         payload.append(this.name, file)
 
@@ -228,7 +227,7 @@ export default{
 
   created () {
     this.$on('upload', () => {
-      const input = $(this.$refs.files)
+      const input = window.jQuery(this.$refs.files)
       input.replaceWith(input.val('').clone(true))
       input.click()
     })

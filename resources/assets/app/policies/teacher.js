@@ -1,12 +1,12 @@
-function isMe(user, teacher) {
+function isMe (user, teacher) {
   return user.id === teacher.user_id
 }
 
-function canViewTeacher(user) {
+function canViewTeacher (user) {
   return user.hasPermission('teacher.read')
 }
 
-function canUpdateTeacher(user) {
+function canUpdateTeacher (user) {
   return user.hasPermission('teacher.write')
 }
 

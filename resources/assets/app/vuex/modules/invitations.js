@@ -1,12 +1,12 @@
-import http from '../api';
+import http from '../api'
 
 
 const actions = {
-  async store({ dispatch }, payload){
+  async store ({ dispatch }, payload) {
     try {
-      return await http.post(true, 'people/invite', payload);
+      return await http.post(true, 'people/invite', payload)
     } catch (e) {
-      return e;
+      return e
     }
   }
 }
@@ -14,5 +14,5 @@ const actions = {
 
 export default {
   namespaced: true,
-  actions,
+  actions
 }

@@ -6,7 +6,7 @@ use Znck\Transformers\Transformer;
 /**
  * Class ConstraintTransformer
  *
- * @deprecated 
+ * @deprecated
  */
 class ConstraintTransformer extends Transformer
 {

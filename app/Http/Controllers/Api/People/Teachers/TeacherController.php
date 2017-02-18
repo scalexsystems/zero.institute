@@ -53,12 +53,10 @@ class TeacherController extends Controller
         broadcast(new Updated($teacher));
 
         return $teacher;
-
     }
 
     public function destroy()
     {
         abort(401);
     }
-
 }

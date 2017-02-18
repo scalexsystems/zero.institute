@@ -22,7 +22,6 @@
 </template>
 
 <script lang="babel">
-import Vue from 'vue'
 import Sidebar from '../sidebar/Sidebar.vue'
 import UserGroupList from '../sidebar/UserGroupList.vue'
 import CourseList from '../sidebar/CourseList.vue'

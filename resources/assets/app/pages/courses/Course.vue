@@ -81,7 +81,7 @@
 </template>
 
 <script lang="babel">
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 import CourseCard from '../../components/course/Card.vue'
 import SessionCard from '../../components/course/session/Card.vue'
 import TeacherCard from '../../components/teacher/Card.vue'
