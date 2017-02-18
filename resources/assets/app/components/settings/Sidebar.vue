@@ -1,5 +1,11 @@
 <template>
 <div class="py-3">
+
+  <div class="pl-3 py-1">
+    <icon type="cog" class="mr-2"/>
+    <strong class="text-uppercase" style="letter-spacing: 1px">Settings</strong>
+  </div>
+
   <sidebar-button v-for="item in items" :route="{ name: item.id }" class="sidebar-list-item-settings px-3">{{ item.title }}</sidebar-button>
 </div>
 </template>

@@ -16,12 +16,20 @@
       <form class="row" @submit.prevent="save">
         <input type="submit" hidden>
 
-        <div class="col-12">
-          <input-text title="Name" v-model="attributes.name" :errors="errors" required/>
+        <div class="col-12 col-lg-6">
+          <input-text title="Name" v-model="attributes.name" :errors="errors" required autofocus/>
         </div>
 
-        <div class="col-12">
-          <input-text title="Short Code" v-model="attributes.short_name" :errors="errors" required/>
+        <div class="col-12 col-lg-6">
+          <input-typeahead title="Semester" v-model="attributes.semester_id" :suggestions="sessions" :errors="errors" required/>
+        </div>
+
+        <div class="col-12 col-lg-6">
+          <input-text type="date" title="Start Date" v-model="attributes.started_on" :errors="errors" required/>
+        </div>
+
+        <div class="col-12 col-lg-6">
+          <input-text type="date" title="End Date" v-model="attributes.ended_on" :errors="errors" required/>
         </div>
       </form>
     </div>
@@ -30,7 +38,7 @@
 </template>
 
 <script lang="babel">
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import { formHelper } from 'bootstrap-for-vue'
 import throttle from 'lodash.throttle'
 
@@ -40,13 +48,15 @@ export default {
   data: () => ({
     attributes: {
       name: '',
-      short_name: '',
+      semester_id: 0,
+      started_on: '',
+      ended_on: ''
     },
-
-    teachers: [],
 
     disabled: false
   }),
+
+  computed: mapGetters('sessions', ['sessions']),
 
   methods: {
     async save () {

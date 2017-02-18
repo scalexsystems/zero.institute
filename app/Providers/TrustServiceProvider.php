@@ -6,11 +6,15 @@ use Scalex\Zero\Models;
 class TrustServiceProvider extends OriginalTrustServiceProvider
 {
     protected $models = [
+        // People Related.
         [Models\Student::class, ['invite']],
         [Models\Teacher::class, ['invite']],
         [Models\Employee::class, ['invite']],
+
         [Models\School::class, []],
         Models\Course::class,
+
+        // School Related.
         Models\Session::class,
         Models\Department::class,
         Models\Discipline::class,

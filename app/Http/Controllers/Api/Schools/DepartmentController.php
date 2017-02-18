@@ -35,11 +35,7 @@ class DepartmentController extends Controller
             $request->all()
         );
 
-        return Department::with('head')->withCount([
-            'students',
-            'teachers',
-            'employees',
-        ])->find($department->getKey());
+        return $this->reFetchDepartment($department);
     }
 
     public function update(Request $request, $department)
@@ -49,38 +45,15 @@ class DepartmentController extends Controller
 
         repository(Department::class)->update($department, $request->all());
 
+        return $this->reFetchDepartment($department);
+    }
+
+    protected function reFetchDepartment(Department $department)
+    {
         return Department::with('head')->withCount([
             'students',
             'teachers',
             'employees',
         ])->find($department->getKey());
-    }
-
-    public function getPeopleCount(Request $request)
-    {
-        $departments = repository(Department::class)->with('head')->all();
-
-        $students = DB::table('students')
-                      ->where('school_id', $request->user()->school_id)
-                      ->groupBy('department_id')
-                      ->select([DB::raw('count(*) as aggregate'), 'department_id'])
-                      ->get()->pluck('aggregate', 'department_id');
-
-        $teachers = DB::table('teachers')
-                      ->groupBy('department_id')
-                      ->select([DB::raw('count(*) as aggregate'), 'department_id'])
-                      ->get()->pluck('aggregate', 'department_id');
-        $employees = DB::table('employees')
-                       ->groupBy('department_id')
-                       ->select([DB::raw('count(*) as aggregate'), 'department_id'])
-                       ->get()->pluck('aggregate', 'department_id');
-
-        foreach ($departments as $department) {
-            $department->student_count = $students->get($department->getKey(), 0);
-            $department->teacher_count = $teachers->get($department->getKey(), 0);
-            $department->employee_count = $employees->get($department->getKey(), 0);
-        }
-
-        return $departments;
     }
 }

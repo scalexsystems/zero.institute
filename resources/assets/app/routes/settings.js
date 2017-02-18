@@ -2,7 +2,7 @@ export default [
   {
     name: 'settings.index',
     path: '/settings',
-    component: require('../pages/settings/Dashboard.vue')
+    redirect: '/settings/institute'
   },
   {
     name: 'settings.school',
@@ -32,7 +32,7 @@ export default [
   {
     name: 'settings.sessions',
     path: '/settings/sessions',
-    component: require('../pages/settings/Dashboard.vue')
+    component: require('../pages/settings/Sessions.vue')
   },
   {
     name: 'settings.roles',
