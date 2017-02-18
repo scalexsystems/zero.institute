@@ -4,6 +4,7 @@ import departments from './departments'
 import disciplines from './disciplines'
 import employees from './employees'
 import groups from './groups'
+import invitations from './invitations'
 import messages from './messages'
 import people from './people'
 import semesters from './semesters'
@@ -17,6 +18,7 @@ export default {
   disciplines,
   employees,
   groups,
+  invitations,
   messages,
   people,
   semesters,
