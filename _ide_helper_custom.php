@@ -5,8 +5,49 @@ namespace {
     /**
      * @return \Illuminate\Contracts\Cache\Repository
      */
-    function cache() {
+    function cache()
+    {
 
+    }
+}
+
+namespace Znck\Attach {
+
+    class Builder
+    {
+        /**
+         * @param array $attr
+         *
+         * @return \Znck\Attach\Contracts\Uploader
+         */
+        public function upload($attr)
+        {
+        }
+
+        /**
+         * @param $width
+         * @param $name
+         * @param $height
+         * @param $mime
+         *
+         * @return $this
+         */
+        public function resize($width, $name = null, $height = null, $mime = null)
+        {
+        }
+    }
+}
+
+namespace Znck\Attach\Contracts {
+
+    class Uploader
+    {
+        /**
+         * @return \Scalex\Zero\Models\Attachment
+         */
+        public function getAttachment()
+        {
+        }
     }
 }
 
@@ -20,7 +61,7 @@ namespace Scalex\Zero {
      * @package Scalex\Zero
      * @property string $other_email
      * @property string $other_verification_token
-     * @property-read Message|null $lastMessageAt
+     * @property-read Message|null $lastMessage
      */
     class User extends \Eloquent
     {
@@ -71,7 +112,8 @@ namespace {
          * @return void
          * @static
          */
-        public static function channel($pattern, $callback) {
+        public static function channel($pattern, $callback)
+        {
             \Illuminate\Broadcasting\BroadcastManager::channel($pattern, $callback);
         }
     }

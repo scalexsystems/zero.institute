@@ -14,6 +14,10 @@ class CreateMessageReadsTable extends Migration
     public function up()
     {
         Schema::create('message_reads', function (Blueprint $table) {
+            if (config('database.default') === 'memory') {
+                $table->bigIncrements('id');
+            }
+
             $table->unsignedInteger('message_id');
             $table->unsignedInteger('user_id');
             $table->timestamp('read_at');

@@ -22,8 +22,6 @@ class GroupTransformerTest extends TestCase
             'member_count',
             'member_count_text', // UI; Multiple palces.
             'channel', // Echo connects to this channel.
-            'is_member', // Used on groups directory page.
-            'is_admin',
             'active_at', // Used to sort groups in recent groups list.
         ];
 

@@ -1,79 +1,84 @@
 <?php namespace Scalex\Zero\Http\Controllers\Api\Groups;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Debug\Dumper;
 use Scalex\Zero\Events\Group\MemberJoined;
 use Scalex\Zero\Events\Group\MemberLeft;
 use Scalex\Zero\Http\Controllers\Controller;
 use Scalex\Zero\Models\Group;
 use Scalex\Zero\Models\Message;
+use Scalex\Zero\Repositories\GroupRepository;
 
 class MemberController extends Controller
 {
+    /**
+     * Add auth middleware for all routes.
+     */
     public function __construct()
     {
         $this->middleware('auth:api,web');
     }
 
     /**
-     * Get members of the group.
-     * GET /groups/{group}/members
-     * Requires: auth
+     * List group members.
+     *
+     * @param \Scalex\Zero\Models\Group $group
+     * @param \Scalex\Zero\Repositories\GroupRepository $repository
+     *
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function index(Group $group, Request $request)
+    public function index(Group $group, GroupRepository $repository)
     {
-        $this->authorize('members', $group);
+        $this->authorize('view-members', $group);
 
-        $members = $group->members();
-
-        // TODO: Add support to search here.
-
-        $members->orderBy('name');
-
-        $paginator = $members->paginate();
-        $collection = $paginator->getCollection();
-
-        $collection->load(['person', 'profilePhoto']);
-
-        return $paginator;
+        return $repository->members($group);
     }
 
     /**
      * Add members to the group.
-     * POST /groups/{group}/add
-     * Requires: auth
+     *
+     * @param \Scalex\Zero\Models\Group $group
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return array
      */
     public function store(Group $group, Request $request)
     {
-        $this->authorize('add-member', $group);
+        $this->authorize('add-members', $group);
+        $this->validate($request, ['members' => 'required']);
 
-        $result = $group->addMembers((array)$request->get('members', []));
+        $members = $group->addMembers($request->input('members'));
 
-        if (count($result['ids'])) {
-            event(new MemberJoined($result['ids'], $group));
+        if (count($members)) {
+            event(new MemberJoined($group, $members));
         }
 
-        return [
-            'data' => $result['ids'],
-        ];
+        return $members->toArray();
     }
 
     /**
      * Remove members from the group.
-     * DELETE /groups/{group}/remove
-     * Requires: auth
+     *
+     * @param \Scalex\Zero\Models\Group $group
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return array
      */
     public function destroy(Group $group, Request $request)
     {
-        $this->authorize($group);
+        $this->authorize('remove-members', $group);
+        $this->validate($request, ['members' => 'required']);
 
-        $result = $group->removeMembers((array)$request->get('members', []));
+        $ids = collect($request->get('members'))->filter(function ($id) use ($group) {
+            return (int) $id !== (int) $group->owner_id;
+        })->toArray();
 
-        if (count($result['ids'])) {
-            event(new MemberLeft($result['ids'], $group));
+        $members = $group->removeMembers($ids);
+
+        if (count($members)) {
+            event(new MemberLeft($group, $members));
         }
 
-        return [
-            'data' => $result['ids'],
-        ];
+        return $members->toArray();
     }
 }

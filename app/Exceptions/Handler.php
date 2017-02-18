@@ -41,7 +41,8 @@ class Handler extends ExceptionHandler
     /**
      * @param \Exception $e
      */
-    protected function sentryCapture(Exception $e) {
+    protected function sentryCapture(Exception $e)
+    {
         if (app()->environment('production') and $this->shouldReport($e)) {
             app('sentry')->captureException($e);
         }

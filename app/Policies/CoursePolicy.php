@@ -15,22 +15,33 @@ class CoursePolicy extends AbstractPolicy
 
     public function view(User $user, Course $course)
     {
-        return verify_school($course);
+        return $this->checkSchool($course);
     }
 
-    public function store(User $user)
+    public function create(User $user)
     {
-        return $user->hasPermissionTo(Action::CREATE_COURSE);
+        return $user->hasPermissionTo('course.create');
     }
 
     public function update(User $user, Course $course)
     {
-        return ($user->id === $course->instructor_id)
-            or ($user->hasPermissionTo(Action::UPDATE_COURSE) and verify_school($course));
+        return $user->hasPermissionTo('course.update') and $this->checkSchool($course);
     }
 
     public function delete(User $user, Course $course)
     {
-        return $user->hasPermissionTo(Action::DELETE_COURSE) and verify_school($course);
+        return $user->hasPermissionTo('course.delete') and $this->checkSchool($course);
+    }
+
+    public function viewInstructors(User $user, Course $course)
+    {
+        return trust($user)->is('course-admin') or (
+                $user->person_type === 'teacher' and !is_null($course->instructors->find($user->person_id))
+            );
+    }
+
+    protected function checkSchool(Course $course)
+    {
+        return $this->getUser()->school_id === $course->school_id;
     }
 }

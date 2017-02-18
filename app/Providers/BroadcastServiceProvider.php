@@ -4,6 +4,7 @@ use Broadcast;
 use Illuminate\Support\ServiceProvider;
 use Scalex\Zero\Http\Controllers\BroadcastController;
 use Scalex\Zero\Models\Group;
+use Scalex\Zero\Models\School;
 use Scalex\Zero\User;
 
 class BroadcastServiceProvider extends ServiceProvider
@@ -20,6 +21,9 @@ class BroadcastServiceProvider extends ServiceProvider
             if ($group->isMember($user)) {
                 return transform($user);
             }
+        });
+        Broadcast::channel($this->channel(School::class), function (User $user, $schoolId) {
+            return $user->school_id === (int) $schoolId;
         });
     }
 

@@ -9,6 +9,9 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Queue\SerializesModels;
 use Scalex\Zero\Models\Intent;
 
+/**
+ * @deprecated
+ */
 class AccountIntentSubmitted implements ShouldBroadcast
 {
     use InteractsWithSockets, SerializesModels;
@@ -34,6 +37,6 @@ class AccountIntentSubmitted implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel(schoolify('accounts'));
+        return new PrivateChannel(schoolScopeCacheKey('accounts'));
     }
 }

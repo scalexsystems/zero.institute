@@ -2,14 +2,17 @@ const path = require('path')
 const webpack = require('webpack')
 const merge = require('webpack-merge')
 const config = require('../../webpack.config')
-const projectRoot = path.resolve(__dirname, '../../resources/assets/app')
+
+const projectRoot = path.resolve(__dirname, '../../resources/assets/app/')
+
+const resolve = config.resolve
+
 
 module.exports = merge(
   {
     module: {
       rules: config.module.rules
-    },
-    resolve: config.resolve
+    }
   },
   {
     module: {
@@ -24,7 +27,12 @@ module.exports = merge(
     },
 
     resolve: {
-      modules: [projectRoot, __dirname]
+      extensions: ['.js', '.vue', '*'],
+      alias: {
+        'app': projectRoot,
+        'vue$': 'vue/dist/vue.common.js',
+        'util$': path.join(__dirname, 'util.js')
+      }
     },
 
     devtool: '#inline-source-map',

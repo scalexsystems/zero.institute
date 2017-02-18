@@ -4,14 +4,14 @@
     <div class="v-full flex flex-content-md-middle flex-items-md-center">
         <div id="app" class="container py-1">
             <div class="row">
-                <div class="col-xs-12 col-lg-6 text-xs-center text-lg-left">
+                <div class="col-12 col-lg-6 text-center text-lg-left">
                     <div class="mb-1">
                         <img src="{{ attach_url($school->logo) ?? asset('img/placeholder.jpg') }}" width="160" height="160">
                     </div>
 
                     <h3>{{ $school->name }}</h3>
                 </div>
-                <div class="col-xs-12 col-lg-5">
+                <div class="col-12 col-lg-5">
                     <div class="card card-block card-block-auth">
                         <h3 class="pb-1">{{ trans('app::register.heading') }}</h3>
                         <form class="form-horizontal" role="form" method="POST" action="{{ url('/register') }}">
@@ -91,7 +91,7 @@
                             </div>
                         </form>
                     </div>
-                    <div class="text-xs-center">
+                    <div class="text-center">
                         <a href="{{ url('/login') }}" class="text-muted">
                             <small>{{ trans('app::register.btn.login') }}</small>
                         </a>

@@ -1,41 +1,32 @@
 <?php namespace Scalex\Zero\Policies;
 
-use Scalex\Zero\Action;
-use Scalex\Zero\Policies\Traits\VerifiesSchool;
-use Scalex\Zero\User;
 use Scalex\Zero\Models\School;
-use Illuminate\Auth\Access\HandlesAuthorization;
+use Scalex\Zero\User;
 
 class SchoolPolicy extends AbstractPolicy
 {
-    use VerifiesSchool;
-
-    protected $skipSchoolVerification = true;
-
-    /**
-     * Determine whether the user can view the school.
-     *
-     * @param  \Scalex\Zero\User $user
-     * @param  \Scalex\Zero\School $school
-     *
-     * @return bool
-     */
     public function view(User $user, School $school)
     {
-        return $this->verifySchool($user, $school) and trust($user)->to(Action::VIEW_PRIVATE_SCHOOL_INFO);
+        return $this->verifySchool($user, $school);
     }
 
-    /**
-     * Determine whether the user can update the school.
-     *
-     * @param  \Scalex\Zero\User $user
-     * @param  \Scalex\Zero\School $school
-     *
-     * @return bool
-     */
     public function update(User $user, School $school)
     {
-        return $this->verifySchool($user, $school);
-//        return $this->verifySchool($user, $school) and trust($user)->to(Action::UPDATE_SCHOOL);
+        return $this->verifySchool($user, $school) and trust($user)->to('school.update');
+    }
+
+    public function updatePhoto(User $user, School $school)
+    {
+        return $this->update($user, $school);
+    }
+
+    public function updateAddress(User $user, School $school)
+    {
+        return $this->update($user, $school);
+    }
+
+    protected function verifySchool(User $user, School $school)
+    {
+        return (int)$user->school_id === $school->getKey();
     }
 }

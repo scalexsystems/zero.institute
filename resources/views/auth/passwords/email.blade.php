@@ -1,7 +1,7 @@
 @extends('layouts.web')
 
 @section('content')
-    <div class="container p-y-1 v-full flex flex-content-md-middle flex-items-md-center">
+    <div class="container py-1 v-full d-flex flex-row justify-content-center align-items-center">
         <div class="wrapper-auth">
             <div class="card card-auth">
                 <div class="card-block card-block-auth">

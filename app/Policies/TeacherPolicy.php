@@ -10,32 +10,83 @@ class TeacherPolicy extends AbstractPolicy
 {
     use VerifiesSchool, IsHimself;
 
-    public function index(User $user)
+    public function browse(User $user)
     {
         return true;
     }
 
-    public function view(User $user, Teacher $teacher)
+    public function view(User $user)
     {
-        return trust($user)->to(Action::VIEW_TEACHER) or $this->isHimself($user, $teacher);
+        return true;
     }
 
     public function update(User $user, Teacher $teacher)
     {
-        return trust($user)->to(Action::UPDATE_TEACHER) or $this->isHimself($user, $teacher);
+        return $this->canUpdate($user, $teacher);
+    }
+
+    public function viewPhoto()
+    {
+        return true;
     }
 
     public function updatePhoto(User $user, Teacher $teacher)
     {
-        return trust($user)->to(Action::VIEW_TEACHER) or $this->isHimself($user, $teacher);
+        return $this->canUpdate($user, $teacher);
     }
 
-    public function readAddress(User $user, Teacher $teacher)
+    public function viewAddress(User $user, Teacher $teacher)
     {
-        return $this->view($user, $teacher);
+        return $this->canView($teacher);
     }
+
+    public function updateAddress(User $user, Teacher $teacher)
+    {
+        return $this->canUpdate($user, $teacher);
+    }
+
+    public function viewAssociatedUserAccount(User $user, Teacher $teacher)
+    {
+        return $this->canView($teacher);
+    }
+
+    public function readSchoolInfo(User $user, Teacher $teacher)
+    {
+        return $this->canView($teacher);
+    }
+
+    public function readMedicalInfo(User $user, Teacher $teacher)
+    {
+        return $this->canView($teacher);
+    }
+
+    public function readBasicInfo(User $user, Teacher $teacher)
+    {
+        return $this->canView($teacher);
+    }
+
+    public function readQualificationInfo(User $user, Teacher $teacher)
+    {
+        return $this->canView($teacher);
+    }
+
+    public function readBankAccountInfo(User $user, Teacher $teacher)
+    {
+        return $this->canView($teacher);
+    }
+
+    protected function canView(Teacher $teacher)
+    {
+        return $this->isHimself($this->getUser(), $teacher) or trust($this->getUser())->to('teacher.read');
+    }
+
     public function invite(User $user)
     {
-        return trust($user)->to(Action::INVITE_STUDENT);
+        return trust($user)->to('teacher.invite');
+    }
+
+    private function canUpdate(User $user, Teacher $teacher): bool
+    {
+        return $this->isHimself($user, $teacher) or trust($user)->to('teacher.update');
     }
 }

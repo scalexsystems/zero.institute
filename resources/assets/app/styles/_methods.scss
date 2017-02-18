@@ -8,7 +8,7 @@
   @return $number;
 }
 
-@function rem($value) {
+@function to-rem($value) {
   @if (unit($value) == 'px') {
     $base: strip-unit($font-size-root);
     $value: strip-unit($value);

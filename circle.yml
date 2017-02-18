@@ -8,6 +8,7 @@ machine:
 
 dependencies:
   pre:
+    - echo "memory_limit = 2048M" > /opt/circleci/php/$(phpenv global)/etc/conf.d/memory.ini
     - type -P yarn &> /dev/null || curl -o- -s -L https://yarnpkg.com/install.sh | bash
   override:
     - composer install --dev --no-interaction --no-progress
@@ -21,7 +22,10 @@ test:
   override:
     - composer lint -- --using-cache=no --path-mode=intersection `git diff --name-only --diff-filter=ACMRTUXB $COMMIT_RANGE`
     # - composer test:unit
-    # - composer test:e2e
+    - echo 'APP_KEY=' | cat > .env
+    - php artisan key:generate
+    - php artisan passport:keys
+    - composer test:api
     # - yarn prod -- --bail
     - git diff --name-only --diff-filter=ACMRTUXB $COMMIT_RANGE| grep -E '\.(js|vue)$' | xargs yarn run eslint -- --ext .js,.vue
     # - yarn test:unit

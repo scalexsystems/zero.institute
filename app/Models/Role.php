@@ -2,11 +2,15 @@
 
 namespace Scalex\Zero\Models;
 
-use Znck\Trust\Models\Role as TrustRole;
+use Scalex\Zero\Database\BaseModel;
 use Scalex\Zero\User;
 
-class Role extends TrustRole
+class Role extends BaseModel implements \Znck\Trust\Contracts\Role
 {
+    use \Znck\Trust\Traits\Role;
+
+    protected $fillable = ['name', 'slug', 'description'];
+
     public function users()
     {
         return $this->belongsToMany(User::class)->withTimestamps()->withPivot('school_id');

@@ -1,7 +1,7 @@
 @extends('layouts.web')
 
 @section('content')
-    <div class="container p-y-1 v-full flex flex-content-md-middle flex-items-md-center">
+    <div class="container py-3 v-full d-flex flex-row justify-content-center align-items-center">
         <div class="wrapper-auth">
             <div class="card card-auth">
                 <div class="card-block card-block-auth">
@@ -57,7 +57,7 @@
                             </button>
                         </div>
 
-                        <div class="text-xs-center">
+                        <div class="text-center">
                             <a class="text-muted" href="{{ url('/password/reset') }}">
                                 {{ trans('app::login.btn.forgot') }}
                             </a>
@@ -65,7 +65,7 @@
                     </form>
                 </div>
             </div>
-            <div class="text-xs-center">
+            <div class="text-center">
                 <a href="{{ url('/privacy') }}" class="text-muted">
                     <small>Privacy Policy</small>
                 </a>

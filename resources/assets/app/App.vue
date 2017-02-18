@@ -1,38 +1,62 @@
 <template>
 <div class="app">
   <nav-bar></nav-bar>
-  <router-view></router-view>
+  <keep-alive>
+    <router-view></router-view>
+  </keep-alive>
 </div>
 </template>
 
 <script lang="babel">
 import { mapActions, mapGetters } from 'vuex'
+import { each } from './util'
 
-import NavBar from './components/Navbar.vue'
-import { getters, actions } from './vuex/meta'
+import NavBar from './components/navbar/Navbar.vue'
 
 export default {
-  name: 'App',
-  components: { NavBar },
-  computed: { ...mapGetters({ user: getters.user }) },
-  methods: {
-    ...mapActions({ getUser: actions.getUser }),
-    ...mapActions('school', ['getDepartments', 'getDisciplines', 'getSemesters'])
-  },
+  name: 'Zero',
+
+  computed: mapGetters({ user: 'user', groups: 'groups/my' }),
+
+  methods: mapActions({
+    getDepartments: 'departments/index',
+    getDisciplines: 'disciplines/index',
+    getSemesters: 'semesters/index',
+    getSessions: 'sessions/index',
+    getGroups: 'groups/my',
+    getMyCourses: 'courses/my',
+    getCourses: 'courses/index'
+  }),
+
   created () {
-    if (!('id' in this.user)) {
-      this.getUser()
-    } else if (this.user && this.user.channel) {
-      this.$echo.private(this.user.channel)
+    if (!this.user || !('id' in this.user)) {
+      throw new Error('Although impossible! But there is no user!')
     }
 
+    this.$echoAlias(`private:${this.user.channel}`, 'user')
+    this.$echoAlias(`presence:${this.user.school.channel}`, 'school')
+
+    this.$channel('user')
+    this.$channel('school')
+
+    // School specific.
+    // TODO: Improve performance here.
+    this.getCourses()
+    this.getSessions()
     this.getDepartments()
     this.getDisciplines()
     this.getSemesters()
+
+    // User specific.
+    this.getGroups()
+    this.getMyCourses()
   },
+
+  components: { NavBar },
+
   watch: {
-    user () {
-      this.$echo.private(this.user.channel)
+    groups (groups) {
+      each(groups, group => this.$channel(`presence:${group.channel}`, undefined, group))
     }
   }
 }

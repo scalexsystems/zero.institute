@@ -11,12 +11,11 @@ class DepartmentPolicy extends AbstractPolicy
 
     public function store(User $user)
     {
-        return true;
-//        return trust($user)->to(Action::UPDATE_DEPARTMENT);
+        return trust($user)->to('department.create');
     }
 
     public function update(User $user, Department $department)
     {
-        return trust($user)->to(Action::UPDATE_DEPARTMENT);
+        return $user->school_id === $department->school_id and trust($user)->to('department.update');
     }
 }

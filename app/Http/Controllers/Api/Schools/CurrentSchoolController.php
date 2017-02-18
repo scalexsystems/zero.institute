@@ -20,9 +20,7 @@ class CurrentSchoolController extends Controller
      */
     public function index(Request $request)
     {
-        $request->query->add(['with' => 'address']);
-
-        return $request->user()->school;
+        return transform($request->user()->school, ['address'], null, true);
     }
 
     /*
@@ -36,10 +34,26 @@ class CurrentSchoolController extends Controller
     {
         $school = $request->user()->school;
 
-        $this->authorize($school);
+        $this->authorize('update', $school);
 
         repository(School::class)->update($school, $request->all());
 
-        return $this->accepted();
+        return $school;
+    }
+
+    /*
+     * Update school information.
+     *
+     * PUT /school
+     *
+     * Requires: auth
+     */
+    public function address(Request $request)
+    {
+        $school = $request->user()->school;
+
+        $this->authorize('update-address', $school);
+
+        return repository(School::class)->updateAddress($school, $request->all());
     }
 }

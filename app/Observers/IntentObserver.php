@@ -7,14 +7,14 @@ class IntentObserver
     public function created(Intent $intent)
     {
         if (hash_equals('account', $intent->tag)) {
-            cache()->forget(schoolify('stats.accounts'));
+            cache()->forget(schoolScopeCacheKey('stats.accounts'));
         }
     }
 
     public function deleted(Intent $intent)
     {
         if (hash_equals('account', $intent->tag)) {
-            cache()->forget(schoolify('stats.accounts'));
+            cache()->forget(schoolScopeCacheKey('stats.accounts'));
         }
     }
 }
