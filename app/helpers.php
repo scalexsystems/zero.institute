@@ -36,9 +36,6 @@ if (!function_exists('mix')) {
                 $manifest = json_decode(file_get_contents($manifestPath), true);
             }
         }
-        if (!starts_with($path, '/')) {
-            $path = "/${path}";
-        }
 
         if (!array_key_exists($path, $manifest)) {
             return false;
