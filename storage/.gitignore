@@ -1,5 +1,6 @@
 oauth-private.key
 oauth-public.key
+database.sqlite
 worker.log
 email-previews/
 vendor/
