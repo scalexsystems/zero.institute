@@ -1,5 +1,5 @@
 <template>
-<container-window title="Create Course" subtitle="Add institute courses for students & teachers." @back="$router.go(-1)"
+<container-window title="Edit Course" subtitle="Add institute courses for students & teachers." @back="$router.go(-1)"
                   back>
 
   <template slot="buttons">
@@ -14,7 +14,7 @@
         <form class="row">
           <input type="submit" hidden>
 
-          <div class="col-12">
+          <div class="col-12 col-lg-6">
             <input-text title="Name" v-model="attributes.name" autofocus required v-bind="{ errors }"
                         subtitle="Complete course name e.g. Introduction to Computing 1"/>
           </div>
@@ -30,44 +30,18 @@
                              subtitle="Offerred by the department."/>
           </div>
 
+          <div class="col-12 col-lg-6">
+            <input-typeahead title="Instructor" v-model="attributes.instructor" v-bind="{ suggestions: instructors }"
+                             @select="onInstructorSelect" component="SelectOptionUser"
+                             @search="onInstructorSearch"/>
+          </div>
+
           <div class="col-12">
             <input-textarea title="Brief description" v-model="attributes.description" v-bind="{ errors }"
                             subtitle="A brief description of the course. This is not course syllabus (Instructors can add course syllabus later)."/>
           </div>
 
-          <!--<h6 class="col-12 my-3 text-center text-uppercase text-muted">Instructors</h6>-->
-
-          <!--<div class="col-12">-->
-          <!--<div class="form-group">-->
-          <!--<label>Instructors</label>-->
-          <!--<typeahead v-bind="{ suggestions: teachers, value: [] }" @select="onInstructorSelect"-->
-          <!--@search="onInstructorSearch"/>-->
-          <!--</div>-->
-          <!--</div>-->
-
-          <!--<div class="col-12 col-lg-6 mb-3" v-for="teacher in instructors">-->
-          <!--<teacher-card v-bind="{ teacher }" remove @remove="onInstructorRemove"/>-->
-          <!--</div>-->
-
-          <!--<div v-if="instructors.length === 0" class="col-12 text-center text-muted" style="padding: 64px 0">-->
-          <!--No instructors.-->
-          <!--</div>-->
-
           <h6 class="col-12 my-3 text-center text-uppercase text-muted">Constraints & Requisites</h6>
-
-          <!--<div class="col-12">-->
-          <!--<input-typeahead title="Discipline" v-model="attributes.disciplines"-->
-          <!--v-bind="{ errors, suggestions: disciplines }"/>-->
-          <!--</div>-->
-
-          <!--<div class="col-12 col-lg-6">-->
-          <!--<input-typeahead title="Year" v-model="attributes.years" v-bind="{ errors, suggestions: years }"/>-->
-          <!--</div>-->
-
-          <!--<div class="col-12 col-lg-6">-->
-          <!--<input-typeahead title="Semester" v-model="attributes.semester_id"-->
-          <!--v-bind="{ errors, suggestions: semesters }"/>-->
-          <!--</div>-->
 
           <div class="col-12">
             <div class="form-group">
@@ -102,14 +76,19 @@ export default {
 
   extends: CourseCreate,
 
+  computed: mapGetters(['school']),
+
   methods: {
     setAttributes () {
       const course = this.course
 
       if (!course) return
 
+      const session = (course.sessions || []).find(s => s.session_id === this.school.session_id)
       this.attributes = only(course, Object.keys(this.attributes))
       this.attributes.courses = (course.prerequisites || []).map(c => c.id)
+      this.attributes.instructor = session ? session.instructor_id : 0
+      this.instructor = session ? session.instructor : null
     },
 
     async save () {

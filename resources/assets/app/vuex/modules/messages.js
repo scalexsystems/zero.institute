@@ -1,7 +1,7 @@
-import http from '../../api'
-import { toArray, each } from '../../../util'
-import { insert, binarySearchFind, binarySearchIndex } from '../../helpers'
-import { TIMESTAMP, prepareMessages, prepareUser } from './helpers'
+import http from '../api'
+import { toArray, each } from '../../util'
+import { insert, binarySearchFind, binarySearchIndex } from '../helpers'
+import { TIMESTAMP, prepareMessages, prepareUser } from './messages/helpers'
 
 const actions = {
   async index ({ dispatch }, page = 1) {

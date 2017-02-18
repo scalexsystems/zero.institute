@@ -16,7 +16,7 @@ class SessionController extends Controller
         return cache()->rememberForever(
             schoolScopeCacheKey('sessions'),
             function () use ($request) {
-                return repository(Session::class)->all();
+                return repository(Session::class)->with('semester')->all();
             }
         );
     }
@@ -36,7 +36,11 @@ class SessionController extends Controller
     public function update(Request $request, $session)
     {
         $session = repository(Session::class)->find($session);
-        $this->authorize($session);
+        $this->authorize('update', $session);
+
+        if ($session->ended_on->isPast()) {
+            abort(400, 'You cannot update past sessions.');
+        }
 
         repository(Session::class)->update($session, $request->all());
 

@@ -1,3 +1,4 @@
+import sort from 'lodash.sortby'
 import http from '../api'
 import { insert, remove, binarySearchFind } from '../helpers'
 
@@ -52,7 +53,7 @@ const actions = {
 }
 
 const getters = {
-  semesters: state => state.semesters,
+  semesters: state => sort(state.semesters.slice(), 'name'),
 
   semesterById: state => (id) => binarySearchFind(state.semesters, id),
 }

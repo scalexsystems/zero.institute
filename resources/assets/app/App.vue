@@ -22,8 +22,9 @@ export default {
     getDepartments: 'departments/index',
     getDisciplines: 'disciplines/index',
     getSemesters: 'semesters/index',
+    getSessions: 'sessions/index',
     getGroups: 'groups/my',
-    getSessions: 'courses/my',
+    getMyCourses: 'courses/my',
     getCourses: 'courses/index'
   }),
 
@@ -38,13 +39,17 @@ export default {
     this.$channel('user')
     this.$channel('school')
 
+    // School specific.
     // TODO: Improve performance here.
     this.getCourses()
     this.getSessions()
     this.getDepartments()
     this.getDisciplines()
     this.getSemesters()
+
+    // User specific.
     this.getGroups()
+    this.getMyCourses()
   },
 
   components: { NavBar },

@@ -37,6 +37,6 @@ export default [
   {
     name: 'settings.roles',
     path: '/settings/roles',
-    component: require('../pages/settings/Dashboard.vue')
+    component: require('../pages/settings/Roles.vue')
   }
 ]

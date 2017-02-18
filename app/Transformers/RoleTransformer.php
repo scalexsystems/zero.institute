@@ -1,17 +1,20 @@
 <?php namespace Scalex\Zero\Transformers;
 
+use Scalex\Zero\Models\Role;
 use Znck\Transformers\Transformer;
-use Znck\Trust\Models\Role;
 
 class RoleTransformer extends Transformer
 {
-    public function show(Role $model)
+    public function show(Role $role)
     {
-        return $model->toArray();
+        return $this->index($role);
     }
-    
-    public function index(Role $model)
+
+    public function index(Role $role)
     {
-        return $model->toArray();
+        return [
+            'name' => (string)$role->name,
+            'description' => (string)$role->description,
+        ];
     }
 }

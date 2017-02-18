@@ -2,7 +2,7 @@
   <div class="c-sidebar-list">
     <slot></slot>
 
-    <sidebar-button v-for="item of items" v-bind="item" :key="item" :class="item.class">
+    <sidebar-button v-for="item of items" v-bind="item" :key="item" :class="item.class" v-tooltip="item.tip || ''" ref="me">
       {{ item.text }}
     </sidebar-button>
   </div>

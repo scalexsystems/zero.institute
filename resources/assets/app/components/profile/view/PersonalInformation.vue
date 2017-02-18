@@ -44,6 +44,7 @@
 <script lang="babel">
 import moment from 'moment'
 import { isObject } from '../../../util'
+import { dateForHumans } from '../../../filters'
 
 const categories = [
   { id: 'gen', name: 'General' },
@@ -68,10 +69,7 @@ export default {
   },
 
   filters: {
-    dateForHumans (value) {
-      return value ? moment(value).format('D MMMM YYYY') : ''
-    },
-
+    dateForHumans,
     category (value) {
       const category = categories.find(c => c.id === value) || {}
 

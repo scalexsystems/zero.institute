@@ -53,7 +53,7 @@ const actions = {
 }
 
 const getters = {
-  sessions: state => sort(state.sessions.slice(), 'name'),
+  sessions: state => sort(state.sessions.slice(), 'started_on').reverse(),
   sessionById: state => (id) => binarySearchFind(state.sessions, id),
 }
 

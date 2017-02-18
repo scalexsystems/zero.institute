@@ -3637,12 +3637,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/znck/transformer.git",
-                "reference": "e1a502af043f24b6d27da51ac0b68486797f1773"
+                "reference": "8c4d7eddf05ca0fc2dda26182d1934f966cbb017"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/znck/transformer/zipball/e1a502af043f24b6d27da51ac0b68486797f1773",
-                "reference": "e1a502af043f24b6d27da51ac0b68486797f1773",
+                "url": "https://api.github.com/repos/znck/transformer/zipball/8c4d7eddf05ca0fc2dda26182d1934f966cbb017",
+                "reference": "8c4d7eddf05ca0fc2dda26182d1934f966cbb017",
                 "shasum": ""
             },
             "require": {
@@ -3686,7 +3686,7 @@
                 "repositories",
                 "transformer"
             ],
-            "time": "2017-02-10 08:57:42"
+            "time": "2017-02-18 10:36:37"
         },
         {
             "name": "znck/trust",

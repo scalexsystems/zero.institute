@@ -25,23 +25,15 @@ const actions = {
   },
 
   async my ({ dispatch }, { page = 1 } = {}) {
-    const { sessions, meta } = await http.get('me/courses')
+    const { course_sessions, meta } = await http.get('me/courses')
 
-    if (sessions) await dispatch('addSessionsToStore', sessions)
+    if (course_sessions) await dispatch('addSessionsToStore', course_sessions)
 
     if (notLastPage(meta)) {
       dispatch('my', { page: page + 1 })
     }
 
-    return { sessions, meta }
-  },
-
-  async myFind ({ dispatch }, id) {
-    const { session } = await http.get(`me/courses/${id}`)
-
-    if (session) await dispatch('addSessionsToStore', [session])
-
-    return { session }
+    return { course_sessions, meta }
   },
 
   async enrollments ({ commit, dispatch, getters }, id) {
@@ -86,7 +78,7 @@ const actions = {
     if (items) commit('INSERT', items)
   },
 
-  async addSessionsToStore ({ commit, dispatch, getters }, items) {
+  async addSessionsToStore ({ commit }, items) {
     if (items) {
       commit('INSERT_SESSION', items.map(item => ({ ...item, $students: null })))
     }
@@ -94,7 +86,7 @@ const actions = {
 }
 
 const getters = {
-  courses: state => state.courses,
+  courses: state => sortBy(state.courses, 'name'),
 
   courseById: state => (id) => binarySearchFind(state.courses, id),
 

@@ -2,7 +2,7 @@
 <div class="container-zero c-session-create mx-auto">
   <div class="card">
     <div class="card-header d-flex flex-row align-items-center">
-      <h5 class="mb-0">Create Session</h5>
+      <h5 class="mb-0">Update Session</h5>
 
       <div class="ml-auto">
         <input-button class="btn btn-secondary" @click.native="$emit('done')" value="Cancel"/>
@@ -17,12 +17,13 @@
         <input type="submit" hidden>
 
         <div class="col-12 col-lg-6">
-          <input-text title="Name" v-model="attributes.name" :errors="errors" required/>
+          <input-text title="Name" subtitle="Choose semester & dates, it would be auto-generated."
+                      v-model="attributes.name" :errors="errors" readonly/>
         </div>
 
         <div class="col-12 col-lg-6">
           <input-typeahead title="Short Code" v-model="attributes.semester_id" :suggestions="semesters"
-                           :errors="errors"/>
+                           :errors="errors" required/>
         </div>
 
         <div class="col-12 col-lg-6">
@@ -32,7 +33,7 @@
         <div class="col-12 col-lg-6">
           <input-text type="date" title="End Date" v-model="attributes.ended_on" :errors="errors" required/>
         </div>
-        
+
       </form>
     </div>
   </div>
@@ -43,6 +44,7 @@
 import { mapActions } from 'vuex'
 import Create from './Create.vue'
 import { only } from '../../util'
+import moment from 'moment'
 
 export default {
   name: 'EditSession',
@@ -76,12 +78,15 @@ export default {
         this.formStatus = 'Ah! Oh! This is not expected. Contact support.'
       }
     },
-
     ...mapActions('sessions', ['update'])
   },
 
   created () {
+    const started_on = moment(this.session.started_on)
+    const ended_on = moment(this.session.ended_on)
     this.attributes = only(this.session, Object.keys(this.attributes))
+    this.attributes.started_on = started_on.isValid() ? started_on.format('YYYY-MM-DD') : ''
+    this.attributes.ended_on = ended_on.isValid() ? ended_on.format('YYYY-MM-DD') : ''
   }
 }
 </script>

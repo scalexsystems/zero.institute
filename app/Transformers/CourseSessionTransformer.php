@@ -24,6 +24,7 @@ class CourseSessionTransformer extends Transformer
             'ended_on' => (string)$session->ended_on->toIso8601String(),
             'group_id' => (int)$session->group_id,
             'course_id' => (int)$session->course_id,
+            'session_id' => (int)$session->session_id,
             'instructor_id' => (int)$session->instructor_id,
         ];
     }

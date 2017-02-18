@@ -4,6 +4,7 @@ namespace PHPSTORM_META {
     $STATIC_METHOD_TYPES = [
         \repository('') => [
             '\Scalex\Zero\User' instanceof \Scalex\Zero\Repositories\UserRepository,
+            '\Scalex\Zero\Role' instanceof \Scalex\Zero\Repositories\RoleRepository,
             '\Scalex\Zero\Models\Group' instanceof \Scalex\Zero\Repositories\GroupRepository,
             '\Scalex\Zero\Models\School' instanceof \Scalex\Zero\Repositories\SchoolRepository,
             '\Scalex\Zero\Models\Department' instanceof \Scalex\Zero\Repositories\DepartmentRepository,

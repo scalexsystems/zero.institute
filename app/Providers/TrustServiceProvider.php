@@ -31,15 +31,20 @@ class TrustServiceProvider extends OriginalTrustServiceProvider
 
         // Settings
         'settings.app' => 'Access school settings',
+
+        // Roles & Permissions
+        'manage_roles' => 'Manage roles',
     ];
 
     protected $roles = [
         'admin' => [
             'name' => 'Administrator',
+            'description' => 'Institute administrator has access to every resource and can create/update/delete any resource.',
             'permissions' => ['*'],
         ],
         'course-manager' => [
             'name' => 'Course Manager',
+            'description' => 'Course manager can create/update/delete & assign instructors to courses.',
             'permissions' => ['course.*'],
         ],
     ];

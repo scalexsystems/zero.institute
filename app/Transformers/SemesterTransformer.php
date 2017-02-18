@@ -13,10 +13,7 @@ class SemesterTransformer extends Transformer
     public function index(Semester $semester)
     {
         return [
-            'name' => (string)$semester->name,
-            'stats' => [
-                'student' => $semester->student_count ?? 0,
-            ],
+            'name' => (string)$semester->name
         ];
     }
 }

@@ -35,7 +35,7 @@ class SessionRepository extends Repository
     protected $rules = [
         'name' => 'required|max:255',
         'started_on' => 'required|date',
-        'ended_on' => 'required|date',
+        'ended_on' => 'required|date|after:started_on',
     ];
 
     /**
@@ -85,6 +85,13 @@ class SessionRepository extends Repository
 
     public function updating(Session $session, array $attributes)
     {
+        if ($session->started_on->isPast() and isset($attributes['started_on'])) {
+            unset($attributes['started_on']); // TODO: Handle this in validation errors.
+        }
+        if ($session->ended_on->isPast() and isset($attributes['ended_on'])) {
+            unset($attributes['ended_on']); // TODO: Handle this in validation errors.
+        }
+
         $session->semester()->associate($attributes['semester_id'] ?? $session->semester_id);
 
         return $session->update($attributes);

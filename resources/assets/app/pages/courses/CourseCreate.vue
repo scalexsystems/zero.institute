@@ -14,7 +14,7 @@
     <form class="row" @submit.prevent="create">
       <input type="submit" hidden>
 
-      <div class="col-12">
+      <div class="col-12 col-lg-6">
         <input-text title="Name" v-model="attributes.name" autofocus required v-bind="{ errors }"
                     subtitle="Complete course name e.g. Introduction to Computing 1"/>
       </div>
@@ -30,6 +30,12 @@
                          subtitle="Offerred by the department."/>
       </div>
 
+      <div class="col-12 col-lg-6">
+        <input-typeahead title="Instructor" v-model="attributes.instructor" v-bind="{ suggestions: instructors }"
+                         @select="onInstructorSelect" component="SelectOptionUser"
+                         @search="onInstructorSearch"/>
+      </div>
+
       <div class="col-12">
         <input-textarea title="Brief description" v-model="attributes.description" v-bind="{ errors }"
                         subtitle="A brief description of the course. This is not course syllabus (Instructors can add course syllabus later)."/>
@@ -38,44 +44,6 @@
     </form>
 
   </div>
-
-  <h6 class="split-header mt-3 py-3 text-muted text-uppercase">Instructors</h6>
-
-  <div class="container-zero">
-    <div class="row">
-
-      <div class="col-12">
-        <div class="form-group">
-          <label>Instructors</label>
-          <typeahead v-bind="{ suggestions: teachers, value: [] }" @select="onInstructorSelect"
-                     @search="onInstructorSearch"/>
-        </div>
-      </div>
-
-      <div class="col-12 col-lg-6 mb-3" v-for="teacher in instructors">
-        <teacher-card v-bind="{ teacher }" remove @remove="onInstructorRemove"/>
-      </div>
-
-      <div v-if="instructors.length === 0" class="col-12 text-center text-muted" style="padding: 32px 0">
-        No instructors.
-      </div>
-
-    </div>
-  </div>
-
-  <!--<div class="col-12">-->
-  <!--<input-typeahead title="Discipline" v-model="attributes.disciplines"-->
-  <!--v-bind="{ errors, suggestions: disciplines }"/>-->
-  <!--</div>-->
-
-  <!--<div class="col-12 col-lg-6">-->
-  <!--<input-typeahead title="Year" v-model="attributes.years" v-bind="{ errors, suggestions: years }"/>-->
-  <!--</div>-->
-
-  <!--<div class="col-12 col-lg-6">-->
-  <!--<input-typeahead title="Semester" v-model="attributes.semester_id"-->
-  <!--v-bind="{ errors, suggestions: semesters }"/>-->
-  <!--</div>-->
 
   <h6 class="split-header mt-3 py-3 text-muted text-uppercase">Prerequisite Courses</h6>
 
@@ -117,13 +85,10 @@ export default {
       name: '',
       code: '',
       department_id: '',
-//      semester_id: '',
-//      disciplines: [],
-      instructors: [], // TODO: Check if sessions are created.
-//      years: [],
+      instructor: 0,
       courses: []
     },
-    instructors: [],
+    instructor: null,
     teachers: []
   }),
 
@@ -138,6 +103,18 @@ export default {
         { id: 3, name: 'Third Year' },
         { id: 4, name: 'Fourth Year' }
       ]
+    },
+    instructors () {
+      const instructor = this.instructor
+      const teachers = this.teachers
+
+      if (!instructor) return teachers
+
+      const index = teachers.findIndex(teacher => teacher.id === instructor.id)
+
+      if (index > -1) return teachers
+
+      return [instructor].concat(teachers)
     },
     ...mapGetters({
       departments: 'departments/academic',
@@ -188,18 +165,7 @@ export default {
       this.teachers = teachers || []
     }),
     onInstructorSelect (instructor) {
-      if (this.attributes.instructors.indexOf(instructor.id) < 0) {
-        this.attributes.instructors.push(instructor.id)
-        this.instructors.push(instructor)
-      }
-    },
-    onInstructorRemove (instructor) {
-      const index = this.attributes.instructors.indexOf(instructor.id)
-
-      if (index > -1) {
-        this.attributes.instructors.splice(index, 1)
-        this.instructors.splice(index, 1)
-      }
+      this.instructor = instructor
     },
     ...mapActions('courses', ['index', 'store']),
     ...mapActions('teachers', { search: 'index' })

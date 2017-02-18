@@ -17,11 +17,12 @@
         <input type="submit" hidden>
 
         <div class="col-12 col-lg-6">
-          <input-text title="Name" v-model="attributes.name" :errors="errors" required autofocus/>
+          <input-text title="Name" subtitle="Choose semester & dates, it would be auto-generated."
+                      v-model="attributes.name" :errors="errors" readonly/>
         </div>
 
         <div class="col-12 col-lg-6">
-          <input-typeahead title="Semester" v-model="attributes.semester_id" :suggestions="sessions" :errors="errors" required/>
+          <input-typeahead title="Semester" v-model="attributes.semester_id" :suggestions="semesters" :errors="errors" autofocus required/>
         </div>
 
         <div class="col-12 col-lg-6">
@@ -29,7 +30,7 @@
         </div>
 
         <div class="col-12 col-lg-6">
-          <input-text type="date" title="End Date" v-model="attributes.ended_on" :errors="errors" required/>
+          <input-text type="date" title="End Date" v-model="attributes.ended_on" :errors="errors" required :min="attributes.started_on"/>
         </div>
       </form>
     </div>
@@ -41,9 +42,10 @@
 import { mapActions, mapGetters } from 'vuex'
 import { formHelper } from 'bootstrap-for-vue'
 import throttle from 'lodash.throttle'
+import moment from 'moment'
 
 export default {
-  name: 'EditSession',
+  name: 'CreateSession',
 
   data: () => ({
     attributes: {
@@ -56,7 +58,7 @@ export default {
     disabled: false
   }),
 
-  computed: mapGetters('sessions', ['sessions']),
+  computed: mapGetters('semesters', ['semesters']),
 
   methods: {
     async save () {
@@ -67,6 +69,7 @@ export default {
       this.disabled = false
 
       if (session) {
+        this.$emit('done')
       } else if (errors) {
         this.setErrors(errors)
         this.formStatus = errors.$message
@@ -75,7 +78,27 @@ export default {
       }
     },
 
+    setName () {
+      if (this.attributes.semester_id < 1 || !this.attributes.started_on) return
+
+      const date = moment(this.attributes.started_on)
+
+      if (!date.isValid()) return
+
+      const semester = this.semesters.find(semester => semester.id === this.attributes.semester_id)
+
+      if (!semester) return
+
+      this.attributes.name = `${semester.name} ${date.year()}`
+    },
+
+
     ...mapActions('sessions', ['store']),
+  },
+
+  watch: {
+    'attributes.semester_id': 'setName',
+    'attributes.started_on': 'setName'
   },
 
   mixins: [formHelper]

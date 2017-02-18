@@ -54,6 +54,10 @@ class CourseController extends Controller
             $repository->addPrerequisites($course, (array)$request->input('courses'));
         }
 
+        if ($request->has('instructor')) {
+            $repository->addInstructors($course, $request->get('instructor'));
+        }
+
         broadcast(new Created($course));
 
         return $this->transform($course);
@@ -67,6 +71,10 @@ class CourseController extends Controller
 
         if ($request->has('courses')) {
             $repository->addPrerequisites($course, (array)$request->input('courses'));
+        }
+
+        if ($request->has('instructor')) {
+            $repository->addInstructors($course, $request->get('instructor'));
         }
 
         broadcast(new Updated($course));

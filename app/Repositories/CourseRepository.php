@@ -9,6 +9,7 @@ use Request;
 use Scalex\Zero\Contracts\Person;
 use Scalex\Zero\Criteria\OfSchool;
 use Scalex\Zero\Models\Course;
+use Scalex\Zero\Models\CourseSession;
 use Scalex\Zero\Models\Discipline;
 use Scalex\Zero\Models\School;
 use Scalex\Zero\Models\Student;
@@ -120,9 +121,7 @@ class CourseRepository extends Repository
         $course = new Course($attributes);
 
         $course->department()->associate($attributes['department_id']);
-        $course->discipline()->associate($attributes['discipline_id'] ?? null);
         $course->photo()->associate($attributes['photo_id'] ?? null);
-        $course->semester()->associate($attributes['semester_id'] ?? null);
         $course->school()->associate($school);
 
         $this->onCreate($course->save());
@@ -145,9 +144,7 @@ class CourseRepository extends Repository
     public function updating(Course $course, array $attributes)
     {
         $course->department()->associate($attributes['department_id'] ?? $course->department_id);
-        $course->discipline()->associate($attributes['discipline_id'] ?? $course->discipline_id);
         $course->photo()->associate($attributes['photo_id'] ?? $course->photo_id);
-        $course->semester()->associate($attributes['semester_id'] ?? $course->semester_id);
 
         return $course->update($attributes);
     }
@@ -163,31 +160,27 @@ class CourseRepository extends Repository
 
     /**
      * @param \Scalex\Zero\Models\Course $course
-     * @param array $attributes
-     *
-     * @deprecated
+     * @param Teacher $teacher
      */
-    public function addInstructors(Course $course, array $attributes)
+    public function addInstructors(Course $course, $teacher)
     {
-        // There would be one instructor for now.
-        $teacher = Teacher::whereSchoolId($course->school_id)
-                          ->whereIn('id', $attributes)
-                          ->first();
+        $teacher = Teacher::where('school_id', $course->school_id)->find($teacher);
 
-        // $course->instructors()->saveMany($teachers);
+        if (!$teacher) {
+            return;
+        }
 
-        if ($teacher) {
+        $session = $this->findCourseSession($course, $teacher);
+
+        if ($session) {
+            $session->instructor()->associate($teacher);
+            $this->onUpdate($session->update());
+
+            $session->group->owner()->associate($teacher->user);
+            $this->onUpdate($session->group->update());
+        } else {
             $this->createSessionFor($course, $teacher);
         }
-    }
-
-    public function removeInstructors(Course $course, array $attributes)
-    {
-        $teachers = Teacher::whereSchoolId($course->school_id)
-                           ->whereIn('id', $attributes)
-                           ->get();
-
-        $course->instructors()->detach($teachers->modelKeys());
     }
 
     public function findSessions(Course $course, User $user): Collection
@@ -208,7 +201,7 @@ class CourseRepository extends Repository
 
     public function createSessionFor(Course $course, Teacher $teacher)
     {
-        $session = new \Scalex\Zero\Models\CourseSession();
+        $session = new CourseSession();
 
         $repository = $this->app->make(GroupRepository::class);
         $group = $repository->createWithMembers($teacher->user, [
@@ -216,15 +209,26 @@ class CourseRepository extends Repository
         ], []);
 
         $session->course()->associate($course);
-        $session->instructor()->associate($course);
+        $session->instructor()->associate($teacher);
         $session->group()->associate($group);
-        // TODO: Use institute session dates.
-
-        $session->started_on = Carbon::now();
-        $session->ended_on = Carbon::now()->addYear();
+        $session->session()->associate($teacher->school->session);
+        $session->name = $teacher->school->session->name;
+        $session->started_on = $teacher->school->session->started_on;
+        $session->ended_on = $teacher->school->session->ended_on;
 
         $this->onCreate($session->save());
 
         return $session;
+    }
+
+    /**
+     * @param \Scalex\Zero\Models\Course $course
+     * @param \Scalex\Zero\Models\Teacher $teacher
+     *
+     * @return \Scalex\Zero\Models\CourseSession|mixed
+     */
+    protected function findCourseSession(Course $course, Teacher $teacher)
+    {
+        return $course->sessions()->where('session_id', $teacher->school->session_id)->first();
     }
 }

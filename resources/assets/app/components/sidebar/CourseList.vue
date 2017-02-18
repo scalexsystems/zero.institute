@@ -24,6 +24,7 @@ export default {
       for (let i = 0; i < n; i += 1) {
         items.push({
           text: courses[i].code || '...',
+          tip: courses[i].name,
           photo: courses[i].photo,
           type: 'rounded-circle',
           class: 'sidebar-list-item-course',

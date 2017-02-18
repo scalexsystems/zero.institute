@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-async function format (response) {
+async function format(response) {
   if (/(text|application)\/json/i.test(response.headers.get('Content-Type'))) {
     return await response.json()
   }
@@ -8,10 +8,10 @@ async function format (response) {
   return response
 }
 
-async function process (response) {
-  if (response.status === 422) {
-    const result = await format(response)
+async function process(response) {
+  const result = await format(response)
 
+  if (response.status === 422) {
     if (result.errors) {
       result.errors.$message = 'There is some problem with your input. Make required changes and save again.'
     }
@@ -31,7 +31,6 @@ async function process (response) {
     return { $message: 'You don\'t have access to perform this action.' }
   }
 
-
   if (response.status === 404) {
     return { $message: 'There is nothing like this on Zero servers. (Not Found)' }
   }
@@ -46,6 +45,10 @@ async function process (response) {
 
   if (response.status >= 500) {
     return { $message: 'Some unexpected error occurred. Don\'t worry developers have been notified, it would be fixed soon.' }
+  }
+
+  if (result && result.message) {
+    return { $message: result.message }
   }
 }
 

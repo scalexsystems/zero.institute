@@ -18,20 +18,6 @@ class RouteServiceProvider extends ServiceProvider
     protected $namespace = 'Scalex\Zero\Http\Controllers';
 
     /**
-     * Define your route model bindings, pattern filters, etc.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        Route::bind('role', function ($value) {
-            return Role::where('slug', $value)->first();
-        });
-
-        parent::boot();
-    }
-
-    /**
      * Define the routes for the application.
      *
      * @return void
@@ -41,8 +27,6 @@ class RouteServiceProvider extends ServiceProvider
         $this->mapApiRoutes();
 
         $this->mapWebRoutes();
-
-        //
     }
 
     /**

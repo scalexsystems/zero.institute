@@ -1,7 +1,7 @@
 <template>
 <abstract-card v-bind="{ remove, footer }">
 
-  <h6 class="card-title">{{ semester.name }} </h6>
+  <h6 class="card-title mb-0">{{ semester.name }} </h6>
 
 </abstract-card>
 </template>

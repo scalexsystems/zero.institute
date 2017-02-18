@@ -32,4 +32,9 @@ abstract class AbstractCourseSessionEvent extends Event
         $this->session = $courseSession->session;
         $this->teacher = $courseSession->instructor;
     }
+
+    public function broadcastOn()
+    {
+        return $this->course->school->getChannel();
+    }
 }

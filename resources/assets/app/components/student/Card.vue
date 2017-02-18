@@ -1,30 +1,41 @@
 <template>
-<div class="c-student-card card">
-  <div class="c-student-card-block">
-    <div class="d-flex flex-row align-items-center">
-      <img :src="student.photo" class="rounded-circle c-student-card-photo">
-      <div>
-        <div class="c-student-card-title">{{ student.name }}</div>
-        <div class="c-student-card-subtitle">
-          <span class="text-primary text-uppercase" v-if="student.is_member">Joined <span
-                  class="text-muted">&centerdot;</span></span>
-          <span class="text-muted">{{ student.member_count_text }}</span>
-        </div>
+<abstract-card v-bind="{ remove }" class="c-student-card" @remove="$emit('remove', student)">
+  <div class="d-flex flex-row align-items-center">
+    <img :src="student.photo" class="rounded-circle c-student-card-photo fit-cover">
+    <div>
+      <div class="c-student-card-title" :class="{ 'text-muted': !student.name.trim() }">{{ student.name.trim() || 'Name not set' }}
+      </div>
+      <div class="c-student-card-subtitle">
+        <span class="text-muted">Roll Number:</span> {{ student.uid }} <br>
+        <span class="text-muted">Department:</span> {{ department.name || 'Not set' }}
       </div>
     </div>
-
-    <slot></slot>
   </div>
-</div>
+
+  <slot></slot>
+</abstract-card>
 </template>
 
 <script lang="babel">
+import { mapGetters } from 'vuex'
 export default {
   props: {
     student: {
       type: Object,
       required: true
+    },
+
+    remove: {
+      type: Boolean,
+      default: false
     }
+  },
+
+  computed: {
+    department () {
+      return this.departmentById(this.student.id) || {}
+    },
+    ...mapGetters('departments', ['departmentById'])
   }
 }
 </script>

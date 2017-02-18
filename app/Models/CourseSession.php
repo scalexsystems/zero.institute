@@ -6,8 +6,6 @@ use Scalex\Zero\Database\BaseModel;
 
 class CourseSession extends BaseModel
 {
-    protected $table = 'course_sessions';
-
     protected $fillable = ['name', 'started_on', 'ended_on', 'syllabus'];
 
     protected $extends = ['syllabus'];
@@ -27,6 +25,11 @@ class CourseSession extends BaseModel
     public function group()
     {
         return $this->belongsTo(Group::class);
+    }
+
+    public function session()
+    {
+        return $this->belongsTo(Session::class);
     }
 
     public function students()

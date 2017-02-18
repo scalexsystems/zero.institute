@@ -12,9 +12,6 @@ Route::get('/me', 'Api\Users\CurrentUserController@index');
 Route::put('/me', 'Api\Users\CurrentUserController@update');
 Route::get('/me/dashboard', 'Api\Users\DashboardController@index');
 
-Route::get('people/roles/{role}', 'Api\RoleController@index');
-Route::post('people/roles', 'Api\RoleController@store');
-
 
 //======================================================================================//
 //                                School Services                                       //
@@ -23,6 +20,12 @@ Route::resource('/disciplines', 'Api\Schools\DisciplineController', $resource);
 Route::resource('/departments', 'Api\Schools\DepartmentController', $resource);
 Route::resource('/semesters',   'Api\Schools\SemesterController',   $resource);
 Route::resource('/sessions',    'Api\Schools\SessionController',    $resource);
+
+
+Route::post('/roles/{role}/revoke', 'Api\Schools\RoleController@revoke');
+Route::post('/roles/{role}/assign', 'Api\Schools\RoleController@assign');
+Route::get( '/roles/{role}/users',        'Api\Schools\RoleController@users');
+Route::get( '/roles',               'Api\Schools\RoleController@index');
 
 
 //======================================================================================//

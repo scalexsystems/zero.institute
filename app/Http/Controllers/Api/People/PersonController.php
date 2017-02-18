@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Scalex\Zero\Criteria\FilterIntents;
 use Scalex\Zero\Criteria\OfSchool;
 use Scalex\Zero\Criteria\OrderBy;
+use Scalex\Zero\Criteria\UserType;
 use Scalex\Zero\Http\Controllers\Controller;
 use Scalex\Zero\Http\Requests;
 use Scalex\Zero\Models\Employee;
@@ -24,7 +25,8 @@ class PersonController extends Controller
     public function index(Request $request, UserRepository $repository)
     {
         $repository->with(['person', 'person.photo'])
-                   ->pushCriteria(new OfSchool($request->user()->school));
+                   ->pushCriteria(new OfSchool($request->user()->school))
+                   ->pushCriteria(new UserType((array)$request->input('type', [])));
 
         if ($request->has('q')) {
             $repository->search($request->input('q'));
