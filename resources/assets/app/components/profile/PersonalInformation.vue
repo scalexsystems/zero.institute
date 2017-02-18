@@ -13,7 +13,7 @@
 </template>
 
 <script lang="babel">
-import EditPersonalInformation from './edit/PeronalInformation.vue'
+import EditPersonalInformation from './edit/PersonalInformation.vue'
 import ViewPersonalInformation from './view/PersonalInformation.vue'
 import mixin from './mixin'
 

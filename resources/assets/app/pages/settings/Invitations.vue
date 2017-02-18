@@ -1,33 +1,30 @@
 <template>
-   <container-window title="Invites" subtitle="Invite students,teachers and employees of the institute">
+<container-window title="Invites" subtitle="Invite students,teachers and employees of the institute">
 
-    <template slot="sidebar">
-        <sidebar/>
-    </template>
+  <template slot="sidebar">
+  <sidebar/>
+  </template>
 
-    <div class="container py-2">
-        <div class="my-2 py-3 mt-3">
-            <invite-panel type="student"></invite-panel>
-        </div>
-        <div class="my-2 py-3 mt-3">
-            <invite-panel type="teacher"></invite-panel>
-        </div>
-        <div class="my-2 py-3 mt-3">
-            <invite-panel type="employee"></invite-panel>
-        </div>
-    </div>
+  <div class="container-fluid text-center">
+    <h2 class="text-center my-3 py-3">Invitations</h2>
+
+    <p></p>
+  </div>
+
+  <invite-panel type="student"></invite-panel>
+  <invite-panel type="teacher"></invite-panel>
+  <invite-panel type="employee"></invite-panel>
 </container-window>
 
 </template>
 <script lang="babel">
-import InvitePanel from '../../components/invites/invitePanel.vue'
+import InvitePanel from '../../components/invites/InvitePanel.vue'
 import Sidebar from '../../components/settings/Sidebar.vue'
 
 export default{
   name: 'InstituteInvite',
   data () {
-    return {
-    }
+    return {}
   },
   components: { InvitePanel, Sidebar }
 }

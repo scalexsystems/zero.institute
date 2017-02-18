@@ -2,20 +2,14 @@
 
 $resource = ['except' => ['edit', 'create']];
 
-// Schools
-Route::get('/schools', 'Api\Schools\SchoolController@index');
-Route::get('/school', 'Api\Schools\CurrentSchoolController@index');
-Route::put('/school', 'Api\Schools\CurrentSchoolController@update');
-Route::post('/school/logo', 'Api\Schools\FileController@store');
-
-Route::get('/me', 'Api\Users\CurrentUserController@index');
-Route::put('/me', 'Api\Users\CurrentUserController@update');
-Route::get('/me/dashboard', 'Api\Users\DashboardController@index');
-
-
 //======================================================================================//
 //                                School Services                                       //
 //======================================================================================//
+Route::get('/school', 'Api\Schools\CurrentSchoolController@index');
+Route::put('/school', 'Api\Schools\CurrentSchoolController@update');
+Route::post('/school/address', 'Api\Schools\CurrentSchoolController@address');
+Route::post('/school/logo', 'Api\Schools\FileController@store');
+
 Route::resource('/disciplines', 'Api\Schools\DisciplineController', $resource);
 Route::resource('/departments', 'Api\Schools\DepartmentController', $resource);
 Route::resource('/semesters', 'Api\Schools\SemesterController', $resource);

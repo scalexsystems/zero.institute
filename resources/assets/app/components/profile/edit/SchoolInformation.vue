@@ -4,6 +4,7 @@
 
   <form class="row" @submit.prevent="$emit('submit')">
     <input type="submit" hidden>
+
     <div class="col-12">
       <input-text title="Name of the institute" v-model="attributes.name" :errors="errors" required/>
     </div>
@@ -23,30 +24,29 @@
 
 <script lang="babel">
 import { only } from '../../../util'
-import GuardianInformation from '../view/GuardianInformation.vue'
+import SchoolInformation from '../view/SchoolInformation.vue'
 import mixin from './mixin'
 
 export default {
-  name: 'EditGuardianInformation',
+  name: 'EditSchoolInformation',
 
-  extends: GuardianInformation,
+  extends: SchoolInformation,
 
   data: () => ({
     attributes: {
-      first_name: '',
-      last_name: '',
-      profession: '',
-      income: 0.0,
-      phone: ''
+      name: '',
+      email: '',
+      university: '',
+      institute_type: ''
     }
   }),
 
   methods: {
     prepareAttributes () {
-      this.attributes = only(this.guardian, Object.keys(this.attributes))
+      this.attributes = only(this.source, Object.keys(this.attributes))
     },
     async callAPI () {
-      return await this.submit({ uid: this.source.uid, payload: this.attributes })
+      return await this.submit({ payload: this.attributes })
     }
   },
 

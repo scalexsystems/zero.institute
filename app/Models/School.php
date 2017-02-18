@@ -63,4 +63,9 @@ class School extends BaseModel
     {
         return new PresenceChannel($this->getChannelName());
     }
+
+    public function getPhotoUrl()
+    {
+        return attach_url($this->logo) ?? asset('img/placeholder.jpg');
+    }
 }

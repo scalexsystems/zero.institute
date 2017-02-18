@@ -1,31 +1,26 @@
 <template>
-<div class="row">
-    <h6 class="split-header text-uppercase col-lg-12">
-        Invite {{ type }}s
-    </h6>
+<div>
+  <h6 class="split-header text-uppercase text-muted">Invite {{ type }}s</h6>
 
-    <div class="col-12 col-lg-12">
-        <div class="invite-input input-group input-group-lg">
-            <input class="form-control" type="text" :errors="errors" :placeholder="placeholder"
-                   v-model="emails">
-        </div>
+  <div class="container-zero my-3 py-3">
+    <input-textarea title="Send email invites" :errors="errors" :placeholder="placeholder" v-model="emails" subtitle="yes">
 
-        <div class="row">
-            <div class="col-12 col-lg-8 text-muted">
-                An invite will be sent to all {{ type }}s via this list
+      <template slot="subtitle">
+      <div class="d-flex flex-row">
+        <div class="flex-auto">An invite will be sent to all {{ type }}s using this list.</div>
+        <div class="ml-auto text-muted">{{ invited }} Invited</div>
+      </div>
+      </template>
 
-            </div>
-            <div class="col-12 col-lg-4 text-muted text-lg-right">
-                {{ invited }} invited
-            </div>
-        </div>
-        <div class="invite-actions py-3">
-            <div class="btn btn-default" role="button" @click="cancel"> Cancel </div>
-            <div class="btn btn-primary" role="button" @click="sendInvite"> Send Invite  </div>
-        </div>
-    </div>
+    </input-textarea>
+
+    <div class="text-right mt-3">
+      <div class="btn btn-default" role="button" @click="cancel" v-if="emails && emails.trim().length > 0">Reset</div>
+      <div class="btn btn-primary" role="button" @click="sendInvite">Send Invite</div>
     </div>
 
+  </div>
+</div>
 </template>
 
 <script lang="babel">
@@ -45,7 +40,7 @@ export default {
   }),
   computed: {
     placeholder () {
-      return `enter alias address e.g. ${this.type}@domain.com`
+      return `Enter alias address e.g. ${this.type}@domain.com`
     }
   },
 
@@ -84,22 +79,25 @@ export default {
 <style lang="scss" scoped>
 @import '../../styles/methods';
 @import '../../styles/variables';
+
 .invite {
   &-input {
     padding: rem(20px) 0 rem(10px);
   }
 
   &-actions {
-        padding: rem(20px) 0;
+    padding: rem(20px) 0;
   }
 
 }
-.btn-default{
-    border: solid 1px $gray;
+
+.btn-default {
+  border: solid 1px $gray;
 }
+
 .btn {
-    margin: 0 rem(2px);
-    width: rem(100px);
+  margin: 0 rem(2px);
+  width: rem(100px);
 }
 
 </style>

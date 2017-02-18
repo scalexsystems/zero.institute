@@ -38,6 +38,22 @@ class CurrentSchoolController extends Controller
 
         repository(School::class)->update($school, $request->all());
 
-        return $this->accepted();
+        return $school;
+    }
+
+    /*
+     * Update school information.
+     *
+     * PUT /school
+     *
+     * Requires: auth
+     */
+    public function address(Request $request)
+    {
+        $school = $request->user()->school;
+
+        $this->authorize('update-address', $school);
+
+        return repository(School::class)->updateAddress($school, $request->all());
     }
 }

@@ -5,7 +5,7 @@ use Znck\Transformers\Transformer;
 
 class SchoolTransformer extends Transformer
 {
-    protected $availableIncludes = ['address'];
+    protected $defaultIncludes = ['address'];
 
     public function show(School $school)
     {

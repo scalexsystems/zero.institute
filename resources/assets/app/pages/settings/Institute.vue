@@ -4,57 +4,29 @@
   <sidebar/>
   </template>
 
-  <template slot="buttons">
-  <input-button value="Edit" @click.native="onEdit"/>
-  </template>
+  <div class="container-zero my-3 py-3 text-center">
+    <photo-uploader dest="school/logo" class="round rounded-circle p-school-photo" @uploaded="setSchoolLogo">
+      <img class="rounded-circle p-school-photo fit-center" :src="school.logo">
+    </photo-uploader>
+  </div>
 
-  <modal :open="editing" @close="editing = false" :dismissable="false">
-    <edit-institute @done="editing = false"/>
-  </modal>
+  <div class="container-zero my-3">
+    <school-information :source="school" :submit="updateSchool"/>
+  </div>
 
-  <div class="container-zero py-3">
-    <div class="row">
-
-      <div class="col-12 text-center my-3">
-
-        <photo-uploader class="p-school-photo round" dest="school/logo">
-          <img :src="school.logo" class="p-school-photo rounded-circle fit-center">
-        </photo-uploader>
-
-      </div>
-
-      <h2 class="col-12 text-center">{{ title }}</h2>
-
-      <div class="col-12">
-        <div class="card card-block">
-          <div class="profile-field">
-            <div class="label">Name of the institute</div>
-            <div class="value">{{ school.name }}</div>
-          </div>
-
-          <div class="profile-field">
-            <div class="label">University</div>
-            <div class="value">{{ school.university }}</div>
-          </div>
-
-          <div class="profile-field">
-            <div class="label">Institute Type</div>
-            <div class="value">{{ instituteType }}</div>
-          </div>
-        </div>
-      </div>
-
-    </div>
+  <div class="container-zero my-3">
+    <contact-information :source="school" :submit="updateSchoolAddress"/>
   </div>
 
 </container-window>
 </template>
 
 <script lang="babel">
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import Sidebar from './mixins/sidebar'
-import EditInstitute from '../../components/settings/edit/Institute.vue'
 import instituteTypes from '../../components/settings/institute-types'
+import ContactInformation from '../../components/profile/ContactInformation.vue'
+import SchoolInformation from '../../components/profile/SchoolInformation.vue'
 
 export default {
   name: 'InstituteSettings',
@@ -69,7 +41,11 @@ export default {
     ...mapGetters(['school'])
   },
 
-  components: { EditInstitute },
+  methods: {
+    ...mapActions(['updateSchoolAddress', 'updateSchool', 'setSchoolLogo'])
+  },
+
+  components: { SchoolInformation, ContactInformation },
 
   mixins: [Sidebar]
 }

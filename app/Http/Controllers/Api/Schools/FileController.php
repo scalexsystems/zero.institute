@@ -1,6 +1,7 @@
 <?php namespace Scalex\Zero\Http\Controllers\Api\Schools;
 
 use Ramsey\Uuid\Uuid;
+use Scalex\Zero\Repositories\SchoolRepository;
 use Znck\Attach\Builder;
 use Znck\Attach\Processors\Resize;
 use Illuminate\Http\Request;
@@ -21,34 +22,15 @@ class FileController extends Controller
      * POST /school/logo
      * Requires: auth
      */
-    public function store(Request $request)
+    public function store(Request $request, SchoolRepository $repository)
     {
-        $this->validate($request, ['file' => 'required']);
+        $school = $request->user()->school;
+        $this->authorize('update-photo', $school);
+        $this->validate($request, ['photo' => 'required|image|max:10240']);
 
-        $schoolId = $request->user()->school_id;
-        $userId = $request->user()->id;
-        $slug = Uuid::uuid4();
-        $path = "schools/${schoolId}/logo/${userId}";
+        $user = $request->user();
+        $repository->uploadPhoto($school, $request->file('photo'), $user);
 
-        $uploader = Builder::make($request, 'file');
-
-        if ($this->isImage($request->file('file'))) {
-            $uploader->resize(4096);
-        }
-
-        $file = $uploader
-            ->upload(compact('slug', 'path', 'title'))
-            ->getAttachment();
-
-        if (!$file->save()) {
-            abort(500, 'Your file just broke our servers.');
-        }
-
-        return $file;
-    }
-
-    protected function isImage($file)
-    {
-        return in_array($file->guessExtension(), ['jpeg', 'png', 'gif', 'bmp']);
+        return $this->accepted($school->getPhotoUrl());
     }
 }

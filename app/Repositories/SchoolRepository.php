@@ -1,18 +1,22 @@
 <?php namespace Scalex\Zero\Repositories;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\UploadedFile;
 use Log;
+use Ramsey\Uuid\Uuid;
 use Scalex\Zero\Models\Attachment;
 use Scalex\Zero\Models\Address;
 use Scalex\Zero\Models\School;
+use Scalex\Zero\User;
+use Znck\Attach\Builder;
 use Znck\Repositories\Repository;
 
 /**
  * @method School find(string $id, array $col = [])
  * @method School findBy(string $key, $value)
  * @method School create(array $attr)
- * @method School update(string|School $id, array $attr, array $o = [])
- * @method School delete(string|School $id)
+ * @method School update(string | School $id, array $attr, array $o = [])
+ * @method School delete(string | School $id)
  * @method SchoolRepository validate(array $attr, School $model = null)
  */
 class SchoolRepository extends Repository
@@ -42,39 +46,61 @@ class SchoolRepository extends Repository
         'verified' => 'nullable|boolean',
     ];
 
-    /**
-     * @param array $rules
-     * @param array $attributes
-     * @param School $school
-     *
-     * @return array
-     */
-    public function getUpdateRules(array $rules, array $attributes, $school)
+    public function updating(School $school, array $attributes)
     {
-        $all = $rules +
-               array_dot(
-                   [
-                       'address' => repository(Address::class)
-                           ->getRules($attributes, $school->address),
-                   ]);
-
-        return array_only($all, array_keys($attributes));
+        return $school->update($attributes);
     }
 
-    public function updating(School $school, array $attr)
+    public function updateAddress(School $school, array $attributes)
     {
-        $school->fill($attr);
+        $repository = repository(Address::class);
 
-        if (!$school->address) {
-            $school->address()->associate(repository(Address::class)->create(array_get($attr, 'address', [])));
-        } elseif (array_has($attr, 'address')) {
-            repository(Address::class)->update($school->address, $attr['address']);
+        if ($school->address) {
+            $repository->update($school->address, $attributes);
+        } else {
+            $address = $repository->create($attributes);
+
+            $school->address()->associate($address);
+
+            $this->onUpdate($school->save());
         }
 
-        if ($logo = find($attr, 'logo_id', Attachment::class)) {
-            attach_attachment($school, 'logo', $logo);
+        return $school;
+    }
+
+    public function uploadPhoto(School $school, UploadedFile $photo, User $user)
+    {
+        if (!$photo->isValid()) {
+            throw new UploadException('Invalid photo.');
         }
 
-        return $school->update();
+        // Set path & slug.
+        $attributes['path'] = $this->getPhotoUploadPath($school);
+        $attributes['slug'] = $attributes['slug'] ?? Uuid::uuid4();
+
+        // Prepare uploader.
+        $uploader = Builder::makeFromFile($photo)->resize(360, 'preview', 360);
+        ;
+
+        // Upload & get attachment.
+        $attachment = $uploader->upload($attributes)->getAttachment();
+
+        $attachment->owner()->associate($user);
+        $attachment->related()->associate($school);
+
+        $this->onCreate($attachment->save());
+
+        // Associate photo to the student.
+        $school->logo()->associate($attachment);
+
+        $this->onUpdate($school->save());
+
+        return $attachment;
+    }
+
+
+    protected function getPhotoUploadPath(School $school)
+    {
+        return "schools/{$school->id}/logo";
     }
 }

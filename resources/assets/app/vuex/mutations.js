@@ -11,5 +11,13 @@ export default {
 
   PHOTO (state, photo) {
     state.user.photo = photo
+  },
+
+  SCHOOL (state, school) {
+    state.user.school = school
+  },
+
+  SCHOOL_LOGO (state, logo) {
+    state.user.school.logo = logo
   }
 }
