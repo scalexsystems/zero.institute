@@ -6,6 +6,7 @@ import courses from './courses'
 import groups from './groups'
 import messages from './messages'
 import people from './people'
+import settings from './settings'
 
 Vue.use(VueRouter)
 
@@ -32,7 +33,8 @@ const routes = [
   ...courses,
   ...groups,
   ...messages,
-  ...people
+  ...people,
+  ...settings
 ]
 
 export default new VueRouter({

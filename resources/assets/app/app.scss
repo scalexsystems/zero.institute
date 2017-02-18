@@ -112,3 +112,12 @@ html {
     margin-left: $spacer-x / 2;
   }
 }
+
+.in-center {
+  display: flex;
+  &:before, &:after {
+    content: '';
+    display: block;
+    flex: 1;
+  }
+}

@@ -1,13 +1,8 @@
-import {
-  SettingsHeader,
-  SettingsCard,
-
-} from '../../components/settings/'
+import SettingsCard  from '../../components/settings/SettingsCard.vue'
+import SettingsHeader  from '../../components/settings/SettingsHeader.vue'
 
 export default {
-  props: {
-
-  },
+  props: {},
 
   data: () => ({
     source: null,
@@ -30,7 +25,7 @@ export default {
       }
     },
     sourceUpdated() {
-      if(this.editing > 0) {
+      if (this.editing > 0) {
         this.sourceChanged = true
       } else {
         this.fetch();
@@ -45,7 +40,7 @@ export default {
     },
 
     sourceClicked(index, source){
-      
+
     }
   },
   created() {
@@ -53,8 +48,8 @@ export default {
   },
 
   components: {
-    SettingHeader,
-    SettingCard,
+    SettingsHeader,
+    SettingsCard,
   },
 
 }

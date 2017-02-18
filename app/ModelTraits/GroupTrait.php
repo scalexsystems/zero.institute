@@ -2,7 +2,6 @@
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Debug\Dumper;
 use InvalidArgumentException;
 use Scalex\Zero\User;
 

@@ -1,18 +1,13 @@
 <template>
 <div class="c-sidebar py-2" @click="onClick">
 
-  <slot>
-    <course-list class="my-3"/>
-    <user-group-list class="mt-3" />
-  </slot>
+  <slot></slot>
 
 </div>
 </template>
 
 <script lang="babel">
 import scrollbar from '../mixins/scrollbar'
-import UserGroupList from './UserGroupList.vue'
-import CourseList from './CourseList.vue'
 
 export default {
   name: 'Sidebar',
@@ -33,8 +28,6 @@ export default {
       }
     }
   },
-
-  components: { UserGroupList, CourseList },
 
   mixins: [scrollbar],
 }

@@ -4,6 +4,10 @@
   <div class="c-shared-card-block">
     <slot></slot>
   </div>
+
+  <div class="c-shared-card-block bg-faded c-shared-card-footer" v-if="footer">
+    <slot name="footer"></slot>
+  </div>
 </div>
 </template>
 
@@ -11,6 +15,11 @@
 export default {
   props: {
     remove: {
+      type: Boolean,
+      default: false
+    },
+
+    footer: {
       type: Boolean,
       default: false
     }
@@ -48,6 +57,10 @@ export default {
 
   &-block {
     padding: .64286rem .71429rem;
+  }
+
+  &-footer {
+    border-top: 1px solid $card-border-color;
   }
 }
 </style>

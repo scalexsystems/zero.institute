@@ -12,6 +12,9 @@ class TrustServiceProvider extends OriginalTrustServiceProvider
         [Models\School::class, []],
         Models\Course::class,
         Models\Session::class,
+        Models\Department::class,
+        Models\Discipline::class,
+        Models\Semester::class,
     ];
 
     protected $permissions = [

@@ -1,7 +1,12 @@
 <template>
 <div class="container c-shared-container-window">
   <div class="row window">
-    <div :is="sidebar" class="col-12 col-lg-2"></div>
+    <sidebar class="col-12 col-lg-2">
+      <slot name="sidebar">
+        <course-list class="my-3"/>
+        <user-group-list class="mt-3" />
+      </slot>
+    </sidebar>
 
     <div class="col-12 col-lg-10">
       <container v-bind="{ title, subtitle, back, photo, hasFooter, scroll, scrollSelector }"
@@ -19,6 +24,8 @@
 <script lang="babel">
 import Vue from 'vue'
 import Sidebar from '../sidebar/Sidebar.vue'
+import UserGroupList from '../sidebar/UserGroupList.vue'
+import CourseList from '../sidebar/CourseList.vue'
 
 export default {
   name: 'ContainerWindow',
@@ -28,11 +35,6 @@ export default {
     subtitle: String,
     back: Boolean,
     photo: String,
-
-    sidebar: {
-      type: String,
-      default: 'sidebar'
-    },
 
     // Scrollable
     scroll: {
@@ -48,7 +50,7 @@ export default {
     hasFooter: Boolean
   },
 
-  components: { Sidebar }
+  components: { UserGroupList, CourseList, Sidebar }
 }
 </script>
 

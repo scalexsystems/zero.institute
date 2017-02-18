@@ -16,11 +16,11 @@ class EmployeeTransformer extends Transformer
     public function show(Employee $employee)
     {
         return $this->getPublicInfo($employee)
-        + $this->getBasicInfo($employee)
-        + $this->getMedicalInfo($employee)
-        + $this->getSchoolRelatedInfo($employee)
-        + $this->getQualificationInfo($employee)
-        + $this->getBankAccountInfo($employee);
+               + $this->getBasicInfo($employee)
+               + $this->getMedicalInfo($employee)
+               + $this->getSchoolRelatedInfo($employee)
+               + $this->getQualificationInfo($employee)
+               + $this->getBankAccountInfo($employee);
     }
 
     public function getPublicInfo(Employee $employee)
@@ -36,7 +36,7 @@ class EmployeeTransformer extends Transformer
         ];
     }
 
-    public function getBasicInfo(Employee $employee) : array
+    public function getBasicInfo(Employee $employee): array
     {
         if (Gate::denies('read-basic-info', $employee)) {
             return [];
@@ -114,7 +114,7 @@ class EmployeeTransformer extends Transformer
             'disease' => (string)$employee->disease,
             'allergy' => (string)$employee->allergy,
             'visible_marks' => (string)$employee->visible_marks,
-            'food_habit' => (string)$employee->food_habit,
+            'food_habit' => (array)$employee->food_habit,
             'medical_remarks' => (string)$employee->medical_remarks,
         ];
 
@@ -127,10 +127,10 @@ class EmployeeTransformer extends Transformer
 
     public function includeAddress(Employee $employee)
     {
-        return allow(
-            'read-address', $employee,
-            $this->item($employee->address),
-            $this->null()
-        );
+        if ($employee->address and Gate::allows('read-address', $employee)) {
+            return $this->item($employee->address);
+        }
+
+        return $this->null();
     }
 }

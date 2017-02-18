@@ -12,7 +12,7 @@ use Scalex\Zero\User;
 
 class Teacher extends BaseModel implements BelongsToSchool, Person
 {
-    use SoftDeletes, Scalex\Zero\ModelTraits\FoodHabitTrait;
+    use SoftDeletes, FoodHabitTrait;
 
     protected $fillable = [
         // Basic Information

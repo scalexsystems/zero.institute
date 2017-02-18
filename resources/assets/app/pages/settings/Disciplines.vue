@@ -9,8 +9,8 @@
   </template>
 
   <modal :open="editing" @close="editing = false" :dismissable="false">
-    <create-department v-if="current === null" @done="editing = false"/>
-    <edit-department v-else v-bind="{ department: current }" @done="editing = false"/>
+    <create-discipline v-if="current === null" @done="editing = false"/>
+    <edit-discipline v-else v-bind="{ discipline: current }" @done="editing = false"/>
   </modal>
 
   <div class="container-zero py-3">
@@ -18,8 +18,8 @@
 
       <h2 class="col-12 text-center">{{ title }}</h2>
 
-      <div class="col-12 col-lg-6 mt-3" v-for="department in departments">
-        <department-card v-bind="{ department, footer: true }" role="button" @click.native="edit(department)"/>
+      <div class="col-12 col-lg-6 mt-3" v-for="discipline in disciplines">
+        <discipline-card v-bind="{ discipline, footer: true }" role="button" @click.native="edit(discipline)"/>
       </div>
 
     </div>
@@ -31,25 +31,25 @@
 <script lang="babel">
 import { mapGetters } from 'vuex'
 import Sidebar from './mixins/sidebar'
-import DepartmentCard from '../../components/department/Card.vue'
-import CreateDepartment from '../../components/department/Create.vue'
-import EditDepartment from '../../components/department/Edit.vue'
+import DisciplineCard from '../../components/discipline/Card.vue'
+import CreateDiscipline from '../../components/discipline/Create.vue'
+import EditDiscipline from '../../components/discipline/Edit.vue'
 
 export default {
-  name: 'InstituteDepartments',
+  name: 'InstituteDisciplines',
 
   data: () => ({
     current: null
   }),
 
   computed: {
-    sidebarId: () => 'settings.departments',
-    ...mapGetters('departments', ['departments'])
+    sidebarId: () => 'settings.disciplines',
+    ...mapGetters('disciplines', ['disciplines'])
   },
 
   methods: {
-    edit (department) {
-      this.current = department
+    edit (discipline) {
+      this.current = discipline
 
       this.onEdit()
     },
@@ -61,7 +61,7 @@ export default {
     }
   },
 
-  components: { CreateDepartment, DepartmentCard, EditDepartment },
+  components: { CreateDiscipline, DisciplineCard, EditDiscipline },
 
   mixins: [Sidebar]
 }

@@ -3532,12 +3532,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/znck/repository.git",
-                "reference": "ac6bc263e87e6510c603f5d5782c9b02c9cd3254"
+                "reference": "5e750516f93aee0d190dae942d9394f8d814fe79"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/znck/repository/zipball/ac6bc263e87e6510c603f5d5782c9b02c9cd3254",
-                "reference": "ac6bc263e87e6510c603f5d5782c9b02c9cd3254",
+                "url": "https://api.github.com/repos/znck/repository/zipball/5e750516f93aee0d190dae942d9394f8d814fe79",
+                "reference": "5e750516f93aee0d190dae942d9394f8d814fe79",
                 "shasum": ""
             },
             "require": {
@@ -3581,7 +3581,7 @@
                 "repositories",
                 "repository"
             ],
-            "time": "2017-02-06 13:04:28"
+            "time": "2017-02-09 11:00:44"
         },
         {
             "name": "znck/states",

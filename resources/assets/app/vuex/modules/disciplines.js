@@ -1,3 +1,4 @@
+import sort from 'lodash.sortby'
 import http from '../api'
 import { insert, remove, binarySearchFind } from '../helpers'
 
@@ -22,13 +23,37 @@ const actions = {
     return { discipline }
   },
 
+  async store ({ dispatch }, payload) {
+    try {
+      const { discipline } = await http.post(true, 'disciplines', payload)
+
+      await dispatch('addToStore', [discipline])
+
+      return { discipline }
+    } catch (e) {
+      return e
+    }
+  },
+
+  async update ({ dispatch }, { id, payload} ) {
+    try {
+      const { discipline } = await http.put(true, `disciplines/${id}`, payload)
+
+      await dispatch('addToStore', [discipline])
+
+      return { discipline }
+    } catch (e) {
+      return e
+    }
+  },
+
   async addToStore({ commit }, items) {
     if (items) commit('INSERT', items)
   }
 }
 
 const getters = {
-  disciplines: state => state.disciplines,
+  disciplines: state => sort(state.disciplines.slice(), 'name'),
   disciplineById: state => (id) => binarySearchFind(state.disciplines, id),
 }
 

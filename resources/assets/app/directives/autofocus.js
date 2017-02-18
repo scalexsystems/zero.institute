@@ -19,8 +19,6 @@ export default {
   bind (el) {
     const scroll = getScrollParent(el)
 
-    console.log(scroll, el)
-
     scroll.scrollTop = el.offsetTop
   }
 }

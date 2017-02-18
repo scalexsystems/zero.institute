@@ -10,7 +10,7 @@ use Scalex\Zero\User;
 
 class Group extends BaseModel implements ReceivesMessage
 {
-    use SoftDeletes, Scalex\Zero\ModelTraits\GroupTrait;
+    use SoftDeletes, GroupTrait;
 
     /**
      * Mass fillable fields.
@@ -42,7 +42,8 @@ class Group extends BaseModel implements ReceivesMessage
     ];
 
     protected $observables = [
-        'membersAdded', 'membersRemoved'
+        'membersAdded',
+        'membersRemoved',
     ];
 
     /**

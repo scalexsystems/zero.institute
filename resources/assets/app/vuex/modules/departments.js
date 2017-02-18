@@ -1,4 +1,5 @@
 import http from '../api'
+import sort from 'lodash.sortby'
 import { insert, remove, binarySearchFind } from '../helpers'
 
 const actions = {
@@ -22,15 +23,39 @@ const actions = {
     return { department }
   },
 
+  async store ({ dispatch }, payload) {
+    try {
+      const { department } = await http.post(true, 'departments', payload)
+
+      await dispatch('addToStore', [department])
+
+      return { department }
+    } catch (e) {
+      return e
+    }
+  },
+
+  async update ({ dispatch }, { id, payload} ) {
+    try {
+      const { department } = await http.put(true, `departments/${id}`, payload)
+
+      await dispatch('addToStore', [department])
+
+      return { department }
+    } catch (e) {
+      return e
+    }
+  },
+
   async addToStore({ commit }, items) {
     if (items) commit('INSERT', items)
   }
 }
 
 const getters = {
-  departments: state => state.departments,
+  departments: state => sort(state.departments.slice(), 'name'),
 
-  academic: state => state.departments.filter(d => d.academic),
+  academic: (_, getters) => getters.departments.filter(d => d.academic),
 
   departmentById: state => (id) => binarySearchFind(state.departments, id),
 }

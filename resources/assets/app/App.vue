@@ -18,7 +18,7 @@ export default {
 
   computed: mapGetters({ user: 'user', groups: 'groups/my' }),
 
-  methods: mapActions('departments', {
+  methods: mapActions({
     getDepartments: 'departments/index',
     getDisciplines: 'disciplines/index',
     getSemesters: 'semesters/index',

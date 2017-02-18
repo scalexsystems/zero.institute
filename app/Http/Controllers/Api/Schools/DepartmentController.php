@@ -17,7 +17,11 @@ class DepartmentController extends Controller
         return cache()->rememberForever(
             schoolScopeCacheKey('departments'),
             function () use ($request) {
-                return $this->getPeopleCount($request);
+                return repository(Department::class)->with('head')->withCount([
+                    'students',
+                    'teachers',
+                    'employees',
+                ])->all();
             }
         );
     }
@@ -31,7 +35,11 @@ class DepartmentController extends Controller
             $request->all()
         );
 
-        return $department;
+        return Department::with('head')->withCount([
+            'students',
+            'teachers',
+            'employees',
+        ])->find($department->getKey());
     }
 
     public function update(Request $request, $department)
@@ -41,7 +49,11 @@ class DepartmentController extends Controller
 
         repository(Department::class)->update($department, $request->all());
 
-        return $department;
+        return Department::with('head')->withCount([
+            'students',
+            'teachers',
+            'employees',
+        ])->find($department->getKey());
     }
 
     public function getPeopleCount(Request $request)

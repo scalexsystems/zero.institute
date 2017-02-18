@@ -7,15 +7,16 @@ use Scalex\Zero\Criteria\OfSchool;
 use Scalex\Zero\Models\Department;
 use Scalex\Zero\Models\School;
 use Scalex\Zero\Models\Teacher;
+use UnexpectedValueException;
 use Znck\Repositories\Repository;
 
 /**
- * @method Department find(string|int $id)
+ * @method Department find(string | int $id)
  * @method Department findBy(string $key, $value)
  * @method Department create(array $attr)
- * @method Department update(string|int|Department $id, array $attr, array $o = [])
- * @method Department delete(string|int|Department $id)
- * @method DepartmentRepository validate(array $attr, Department|null $model)
+ * @method Department update(string | int | Department $id, array $attr, array $o = [])
+ * @method Department delete(string | int | Department $id)
+ * @method DepartmentRepository validate(array $attr, Department | null $model)
  */
 class DepartmentRepository extends Repository
 {
@@ -33,8 +34,8 @@ class DepartmentRepository extends Repository
      */
     protected $rules = [
         'name' => 'required|max:255',
-        'short_name' => 'nullable|max:255',
-        'academic' => 'nullable|boolean',
+        'short_name' => 'required|max:255',
+        'academic' => 'required|boolean',
     ];
 
     /**
@@ -65,19 +66,21 @@ class DepartmentRepository extends Repository
     public function createForSchool(School $school, array $attributes)
     {
         $this->validateWith($attributes, $this->getRulesForSchool($school));
+
+        $department = new Department($attributes);
+
+        $department->school()->associate($school);
+        $department->head()->associate($attributes['head_id'] ?? $department->head_id);
+
+
+        $this->onCreate($department->save());
+
+        return $department;
     }
 
     public function creating(Department $department, array $attributes)
     {
-        $department->fill($attributes);
-
-        if (Arr::has($attributes, 'head_id')) {
-            $department->head()->associate(find($attributes, 'head_id', Teacher::class));
-        }
-
-        $department->school()->associate(find($attributes, 'school_id'));
-
-        return $department->save();
+        throw new UnexpectedValueException('Use `createForSchool` method instead of `create`.');
     }
 
     public function updating(Department $department, array $attributes)
@@ -90,11 +93,11 @@ class DepartmentRepository extends Repository
     protected function getRulesForSchool(School $school)
     {
         return $this->rules + [
-            'head_id' => [
-                'bail',
-                'required',
-                Rule::exists('teachers', 'id')->where('school_id', $school->getKey())
-            ]
-        ];
+                'head_id' => [
+                    'bail',
+                    'nullable',
+                    Rule::exists('teachers', 'id')->where('school_id', $school->getKey()),
+                ],
+            ];
     }
 }
