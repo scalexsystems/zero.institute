@@ -1,28 +1,25 @@
 <template>
-<div class="container-zero c-discipline-create mx-auto">
+<div class="container-zero c-semester-create mx-auto">
   <div class="card">
     <div class="card-header d-flex flex-row align-items-center">
-      <h5 class="mb-0">Create Discipline</h5>
+      <h5 class="mb-0">Create Semester</h5>
 
       <div class="ml-auto">
         <input-button class="btn btn-secondary" @click.native="$emit('done')" value="Cancel"/>
-        <input-button @click.native="save" value="Create" :class="{ disabled }"/>
+        <input-button @click.native="edit" value="Save" :class="{ disabled }"/>
       </div>
     </div>
 
     <div class="card-block flex-auto">
       <alert v-autofocus v-if="formStatus" type="danger" v-html="formStatus"/>
 
-      <form class="row" @submit.prevent="save">
+      <form class="row" @submit.prevent="edit">
         <input type="submit" hidden>
 
         <div class="col-12">
           <input-text title="Name" v-model="attributes.name" :errors="errors" required/>
         </div>
 
-        <div class="col-12">
-          <input-text title="Short Code" v-model="attributes.short_name" :errors="errors" required/>
-        </div>
       </form>
     </div>
   </div>
@@ -31,32 +28,34 @@
 
 <script lang="babel">
 import { mapActions } from 'vuex'
-import { formHelper } from 'bootstrap-for-vue'
-import throttle from 'lodash.throttle'
+import Create from './Create.vue'
+import { only } from '../../util'
 
 export default {
-  name: 'EditDiscipline',
+  name: 'EditSemester',
 
-  data: () => ({
-    attributes: {
-      name: '',
-      short_name: '',
-    },
+  extends: Create,
 
-    teachers: [],
+  props: {
 
-    disabled: false
-  }),
+    semester: {
+      type: Object,
+      required: true
+    }
+
+  },
 
   methods: {
-    async save () {
+
+    async edit () {
       this.clearErrors()
 
       this.disabled = true
-      const { errors, discipline } = await this.store(this.attributes)
+      const { errors, semester } = await this.update({ id: this.semester.id, payload: this.attributes })
       this.disabled = false
 
-      if (discipline) {
+      if (semester) {
+        this.$emit('done')
       } else if (errors) {
         this.setErrors(errors)
         this.formStatus = errors.$message
@@ -65,12 +64,11 @@ export default {
       }
     },
 
-    ...mapActions('disciplines', ['store']),
+    ...mapActions('semesters', ['update'])
   },
 
-  mixins: [formHelper]
+  created () {
+    this.attributes = only(this.semester, Object.keys(this.attributes))
+  }
 }
 </script>
-
-
-<style lang="scss"></style>
