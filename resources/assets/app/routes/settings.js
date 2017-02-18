@@ -22,7 +22,7 @@ export default [
   {
     name: 'settings.invitations',
     path: '/settings/invitations',
-    component: require('../pages/settings/Dashboard.vue')
+    component: require('../pages/settings/Invitations.vue')
   },
   {
     name: 'settings.semesters',

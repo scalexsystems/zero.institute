@@ -3694,12 +3694,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/znck/trust.git",
-                "reference": "7fde6fa764f1eb41add52ef320e26ede00ffa1e6"
+                "reference": "9a59026e7aa6ede6dbc46e70074351a4efcaad3e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/znck/trust/zipball/7fde6fa764f1eb41add52ef320e26ede00ffa1e6",
-                "reference": "7fde6fa764f1eb41add52ef320e26ede00ffa1e6",
+                "url": "https://api.github.com/repos/znck/trust/zipball/9a59026e7aa6ede6dbc46e70074351a4efcaad3e",
+                "reference": "9a59026e7aa6ede6dbc46e70074351a4efcaad3e",
                 "shasum": ""
             },
             "require": {
@@ -3745,7 +3745,7 @@
                 "roles",
                 "trust"
             ],
-            "time": "2017-01-25 14:25:13"
+            "time": "2017-02-18 12:44:32"
         }
     ],
     "packages-dev": [
