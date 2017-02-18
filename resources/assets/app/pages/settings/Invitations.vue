@@ -29,13 +29,8 @@ export default{
         return {
         }
     },
-    computed: {
-    },
-    methods: {
-
-    },
     components: { InvitePanel, Sidebar },
 }
 </script>
 <style>
-</styleN>
+</style>

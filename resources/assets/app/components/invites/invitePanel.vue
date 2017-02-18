@@ -65,7 +65,8 @@ export default {
                    this.invited += entries.length;
                    this.emails = '';
                 }
-          }
+            }
+        }
     },
     cancel (type) {
       this[type] = ''
