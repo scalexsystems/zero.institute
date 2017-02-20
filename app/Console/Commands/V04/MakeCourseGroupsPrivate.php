@@ -1,6 +1,6 @@
 <?php
 
-namespace Scalex\Zero\Console\Commands;
+namespace Scalex\Zero\Console\Commands\V04;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
@@ -40,15 +40,14 @@ class MakeCourseGroupsPrivate extends Command
      */
     public function handle()
     {
-        Course::chunk(100, function (Collection $course) {
-           $course->sessions->map(function ($session)  {
-               $session->group->update([
-                   'type' => 'course',
-                   'private' => true
-               ]);
-
+        Course::chunk(100, function (Collection $courses) {
+            $courses->map(function ($course) {
+                $course->sessions->map(function ($session) {
+                    $session->group->type = 'course';
+                    $session->group->private = true;
+                    $session->group->save();
+                });
             });
-
         });
     }
 }

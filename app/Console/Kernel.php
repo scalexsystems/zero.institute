@@ -20,6 +20,8 @@ class Kernel extends ConsoleKernel
         // v0.4 Upgrade Commands
         Commands\V04\UpgradeCommand::class,
         Commands\V04\MoveCourseConstraints::class,
+        Commands\V04\MakeCourseGroupsPrivate::class,
+        Commands\V04\CreateSchoolSessions::class,
     ];
 
     /**
