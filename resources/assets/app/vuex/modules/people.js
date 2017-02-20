@@ -3,7 +3,7 @@ import { insert, binarySearchFind } from '../helpers'
 
 const actions = {
   async index ({ dispatch }, { page = 1, q, personType } = {}) {
-    const { items, meta } = await http.get('people', { params: { q, page, type: personType }})
+    const { items, meta } = await http.get('people', { params: { type: personType, q, page }})
 
     if (!q) {
       await dispatch('addToStore', items)

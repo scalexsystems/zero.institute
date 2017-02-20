@@ -1,7 +1,7 @@
 <template>
 <container-window v-bind="{ title, subtitle, photo, scroll: false }" @action="onAction">
   <message-browser v-if="user" ref="mb" @send="onSend" :unread="user.$unread_count" @read="onRead"
-                   v-bind="{ messages, dest: `users/${user.id}/attachment` }"
+                   v-bind="{ messages, dest: `messages/direct/${user.id}/attachment` }"
                    v-model="message" @infinite="fetchMessage"></message-browser>
 </container-window>
 </template>

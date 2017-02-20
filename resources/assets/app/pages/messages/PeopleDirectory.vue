@@ -1,6 +1,6 @@
 <template>
 <container-window title="People" subtitle="Send direct messages" :back="true" @back="$router.go(-1)">
-  <searchable-list v-model="query" placeholder="Start typing..." ref="list"
+  <searchable-list v-model="query" placeholder="Start typing..." ref="list" class="mt-3"
                    @search="onSearch" @infinite="onLoad">
     <div class="row">
       <div class="col-12 col-lg-6 mt-3" v-for="person in persons" :key="person">

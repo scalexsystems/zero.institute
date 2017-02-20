@@ -34,6 +34,6 @@ class CourseSession extends BaseModel
 
     public function students()
     {
-        return $this->belongsToMany(Student::class, 'course_session_student')->withTimestamps();
+        return $this->belongsToMany(Student::class, 'course_session_student', 'session_id')->withTimestamps();
     }
 }

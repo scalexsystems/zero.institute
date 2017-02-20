@@ -1,6 +1,6 @@
 <template>
 <searchable-list v-model="query" placeholder="Start typing..." ref="list"
-                 @infinite="({ complete }) => complete()" class="mb-3" col="col-12">
+                 @infinite="({ complete }) => complete()">
 
   <h5 class="text-center" slot="header">Enrolled Students</h5>
 
@@ -29,12 +29,14 @@ export default {
   },
 
   data: () => ({
-    query: ''
+    query: '',
+    source: []
   }),
 
   computed: {
     students () {
-      const students = this.session.$students || []
+      const students = this.source
+
       const index = new Sifter(students)
 
       const result = index.search(this.query, { fields: ['uid', 'name'] })
@@ -47,10 +49,10 @@ export default {
 
   components: { StudentCard },
 
-  created () {
-    if (!this.session.$students) {
-      this.enrollments(this.session.id)
-    }
+  async created () {
+    const { students } = await this.enrollments(this.session.id)
+
+    this.source = students || []
   }
 }
 </script>

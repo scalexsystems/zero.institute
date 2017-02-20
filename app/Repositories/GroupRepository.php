@@ -81,11 +81,15 @@ class GroupRepository extends Repository
      *
      * @return \Scalex\Zero\Models\Group
      */
-    public function createWithMembers(User $user, array $attributes, array $members)
+    public function createWithMembers(User $user, array $attributes, array $members = [])
     {
         $this->validateWith($attributes);
 
         $group = new Group($attributes);
+
+        if (array_has($attributes, 'type')) {
+            $group->type = $attributes['type'];
+        }
 
         $group->school()->associate($user->school);
         $group->owner()->associate($user);

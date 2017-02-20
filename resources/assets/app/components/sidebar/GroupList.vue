@@ -1,7 +1,8 @@
 <template>
 <list :items="items">
   <router-link :to="{ name: 'group.index' }" class="text-muted btn btn-block btn-link text-left">
-    <icon type="puzzle-piece"></icon> Join a group
+    <icon type="puzzle-piece"></icon>
+    Join a group
   </router-link>
 </list>
 </template>
@@ -20,8 +21,9 @@ export default {
         class: 'sidebar-list-item-group',
         hasExtra: group.$has_unread,
         extra: group.$unread_count,
-        route: { name: 'group.messages', params: { id: group.id }}
-      }))
+        route: { name: 'group.messages', params: { id: group.id } },
+        last: group.$last_message_id
+      })).sort((a, b) => b.last - a.last)
     },
     ...mapGetters('groups', { groups: 'myGroups' })
   },

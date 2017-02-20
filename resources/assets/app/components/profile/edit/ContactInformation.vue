@@ -29,7 +29,7 @@
     </div>
 
     <div class="col-12 col-lg-6">
-      <input-text v-model="attributes.phone" title="Phone" type="tel" v-bind="{ errors }" autocomplete="tel"/>
+      <input-text v-model="attributes.phone" title="Phone" type="tel" v-bind="{ errors }" autocomplete="tel" required/>
     </div>
 
     <div class="col-12 col-lg-6">

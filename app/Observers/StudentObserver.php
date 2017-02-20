@@ -26,6 +26,12 @@ class StudentObserver
         $this->forgetStatsCache($student);
     }
 
+    public function updated(Student $student)
+    {
+        $student->user->name = $student->name;
+        $student->user->save();
+    }
+
     /**
      * @param \Scalex\Zero\Models\Student $student
      */

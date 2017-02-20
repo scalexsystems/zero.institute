@@ -27,6 +27,9 @@ class UpgradeCommand extends Command
      */
     public function handle()
     {
+        $this->call('zero:upgrade-0.4-create-school-sessions');
         $this->call('zero:upgrade-0.4-move-course-constraints');
+        $this->call('zero:upgrade-0.4-make-course-groups-private');
+        $this->info('Upgraded to version 0.5');
     }
 }

@@ -20,8 +20,9 @@ export default {
         class: 'sidebar-list-item-user',
         hasExtra: user.$has_unread,
         extra: user.$unread_count,
-        route: { name: 'user.messages', params: { id: user.id }}
-      }))
+        route: { name: 'user.messages', params: { id: user.id }},
+        last: user.$last_message_id
+      })).sort((a, b) => b.last - a.last)
     },
     ...mapGetters('messages', { users: 'users' })
   },

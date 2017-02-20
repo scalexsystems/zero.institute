@@ -44,16 +44,12 @@ class CourseSessionRepository extends Repository
 
     /**
      * Get update rules.
-
-*
-*@param array $rules
+     *
+     * @param array $rules
      * @param array $attributes
      * @param \Scalex\Zero\Models\CourseSession $session
-
-
-
-*
-*@return array
+     *
+     * @return array
      */
     public function getUpdateRules(array $rules, array $attributes, $session)
     {
@@ -102,7 +98,7 @@ class CourseSessionRepository extends Repository
         $duplicates = $session->students()->wherePivotIn('student_id', $students->modelKeys())->get()->keyBy('id');
 
         $students = $students->filter(function (Student $student) use ($duplicates) {
-            return $duplicates->has($student->getKey());
+            return !$duplicates->has($student->getKey());
         });
 
         $session->students()->attach($students);
@@ -112,6 +108,8 @@ class CourseSessionRepository extends Repository
         })->pluck('id');
 
         $session->group->addMembers($users);
+
+        return $students;
     }
 
     public function expel(\Scalex\Zero\Models\CourseSession $session, Collection $students)
@@ -123,6 +121,8 @@ class CourseSessionRepository extends Repository
         })->pluck('id');
 
         $session->group->removeMembers($users);
+
+        return $students;
     }
 
     protected function getRulesForSchool(School $school)

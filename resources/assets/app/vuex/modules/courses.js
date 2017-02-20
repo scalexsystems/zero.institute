@@ -5,7 +5,7 @@ import { notLastPage } from '../../util'
 
 const actions = {
   async index ({ dispatch }, { page = 1 } = {}) {
-    const { courses, meta } = await http.get('courses', { params: { page }})
+    const { courses, meta } = await http.get('courses', { params: { page } })
 
     if (courses) await dispatch('addToStore', courses)
 
@@ -22,6 +22,30 @@ const actions = {
     if (course) await dispatch('addToStore', [course])
 
     return { course }
+  },
+
+  async store ({ dispatch }, payload) {
+    try {
+      const { course } = await http.post(true, 'courses', payload)
+
+      if (course) await dispatch('addToStore', [course])
+
+      return { course }
+    } catch (e) {
+      return e
+    }
+  },
+
+  async update ({ dispatch }, { id, payload }) {
+    try {
+      const { course } = await http.put(true, `courses/${id}`, payload)
+
+      if (course) await dispatch('addToStore', [course])
+
+      return { course }
+    } catch (e) {
+      return e
+    }
   },
 
   async my ({ dispatch }, { page = 1 } = {}) {
@@ -50,25 +74,33 @@ const actions = {
     return { students }
   },
 
-  async store ({ dispatch }, payload) {
+  async enroll (_, { session, student }) {
     try {
-      const { course } = await http.post(true, 'courses', payload)
+      await http.post(true, `courses/${session.course_id}/sessions/${session.id}/enroll`, { student })
 
-      if (course) await dispatch('addToStore', [course])
-
-      return { course }
+      return true
     } catch (e) {
       return e
     }
   },
 
-  async update ({ dispatch }, { id, payload }) {
+  async expel (_, { session, student }) {
     try {
-      const { course } = await http.put(true, `courses/${id}`, payload)
+      await http.post(true, `courses/${session.course_id}/sessions/${session.id}/expel`, { student })
 
-      if (course) await dispatch('addToStore', [course])
+      return true
+    } catch (e) {
+      return e
+    }
+  },
 
-      return { course }
+  async updateSession ({ dispatch }, { session, payload }) {
+    try {
+      const { course_session } = await http.put(true, `courses/${session.course_id}/sessions/${session.id}`, payload)
+
+      dispatch('addSessionsToStore', [course_session])
+
+      return { course_session }
     } catch (e) {
       return e
     }

@@ -25,6 +25,11 @@ class SchoolPolicy extends AbstractPolicy
         return $this->update($user, $school);
     }
 
+    public function viewPeopleStatistics(User $user, School $school)
+    {
+        return $this->verifySchool($user, $school) and trust($user)->to('people.statistics');
+    }
+
     protected function verifySchool(User $user, School $school)
     {
         return (int)$user->school_id === $school->getKey();

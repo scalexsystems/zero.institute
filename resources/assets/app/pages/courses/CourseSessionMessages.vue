@@ -36,7 +36,7 @@ export default {
       return this.group.name || '...'
     },
     subtitle () {
-      return this.group.id ? this.group.description || 'Click to add purpose of the group.' : '...'
+      return this.group.id ? this.group.description : '...'
     },
     photo () {
       return this.group.photo
@@ -57,13 +57,7 @@ export default {
 
   methods: {
 
-    onAction (type) {
-      if (type === 'subtitle' && !this.group.description) {
-        this.$router.push({ name: 'group.edit', params: { id: this.group.id }})
-
-        return //
-      }
-
+    onAction () {
       this.$router.push({
         name: 'course.session.show',
         params: { course: this.session.course_id, session: this.id }

@@ -26,6 +26,12 @@ class EmployeeObserver
         $this->forgetStatsCache($employee);
     }
 
+    public function updated(Employee $employee)
+    {
+        $employee->user->name = $employee->name;
+        $employee->user->save();
+    }
+
     /**
      * @param \Scalex\Zero\Models\Employee $employee
      */

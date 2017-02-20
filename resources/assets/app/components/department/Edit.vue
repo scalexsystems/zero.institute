@@ -2,7 +2,7 @@
 <div class="container-zero c-department-create mx-auto">
   <div class="card">
     <div class="card-header d-flex flex-row align-items-center">
-      <h5 class="mb-0">Create Department</h5>
+      <h5 class="mb-0">Edit Department</h5>
 
       <div class="ml-auto">
         <input-button class="btn btn-secondary" @click.native="$emit('done')" value="Cancel"/>
