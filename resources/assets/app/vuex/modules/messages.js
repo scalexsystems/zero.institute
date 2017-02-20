@@ -1,11 +1,11 @@
 import http from '../api'
-import { toArray, each } from '../../util'
+import { toArray, each, last } from '../../util'
 import { insert, binarySearchFind, binarySearchIndex } from '../helpers'
 import { TIMESTAMP, prepareMessages, prepareUser } from './messages/helpers'
 
 const actions = {
   async index ({ dispatch }, page = 1) {
-    const { users, meta } = await http.get('me/users', { params: { page }})
+    const { users, meta } = await http.get('me/users', { params: { page } })
 
     if (users) await dispatch('addToStore', users)
 
@@ -60,10 +60,10 @@ const actions = {
       commit('MESSAGE_SENT', { id, message, payload: payload.message })
 
       return payload
-    } catch (error) {
-      commit('MESSAGE_FAILED', { id, message, error })
+    } catch (e) {
+      commit('MESSAGE_FAILED', { id, message, errors: e.errors || {} })
 
-      return { error }
+      return e
     }
   },
 
@@ -122,6 +122,8 @@ const actions = {
 const getters = {
   users: state => state.users,
 
+  unread_total: (_, getters) => getters.users.reduce((t, g) => t + g.$unread_count, 0),
+
   userById: state => id => binarySearchFind(state.users, id),
 
   messagesByUserId: (_, getters) => {
@@ -146,16 +148,18 @@ const mutations = {
 
   MESSAGE (state, { id, messages, page }) {
     const user = binarySearchFind(state.users, id)
-    const old = user.$unread_count
 
     insert(user.$messages, messages)
 
     // << UPDATE UNREAD COUNT
-    const unread = old - user.$messages.length + user.$messages.filter(m => m.unread).length
+    const index = binarySearchIndex(user.$messages, user.$last_message_id) + 1
+    const after = user.$messages.slice(index).filter(m => m.unread).length
+    const unread = user.$unread_count + after
     state.unread[user.id] = unread
     user.$unread_count = unread
     user.$has_unread = user.$unread_count > 0
     user.$messages_loaded = true
+    user.$last_message_id = last(user.$messages).id
     // UPDATE UNREAD COUNT >>
 
     if (page) {
@@ -187,16 +191,20 @@ const mutations = {
     } else {
       user.$messages.splice(index, 1, payload)
     }
+
+    if (user.$last_message_id === id) {
+      user.$last_message_id = payload.id
+    }
   },
 
-  MESSAGE_FAILED (state, { id, message, error }) {
+  MESSAGE_FAILED (state, { id, message, errors }) {
     const user = binarySearchFind(state.users, id)
     const msg = binarySearchFind(user.$messages, message)
 
     msg.$status = {
       failed: true,
-      message: error.message || 'Message failed due to some unknown error',
-      error
+      message: errors.$message || 'Message failed due to some unknown error',
+      errors
     }
   }
 }

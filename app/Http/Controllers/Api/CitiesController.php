@@ -17,14 +17,11 @@ class CitiesController extends Controller
 
     /**
      * List all cities (paginated).
-
-*
-*@param \Illuminate\Http\Request $request
+     *
+     * @param \Illuminate\Http\Request $request
      * @param \Scalex\Zero\Repositories\CityRepository $repository
-
-
-*
-*@return \Illuminate\Contracts\Pagination\Paginator
+     *
+     * @return \Illuminate\Contracts\Pagination\Paginator
      */
     public function index(Request $request, CityRepository $repository)
     {
@@ -39,12 +36,11 @@ class CitiesController extends Controller
 
     /**
      * Get a city by ID.
-
-*
-*@param \Illuminate\Http\Request $request
+     *
+     * @param \Illuminate\Http\Request $request
      * @param \Scalex\Zero\Models\City $city
      *
-*@return \Scalex\Zero\Models\City
+     * @return \Scalex\Zero\Models\City
      */
     public function show(Request $request, City $city)
     {

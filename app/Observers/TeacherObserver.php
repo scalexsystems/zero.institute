@@ -26,6 +26,12 @@ class TeacherObserver
         $this->forgetStatsCache($teacher);
     }
 
+    public function updated(Teacher $teacher)
+    {
+        $teacher->user->name = $teacher->name;
+        $teacher->user->save();
+    }
+
     /**
      * @param \Scalex\Zero\Models\Teacher $teacher
      */

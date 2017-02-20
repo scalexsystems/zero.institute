@@ -7,7 +7,7 @@ function canViewTeacher (user) {
 }
 
 function canUpdateTeacher (user) {
-  return user.hasPermission('teacher.write')
+  return user.hasPermission('teacher.update')
 }
 
 export default {

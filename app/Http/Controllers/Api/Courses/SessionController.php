@@ -33,13 +33,7 @@ class SessionController extends Controller
 
     public function store(Course $course, Request $request)
     {
-        $this->authorize('create-session', $course);
-
-        $session = repository(CourseSession::class)->createForCourse($course, $request->all());
-
-        broadcast(new Created($session));
-
-        return $session;
+        abort(404);
     }
 
     public function update($course, CourseSession $session, Request $request)

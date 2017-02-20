@@ -2,7 +2,7 @@
 <div class="container-zero c-semester-create mx-auto">
   <div class="card">
     <div class="card-header d-flex flex-row align-items-center">
-      <h5 class="mb-0">Create Semester</h5>
+      <h5 class="mb-0">Edit Semester</h5>
 
       <div class="ml-auto">
         <input-button class="btn btn-secondary" @click.native="$emit('done')" value="Cancel"/>

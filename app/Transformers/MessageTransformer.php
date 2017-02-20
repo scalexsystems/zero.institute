@@ -29,6 +29,8 @@ class MessageTransformer extends Transformer
             'unread' => is_null($readAt),
             'read_at' => iso_date($readAt),
             'received_at' => iso_date($message->created_at),
+            'receiver_type' => (string)$message->receiver_type,
+            'receiver_id' => (int)$message->receiver_id,
         ];
     }
 

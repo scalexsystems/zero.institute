@@ -2,11 +2,11 @@
 <div class="file-uploader-wrapper">
   <input type="file" name="files" ref="files" @change="onFileSelected" multiple hidden>
 
-  <modal :show="uploading" :dismissable="false">
+  <modal :open="uploading" :dismissable="false">
     <div class="card mb-0">
-      <h5 class="card-header text-primary py-2">Uploading</h5>
+      <h5 class="card-header">Uploading</h5>
       <div class="card-block">
-        <progress class="progress mb-0" :value="progress" max="100">
+        <progress class="progress bg-muted mb-0" :value="progress" max="100">
           <div class="progress">
             <span class="progress-bar" :style="{ width: progress + '%' }"></span>
             <span class="text-xs-center">Uploading...</span>
@@ -18,7 +18,7 @@
 
   <modal ref="info" :dismissable="false">
     <div class="card mb-0">
-      <h5 class="card-header bg-white text-primary py-2">About the files</h5>
+      <h5 class="card-header bg-white2">About the files</h5>
 
       <div class="card-block">
         <template v-for="(title, index) of titles">
@@ -43,7 +43,7 @@
 
         <input-textarea class="mt-2" title="Add a message (optional)" v-model="message"></input-textarea>
       </div>
-      <div class="card-footer bg-white pt-2 pb-1">
+      <div class="card-footer bg-white text-right">
         <a role="button" class="btn btn-secondary btn-cancel" tabindex @click="onCancel">Cancel</a>
         <a role="button" class="btn btn-primary" tabindex @click="onUpload">Share</a>
       </div>
@@ -127,6 +127,7 @@ export default{
         this.handler = (state) => {
           if (state) {
             uploads[0].message = this.message
+            this.message = ''
 
             this.titles.forEach((title, index) => {
               if (uploads[index].filename !== title) {
@@ -156,7 +157,7 @@ export default{
         this.results[index] = { message, originalFilename: filename, ...attachment }
       } catch ({ errors }) {
         this.errors[index] = {
-          message: `Failed to upload: ${filename}`,
+          message: errors.$message || `Failed to upload: ${filename}`,
           payload,
           dest: this.dest,
           name: this.name

@@ -1,14 +1,14 @@
 import http from '../api'
 import { insert, remove, binarySearchFind, binarySearchIndex } from '../helpers'
 import { prepareGroup as prepare, prepareMessages, TIMESTAMP } from './messages/helpers'
-import { toArray, isObject, each } from '../../util'
+import { toArray, isObject, each, last } from '../../util'
 
 const actions = {
   /**
    * Search or list groups
    */
   async index ({ dispatch }, { page = 1, query, type } = {}) {
-    const { groups, meta } = await http.get('groups', { params: { page, q: query, type }})
+    const { groups, meta } = await http.get('groups', { params: { page, q: query, type } })
 
     if (!query) {
       await dispatch('addToStore', groups)
@@ -79,7 +79,7 @@ const actions = {
    * Fetch members.
    */
   async members ({ dispatch }, { group }) {
-    const { users, meta } = await http.get(`groups/${group.id}/members`, { params: { page: group.$members_page }})
+    const { users, meta } = await http.get(`groups/${group.id}/members`, { params: { page: group.$members_page } })
 
     if (users) {
       await dispatch('addMembersToStore', { members: users, id: group.id, page: meta.pagination.current_page + 1 })
@@ -111,7 +111,7 @@ const actions = {
   },
 
   async my ({ dispatch }, page = 1) {
-    const { groups, meta } = await http.get('me/groups', { params: { page }})
+    const { groups, meta } = await http.get('me/groups', { params: { page } })
 
     if (groups) await dispatch('addToStore', groups)
 
@@ -126,7 +126,7 @@ const actions = {
     return group
   },
 
-  async messages ({ dispatch }, { group, params = {}}) {
+  async messages ({ dispatch }, { group, params = {} }) {
     const options = {
       params: {
         before: TIMESTAMP,
@@ -267,6 +267,8 @@ const getters = {
 
   myGroups: (_, getters) => getters.my.filter(group => group.type === 'group'),
 
+  unread_total: (_, getters) => getters.myGroups.reduce((t, g) => t + g.$unread_count, 0),
+
   myCourses: (_, getters) => getters.my.filter(group => group.type === 'course'),
 
   myCommunities: (_, getters) => getters.my.filter(group => group.type === 'community'),
@@ -329,17 +331,17 @@ const mutations = {
 
   MESSAGE (state, { id, messages, page }) {
     const group = binarySearchFind(state.groups, id)
-    const old = group.$unread_count
 
     // Insert and update group unread status
     insert(group.$messages, messages)
 
-    const unread = old - group.$messages.length + group.$messages.filter(m => m.unread).length
-
+    const index = binarySearchIndex(group.$messages, group.$last_message_id) + 1
+    const unread = group.$unread_count + group.$messages.slice(index).filter(m => m.unread).length
     state.unread[group.id] = unread
     group.$unread_count = unread
     group.$has_unread = group.$unread_count > 0
     group.$messages_loaded = true
+    group.$last_message_id = last(group.$messages).id
 
     if (page) {
       group.$messages_page = page

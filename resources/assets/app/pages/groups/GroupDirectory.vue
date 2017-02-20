@@ -7,7 +7,7 @@
   </template>
 
 
-  <searchable-list v-model="query" placeholder="Start typing..." ref="list"
+  <searchable-list v-model="query" placeholder="Start typing..." ref="list" class="mt-3"
                    @search="onSearch" @infinite="onLoad">
     <div class="row">
       <div class="col-12 col-lg-6 mt-3" v-for="group in groups" :key="group">
@@ -15,13 +15,14 @@
       </div>
     </div>
   </searchable-list>
+
 </container-window>
 </template>
 
 <script lang="babel">
 import throttle from 'lodash.throttle'
 import { mapActions } from 'vuex'
-
+import { notLastPage } from '../../util'
 import GroupCard from '../../components/group/Card.vue'
 
 export default {
@@ -36,7 +37,7 @@ export default {
   },
 
   methods: {
-    onSearch: throttle(function onSearch () {
+    onSearch: throttle(function onSearch() {
       this.$refs.list.$emit('reset')
       this.page = 1
       this.onLoad()
@@ -53,7 +54,7 @@ export default {
 
         this.page = meta.pagination.current_page + 1
 
-        if (meta.pagination.current_page < meta.pagination.total_pages) {
+        if (notLastPage(meta)) {
           loaded()
 
           return true
@@ -62,7 +63,7 @@ export default {
       complete()
     },
     goToGroup (group) {
-      this.$router.push({ name: group.is_member ? 'group.messages' : 'group.show', params: { id: group.id }})
+      this.$router.push({ name: group.is_member ? 'group.messages' : 'group.show', params: { id: group.id } })
     },
     ...mapActions('groups', ['index'])
   },

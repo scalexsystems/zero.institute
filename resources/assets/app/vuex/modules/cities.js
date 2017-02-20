@@ -11,7 +11,9 @@ const actions = {
 
     history.push(q)
 
-    const { cities } = await http.get('geo/cities', { params: { q }})
+    if (history.length > 50) history.shift()
+
+    const { cities } = await http.get('geo/cities', { params: { q } })
 
     if (cities) await dispatch('addToStore', cities)
 

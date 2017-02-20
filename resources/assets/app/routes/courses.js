@@ -29,6 +29,15 @@ export default [
     })
   },
   {
+    name: 'course.session.enroll',
+    path: '/hub/courses/:course/sessions/:session/enroll',
+    component: require('../pages/courses/CourseSessionEnroll.vue'),
+    props: route => ({
+      sessionId: toInt(route.params.session),
+      id: toInt(route.params.course)
+    })
+  },
+  {
     name: 'course.show',
     path: '/hub/courses/:id/show',
     component: require('../pages/courses/Course.vue'),

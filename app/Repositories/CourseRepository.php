@@ -206,7 +206,9 @@ class CourseRepository extends Repository
         $repository = $this->app->make(GroupRepository::class);
         $group = $repository->createWithMembers($teacher->user, [
             'name' => $course->name,
-        ], []);
+            'private' => true,
+            'type' => 'course',
+        ]);
 
         $session->course()->associate($course);
         $session->instructor()->associate($teacher);

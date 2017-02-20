@@ -162,7 +162,7 @@ class Student extends BaseModel implements Person, BelongsToSchool
 
     public function sessions()
     {
-        return $this->belongsToMany(CourseSession::class, 'course_session_student');
+        return $this->belongsToMany(CourseSession::class, 'course_session_student', 'student_id', 'session_id')->withTimestamps();
     }
 
     public function getRouteKeyName()

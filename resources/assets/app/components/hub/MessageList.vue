@@ -173,4 +173,8 @@ export default {
   overflow-x: hidden;
   overflow-y: auto;
 }
+
+.c-hub-message-list-container {
+  min-height: 100%;
+}
 </style>
