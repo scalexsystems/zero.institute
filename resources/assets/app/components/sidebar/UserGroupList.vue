@@ -1,7 +1,7 @@
 <template>
 <div>
-  <div class="btn-group flex-row d-flex mb-3">
-    <div class="btn" role="button" :class="[group ? 'btn-secondary' : 'btn-outline-secondary']"
+  <div class="btn-group d-flex flex-row align-items-end mb-3">
+    <div class="btn btn-block" role="button" :class="[group ? 'btn-secondary' : 'btn-outline-secondary']"
          @click.stop="group = true">
       Groups <span v-if="group_unread_count > 0">({{ group_unread_count }})</span>
     </div>

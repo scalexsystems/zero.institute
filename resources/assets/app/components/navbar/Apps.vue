@@ -46,7 +46,7 @@ const APPS = [
   {
     name: 'Course Management',
     link: '/hub/courses',
-    icon: require('../../assets/apps/courses.svg'),
+    icon: require('../../assets/apps/course.svg'),
     permission: 'course.app'
   },
   {

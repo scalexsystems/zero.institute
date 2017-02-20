@@ -71,7 +71,7 @@ $zindex-layout-box: 100 !default;
 }
 
 .header {
-  border-bottom: 1px solid $border-color;
+  border-bottom: 2px solid $border-color;
   z-index: $zindex-layout-box;
 }
 
