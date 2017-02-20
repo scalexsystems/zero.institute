@@ -18,7 +18,7 @@
 
         <div class="col-12 col-lg-6">
           <input-text title="Name" subtitle="Choose semester & dates, it would be auto-generated."
-                      v-model="attributes.name" :errors="errors" readonly/>
+                      v-model="attributes.name" :errors="errors" :readonly="true"/>
         </div>
 
         <div class="col-12 col-lg-6">

@@ -15,7 +15,7 @@ class SessionTransformer extends Transformer
     {
         return [
             'original_name' => $session->name,
-            'name' => $session->semester->name.' '.$session->started_on->year,
+            'name' => $session->semester ? $session->semester->name.' '.$session->started_on->year : $session->name,
             'semester_id' => $session->semester_id,
             'started_on' => iso_date($session->started_on),
             'ended_on' => iso_date($session->ended_on),
