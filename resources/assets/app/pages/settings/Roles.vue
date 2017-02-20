@@ -4,6 +4,10 @@
   <sidebar/>
   </template>
 
+  <div class="container-zero my-3 py-3 text-center">
+    <img src="../../assets/settings/roles.svg">
+  </div>
+
   <div class="container-zero py-3">
     <div class="row">
 
@@ -62,12 +66,12 @@ export default {
   name: 'Roles',
 
   data: () => ({
-    roles: []
+    roles: [],
+    people: []
   }),
 
   computed: {
-    sidebarId: () => 'settings.roles',
-    ...mapGetters('people', ['people'])
+    sidebarId: () => 'settings.roles'
   },
 
   methods: {
@@ -121,8 +125,10 @@ export default {
       }
     },
 
-    onSearch: throttle(function (q) {
-      this.search({ q, personType: ['teacher', 'employee'] })
+    onSearch: throttle(async function (q = '') {
+      const { items } = await this.search({ q, personType: ['teacher', 'employee'] })
+
+      this.people = items || []
     }, 400),
 
     ...mapActions('roles', ['index', 'users', 'assign', 'revoke']),
@@ -132,7 +138,7 @@ export default {
 
   created () {
     this.getAllRoles()
-    this.search({ personType: ['teacher', 'employee'] })
+    this.onSearch()
   },
 
   components: { PersonCard },

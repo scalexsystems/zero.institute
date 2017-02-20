@@ -1,28 +1,32 @@
 <template>
-<div class="c-shared-user-card card">
-  <div class="c-shared-user-card-block">
-    <div class="d-flex flex-row align-items-center">
-      <img :src="user.photo" class="rounded-circle c-shared-user-card-photo">
-      <div>
-        <div class="c-shared-user-card-title">{{ user.name }}</div>
-        <div class="c-shared-user-card-subtitle">
-          <span class="text-primary text-uppercase" v-if="user.is_member">{{ user.type }} <span class="text-muted">&centerdot;</span></span>
-          <span class="text-muted">{{ user.department }}</span>
-        </div>
+<abstract-card v-bind="{ remove }" class="c-user-card" @remove="$emit('remove', user)">
+  <div class="d-flex flex-row align-items-center">
+    <img :src="user.photo" class="rounded-circle c-user-card-photo fit-cover">
+    <div>
+      <div class="c-user-card-title" :class="{ 'text-muted': !user.name.trim() }">{{ user.name.trim() || 'Name not set' }}
+      </div>
+      <div class="c-user-card-subtitle">
+        <span class="text-muted">Type:</span> {{ user.type || user._type }}
       </div>
     </div>
-
-    <slot></slot>
   </div>
-</div>
+
+  <slot></slot>
+</abstract-card>
 </template>
 
 <script lang="babel">
+import { mapGetters } from 'vuex'
 export default {
   props: {
     user: {
       type: Object,
       required: true
+    },
+
+    remove: {
+      type: Boolean,
+      default: false
     }
   }
 }
@@ -31,7 +35,7 @@ export default {
 <style lang="scss">
 @import '../../styles/methods';
 
-.c-shared-user-card {
+.c-user-card {
   &-photo {
     width: to-rem(48px);
     height: to-rem(48px);
@@ -44,6 +48,7 @@ export default {
 
   &-subtitle {
     font-size: .75rem;
+    text-transform: capitalize;
   }
 
   &-block {

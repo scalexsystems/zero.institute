@@ -9,7 +9,8 @@
   <form @submit.prevent="onSubmit" class="container my-3">
     <div class="row">
       <div class="col-12 col-lg-8 offset-lg-2">
-        <input-text v-model="attributes.name" title="Name of the group" :errors="errors" autofocus required></input-text>
+        <input-text v-model="attributes.name" title="Name of the group" :errors="errors" autofocus
+                    required></input-text>
         <checkbox-wrapper title="Group Type" required>
           <input-box v-model="attributes.private" title="Public" :radio="false" class="form-check-inline"></input-box>
           <input-box v-model="attributes.private" title="Private" :radio="true" class="form-check-inline"></input-box>
@@ -17,7 +18,8 @@
         <input-textarea v-model="attributes.description" title="Description" :errors="errors"></input-textarea>
         <div class="form-group">
           <label>Add Members</label>
-          <typeahead title="Members" @search="onSearch" v-bind="{ suggestions, value: [] }" component="select-option-user" @select="onMemberSelect"></typeahead>
+          <typeahead title="Members" @search="onSearch" v-bind="{ suggestions, value: [] }"
+                     component="select-option-user" @select="onMemberSelect"></typeahead>
         </div>
       </div>
 
@@ -37,6 +39,7 @@
 import { mapGetters, mapActions } from 'vuex'
 import { formHelper } from 'bootstrap-for-vue'
 import throttle from 'lodash.throttle'
+import { clone } from '../../util'
 
 export default {
   name: 'GroupCreate',
@@ -47,19 +50,10 @@ export default {
       private: false,
       description: '',
       members: []
-    }
-  }),
-
-  computed: {
-    members () {
-      const members = this.suggestions
-      const ids = this.attributes.members
-
-      return members.filter(({ user_id }) => ids.indexOf(user_id) > -1)
     },
-
-    ...mapGetters('people', { suggestions: 'people' })
-  },
+    members: [],
+    suggestions: []
+  }),
 
   methods: {
     async onSubmit (e) {
@@ -75,25 +69,31 @@ export default {
         this.clearErrors()
         this.attributes = this.$options.data().attributes
 
-        this.$router.push({ name: 'group.messages', params: { id: group.id }})
+        this.$router.push({ name: 'group.messages', params: { id: group.id } })
       }
     },
-    onSearch: throttle(function onSearch (q) {
-      this.query({ q })
-    }),
+
     onMemberSelect (member) {
       const id = member.user_id
 
       if (this.attributes.members.indexOf(id) < 0) {
         this.attributes.members.push(id)
+        this.attributes.members.push(clone(member))
       }
     },
+
+    onSearch: throttle(async function (q = '') {
+      const { items } = await this.query({ q })
+
+      this.suggestions = items || []
+    }, 400),
+
     ...mapActions('people', { query: 'index' }),
     ...mapActions('groups', { create: 'store' })
   },
 
   created () {
-    this.query()
+    this.onSearch()
   },
 
   mixins: [formHelper]

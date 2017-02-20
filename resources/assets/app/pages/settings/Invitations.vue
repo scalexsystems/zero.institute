@@ -5,6 +5,10 @@
   <sidebar/>
   </template>
 
+  <div class="container-zero my-3 py-3 text-center">
+    <img src="../../assets/settings/invitations.svg">
+  </div>
+
   <div class="container-fluid text-center">
     <h2 class="text-center my-3 py-3">Invitations</h2>
 

@@ -13,6 +13,10 @@
     <edit-department v-else v-bind="{ department: current }" @done="editing = false"/>
   </modal>
 
+  <div class="container-zero my-3 py-3 text-center">
+    <img src="../../assets/settings/departments.svg">
+  </div>
+
   <div class="container-zero py-3">
     <div class="row">
 

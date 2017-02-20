@@ -1,29 +1,40 @@
 <template>
-<div class="c-user-card card">
-  <div class="c-user-card-block">
-    <div class="d-flex flex-row align-items-center">
-      <img :src="user.photo" class="rounded-circle c-user-card-photo">
-      <div>
-        <div class="c-user-card-title">{{ user.name }}</div>
-        <div class="c-user-card-subtitle">
-          <span class="text-primary text-uppercase" v-if="user.is_member">Joined <span class="text-muted">&centerdot;</span></span>
-          <span class="text-muted">{{ user.member_count_text }}</span>
-        </div>
+<abstract-card v-bind="{ remove }" class="c-user-card" @remove="$emit('remove', user)">
+  <div class="d-flex flex-row align-items-center">
+    <img :src="user.photo" class="rounded-circle c-user-card-photo fit-cover">
+    <div>
+      <div class="c-user-card-title" :class="{ 'text-muted': !user.name.trim() }">{{ user.name.trim() || 'Name not set' }}
+      </div>
+      <div class="c-user-card-subtitle">
+        <span class="text-muted">Type:</span> {{ user.type }}
       </div>
     </div>
-
-    <slot></slot>
   </div>
-</div>
+
+  <slot></slot>
+</abstract-card>
 </template>
 
 <script lang="babel">
+import { mapGetters } from 'vuex'
 export default {
   props: {
     user: {
       type: Object,
       required: true
+    },
+
+    remove: {
+      type: Boolean,
+      default: false
     }
+  },
+
+  computed: {
+    department () {
+      return this.departmentById(this.user.id) || {}
+    },
+    ...mapGetters('departments', ['departmentById'])
   }
 }
 </script>

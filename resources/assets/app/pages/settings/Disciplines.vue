@@ -13,6 +13,10 @@
     <edit-discipline v-else v-bind="{ discipline: current }" @done="editing = false"/>
   </modal>
 
+  <div class="container-zero my-3 py-3 text-center">
+    <img src="../../assets/settings/disciplines.svg">
+  </div>
+
   <div class="container-zero py-3">
     <div class="row">
 

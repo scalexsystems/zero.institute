@@ -8,6 +8,7 @@ use Scalex\Zero\Http\Controllers\Controller;
 use Scalex\Zero\Models\Group;
 use Scalex\Zero\Models\Message;
 use Scalex\Zero\Repositories\GroupRepository;
+use Scalex\Zero\User;
 
 class MemberController extends Controller
 {
@@ -19,14 +20,6 @@ class MemberController extends Controller
         $this->middleware('auth:api,web');
     }
 
-    /**
-     * List group members.
-     *
-     * @param \Scalex\Zero\Models\Group $group
-     * @param \Scalex\Zero\Repositories\GroupRepository $repository
-     *
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
-     */
     public function index(Group $group, GroupRepository $repository)
     {
         $this->authorize('view-members', $group);
@@ -34,46 +27,28 @@ class MemberController extends Controller
         return $repository->members($group);
     }
 
-    /**
-     * Add members to the group.
-     *
-     * @param \Scalex\Zero\Models\Group $group
-     * @param \Illuminate\Http\Request $request
-     *
-     * @return array
-     */
     public function store(Group $group, Request $request)
     {
         $this->authorize('add-members', $group);
-        $this->validate($request, ['members' => 'required']);
+        $this->validate($request, [
+            'member' => 'required|exists:users,id',
+        ]);
 
-        $members = $group->addMembers($request->input('members'));
+        $members = $group->addMembers((array)$request->input('member'));
 
         if (count($members)) {
             event(new MemberJoined($group, $members));
         }
 
-        return $members->toArray();
+        return User::find($members->toArray());
     }
 
-    /**
-     * Remove members from the group.
-     *
-     * @param \Scalex\Zero\Models\Group $group
-     * @param \Illuminate\Http\Request $request
-     *
-     * @return array
-     */
     public function destroy(Group $group, Request $request)
     {
         $this->authorize('remove-members', $group);
-        $this->validate($request, ['members' => 'required']);
+        $this->validate($request, ['member' => 'required']);
 
-        $ids = collect($request->get('members'))->filter(function ($id) use ($group) {
-            return (int) $id !== (int) $group->owner_id;
-        })->toArray();
-
-        $members = $group->removeMembers($ids);
+        $members = $group->removeMembers($request->input('member'));
 
         if (count($members)) {
             event(new MemberLeft($group, $members));

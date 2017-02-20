@@ -1,4 +1,5 @@
 import { mapActions, mapGetters } from 'vuex'
+import { notLastPage } from '../../../util'
 
 export default {
   data: () => ({
@@ -34,7 +35,7 @@ export default {
       const { meta } = await this.fetchMembersAPI({ group: this.group })
       this.membersRequestSent = false
 
-      if (meta && meta.pagination.current_page < meta.pagination.total_pages) {
+      if (notLastPage(meta)) {
         loaded()
 
         return true

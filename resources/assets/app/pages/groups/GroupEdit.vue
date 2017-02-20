@@ -9,30 +9,24 @@
   <form @submit.prevent="onSubmit" class="container my-3">
     <div class="row">
       <div class="col-12 col-lg-8 offset-lg-2">
-        <input-text v-model="attributes.name" title="Name of the group" :errors="errors" autofocus required></input-text>
+        <input-text v-model="attributes.name" title="Name of the group" :errors="errors" autofocus
+                    required></input-text>
         <checkbox-wrapper title="Group Type" required>
           <input-box v-model="attributes.private" title="Public" :radio="false" class="form-check-inline"></input-box>
           <input-box v-model="attributes.private" title="Private" :radio="true" class="form-check-inline"></input-box>
         </checkbox-wrapper>
         <input-textarea v-model="attributes.description" title="Description" :errors="errors"></input-textarea>
         <div class="form-group">
-          <label>Add Members</label>
-          <typeahead title="Members" @search="onSearch" v-bind="{ suggestions, value: [] }" component="select-option-user" @select="onMemberSelect"></typeahead>
+          <label>Add/Remove Members</label>
+          <typeahead title="Members" @search="onSearch" v-bind="{ suggestions, value: [] }"
+                     component="select-option-user" @select="addMember" />
         </div>
       </div>
 
       <div class="col-12 col-lg-8 offset-lg-2">
-        <div class="row">
-          <div class="col-12 col-lg-6 mb-3" v-for="member in members">
-            <user-card :user="member"></user-card>
-          </div>
-        </div>
         <infinite-loader class="row" @infinite="fetchMembers" ref="is">
-          <label class="col-12">
-            Members
-          </label>
           <div class="col-12 col-lg-6 mb-3" v-for="member in groupMembers">
-            <user-card :user="member"></user-card>
+            <user-card :user="member" remove @remove="removeMember(member)" />
           </div>
         </infinite-loader>
       </div>
@@ -78,7 +72,16 @@ export default {
         })
       }
     },
-    ...mapActions('groups', { update: 'update' })
+
+    addMember (member) {
+      this.add({ id: this.group.id, member })
+    },
+
+    removeMember (member) {
+      this.remove({ id: this.group.id, member })
+    },
+
+    ...mapActions('groups', ['update', 'add', 'remove'])
   },
 
   created () {

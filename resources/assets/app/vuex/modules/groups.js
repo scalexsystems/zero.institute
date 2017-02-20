@@ -110,6 +110,36 @@ const actions = {
     return { group }
   },
 
+  /**
+   * Add member to group
+   */
+  async add ({ dispatch }, { id, member }) {
+    try {
+      const { users } = await http.post(true, `groups/${id}/members`, { member: member.user_id })
+
+      if (users) dispatch('addMembersToStore', { id, members: users })
+
+      return true
+    } catch (e) {
+      return e
+    }
+  },
+
+  /**
+   * Remove member from group.
+   */
+  async remove ({ dispatch }, { id, member }) {
+    try {
+      const items = await http.delete(true, `groups/${id}/members`, { body: { member: member.id } })
+
+      if (items.length) dispatch('removeMembersFromStore', { id, member: member.id })
+
+      return true
+    } catch (e) {
+      return e
+    }
+  },
+
   async my ({ dispatch }, page = 1) {
     const { groups, meta } = await http.get('me/groups', { params: { page } })
 
@@ -232,7 +262,7 @@ const actions = {
    * @private
    */
   async removeMembersFromStore ({ commit }, { id, member }) {
-    commit('MEMBER_REMOVE', { id, memberId: isObject(member) ? member.id : member })
+    commit('MEMBER_REMOVE', { id, member: isObject(member) ? member.id : member })
   },
 
   /**
@@ -323,10 +353,10 @@ const mutations = {
     if (page) group.$members_page = page
   },
 
-  MEMBER_REMOVE (state, { id, memberId }) {
+  MEMBER_REMOVE (state, { id, member }) {
     const group = binarySearchFind(state.groups, id)
 
-    remove(group.$members, memberId)
+    remove(group.$members, member)
   },
 
   MESSAGE (state, { id, messages, page }) {
