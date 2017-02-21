@@ -17,7 +17,7 @@
     "lint": "eslint --ext .js,.vue resources/assets/app tests/e2e tests/unit",
     "lint:fix": "eslint --fix --ext .js,.vue resources/assets/app",
     "preprod": "yarn version",
-    "prod": "./scrips/production.sh"
+    "prod": "./scripts/production.sh"
   },
   "devDependencies": {
     "add-asset-html-webpack-plugin": "^1.0.2",
@@ -97,5 +97,5 @@
     "vue-router": "^2.1.1",
     "vuex": "^2.1.2"
   },
-  "version": "0.4.4"
+  "version": "0.4.5"
 }
