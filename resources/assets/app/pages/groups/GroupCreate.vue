@@ -57,9 +57,9 @@ export default {
 
   methods: {
     async onSubmit (e) {
-      e.traget.classList.add('disabled')
+      e.target.classList.add('disabled')
       const { errors, group } = await this.create(this.attributes)
-      e.traget.classList.remove('disabled')
+      e.target.classList.remove('disabled')
 
       if (errors) {
         this.setErrors(errors)
