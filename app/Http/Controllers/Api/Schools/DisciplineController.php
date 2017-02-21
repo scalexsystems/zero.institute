@@ -14,12 +14,7 @@ class DisciplineController extends Controller
 
     public function index(Request $request)
     {
-        return cache()->rememberForever(
-            schoolScopeCacheKey('disciplines'),
-            function () {
-                return repository(Discipline::class)->withCount('students')->all();
-            }
-        );
+        return repository(Discipline::class)->withCount('students')->all();
     }
 
     public function store(Request $request)
@@ -33,16 +28,16 @@ class DisciplineController extends Controller
             ] + $request->all()
         );
 
-        return $this->created($discipline->getKey());
+        return $discipline;
     }
 
     public function update(Request $request, $discipline)
     {
-        $discipline = repository(Discipline::class)->find($discipline);
+        $discipline = repository(Discipline::class)->withCount('students')->find($discipline);
         $this->authorize($discipline);
 
         repository(Discipline::class)->update($discipline, $request->all());
 
-        return $this->accepted();
+        return $discipline;
     }
 }

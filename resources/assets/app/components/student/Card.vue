@@ -7,7 +7,7 @@
       </div>
       <div class="c-student-card-subtitle">
         <span class="text-muted">Roll Number:</span> {{ student.uid }} <br>
-        <span class="text-muted">Department:</span> {{ department.name || 'Not set' }}
+        {{ department.name || 'Not set' }}
       </div>
     </div>
   </div>
@@ -33,7 +33,9 @@ export default {
 
   computed: {
     department () {
-      return this.departmentById(this.student.id) || {}
+      const student = this.student
+
+      return this.departmentById(student.department_id) || {}
     },
     ...mapGetters('departments', ['departmentById'])
   }

@@ -7,7 +7,7 @@
       </div>
       <div class="c-teacher-card-subtitle">
         <span class="text-muted">Teacher ID:</span> {{ teacher.uid }} <br>
-        <span class="text-muted">Department:</span> {{ department.name || 'Not set' }}
+        {{ department.name || 'Not set' }}
       </div>
     </div>
   </div>
@@ -33,7 +33,7 @@ export default {
 
   computed: {
     department () {
-      return this.departmentById(this.teacher.id) || {}
+      return this.departmentById(this.teacher.department_id) || {}
     },
     ...mapGetters('departments', ['departmentById'])
   }

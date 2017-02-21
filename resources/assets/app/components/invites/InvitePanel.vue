@@ -3,7 +3,8 @@
   <h6 class="split-header text-uppercase text-muted">Invite {{ type }}s</h6>
 
   <div class="container-zero my-3 py-3">
-    <input-textarea title="Send email invites" :errors="errors" :placeholder="placeholder" v-model="emails" subtitle="yes">
+    <input-textarea title="Send email invites" :errors="errors" :placeholder="placeholder" v-model="emails"
+                    subtitle="yes">
 
       <template slot="subtitle">
       <div class="d-flex flex-row">
@@ -25,6 +26,8 @@
 
 <script lang="babel">
 import { mapActions } from 'vuex'
+import { formHelper } from 'bootstrap-for-vue'
+
 export default {
   name: 'InvitePanel',
   props: {
@@ -36,7 +39,6 @@ export default {
   data: () => ({
     invited: 0,
     emails: '',
-    errors: null
   }),
   computed: {
     placeholder () {
@@ -53,9 +55,9 @@ export default {
       if (emails) {
         const entries = this.validateEmails(emails)
         if (entries.length) {
-          const { errors } = await this.store({ emails: entries })
+          const { errors } = await this.store({ emails: entries, type: this.type })
           if (errors) {
-            this.errors = errors
+            this.setErrors(errors)
           } else {
             this.invited += entries.length
             this.emails = ''
@@ -72,7 +74,9 @@ export default {
     },
 
     ...mapActions('invitations', ['store'])
-  }
+  },
+
+  mixins: [formHelper]
 }
 </script>
 
