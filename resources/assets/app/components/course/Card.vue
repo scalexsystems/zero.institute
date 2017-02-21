@@ -1,7 +1,6 @@
 <template>
 <abstract-card class="c-course-card" v-bind="{ remove }" @remove="$emit('remove', course)">
   <div class="d-flex flex-row align-items-start">
-    <img v-if="course.photo" :src="course.photo" class="rounded c-course-card-photo">
     <div>
       <div class="c-course-card-title">{{ course.code }} - {{ course.name }}</div>
       <div class="c-course-card-subtitle">
