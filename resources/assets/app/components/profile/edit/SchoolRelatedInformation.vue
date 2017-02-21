@@ -20,13 +20,13 @@
       </input-text>
     </div>
     <div class="col-12 col-lg-6">
-      <input-typeahead v-model="attributes.department_id" title="Department" :suggestions="departments" v-bind="{ errors }"/>
+      <input-typeahead v-model="attributes.department_id" title="Department" :suggestions="departments" v-bind="{ errors }" required />
     </div>
     <div class="col-12 col-lg-6" v-if="isTeacher">
       <input-text v-model="attributes.specialization" title="Specialization" v-bind="{ errors }"/>
     </div>
     <div class="col-12 col-lg-6" v-if="isStudent">
-      <input-typeahead v-model="attributes.discipline_id" title="Discipline" :suggestions="disciplines" v-bind="{ errors }"/>
+      <input-typeahead v-model="attributes.discipline_id" title="Discipline" :suggestions="disciplines" v-bind="{ errors }" required />
     </div>
     <div class="col-12 col-lg-6" v-if="!isStudent">
       <input-text v-model="attributes.job_title" title="Position" v-bind="{ errors }"/>
