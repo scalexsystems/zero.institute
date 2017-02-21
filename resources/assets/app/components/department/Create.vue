@@ -72,6 +72,7 @@ export default {
       this.disabled = false
 
       if (department) {
+        this.$emit('done')
       } else if (errors) {
         this.setErrors(errors)
         this.formStatus = errors.$message

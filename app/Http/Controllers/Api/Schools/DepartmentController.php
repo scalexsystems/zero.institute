@@ -14,16 +14,11 @@ class DepartmentController extends Controller
 
     public function index(Request $request)
     {
-        return cache()->rememberForever(
-            schoolScopeCacheKey('departments'),
-            function () use ($request) {
-                return repository(Department::class)->with('head')->withCount([
-                    'students',
-                    'teachers',
-                    'employees',
-                ])->all();
-            }
-        );
+        return repository(Department::class)->with('head')->withCount([
+            'students',
+            'teachers',
+            'employees',
+        ])->all();
     }
 
     public function store(Request $request)

@@ -15,4 +15,9 @@ class DisciplineTransformer extends Transformer
             ],
         ];
     }
+
+    public function show(Discipline $discipline)
+    {
+        return $this->index($discipline);
+    }
 }
