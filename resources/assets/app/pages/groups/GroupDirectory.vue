@@ -1,5 +1,5 @@
 <template>
-<container-window title="Groups" subtitle="Join or create groups" :back="true" @back="$router.go(-1)">
+<container-window title="Groups" subtitle="Join or create groups" :photo="photo">
   <template slot="buttons">
   <router-link :to="{ name: 'group.create' }" class="btn btn-primary"
                role="button">Create Group
@@ -24,6 +24,7 @@ import throttle from 'lodash.throttle'
 import { mapActions } from 'vuex'
 import { notLastPage } from '../../util'
 import GroupCard from '../../components/group/Card.vue'
+import photo from '../../assets/group-icon.svg'
 
 export default {
   name: 'GroupDirectory',
@@ -34,6 +35,10 @@ export default {
       query: '',
       groups: []
     }
+  },
+
+  computed: {
+    photo: () => photo
   },
 
   methods: {
