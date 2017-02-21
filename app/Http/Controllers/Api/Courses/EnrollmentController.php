@@ -47,7 +47,7 @@ class EnrollmentController extends Controller
         return $students->modelKeys();
     }
 
-    public function destroy($course, CourseSession $session, Request $request)
+    public function destroy(Course $course, CourseSession $session, Request $request)
     {
         $this->authorize('expel', $session);
 
