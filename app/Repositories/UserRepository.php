@@ -11,8 +11,8 @@ use Znck\Repositories\Repository;
  * @method User find($id, $columns = ['*'])
  * @method User findBy(string $key, $value)
  * @method User create(array $attr)
- * @method User update(string|User $id, array $attr, array $o = [])
- * @method User delete(string|User $id)
+ * @method User update(string | User $id, array $attr, array $o = [])
+ * @method User delete(string | User $id)
  */
 class UserRepository extends Repository
 {
@@ -140,12 +140,17 @@ class UserRepository extends Repository
      * @param \Illuminate\Http\UploadedFile $file
      * @param array $attributes
      * @param string $directory
+     * @param $width
      *
      * @return \Scalex\Zero\Models\Attachment
      */
-    public function upload(User $user, UploadedFile $file, array $attributes = [],
-                           string $directory = 'attachments'): Attachment
-    {
+    public function upload(
+        User $user,
+        UploadedFile $file,
+        array $attributes = [],
+        string $directory = 'attachments',
+        $width = 1200
+    ): Attachment {
         $this->validateWith(compact('file'), ['file' => 'required|file']);
 
         $attributes['path'] = $this->getUploadPath($user, $directory);
@@ -154,7 +159,7 @@ class UserRepository extends Repository
         $uploader = Builder::makeFromFile($file);
 
         if ($this->isImage($file)) {
-            $uploader->resize(4096)->resize(450, 'preview');
+            $uploader->resize(4096)->resize($width, 'preview');
         }
 
         $attachment = $uploader->upload($attributes)->getAttachment();
