@@ -15,7 +15,7 @@ class InvitationControllerTest extends \TestCase
         $this->expectsJobs(SendInvitations::class);
 
         $this->actingAs($this->getUser())
-             ->givePermissionTo(Action::INVITE_STUDENT)
+             ->givePermissionTo('student.invite')
              ->post('/api/people/invite', $payload);
 
         $this->assertResponseStatus(202);
