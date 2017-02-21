@@ -5,6 +5,7 @@ namespace Scalex\Zero\Console\Commands\V04;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 use Scalex\Zero\Models\Course;
+use Scalex\Zero\Models\CourseSession;
 use Scalex\Zero\Models\Group;
 
 class MakeCourseGroupsPrivate extends Command
@@ -41,11 +42,12 @@ class MakeCourseGroupsPrivate extends Command
     public function handle()
     {
         Course::chunk(100, function (Collection $courses) {
-            $courses->map(function ($course) {
-                $course->sessions->map(function ($session) {
-                    $session->group->type = 'course';
-                    $session->group->private = true;
-                    $session->group->save();
+            $courses->map(function (Course $course) {
+                $course->sessions->map(function (CourseSession $courseSession) use ($course) {
+                    $courseSession->group->type = 'course';
+                    $courseSession->group->private = true;
+                    $courseSession->session_id = $courseSession->session_id ?? $course->school->session_id;
+                    $courseSession->group->save();
                 });
             });
         });

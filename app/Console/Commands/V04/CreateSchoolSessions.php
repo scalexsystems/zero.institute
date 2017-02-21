@@ -2,9 +2,11 @@
 
 namespace Scalex\Zero\Console\Commands\V04;
 
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 use Scalex\Zero\Models\School;
+use Scalex\Zero\Models\Semester;
 use Scalex\Zero\Models\Session;
 
 class CreateSchoolSessions extends Command
@@ -41,21 +43,41 @@ class CreateSchoolSessions extends Command
     public function handle()
     {
         School::chunk(100, function (Collection $schools) {
-            $schools->map(function ($school) {
-                if (!$school->session) {
-                    $session = new Session([
-
-                        'name' => $school->name,
-                        'started_on' => \Carbon\Carbon::parse('+1 week'),
-                        'ended_on' => \Carbon\Carbon::parse('+1 month'),
-                    ]);
-
-                    $session->school()->associate($school);
-                    $session->save();
-                    $school->session()->associate($session);
-                    $school->save();
-                }
+            $schools->map(function (School $school) {
+                $this->createDefaultSession($school);
             });
         });
+    }
+
+    /**
+     * @param \Scalex\Zero\Models\School $school
+     */
+    protected function createDefaultSession(School $school)
+    {
+        if ($school->session instanceof Session) {
+            return;
+        }
+
+        $semester = Semester::where('school_id', $school->id)->first();
+
+        // Create a semester.
+        if (!$semester) {
+            $semester = new Semester(['name' => 'Change Semester Name']);
+            $semester->school()->associate($semester);
+            $semester->save();
+        }
+
+        $session = new Session([
+            'name' => $school->name,
+            'started_on' => Carbon::parse('+1 week'),
+            'ended_on' => Carbon::parse('+1 month'),
+        ]);
+
+        $session->school()->associate($school);
+        $session->semester()->associate($semester);
+        $session->save();
+
+        $school->session()->associate($session);
+        $school->save();
     }
 }
