@@ -7,19 +7,19 @@
         <div class="value">{{ source.name }}</div>
       </div>
     </div>
-    <div class="col-6 col-md-4">
+    <div class="col-6">
       <div class="profile-field">
         <div class="label">Email</div>
         <div class="value">{{ source.email }}</div>
       </div>
     </div>
-    <div class="col-6 col-md-4">
+    <div class="col-6">
       <div class="profile-field">
         <div class="label">University</div>
         <div class="value">{{ source.university }}</div>
       </div>
     </div>
-    <div class="col-6 col-md-4">
+    <div class="col-6">
       <div class="profile-field">
         <div class="label">Institute Type</div>
         <div class="value">{{ source.institute_type | instituteType }}</div>

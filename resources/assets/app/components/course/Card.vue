@@ -1,15 +1,20 @@
 <template>
-<abstract-card class="c-course-card" v-bind="{ remove }" @remove="$emit('remove', course)">
-  <div class="d-flex flex-row align-items-start">
-    <div>
-      <div class="c-course-card-title">{{ course.code }} - {{ course.name }}</div>
-      <div class="c-course-card-subtitle">
-        <span class="text-muted">Department:</span> {{ department.name }}
-      </div>
+<abstract-card class="c-course-card" v-bind="{ remove, footer: true }" @remove="$emit('remove', course)">
+  <h6 class="mb-0 card-title">{{ course.name }}</h6>
+
+  <template slot="footer">
+  <div class="d-flex flex-row">
+    <div class="profile-field mb-0 mr-3">
+      <div class="label">Code</div>
+      <div class="value">{{ course.code }}</div>
+    </div>
+
+    <div class="profile-field flex-auto mb-0">
+      <div class="label">Department</div>
+      <div class="value">{{ department.name }}</div>
     </div>
   </div>
-
-  <slot></slot>
+  </template>
 </abstract-card>
 </template>
 
@@ -37,23 +42,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss">
-@import '../../styles/methods';
-
-.c-course-card {
-  &-photo {
-    width: to-rem(48px);
-    height: to-rem(48px);
-    margin-right: to-rem(10px);
-  }
-
-  &-title {
-    font-size: 1.14285rem;
-  }
-
-  &-subtitle {
-    font-size: .75rem;
-  }
-}
-</style>

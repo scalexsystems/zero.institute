@@ -6,7 +6,8 @@
     </div>
     <div class="c-course-session-card-subtitle">
       <span class="text-muted">Instructed by:</span>
-      <teacher-card class="border-0" :teacher="session.instructor"/>
+      <teacher-card class="border-0" :teacher="session.instructor" role="button"
+                    @click.native="$router.push({ name: 'teacher.show', params: { uid: session.instructor.uid } })"/>
     </div>
   </div>
 
