@@ -48,7 +48,7 @@ class TeacherController extends Controller
     {
         $this->authorize('update', $teacher);
 
-        repository(Teacher::class)->update($teacher, $request->all());
+        $teacher = repository(Teacher::class)->update($teacher, $request->all());
 
         broadcast(new Updated($teacher));
 

@@ -15,8 +15,6 @@
 import throttle from 'lodash.throttle'
 import { mapActions } from 'vuex'
 
-import UserCard from '../../components/user/Card.vue'
-
 export default {
   name: 'PeopleDirectory',
 
@@ -62,9 +60,7 @@ export default {
 
   created () {
     if (this.persons.length === 0) this.index()
-  },
-
-  components: { UserCard }
+  }
 }
 </script>
 

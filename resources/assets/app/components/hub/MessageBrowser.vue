@@ -48,7 +48,8 @@ export default {
 <style lang="scss">
 .c-hub-message-browser {
   height: 100%;
-  position: relative;
+  width: 100%;
+  position: absolute;
   overflow-x: hidden;
   overflow-y: auto;
 }

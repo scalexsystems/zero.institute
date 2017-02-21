@@ -23,7 +23,7 @@ class PhotoController extends Controller
     public function store(Request $request, Student $student, StudentRepository $repository)
     {
         $this->authorize('update-photo', $student);
-        $this->validate($request, ['photo' => 'required|image|max:10240']);
+        $this->validate($request, ['photo' => 'required|file|mimes:jpeg,png|max:10240']);
 
         $user = $request->user();
         $repository->uploadPhoto($student, $request->file('photo'), $user);

@@ -67,7 +67,7 @@
     "Validator": "^1.0.3",
     "autosize": "^3.0.20",
     "bootstrap": "next",
-    "bootstrap-for-vue": "^0.1.11",
+    "bootstrap-for-vue": "^0.1.14",
     "debug": "^2.6.0",
     "es6-promise": "^4.0.5",
     "filesize": "^3.3.0",
