@@ -3,11 +3,11 @@
   <div class="btn-group d-flex flex-row align-items-end mb-3">
     <div class="btn btn-block" role="button" :class="[group ? 'btn-secondary' : 'btn-outline-secondary']"
          @click.stop="group = true">
-      Groups <span v-if="group_unread_count > 0">({{ group_unread_count }})</span>
+      <icon v-if="group_unread_count > 0" type="circle" class="text-primary"/> Groups
     </div>
     <div class="btn btn-block" role="button" :class="[group ? 'btn-outline-secondary' : 'btn-secondary']"
          @click.stop="group = false">
-      People <span v-if="user_unread_count > 0">({{ user_unread_count }})</span>
+      <icon v-if="user_unread_count > 0" type="circle" class="text-primary"/> People
     </div>
   </div>
 
