@@ -10,8 +10,6 @@ class Department extends ExtendibleModel implements BelongsToSchool
 
     protected $fillable = ['name', 'academic', 'short_name'];
 
-    protected $extends = ['student_count', 'employee_count', 'teacher_count'];
-
     public function school()
     {
         return $this->belongsTo(School::class);
