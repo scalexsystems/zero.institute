@@ -16,6 +16,7 @@ export default {
     items () {
       return this.groups.map(group => ({
         text: group.name,
+        title: group.name,
         photo: group.photo,
         type: 'rounded-circle',
         class: 'sidebar-list-item-group',

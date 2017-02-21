@@ -15,6 +15,7 @@ export default {
     items () {
       return this.users.map(user => ({
         text: user.name,
+        title: user.name,
         photo: user.photo,
         type: 'rounded',
         class: 'sidebar-list-item-user',

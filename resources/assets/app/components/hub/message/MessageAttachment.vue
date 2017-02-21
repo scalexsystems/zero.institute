@@ -3,7 +3,7 @@
      <div class="logo">
          <icon class="fa-fw" :type="icon"></icon>
      </div>
-      <div class="d-flex flex-auto flex-column">
+      <div class="main">
           <div class="filename">
             <span>{{ title }}</span>
           </div>
@@ -99,6 +99,10 @@ export default {
     overflow-x: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+  }
+
+  .main {
+    overflow: hidden;
   }
 
   .fa-picture-o, .fa-file-word-o { color: blue; }
