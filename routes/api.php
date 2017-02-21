@@ -102,7 +102,7 @@ Route::get('/me/users/{user}', 'Api\Messages\CurrentUserController@show');
 Route::get('courses/{course}/enrolled', 'Api\Courses\EnrollmentController@index');
 Route::get('courses/{course}/sessions/{session}/enrolled', 'Api\Courses\EnrollmentController@index');
 Route::post('courses/{course}/sessions/{session}/enroll', 'Api\Courses\EnrollmentController@store');
-Route::delete('courses/{course}/sessions/{session}/expel', 'Api\Courses\EnrollmentController@destroy');
+Route::post('courses/{course}/sessions/{session}/expel', 'Api\Courses\EnrollmentController@destroy');
 Route::resource('courses/{course}/sessions', 'Api\Courses\SessionController', $resource);
 Route::get('courses/{course}/instructors', 'Api\Courses\InstructorController@index');
 Route::post('courses/{course}/instructors', 'Api\Courses\InstructorController@store');
