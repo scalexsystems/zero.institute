@@ -77,4 +77,9 @@ class Course extends BaseModel implements BelongsToSchool
     {
         return $this->belongsTo(Semester::class);
     }
+
+    public function setCodeAttribute($value)
+    {
+        $this->attributes['code'] = str_replace(' ', '-', $value);
+    }
 }
