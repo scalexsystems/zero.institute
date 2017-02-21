@@ -4,77 +4,53 @@
   <router-link :to="{ name: 'course.edit', params: { id } }" class="btn btn-primary">Edit</router-link>
   </template>
 
-  <div class="container my-3">
-    <div class="row">
-      <div class="col-12 col-lg-8 offset-lg-2">
+  <div class="my-3" v-if="course">
+    <div class="container-zero text-center">
+      <img :src="course.photo" class="rounded m-3" height="128">
+    </div>
 
-        <div class="row" v-if="course">
+    <div class="conatiner-zero text-center">
+      <h2 class="mb-1">{{ course.code }} - {{ course.name }}</h2>
 
-          <div class="col-12 text-center">
-            <img :src="course.photo" class="rounded m-3" height="128">
-          </div>
+      <p>
+        <small>{{ department.name }} &centerdot; {{ semester.name || 'Semester not set' }}</small>
+      </p>
 
-          <div class="col-12 text-center">
-            <h2 class="mb-1">{{ course.code }} - {{ course.name }}</h2>
+      <p>{{ course.description }}</p>
+    </div>
 
-            <p>
-              <small>{{ department.name }} &centerdot; {{ semester.name || 'Semester not set' }}</small>
-            </p>
+    <h6 class="split-header my-3 p-3 text-uppercase">Prerequisite Courses</h6>
+    <div class="container-zero">
 
-            <p>{{ course.description }}</p>
-          </div>
+      <div class="row">
+        <div class="col-12 col-lg-6 mb-3" v-for="item in course.prerequisites">
+          <router-link class="no-link" :to="{ name: 'course.show', params: { id: item.id } }">
+            <course-card v-bind="{ course: item }"/>
+          </router-link>
+        </div>
 
-          <div class="col-12 col-lg-6">
-            <h6 class="text-uppercase text-muted mb-3">
-              <icon type="pencil"/>
-              Sessions
-            </h6>
+        <div class="col-12 py-3 mb-3" v-if="course.prerequisites.length === 0">
+          <span class="text-muted">No prerequisites</span>
+        </div>
+      </div>
 
-            <div class="mb-3" v-for="item in course.sessions">
-              <session-card v-bind="{ session: item }"/>
-            </div>
+    </div>
 
-            <div class="py-3 mb-3" v-if="course.sessions.length === 0">
-              <span class="text-muted">No sessions</span>
-            </div>
-          </div>
+    <h6 class="split-header my-3 p-3 text-uppercase">Sessions</h6>
+    <div class="container-zero">
 
-          <div class="col-12 col-lg-6">
-            <h6 class="text-uppercase text-muted mb-3">
-              <icon type="lock"/>
-              Prerequisite Courses
-            </h6>
+      <div class="row">
 
-            <div class="mb-3" v-for="item in course.prerequisites">
-              <router-link class="no-link" :to="{ name: 'course.show', params: { id: item.id } }">
-                <course-card v-bind="{ course: item }"/>
-              </router-link>
-            </div>
+        <div class="col-12 col-lg-6 mb-3" v-for="item in course.sessions">
+          <session-card v-bind="{ session: item }"/>
+        </div>
 
-            <div class="py-3 mb-3" v-if="course.prerequisites.length === 0">
-              <span class="text-muted">No prerequisites</span>
-            </div>
-
-          </div>
-
-          <div class="col-12" v-if="course.instructors && course.instructors.length">
-            <div class="row">
-              <div class="col-12">
-                <h6 class="text-uppercase text-muted mb-3">
-                  <icon type="user"/>
-                  Instructors
-                </h6>
-              </div>
-              <div class="col-12 col-lg-6 mb-3" v-for="teacher in course.instructors">
-                <router-link class="no-link" :to="{ name: 'teacher.show', params: { uid: teacher.uid } }">
-                  <teacher-card v-bind="{ teacher }"/>
-                </router-link>
-              </div>
-            </div>
-          </div>
+        <div class="col-12 py-3 mb-3" v-if="course.sessions.length === 0">
+          <span class="text-muted">No sessions</span>
         </div>
 
       </div>
+
     </div>
   </div>
 </container-window>

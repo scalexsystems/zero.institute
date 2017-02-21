@@ -1,7 +1,7 @@
 <template>
 <container-window v-bind="{ title }" subtitle="Course information" back @back="$router.go(-1)">
 
-  <template slot="buttons">
+  <template slot="buttons" v-if="session && $can('enroll-students', session)">
   <router-link class="btn btn-primary" :to="{ name: 'course.session.enroll' }">Enroll Students</router-link>
   </template>
 
@@ -16,7 +16,7 @@
         <h2 class="mb-1">{{ course.code }} - {{ course.name }}</h2>
 
         <p>
-          <small>{{ department.name }} &centerdot; {{ semester.name || 'Semester not set' }}</small>
+          <small>{{ department.name }} &centerdot; {{ session && session.name }}</small>
         </p>
 
         <p>{{ course.description }}</p>
@@ -30,7 +30,7 @@
       <div class="card" v-if="session.syllabus">
         <div class="card-header d-flex flex-row align-items-center">
           <h5 class="card-title mb-0">Syllabus</h5>
-          <input-button v-if="$can('update-syllabus', session)" class="ml-auto"
+          <input-button v-if="$can('update-syllabus', session)" class="ml-auto btn btn-secondary"
                         value="Update" @click.native="$refs.syllabus.$emit('open')"/>
         </div>
         <div class="card-block">
