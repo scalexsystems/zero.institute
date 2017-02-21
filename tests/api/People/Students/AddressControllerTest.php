@@ -54,7 +54,7 @@ class AddressControllerTest extends \TestCase
         $this->actingAs($this->getUser())
              ->givePermissionTo('student.read')
              ->givePermissionTo('student.update')
-             ->post('/api/people/students/'.$student->uid.'/address', $payload);
+             ->put('/api/people/students/'.$student->uid.'/address', $payload);
 
         $this->assertResponseStatus(200)
              ->seeJsonStructure(['address' => ['address_line1', 'address_line2', 'city']])
