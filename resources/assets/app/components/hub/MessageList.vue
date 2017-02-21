@@ -10,6 +10,9 @@
                     value="Load older messages"/>
       <icon type="circle-o-notch" class="fa-spin" v-else/>
     </div>
+    <div class="col-12" v-if="!fetching && messages.length === 0">
+      <img src="../../assets/messages/chat-placeholder.svg">
+    </div>
     <message v-for="(message, index) in messages" :key="message" data-type="message"
              v-bind="{ message, continued: message.$continued === true }" ref="messages"
              @preview="(payload) => preview(message, index, payload)"></message>
