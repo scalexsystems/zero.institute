@@ -43,7 +43,7 @@ class StudentControllerTest extends \TestCase
 
     public function test_update_can_update_student()
     {
-        $student = $this->createStudent();
+        $student = $this->createStudentAndUser();
 
         $payload = [
             // Basic Information.
@@ -71,14 +71,14 @@ class StudentControllerTest extends \TestCase
             'disease' => 'Node',
             'allergy' => 'None',
             'visible_marks' => 'None',
-            'food_habit' => 'veg',
+            'food_habit' => ['veg'],
             'medical_remarks' => 'None',
 
             // Maintenance Information.
             'remarks' => 'None',
         ];
 
-        $this->givePermissionTo($this->getUser(), Action::UPDATE_STUDENT)
+        $this->givePermissionTo($this->getUser(), 'student.update')
              ->actingAs($this->getUser())
              ->put('/api/people/students/'.$student->uid, $payload);
 

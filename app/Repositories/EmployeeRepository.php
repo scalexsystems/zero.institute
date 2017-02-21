@@ -81,7 +81,7 @@ class EmployeeRepository extends Repository
         'disease' => 'nullable|max:255',
         'allergy' => 'nullable|max:255',
         'visible_marks' => 'nullable|max:255',
-        'food_habit' => 'nullable|in:veg,non_veg',
+        'food_habit' => 'nullable|array',
         'medical_remarks' => 'nullable|max:65536',
 
         // Maintenance Information
