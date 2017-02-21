@@ -59,7 +59,7 @@ class CourseRepository extends Repository
                 'code' => [
                     'bail',
                     'required',
-                    'alphadash',
+                    'alpha_dash',
                     Rule::unique('courses')->where('school_id', $id),
                 ],
                 'department_id' => [
@@ -97,7 +97,7 @@ class CourseRepository extends Repository
         $rules['code'] = [
             'bail',
             'required',
-            'alphadash',
+            'alpha_dash',
             Rule::unique('courses')
                 ->where('school_id', $course->school_id)
                 ->ignore($course->getKey()),
