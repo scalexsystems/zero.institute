@@ -9,14 +9,15 @@
     "dev:components": "webpack-dashboard -- webpack-dev-server --config tests/unit/runner.js --open",
     "prehot": "yarn run io",
     "hot": "node scripts/hot.js",
-    "prod": "NODE_ENV=production webpack --env=prod --progress --hide-modules",
+    "build:prod": "NODE_ENV=production webpack --env=prod --progress --hide-modules",
     "io": "laravel-echo-server start &",
     "test": "yarn run lint:fix && yarn run test:unit && yarn run test:e2e",
     "test:e2e": "node tests/e2e/runner.js",
     "test:unit": "karma start tests/unit/karma.conf.js --single-run",
     "lint": "eslint --ext .js,.vue resources/assets/app tests/e2e tests/unit",
     "lint:fix": "eslint --fix --ext .js,.vue resources/assets/app",
-    "postverion": "./scrips/production.sh"
+    "preprod": "yarn version",
+    "prod": "./scrips/production.sh"
   },
   "devDependencies": {
     "add-asset-html-webpack-plugin": "^1.0.2",
@@ -96,5 +97,5 @@
     "vue-router": "^2.1.1",
     "vuex": "^2.1.2"
   },
-  "version": "0.4.3"
+  "version": "0.4.4"
 }
