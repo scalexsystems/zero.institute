@@ -19,7 +19,7 @@
 
 
       <div :class="[$style.ticker]">
-        <div v-for="(photo, index) in photos" :class="{ [$style.tick]: true, active: index === cursor }" @click="cursor = index"></div>
+        <div v-for="(photo, index) in photos" :class="{ [$style.tick]: true, [$style.active]: index === cursor }" @click="cursor = index"></div>
       </div>
     </div>
   </div>
@@ -123,8 +123,9 @@ export default {
     }
 
     &:before, &:after {
-      flex: 1;
-      content: ' ';
+      flex: 1 1 0.0001%;
+      height: 1px;
+      content: '';
       display: block;
     }
 
