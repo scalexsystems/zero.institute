@@ -2,7 +2,7 @@
 // Bootstrap v4 configuration.
 // 
 
-$grid-gutter-width-base:     16px;
+$grid-gutter-width-base: 16px;
 
 $enable-flex: true !default;
 $enable-rounded: true !default;
@@ -30,7 +30,7 @@ $gray-lightest: #e7e7e7 !default;
 
 $blue: #001dFF !default;
 $black: #000000 !default;
-$border-color: rgba(0, 0, 0, 0.15) !default;
+$border-color: #e7e7e7 !default;
 $input-border-color: $border-color !default;
 $card-border-color: $border-color !default;
 $dropdown-border-color: $border-color !default;
