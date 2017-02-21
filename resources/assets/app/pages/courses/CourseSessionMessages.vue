@@ -36,7 +36,7 @@ export default {
       return this.group.name || '...'
     },
     subtitle () {
-      return this.group.id ? this.group.description : '...'
+      return 'Click here to view course details.'
     },
     photo () {
       return this.group.photo
