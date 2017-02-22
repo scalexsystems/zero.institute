@@ -24,7 +24,7 @@ export default {
       return this.group ? this.group.name : '...'
     },
     subtitle () {
-      return this.group ? this.group.description || 'Click to add purpose of the group.' : '...'
+      return this.group ? this.group.description || 'Purpose of group not set.' : '...'
     },
     photo () {
       return this.group ? this.group.photo : ''
@@ -37,14 +37,8 @@ export default {
 
   methods: {
 
-    onAction (type) {
+    onAction () {
       const params = { id: this.group.id }
-
-      if (type === 'subtitle' && !this.group.description) {
-        this.$router.push({ name: 'group.edit', params })
-
-        return //
-      }
 
       this.$router.push({ name: 'group.show', params })
     },

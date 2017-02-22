@@ -71,8 +71,8 @@ class GroupTransformer extends Transformer
             'type' => (string)($group->type ?? 'group'),
             'type_text' => trans_choice('groups.private', $group->private ? 1 : 0),
             'private' => (bool)$group->private,
-            'member_count' => (int)($group->count_members ?? 0),
-            'member_count_text' => trans_choice('groups.count_members', $group->count_members ?? 0),
+            'member_count' => (int)($group->members_count ?? 0),
+            'member_count_text' => trans_choice('groups.count_members', $group->members_count ?? 0),
             'channel' => (string)$group->getChannelName(),
             'active_at' => $group->lastMessage ? iso_date($group->lastMessage->created_at) : null,
         ];
