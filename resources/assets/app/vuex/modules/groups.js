@@ -203,14 +203,6 @@ const actions = {
     }
   },
 
-  async read ({ commit }, { id, message }) {
-    const response = await http.put(`messages/${message.id}/read`)
-
-    if (!response) {
-      commit('MESSAGE_READ', { id, message })
-    }
-  },
-
   async readAll ({ commit }, { id, messages }) {
     if (messages.length === 0) return false
 

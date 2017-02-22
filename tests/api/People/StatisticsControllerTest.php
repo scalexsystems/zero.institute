@@ -12,7 +12,7 @@ class StatisticsControllerTest extends \TestCase
         $this->createStudent(2);
 
         $this->actingAs($this->getUser())
-             ->givePermissionTo(Action::PEOPLE)
+             ->givePermissionTo('people.statistics')
              ->get('/api/people/statistics');
 
         $this->assertResponseStatus(200)

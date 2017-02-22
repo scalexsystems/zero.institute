@@ -23,7 +23,7 @@ class PhotoControllerTest extends \TestCase
         $this->expectsEvents(PhotoUpdated::class);
 
         $this->actingAs($student->user)
-             ->postFile('/api/people/students/'.$student->uid.'/photo', ['photo' => $this->getSomeFile('photo.jpg')]);
+             ->postFile('/api/people/students/'.$student->uid.'/photo', ['photo' => $this->getSomeImage('photo.jpeg')]);
 
         $this->assertResponseStatus(202);
     }
