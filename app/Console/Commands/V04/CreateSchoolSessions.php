@@ -63,7 +63,7 @@ class CreateSchoolSessions extends Command
         // Create a semester.
         if (!$semester) {
             $semester = new Semester(['name' => 'Change Semester Name']);
-            $semester->school()->associate($semester);
+            $semester->school()->associate($school);
             $semester->save();
         }
 
