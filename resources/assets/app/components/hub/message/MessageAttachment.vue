@@ -1,21 +1,22 @@
 <template>
-  <div class="c-hub-message-message-attachment card d-inline-flex flex-row" role="button" @click="$emit('preview')">
-     <div class="logo">
-         <icon class="fa-fw" :type="icon"></icon>
-     </div>
-      <div class="main">
-          <div class="filename">
-            <span>{{ title }}</span>
-          </div>
-          <div class="size">
-            <small class='text-muted'>{{ size }}</small>
-
-            <a class="btn download float-right" role="button" @click.stop.prevent="download" v-tooltip="'Download the file.'">
-              <icon type="cloud-download"></icon>
-            </a>
-          </div>
-      </div>
+<div class="c-hub-message-message-attachment card d-inline-flex flex-row" role="button" @click="$emit('preview')">
+  <div class="logo">
+    <icon class="fa-fw" :type="icon"></icon>
   </div>
+  <div class="main">
+    <div class="filename">
+      <span>{{ title }}</span>
+    </div>
+    <div class="size">
+      <small class='text-muted'>{{ size }}</small>
+
+      <a class="btn download float-right" role="button" :href="attachment.links.original" target="_blank"
+         rel="noopener noreferrer" v-tooltip="'Download the file.'">
+        <icon type="cloud-download"></icon>
+      </a>
+    </div>
+  </div>
+</div>
 </template>
 
 <script>
@@ -66,14 +67,9 @@ export default {
     size () {
       return filesize(this.attachment.size || 0)
     }
-  },
-
-  methods: {
-    download () {
-      // TODO: Implement it!
-    }
   }
 }
+
 </script>
 
 <style lang="scss">
@@ -88,6 +84,11 @@ export default {
 
   .download {
     margin-top: -.5rem;
+    color: inherit;
+    &:focus, &:active {
+      outline: none;
+      box-shadow: none;
+    }
   }
 
   .logo {
@@ -105,9 +106,17 @@ export default {
     overflow: hidden;
   }
 
-  .fa-picture-o, .fa-file-word-o { color: blue; }
-  .fa-file-excel-o { color: green; }
-  .fa-file-powerpoint-o, .fa-file-pdf-o { color: red; }
-  .fa-file-text-o, .fa-file-o { color: gray; }
+  .fa-picture-o, .fa-file-word-o {
+    color: blue;
+  }
+  .fa-file-excel-o {
+    color: green;
+  }
+  .fa-file-powerpoint-o, .fa-file-pdf-o {
+    color: red;
+  }
+  .fa-file-text-o, .fa-file-o {
+    color: gray;
+  }
 }
 </style>
