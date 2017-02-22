@@ -129,7 +129,7 @@ class GroupRepository extends Repository
     {
         $query = $user->groups()->getQuery();
 
-        $query->with('photo')->orderBy('name');
+        $query->with('photo')->orderBy('name')->withCount('members');
 
         $count = new MessagesCount($user);
 

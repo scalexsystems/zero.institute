@@ -32,16 +32,18 @@ class GroupController extends Controller
      */
     public function index(Request $request, GroupRepository $repository)
     {
-        $groups = $repository->with(['photo', 'lastMessage'])->pushCriteria(new PrivateGroup(false));
+        $repository->with(['photo', 'lastMessage'])->pushCriteria(new PrivateGroup(false));
+
+        $repository->withCount('members');
 
         if ($request->has('q')) {
-            $groups->search($request->query('q'));
+            $repository->search($request->query('q'));
         } else {
-            $groups->pushCriteria(new OrderBy('name'));
-            $groups->pushCriteria(new MessagesCount($request->user()));
+            $repository->pushCriteria(new OrderBy('name'));
+            $repository->pushCriteria(new MessagesCount($request->user()));
         }
 
-        return $groups->paginate();
+        return $repository->paginate();
     }
 
     /**
@@ -53,7 +55,9 @@ class GroupController extends Controller
      */
     public function show(Request $request, $group, GroupRepository $repository)
     {
-        $group = $repository->pushCriteria(new MessagesCount($request->user()))->find((int)$group);
+        $group = $repository->withCount('members')
+                            ->pushCriteria(new MessagesCount($request->user()))
+                            ->find((int)$group);
 
         $this->authorize('view', $group);
 
