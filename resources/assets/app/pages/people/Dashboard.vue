@@ -36,34 +36,6 @@
                 <div class="col-12 col-lg-6">
                   <div class="embed-responsive embed-responsive-16by9">
                     <iframe class="embed-responsive-item"
-                            src="https://www.youtube.com/embed/MA7pMfnP-r4?rel=0&autohide=1&color=white&modestbranding=1&showinfo=0&theme=light"
-                            frameborder="0"
-                            allowfullscreen></iframe>
-                  </div>
-                </div>
-                <div class="col-12 col-lg-6">
-                  <small class="text-primary">On-boarding</small>
-                  <br>
-                  <h4>Setup Zero in 5 Minutes</h4>
-
-                  <p>
-                    <small>Welcome to Scalex Zero. Watch this video to setup your institute on Zero.</small>
-                  </p>
-
-                  <p>
-                    <small>Add Disciplines (e.g. B.Tech,M.Tech) <br>
-                      Add Departments (e.g. Mechanical Engineering) <br>
-                      Approve profiles of students, teachers and employees.
-                    </small>
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="card-block py-0">
-              <div class="row">
-                <div class="col-12 col-lg-6">
-                  <div class="embed-responsive embed-responsive-16by9">
-                    <iframe class="embed-responsive-item"
                             src="https://www.youtube.com/embed/Q0FRHSRaLE8?rel=0&autohide=1&color=white&modestbranding=1&showinfo=0&theme=light"
                             frameborder="0"
                             allowfullscreen></iframe>
@@ -93,7 +65,7 @@
           <div class="card">
             <h4 class="card-header p-3 bg-white">Zero: Release Schedule</h4>
             <div class="card-block">
-              <div class="fl mb-1" v-for="stage of stages">
+              <div class="d-flex flex-row mb-1" v-for="stage of stages">
                 <div class="px-1">
                   <i v-if="stage.completed" class="fa fa-check text-success"></i>
                   <i v-else class="fa fa-clock-o text-muted"></i>

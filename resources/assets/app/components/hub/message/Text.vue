@@ -1,5 +1,5 @@
 <template>
-  <div class="c-hub-message-text d-flex flex-row mt-2">
+  <div class="c-hub-message-text d-flex flex-row mt-3">
     <sender-photo :sender="message.sender"></sender-photo>
 
     <div class="text-message d-flex flex-column flex-auto">

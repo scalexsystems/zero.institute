@@ -51,9 +51,9 @@ export default {
       return user.bio || 'User Profile'
     },
     department () {
-      const user = this.user || {}
+      const user = this.user || { person: {} }
 
-      return this.departmentById(user.department_id) || {}
+      return this.departmentById(user.person.department_id) || {}
     },
     ...mapGetters('departments', ['departmentById'])
   },

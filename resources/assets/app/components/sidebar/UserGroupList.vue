@@ -3,11 +3,11 @@
   <div class="btn-group d-flex flex-row align-items-end mb-3">
     <div class="btn btn-block" role="button" :class="[group ? 'btn-secondary' : 'btn-outline-secondary']"
          @click.stop="group = true">
-      <icon v-if="group_unread_count > 0" type="circle" class="text-primary"/> Groups
+      Groups<icon v-if="group_unread_count > 0" type="circle" class="text-primary" style="font-size: 0.5rem; vertical-align: top"/>
     </div>
     <div class="btn btn-block" role="button" :class="[group ? 'btn-outline-secondary' : 'btn-secondary']"
          @click.stop="group = false">
-      <icon v-if="user_unread_count > 0" type="circle" class="text-primary"/> People
+      People<icon v-if="user_unread_count > 0" type="circle" class="text-primary" style="font-size: 0.5rem; vertical-align: top"/>
     </div>
   </div>
 
