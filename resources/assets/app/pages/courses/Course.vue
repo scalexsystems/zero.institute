@@ -13,7 +13,7 @@
       <h2 class="mb-1">{{ course.code }} - {{ course.name }}</h2>
 
       <p>
-        <small>{{ department.name }} &centerdot; {{ semester.name || 'Semester not set' }}</small>
+        <small>{{ department.name }}</small>
       </p>
 
       <p>{{ course.description }}</p>
