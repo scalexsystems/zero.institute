@@ -59,6 +59,7 @@ export default {
 
 .c-shared-container-window {
   padding: 0 !important;
+  overflow: hidden;
   .window {
     @include match-parent();
   }
