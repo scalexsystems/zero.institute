@@ -14,12 +14,7 @@ class SemesterController extends Controller
 
     public function index(Request $request)
     {
-        return cache()->rememberForever(
-            schoolScopeCacheKey('semesters'),
-            function () use ($request) {
-                return $this->getPeopleCount($request);
-            }
-        );
+        return repository(Semester::class)->all();
     }
 
     public function store(Request $request)
@@ -28,8 +23,8 @@ class SemesterController extends Controller
 
         $semester = repository(Semester::class)->create(
             [
-                'school' => current_user()->school,
-                'school_id' => current_user()->school_id,
+                'school' => $request->user()->school,
+                'school_id' => $request->user()->school_id,
             ] + $request->all()
         );
 
@@ -44,23 +39,5 @@ class SemesterController extends Controller
         repository(Semester::class)->update($semester, $request->all());
 
         return $semester;
-    }
-
-    public function getPeopleCount(Request $request)
-    {
-        $disciplines = repository(Semester::class)->all();
-
-        $students = DB::table('students')
-            ->where('school_id', $request->user()->school_id)
-            ->groupBy('discipline_id')
-            ->select([DB::raw('count(*) as aggregate'), 'discipline_id'])
-            ->get()->pluck('aggregate', 'discipline_id');
-        //FIXME::
-
-        foreach ($disciplines as $discipline) {
-            $discipline->student_count = $students->get($discipline->getKey(), 0);
-        }
-
-        return $disciplines;
     }
 }
