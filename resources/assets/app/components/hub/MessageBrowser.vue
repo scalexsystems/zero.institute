@@ -4,7 +4,7 @@
   <message-composer v-bind="{ value, dest }"
                     @input="v => $emit('input', v)"
                     @focus="sendReadReceipts"
-                    @send="v => $emit('send', v)"/>
+                    @send="sendMessage"/>
 </div>
 </template>
 
@@ -31,16 +31,24 @@ export default {
 
   methods: {
     sendReadReceipts () {
-      this.$emit('focus')
-
       if (this.unread > 0) {
         this.$emit('read', this.messages.filter(message => message.unread))
       }
+    },
+
+    sendMessage (message) {
+      this.$emit('send', message)
     }
   },
 
   created () {
     this.$on('reset', e => this.$refs && this.$refs.ml.$emit('reset', e))
+    this.sendReadReceipts()
+  },
+
+  watch: {
+    messages: 'sendReadReceipts',
+    unread: 'sendReadReceipts'
   }
 }
 </script>

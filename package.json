@@ -16,7 +16,7 @@
     "test:unit": "karma start tests/unit/karma.conf.js --single-run",
     "lint": "eslint --ext .js,.vue resources/assets/app tests/e2e tests/unit",
     "lint:fix": "eslint --fix --ext .js,.vue resources/assets/app",
-    "preprod": "yarn version",
+    "preprod": "yarn version --no-git-tag-version",
     "prod": "./scripts/production.sh"
   },
   "devDependencies": {
@@ -97,5 +97,5 @@
     "vue-router": "^2.1.1",
     "vuex": "^2.1.2"
   },
-  "version": "0.4.0-9"
+  "version": "0.4.0-12"
 }
