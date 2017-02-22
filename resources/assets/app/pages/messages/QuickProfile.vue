@@ -23,7 +23,7 @@
 
       <div class="my-3">
         <router-link :to="{name: 'user.messages', params: { id: user.id } }" class="btn btn-primary">Send Message</router-link>
-        <router-link :to="{name:`${user.type}.show`, params: { uid: user.uid } }" class="btn btn-secondary">View Profile</router-link>
+        <router-link :to="{name:`${user.type}.show`, params: { uid: user.person.uid } }" class="btn btn-secondary">View Profile</router-link>
       </div>
     </div>
   </div>
