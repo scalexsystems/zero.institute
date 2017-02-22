@@ -42,7 +42,7 @@ class TeacherControllerTest extends \Testcase
 
     public function test_update_can_update_teacher()
     {
-        $student = $this->createTeacher();
+        $student = $this->createTeacherAndUser();
 
         $payload = [
             // Basic Information.
@@ -70,14 +70,14 @@ class TeacherControllerTest extends \Testcase
             'disease' => 'Node',
             'allergy' => 'None',
             'visible_marks' => 'None',
-            'food_habit' => 'veg',
+            'food_habit' => ['veg'],
             'medical_remarks' => 'None',
 
             // Maintenance Information.
             'remarks' => 'None',
         ];
 
-        $this->givePermissionTo($this->getUser(), Action::UPDATE_TEACHER)
+        $this->givePermissionTo($this->getUser(), 'teacher.update')
             ->actingAs($this->getUser())
             ->put('/api/people/teachers/'.$student->uid, $payload);
 

@@ -1,6 +1,7 @@
 <?php namespace Test\Api\People\Students;
 
 use Scalex\Zero\Events\Student\GuardianUpdated;
+use Scalex\Zero\Events\Student\Updated;
 
 class GuardianControllerTest extends \TestCase
 {
@@ -22,10 +23,10 @@ class GuardianControllerTest extends \TestCase
         $student = $this->createStudentAndUser();
         $payload = ['first_name' => 'Foo'];
 
-        $this->expectsEvents(GuardianUpdated::class);
+        $this->expectsEvents(Updated::class);
 
         $this->actingAs($student->user)
-             ->post('/api/people/students/'.$student->uid.'/father', $payload);
+             ->put('/api/people/students/'.$student->uid.'/father', $payload);
 
         $this->assertResponseStatus(200)
              ->seeJsonStructure(['guardian' => ['id']])
@@ -48,10 +49,10 @@ class GuardianControllerTest extends \TestCase
         $student = $this->createStudentAndUser();
         $payload = ['first_name' => 'Foo'];
 
-        $this->expectsEvents(GuardianUpdated::class);
+        $this->expectsEvents(Updated::class);
         
         $this->actingAs($student->user)
-             ->post('/api/people/students/'.$student->uid.'/mother', $payload);
+             ->put('/api/people/students/'.$student->uid.'/mother', $payload);
 
         $this->assertResponseStatus(200)
              ->seeJsonStructure(['guardian' => ['id']])

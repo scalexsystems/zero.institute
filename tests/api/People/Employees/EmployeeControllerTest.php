@@ -43,7 +43,7 @@ class EmployeeControllerTest extends \TestCase
 
     public function test_update_can_update_employee()
     {
-        $employee = $this->createEmployee();
+        $employee = $this->createEmployeeAndUser();
 
         $payload = [
             // Basic Information.
@@ -71,14 +71,14 @@ class EmployeeControllerTest extends \TestCase
             'disease' => 'Node',
             'allergy' => 'None',
             'visible_marks' => 'None',
-            'food_habit' => 'veg',
+            'food_habit' => ['veg'],
             'medical_remarks' => 'None',
 
             // Maintenance Information.
             'remarks' => 'None',
         ];
 
-        $this->givePermissionTo($this->getUser(), Action::UPDATE_EMPLOYEE)
+        $this->givePermissionTo($this->getUser(), 'employee.update')
             ->actingAs($this->getUser())
             ->put('/api/people/employees/'.$employee->uid, $payload);
 

@@ -63,7 +63,7 @@ class MemberControllerTest extends \TestCase
 
         $this->actingAs($group->owner)->post('/api/groups/'.$group->id.'/members')
              ->assertResponseStatus(422)
-             ->seeJsonStructure(['errors' => ['members']]);
+             ->seeJsonStructure(['errors' => ['member']]);
     }
 
     public function test_store_can_add_members()
@@ -73,8 +73,8 @@ class MemberControllerTest extends \TestCase
         $this->expectsEvents(MemberJoined::class);
         $this->expectsModelEvents(Group::class, 'membersAdded');
         $this->actingAs($group->owner)->post('/api/groups/'.$group->id.'/members',
-                                             ['members' => $id = $this->createUser()->id])
-             ->assertResponseStatus(200);
+                                             ['member' => $id = $this->createUser()->id])
+            ->assertResponseStatus(200);
         $this->seeInDatabase('group_user', ['group_id' => $group->id, 'user_id' => $id]);
     }
 
@@ -96,7 +96,7 @@ class MemberControllerTest extends \TestCase
 
         $this->actingAs($group->owner)->delete('/api/groups/'.$group->id.'/members')
              ->assertResponseStatus(422)
-             ->seeJsonStructure(['errors' => ['members']]);
+             ->seeJsonStructure(['errors' => ['member']]);
     }
 
     public function test_delete_can_remove_members()
@@ -110,7 +110,7 @@ class MemberControllerTest extends \TestCase
         $this->expectsEvents(MemberLeft::class);
         $this->expectsModelEvents(Group::class, 'membersRemoved');
         $this->actingAs($group->owner)->delete('/api/groups/'.$group->id.'/members',
-                                             ['members' => $user->id])
+                                             ['member' => $user->id])
              ->assertResponseStatus(200);
         $this->dontSeeInDatabase('group_user', ['group_id' => $group->id, 'user_id' => $user->id]);
     }
@@ -125,7 +125,7 @@ class MemberControllerTest extends \TestCase
         $this->doesntExpectModelEvents(Group::class, 'membersRemoved');
         $this->doesntExpectEvents(MemberLeft::class);
         $this->actingAs($group->owner)->delete('/api/groups/'.$group->id.'/members',
-                                               ['members' => $group->owner->id])
+                                               ['member' => $group->owner->id])
              ->assertResponseStatus(200);
         $this->seeInDatabase('group_user', ['group_id' => $group->id, 'user_id' => $group->owner->id]);
     }

@@ -2,6 +2,7 @@
 
 use Scalex\Zero\Action;
 use Scalex\Zero\Events\Student\StudentAddressUpdated;
+use Scalex\Zero\Events\Student\Updated;
 use Scalex\Zero\Models\Address;
 
 class AddressControllerTest extends \TestCase
@@ -23,7 +24,7 @@ class AddressControllerTest extends \TestCase
         $student = $this->createStudent();
 
         $this->actingAs($this->getUser())
-             ->givePermissionTo(Action::VIEW_STUDENT)
+             ->givePermissionTo('student.read')
              ->get('/api/people/students/'.$student->uid.'/address');
 
         $this->assertResponseStatus(200)
@@ -47,13 +48,13 @@ class AddressControllerTest extends \TestCase
         $student = $this->createStudent();
         $payload = ['address_line1' => 'Foo'];
 
-        $this->expectsEvents(StudentAddressUpdated::class)
+        $this->expectsEvents(Updated::class)
              ->expectsModelEvents(Address::class, 'updated');
 
         $this->actingAs($this->getUser())
-             ->givePermissionTo(Action::VIEW_STUDENT)
-             ->givePermissionTo(Action::UPDATE_STUDENT)
-             ->post('/api/people/students/'.$student->uid.'/address', $payload);
+             ->givePermissionTo('student.read')
+             ->givePermissionTo('student.update')
+             ->put('/api/people/students/'.$student->uid.'/address', $payload);
 
         $this->assertResponseStatus(200)
              ->seeJsonStructure(['address' => ['address_line1', 'address_line2', 'city']])

@@ -125,6 +125,14 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
         return new UploadedFile($path, $name, null, null, null, true);
     }
 
+    public function getSomeImage($name = 'foo.png')
+    {
+        $image = imagecreate(30, 30);
+        imagejpeg($image, '/tmp/' . $name);
+        return new UploadedFile('/tmp/'. $name, $name, 'image/jpeg', null, null, true);
+
+    }
+
     public function assignRoleTo(\Scalex\Zero\User $user, string $role)
     {
         $role = \Znck\Trust\Models\Role::create(['slug' => $role, 'name' => $role]);
