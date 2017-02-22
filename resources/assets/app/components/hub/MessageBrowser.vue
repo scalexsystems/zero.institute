@@ -1,10 +1,10 @@
 <template>
 <div class="c-hub-message-browser d-flex flex-column">
-  <message-list v-bind="{ messages }" class="flex-auto p-2" ref="ml" @infinite="any => $emit('infinite', any)"/>
+  <message-list v-bind="{ messages }" class="flex-auto p-2" ref="ml" @infinite="onInfinite"/>
   <message-composer v-bind="{ value, dest }"
                     @input="v => $emit('input', v)"
                     @focus="sendReadReceipts"
-                    @send="v => $emit('send', v)"/>
+                    @send="sendMessage"/>
 </div>
 </template>
 
@@ -30,17 +30,39 @@ export default {
   },
 
   methods: {
-    sendReadReceipts () {
-      this.$emit('focus')
+    onInfinite (actions) {
+      const loaded = actions.loaded
+      const complete = actions.complete
 
+      actions.loaded = () => {
+        this.sendReadReceipts()
+        loaded()
+      }
+
+      actions.complete = () => {
+        this.sendReadReceipts()
+        complete()
+      }
+
+      this.$emit('infinite', actions)
+    },
+
+    sendReadReceipts () {
       if (this.unread > 0) {
         this.$emit('read', this.messages.filter(message => message.unread))
       }
+    },
+
+    sendMessage (message) {
+      this.sendReadReceipts()
+
+      this.$emit('send', message)
     }
   },
 
   created () {
     this.$on('reset', e => this.$refs && this.$refs.ml.$emit('reset', e))
+    this.sendReadReceipts()
   }
 }
 </script>
