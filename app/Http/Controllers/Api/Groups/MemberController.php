@@ -48,6 +48,9 @@ class MemberController extends Controller
         $this->authorize('remove-members', $group);
         $this->validate($request, ['member' => 'required']);
 
+        if ((int) $group->owner_id === (int) $request->input('member')) {
+            abort(400, 'You cannot remove group moderator.');
+        }
         $members = $group->removeMembers($request->input('member'));
 
         if (count($members)) {

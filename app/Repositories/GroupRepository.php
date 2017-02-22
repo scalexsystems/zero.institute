@@ -97,6 +97,7 @@ class GroupRepository extends Repository
         $this->onCreate($group->save());
 
         $group->addMembers($members);
+        $group->addMembers($group->owner);
 
         return $group;
     }

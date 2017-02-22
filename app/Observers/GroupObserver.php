@@ -8,27 +8,4 @@ use Scalex\Zero\Models\Group;
 
 class GroupObserver
 {
-    /**
-     * Created hook.
-     *
-     * @param \Scalex\Zero\Models\Group $group
-     */
-    public function created(Group $group)
-    {
-        if (!$group->isMember($group->owner)) {
-            $group->addMembers($group->owner);
-        }
-    }
-
-    /**
-     * Created hook.
-     *
-     * @param \Scalex\Zero\Models\Group $group
-     */
-    public function updated(Group $group)
-    {
-        if (!$group->isMember($group->owner)) {
-            $group->addMembers($group->owner);
-        }
-    }
 }
