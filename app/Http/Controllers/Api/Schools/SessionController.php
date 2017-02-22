@@ -13,12 +13,7 @@ class SessionController extends Controller
 
     public function index(Request $request)
     {
-        return cache()->rememberForever(
-            schoolScopeCacheKey('sessions'),
-            function () use ($request) {
-                return repository(Session::class)->with('semester')->all();
-            }
-        );
+        return repository(Session::class)->with('semester')->all();
     }
 
     public function store(Request $request)

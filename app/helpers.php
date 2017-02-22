@@ -154,7 +154,7 @@ if (!function_exists('current_user')) {
      */
     function current_user()
     {
-        return Request::user();
+        return Auth::user();
     }
 }
 
@@ -197,7 +197,7 @@ if (!function_exists('attach_attachment')) {
 if (!function_exists('schoolScopeCacheKey')) {
     function schoolScopeCacheKey(string $key, $school = null)
     {
-        $school = $school ?? Request::user()->school_id;
+        $school = $school ?? Auth::user()->school_id;
 
         return "school:{$school}.{$key}";
     }
