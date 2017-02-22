@@ -126,7 +126,7 @@ class MemberControllerTest extends \TestCase
         $this->doesntExpectEvents(MemberLeft::class);
         $this->actingAs($group->owner)->delete('/api/groups/'.$group->id.'/members',
                                                ['member' => $group->owner->id])
-             ->assertResponseStatus(200);
+             ->assertResponseStatus(400);
         $this->seeInDatabase('group_user', ['group_id' => $group->id, 'user_id' => $group->owner->id]);
     }
 
