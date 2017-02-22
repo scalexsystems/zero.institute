@@ -127,6 +127,7 @@ export default {
   methods: {
     processResponse: function (course, errors, response) {
       if (course) {
+        this.attributes = this.$options.data().attributes
         this.$router.replace({ name: 'course.show', params: { id: course.id }})
       } else if (errors) {
         this.setErrors(errors)
