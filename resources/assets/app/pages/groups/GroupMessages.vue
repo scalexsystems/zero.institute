@@ -10,6 +10,7 @@
 import { mapActions, mapGetters } from 'vuex'
 import MessageBrowser from '../../components/hub/MessageBrowser.vue'
 import GroupRoute from './mixins/route'
+import backup from '../../components/hub/backup-message'
 
 export default {
   name: 'GroupMessages',
@@ -54,7 +55,7 @@ export default {
 
       this.send(request)
 
-      this.message = ''
+      this.clearMessage()
     },
 
     onRead (messages) {
@@ -83,6 +84,7 @@ export default {
   },
 
   components: { MessageBrowser },
-  mixins: [GroupRoute]
+
+  mixins: [GroupRoute, backup]
 }
 </script>

@@ -38,17 +38,13 @@ export default {
 
     sendMessage (message) {
       this.$emit('send', message)
+      this.sendReadReceipts()
     }
   },
 
   created () {
     this.$on('reset', e => this.$refs && this.$refs.ml.$emit('reset', e))
     this.sendReadReceipts()
-  },
-
-  watch: {
-    messages: 'sendReadReceipts',
-    unread: 'sendReadReceipts'
   }
 }
 </script>
