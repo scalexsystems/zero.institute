@@ -45,14 +45,27 @@ export default {
     }
   },
 
-  methods: mapActions('courses', ['enrollments']),
+  methods: {
+
+    async init () {
+      const { students } = await this.enrollments(this.session.id)
+
+      this.source = students || []
+    },
+
+    ...mapActions('courses', ['enrollments'])
+  },
 
   components: { StudentCard },
 
-  async created () {
-    const { students } = await this.enrollments(this.session.id)
+  created () {
+    this.init()
+  },
 
-    this.source = students || []
+  watch: {
+    $route () {
+      this.init()
+    }
   }
 }
 </script>

@@ -17,12 +17,12 @@
         <input type="submit" hidden>
 
         <div class="col-12 col-lg-6">
-          <input-text title="Name" subtitle="Choose semester & dates, it would be auto-generated."
-                      v-model="attributes.name" :errors="errors" readonly/>
+          <input-typeahead title="Semester" v-model="attributes.semester_id" :suggestions="semesters" :errors="errors" autofocus required />
         </div>
 
         <div class="col-12 col-lg-6">
-          <input-typeahead title="Semester" v-model="attributes.semester_id" :suggestions="semesters" :errors="errors" autofocus required/>
+          <input-text title="Name" subtitle="Choose semester & dates, it would be auto-generated."
+                      v-model="attributes.name" :errors="errors" :readonly="true"/>
         </div>
 
         <div class="col-12 col-lg-6">

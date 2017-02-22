@@ -15,12 +15,12 @@ use Znck\Attach\Builder;
 use Znck\Repositories\Repository;
 
 /**
- * @method Student find(string|int $id)
+ * @method Student find(string | int $id)
  * @method Student findBy(string $key, $value)
  * @method Student create(array $attr)
- * @method Student update(string|int|Student $id, array $attr, array $o = [])
- * @method Student delete(string|int|Student $id)
- * @method StudentRepository validate(array $attr, Student|null $model)
+ * @method Student update(string | int | Student $id, array $attr, array $o = [])
+ * @method Student delete(string | int | Student $id)
+ * @method StudentRepository validate(array $attr, Student | null $model)
  */
 class StudentRepository extends Repository
 {
@@ -218,7 +218,6 @@ class StudentRepository extends Repository
 
         // Prepare uploader.
         $uploader = Builder::makeFromFile($photo)->resize(360, 'preview', 360);
-        ;
 
         // Upload & get attachment.
         $attachment = $uploader->upload($attributes)->getAttachment();

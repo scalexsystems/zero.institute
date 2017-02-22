@@ -123,7 +123,7 @@ class SendInvitations implements ShouldQueue
             Teacher::insert($emails->map(function ($email) use ($timestamp) {
                 return [
                     'uid' => $email,
-                    'first_name' => ' ',
+                    'first_name' => $email,
                     'school_id' => $this->schoolId,
                     'created_at' => $timestamp,
                     'updated_at' => $timestamp,
@@ -137,7 +137,7 @@ class SendInvitations implements ShouldQueue
             Student::insert($emails->map(function ($email) use ($timestamp) {
                 return [
                     'uid' => $email,
-                    'first_name' => ' ',
+                    'first_name' => $email,
                     'school_id' => $this->schoolId,
                     'created_at' => $timestamp,
                     'updated_at' => $timestamp,
@@ -151,7 +151,7 @@ class SendInvitations implements ShouldQueue
             Employee::insert($emails->map(function ($email) use ($timestamp) {
                 return [
                     'uid' => $email,
-                    'first_name' => ' ',
+                    'first_name' => $email,
                     'school_id' => $this->schoolId,
                     'created_at' => $timestamp,
                     'updated_at' => $timestamp,

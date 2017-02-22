@@ -10,6 +10,7 @@
 import { mapActions, mapGetters } from 'vuex'
 import MessageBrowser from '../../components/hub/MessageBrowser.vue'
 import UserRoute from './mixins/route'
+import backup from '../../components/hub/backup-message'
 
 export default {
   name: 'UserMessages',
@@ -48,7 +49,7 @@ export default {
 
       this.send(request)
 
-      this.message = ''
+      this.clearMessage()
     },
 
     onRead (messages) {
@@ -77,6 +78,7 @@ export default {
   },
 
   components: { MessageBrowser },
-  mixins: [UserRoute]
+
+  mixins: [UserRoute, backup]
 }
 </script>

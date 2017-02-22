@@ -13,7 +13,7 @@ class BroadcastServiceProvider extends ServiceProvider
     {
         $this->registerRoutes();
         Broadcast::channel($this->channel(User::class), function (User $user, $userId) {
-            return (int)$user->id === (int)$userId;
+            return $user->id === (int)$userId;
         });
         Broadcast::channel($this->channel(Group::class), function (User $user, $groupId) {
             $group = Group::find($groupId);
@@ -23,11 +23,13 @@ class BroadcastServiceProvider extends ServiceProvider
             }
         });
         Broadcast::channel($this->channel(School::class), function (User $user, $schoolId) {
-            return $user->school_id === (int) $schoolId;
+            if ($user->school_id === (int)$schoolId) {
+                return transform($user);
+            }
         });
     }
 
-    protected function channel($class):string
+    protected function channel($class): string
     {
         return morph_model($class).'-*';
     }

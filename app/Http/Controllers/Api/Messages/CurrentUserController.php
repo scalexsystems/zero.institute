@@ -7,6 +7,8 @@ use Scalex\Zero\Criteria\Message\Direct\MessagesCount;
 use Scalex\Zero\Http\Controllers\Controller;
 use Scalex\Zero\Http\Requests;
 use Scalex\Zero\Repositories\UserRepository;
+use Scalex\Zero\User;
+use Znck\Repositories\Exceptions\NotFoundResourceException;
 
 class CurrentUserController extends Controller
 {
@@ -48,7 +50,11 @@ class CurrentUserController extends Controller
             return transform($request->user(), ['person'], null, true);
         }
 
-        $user = $repository->pushCriteria(new HaveConversationWithMessageCount($request->user()))->find($user);
+        try {
+            $user = $repository->pushCriteria(new HaveConversationWithMessageCount($request->user()))->find($user);
+        } catch (NotFoundResourceException $e) {
+            $user = User::findOrFail($user);
+        }
 
         return transform($user, ['person'], null, true);
     }

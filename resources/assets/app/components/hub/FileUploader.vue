@@ -6,12 +6,13 @@
     <div class="card mb-0">
       <h5 class="card-header">Uploading</h5>
       <div class="card-block">
-        <progress class="progress bg-muted mb-0" :value="progress" max="100">
+        <progress class="progress bg-muted mb-0" :value="progress" max="100" style="width: 100%">
           <div class="progress">
             <span class="progress-bar" :style="{ width: progress + '%' }"></span>
-            <span class="text-xs-center">Uploading...</span>
           </div>
         </progress>
+
+        <div class="text-center pt-2">{{ progress.toPrecision(3) }}%</div>
       </div>
     </div>
   </modal>
@@ -20,7 +21,7 @@
     <div class="card mb-0">
       <h5 class="card-header bg-white2">About the files</h5>
 
-      <div class="card-block">
+      <div class="card-block" style="overflow: auto">
         <template v-for="(title, index) of titles">
         <div v-if="index === 0" class="form-group">
           <label for="file-uploader-1">Name of the file</label>

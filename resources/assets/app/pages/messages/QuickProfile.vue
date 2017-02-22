@@ -22,8 +22,8 @@
       </p>
 
       <div class="my-3">
-        <router-link :to="{name: 'user.messages', params: { id: user.id } }" class="btn btn-primary">Send Message
-        </router-link>
+        <router-link :to="{name: 'user.messages', params: { id: user.id } }" class="btn btn-primary">Send Message</router-link>
+        <router-link :to="{name:`${user.type}.show`, params: { uid: user.uid } }" class="btn btn-secondary">View Profile</router-link>
       </div>
     </div>
   </div>
@@ -48,12 +48,12 @@ export default {
     subtitle () {
       const user = this.user || {}
 
-      return user.bio || 'User Profile'
+      return user.bio || 'View information'
     },
     department () {
-      const user = this.user || {}
+      const user = this.user || { person: {} }
 
-      return this.departmentById(user.department_id) || {}
+      return this.departmentById(user.person.department_id) || {}
     },
     ...mapGetters('departments', ['departmentById'])
   },

@@ -6,7 +6,7 @@
       <div class="c-user-card-title" :class="{ 'text-muted': !user.name.trim() }">{{ user.name.trim() || 'Name not set' }}
       </div>
       <div class="c-user-card-subtitle">
-        <span class="text-muted">Type:</span> {{ user.type || user._type }}
+        <span class="text-muted">Type:</span> {{ userType }}
       </div>
     </div>
   </div>
@@ -27,6 +27,16 @@ export default {
     remove: {
       type: Boolean,
       default: false
+    }
+  },
+
+  computed: {
+    userType () {
+      const user = this.user
+
+      if ('type' in user) return user.type
+
+      return user._type
     }
   }
 }

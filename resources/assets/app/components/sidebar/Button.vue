@@ -1,7 +1,7 @@
 <template>
   <router-link :to="route" class="c-sidebar-button card d-flex flex-row" role="button">
     <img v-if="photo" class="mr-2 photo fit-cover" :class="[type]" :src="photo">
-    <div class="d-flex align-items-center flex-auto main">
+    <div class="flex-auto main" v-bind="{ title }">
       <slot></slot>
     </div>
     <div v-if="hasExtra" class="d-flex align-items-center extra">
@@ -24,7 +24,8 @@ export default {
     route: {
       type: [Object, String],
       required: true
-    }
+    },
+    title: String,
   }
 }
 </script>
@@ -61,6 +62,7 @@ export default {
 
   .main {
     height: to-rem(28px);
+    line-height: to-rem(28px);
 
     overflow: hidden;
     white-space: nowrap;

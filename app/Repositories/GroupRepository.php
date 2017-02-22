@@ -165,7 +165,7 @@ class GroupRepository extends Repository
      */
     public function uploadProfilePhoto(Group $group, UploadedFile $file, User $user, array $attributes = [])
     {
-        return $this->upload($group, $file, $user, $attributes, true);
+        return $this->upload($group, $file, $user, $attributes, true, 450);
     }
 
     /**
@@ -210,6 +210,7 @@ class GroupRepository extends Repository
      * @param \Scalex\Zero\User $user
      * @param array $attributes
      * @param bool $isGroupPhoto
+     * @param $width
      *
      * @return \Scalex\Zero\Models\Attachment
      */
@@ -218,7 +219,8 @@ class GroupRepository extends Repository
         UploadedFile $file,
         User $user,
         array $attributes,
-        bool $isGroupPhoto
+        bool $isGroupPhoto,
+        $width = 1200
     ): Attachment {
         if (!$file->isValid()) {
             throw new UploadException('Invalid file.');
@@ -230,7 +232,7 @@ class GroupRepository extends Repository
         $uploader = Builder::makeFromFile($file);
 
         if ($this->isImage($file)) {
-            $uploader->resize(4096)->resize(450, 'preview');
+            $uploader->resize(4096)->resize($width, 'preview');
         }
 
         $attachment = $uploader->upload($attributes)->getAttachment();

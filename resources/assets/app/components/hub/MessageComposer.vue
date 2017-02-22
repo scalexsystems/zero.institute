@@ -1,7 +1,7 @@
 <template>
 <div class="c-hub-message-composer">
   <textarea class="c-hub-message-composer-input" name="message" :value="value" ref="input"
-            placeholder="Start discussing..." autofocus @input="onInput"
+            placeholder="Start discussing..." @input="onInput"
             @keydown.enter="onEnter" :disabled="disabled" rows='1'
             autocomplete="off" autocorrect="off" @focus="$emit('focus')"></textarea>
   <div class="c-hub-message-composer-actions">

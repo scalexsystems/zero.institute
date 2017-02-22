@@ -13,6 +13,7 @@
 import { mapActions, mapGetters } from 'vuex'
 import MessageBrowser from '../../components/hub/MessageBrowser.vue'
 import { notLastPage } from '../../util'
+import backup from '../../components/hub/backup-message'
 
 export default {
   name: 'CourseSessionMessages',
@@ -36,7 +37,7 @@ export default {
       return this.group.name || '...'
     },
     subtitle () {
-      return this.group.id ? this.group.description : '...'
+      return 'Click here to view course details.'
     },
     photo () {
       return this.group.photo
@@ -70,7 +71,7 @@ export default {
 
       this.send(request)
 
-      this.message = ''
+      this.clearMessage()
     },
 
     onRead (messages) {
@@ -118,6 +119,8 @@ export default {
     }
   },
 
-  components: { MessageBrowser }
+  components: { MessageBrowser },
+
+  mixins: [backup]
 }
 </script>

@@ -9,13 +9,15 @@
     "dev:components": "webpack-dashboard -- webpack-dev-server --config tests/unit/runner.js --open",
     "prehot": "yarn run io",
     "hot": "node scripts/hot.js",
-    "prod": "NODE_ENV=production webpack --env=prod --progress --hide-modules",
+    "build:prod": "NODE_ENV=production webpack --env=prod --progress --hide-modules",
     "io": "laravel-echo-server start &",
     "test": "yarn run lint:fix && yarn run test:unit && yarn run test:e2e",
     "test:e2e": "node tests/e2e/runner.js",
     "test:unit": "karma start tests/unit/karma.conf.js --single-run",
     "lint": "eslint --ext .js,.vue resources/assets/app tests/e2e tests/unit",
-    "lint:fix": "eslint --fix --ext .js,.vue resources/assets/app"
+    "lint:fix": "eslint --fix --ext .js,.vue resources/assets/app",
+    "preprod": "yarn version --no-git-tag-version",
+    "prod": "./scripts/production.sh"
   },
   "devDependencies": {
     "add-asset-html-webpack-plugin": "^1.0.2",
@@ -67,7 +69,7 @@
     "Validator": "^1.0.3",
     "autosize": "^3.0.20",
     "bootstrap": "next",
-    "bootstrap-for-vue": "^0.1.11",
+    "bootstrap-for-vue": "^0.1.14",
     "debug": "^2.6.0",
     "es6-promise": "^4.0.5",
     "filesize": "^3.3.0",
@@ -94,5 +96,6 @@
     "vue-route": "^1.5.1",
     "vue-router": "^2.1.1",
     "vuex": "^2.1.2"
-  }
+  },
+  "version": "0.4.0-17"
 }

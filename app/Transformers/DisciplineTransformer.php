@@ -11,8 +11,13 @@ class DisciplineTransformer extends Transformer
             'name' => (string)$discipline->name,
             'short_name' => (string)$discipline->short_name,
             'stats' => [
-                'student' => $discipline->student_count ?? 0,
+                'student' => $discipline->students_count ?? 0,
             ],
         ];
+    }
+
+    public function show(Discipline $discipline)
+    {
+        return $this->index($discipline);
     }
 }

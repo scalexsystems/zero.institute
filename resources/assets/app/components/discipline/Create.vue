@@ -56,6 +56,7 @@ export default {
       this.disabled = false
 
       if (discipline) {
+        this.$emit('done')
       } else if (errors) {
         this.setErrors(errors)
         this.formStatus = errors.$message

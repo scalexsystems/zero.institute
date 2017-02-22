@@ -7,7 +7,7 @@
       </div>
       <div class="c-employee-card-subtitle">
         <span class="text-muted">Employee ID:</span> {{ employee.uid }} <br>
-        <span class="text-muted">Department:</span> {{ department.name || 'Not set' }}
+        {{ department.name || 'Not set' }}
       </div>
     </div>
   </div>
@@ -33,7 +33,7 @@ export default {
 
   computed: {
     department () {
-      return this.departmentById(this.employee.id) || {}
+      return this.departmentById(this.employee.department_id) || {}
     },
     ...mapGetters('departments', ['departmentById'])
   }

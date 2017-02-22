@@ -2,7 +2,7 @@
 <container-window title="Create Group" subtitle="Create a group, add members & start your own community."
                   :back="true" @back="$router.push({ name: 'group.index' })">
   <template slot="buttons">
-  <input-button type="submit" @click.prevent="onSubmit">Create</input-button>
+  <input-button type="submit" @click.prevent="onSubmit" ref="submit">Create</input-button>
   </template>
 
 
@@ -56,10 +56,10 @@ export default {
   }),
 
   methods: {
-    async onSubmit (e) {
-      e.traget.classList.add('disabled')
+    async onSubmit () {
+      this.$refs.submit && this.$refs.submit.$el.classList.add('disabled')
       const { errors, group } = await this.create(this.attributes)
-      e.traget.classList.remove('disabled')
+      this.$refs.submit && this.$refs.submit.$el.classList.remove('disabled')
 
       if (errors) {
         this.setErrors(errors)
@@ -78,7 +78,7 @@ export default {
 
       if (this.attributes.members.indexOf(id) < 0) {
         this.attributes.members.push(id)
-        this.attributes.members.push(clone(member))
+        this.members.push(clone(member))
       }
     },
 
