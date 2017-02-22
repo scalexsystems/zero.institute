@@ -1,6 +1,6 @@
 <template>
 <div class="c-hub-message-browser d-flex flex-column">
-  <message-list v-bind="{ messages }" class="flex-auto p-2" ref="ml" @infinite="onInfinite"/>
+  <message-list v-bind="{ messages }" class="flex-auto p-2" ref="ml" @infinite="any => $emit('infinite', any)"/>
   <message-composer v-bind="{ value, dest }"
                     @input="v => $emit('input', v)"
                     @focus="sendReadReceipts"
@@ -30,23 +30,6 @@ export default {
   },
 
   methods: {
-    onInfinite (actions) {
-      const loaded = actions.loaded
-      const complete = actions.complete
-
-      actions.loaded = () => {
-        this.sendReadReceipts()
-        loaded()
-      }
-
-      actions.complete = () => {
-        this.sendReadReceipts()
-        complete()
-      }
-
-      this.$emit('infinite', actions)
-    },
-
     sendReadReceipts () {
       if (this.unread > 0) {
         this.$emit('read', this.messages.filter(message => message.unread))
@@ -54,8 +37,6 @@ export default {
     },
 
     sendMessage (message) {
-      this.sendReadReceipts()
-
       this.$emit('send', message)
     }
   },
@@ -63,6 +44,11 @@ export default {
   created () {
     this.$on('reset', e => this.$refs && this.$refs.ml.$emit('reset', e))
     this.sendReadReceipts()
+  },
+
+  watch: {
+    messages: 'sendReadReceipts',
+    unread: 'sendReadReceipts'
   }
 }
 </script>
