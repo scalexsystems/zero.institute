@@ -20,7 +20,7 @@ async function process (response) {
   }
 
   if (response.status === 403) {
-    return { $message: 'It feels like your session has expired.' }
+    window.location = '/login'
   }
 
   if (response.status === 405) {
