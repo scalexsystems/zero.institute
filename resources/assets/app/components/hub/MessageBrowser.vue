@@ -38,7 +38,6 @@ export default {
 
     sendMessage (message) {
       this.$emit('send', message)
-
       this.sendReadReceipts()
     }
   },
