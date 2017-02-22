@@ -2,7 +2,7 @@ export default {
   Created (message, store) {
     const receiver = { _type: message.receiver_type, id: message.receiver_id }
 
-    if (store.state.state.user.id === message.sender.id) {
+    if (store.state.user.id === message.sender.id) {
       message.unread = false
       message.read_at = new Date().toISOString()
     }
