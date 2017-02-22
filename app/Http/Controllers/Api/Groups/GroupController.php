@@ -1,105 +1,129 @@
 <?php namespace Scalex\Zero\Http\Controllers\Api\Groups;
 
 use Illuminate\Http\Request;
+use Scalex\Zero\Criteria\Group\MessagesCount;
+use Scalex\Zero\Criteria\Group\PrivateGroup;
 use Scalex\Zero\Criteria\OrderBy;
+use Scalex\Zero\Events\Group\Created;
+use Scalex\Zero\Events\Group\Deleted;
+use Scalex\Zero\Events\Group\Updated;
 use Scalex\Zero\Http\Controllers\Controller;
 use Scalex\Zero\Http\Requests;
 use Scalex\Zero\Models\Group;
+use Scalex\Zero\Repositories\GroupRepository;
 
 class GroupController extends Controller
 {
+    /**
+     * Add auth middleware for all routes.
+     */
     public function __construct()
     {
         $this->middleware('auth:api,web');
     }
 
     /**
-     * List all groups.
-     * GET /groups
-     * Requires: auth
+     * Search or index groups.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \Scalex\Zero\Repositories\GroupRepository $repository
+     *
+     * @return mixed
      */
-    public function index(Request $request)
+    public function index(Request $request, GroupRepository $repository)
     {
-        $groups = repository(Group::class)
-            ->with('profilePhoto')
-            ->pushCriteria(criteria(function ($query) {
-                /** @var \Illuminate\Database\Query\Builder $query */
-                $query->where('private', false);
-            }));
+        $repository->with(['photo', 'lastMessage'])->pushCriteria(new PrivateGroup(false));
+
+        $repository->withCount('members');
 
         if ($request->has('q')) {
-            $groups->search($request->query('q'));
+            $repository->search($request->query('q'));
         } else {
-            $groups->pushCriteria(new OrderBy('name'));
+            $repository->pushCriteria(new OrderBy('name'));
+            $repository->pushCriteria(new MessagesCount($request->user()));
         }
 
-        return $groups->paginate();
+        return $repository->paginate();
     }
 
     /**
-     * Get group details.
-     * GET /groups/{group}
-     * Requires: auth
+     * Show group details.
+     *
+     * @param \Scalex\Zero\Models\Group $group
+     *
+     * @return \Scalex\Zero\Models\Group
      */
-    public function show(Group $group)
+    public function show(Request $request, $group, GroupRepository $repository)
     {
-        $this->authorize('show', $group);
+        $group = $repository->withCount('members')
+                            ->pushCriteria(new MessagesCount($request->user()))
+                            ->find((int)$group);
+
+        $this->authorize('view', $group);
 
         return $group;
     }
 
     /**
      * Create new group.
-     * POST /groups
-     * Requires: auth
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \Scalex\Zero\Repositories\GroupRepository $repository
+     *
+     * @return \Scalex\Zero\Models\Group
      */
-    public function store(Request $request)
+    public function store(Request $request, GroupRepository $repository)
     {
-        $this->authorize('store', Group::class);
+        $this->authorize('create', Group::class);
 
-        $group = repository(Group::class)->create(
-            [
-                'owner' => $request->user(),
-                'school' => $request->user()->school,
-                'owner_id' => $request->user()->getKey(),
-                'school_id' => $request->user()->school->getKey(),
-                'name' => $request->input('name'),
-                'description' => $request->input('description'),
-                'type' => $request->input('type', 'public'),
-            ]);
+        $group = $repository->createWithMembers(
+            $request->user(),
+            $request->all(),
+            (array)$request->input('members')
+        );
 
-        $members = $request->input('members', []);
-
-        if (count($members)) {
-            array_push($members, $request->user()->id);
-            $group->addMembers($members);
-        } else {
-            $group->addMembers([$request->user()->id]);
-        }
-
+        event(new Created($group));
 
         return $group;
     }
 
     /**
      * Update group details.
-     * PUT /groups/{group}
-     * Requires: auth
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \Scalex\Zero\Models\Group $group
+     * @param \Scalex\Zero\Repositories\GroupRepository $repository
+     *
+     * @return \Scalex\Zero\Models\Group
      */
-    public function update(Request $request, Group $group)
+    public function update(Request $request, Group $group, GroupRepository $repository)
     {
         $this->authorize('update', $group);
 
-        repository(Group::class)->update($group, $request->all()); // FIXME: This is blunt.
+        $attributes = $request->all();
+
+        if ($group->isOfType('course')) {
+            unset($attributes['private']);
+        }
+
+        $repository->update($group, $attributes);
+
+        event(new Updated($group));
 
         return $group;
     }
 
-    public function destroy(Group $group)
+    public function destroy(Group $group, GroupRepository $repository)
     {
         $this->authorize('delete', $group);
 
-        repository(Group::class)->delete($group);
+        if ($group->isOfType('course')) {
+            abort(400, 'Course group cannot be deleted.');
+        }
+
+        $repository->delete($group);
+
+        event(new Deleted($group));
 
         return $this->accepted();
     }

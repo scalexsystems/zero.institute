@@ -5,13 +5,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Scalex\Zero\Contracts\Database\BelongsToSchool;
 use Scalex\Zero\Contracts\Person;
 use Scalex\Zero\Database\BaseModel;
-use Scalex\Zero\Models\Course\Session;
-use Scalex\Zero\Models\Geo\Address;
+use Scalex\Zero\Models\CourseSession;
+use Scalex\Zero\Models\Address;
+use Scalex\Zero\ModelTraits\FoodHabitTrait;
 use Scalex\Zero\User;
 
 class Student extends BaseModel implements Person, BelongsToSchool
 {
-    use SoftDeletes;
+    use SoftDeletes, FoodHabitTrait;
 
     protected $fillable = [
         // Basic Information.
@@ -144,7 +145,7 @@ class Student extends BaseModel implements Person, BelongsToSchool
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function profilePhoto()
+    public function photo()
     {
         return $this->belongsTo(Attachment::class, 'photo_id');
     }
@@ -161,7 +162,7 @@ class Student extends BaseModel implements Person, BelongsToSchool
 
     public function sessions()
     {
-        return $this->belongsToMany(Session::class, 'course_session_student');
+        return $this->belongsToMany(CourseSession::class, 'course_session_student', 'student_id', 'session_id')->withTimestamps();
     }
 
     public function getRouteKeyName()
@@ -169,11 +170,25 @@ class Student extends BaseModel implements Person, BelongsToSchool
         return 'uid';
     }
 
-    public function setDateOfAdmissionAttribute($value) {
+    public function setDateOfAdmissionAttribute($value)
+    {
         $this->attributes['date_of_admission'] = Carbon::parse($value);
     }
 
-    public function setDateOfBirthAttribute($value) {
+    public function setDateOfBirthAttribute($value)
+    {
         $this->attributes['date_of_birth'] = Carbon::parse($value);
+    }
+
+    public function getPhotoUrl()
+    {
+        return attach_url($this->photo) ?? asset('img/placeholder.jpg');
+    }
+
+    public function getYearAttribute()
+    {
+        if ($this->date_of_admission instanceof Carbon) {
+            return $this->date_of_admission->year;
+        }
     }
 }

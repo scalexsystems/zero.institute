@@ -1,10 +1,14 @@
 <?php namespace Scalex\Zero\Http\Controllers\Api\Messages;
 
 use Illuminate\Http\Request;
-use Scalex\Zero\Criteria\UserHasSentMessageTo;
+use Scalex\Zero\Criteria\Message\Direct\HaveConversationWithMessageCount;
+use Scalex\Zero\Criteria\Message\Direct\MessagesCountMultipleUser;
+use Scalex\Zero\Criteria\Message\Direct\MessagesCount;
 use Scalex\Zero\Http\Controllers\Controller;
 use Scalex\Zero\Http\Requests;
+use Scalex\Zero\Repositories\UserRepository;
 use Scalex\Zero\User;
+use Znck\Repositories\Exceptions\NotFoundResourceException;
 
 class CurrentUserController extends Controller
 {
@@ -14,20 +18,44 @@ class CurrentUserController extends Controller
     }
 
     /**
-     * Get list of users who have sent any message to current user.
-     * GET /me/messages/users
-     * Required: auth
+     * Get messaged users for current user.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \Scalex\Zero\Repositories\UserRepository $repository
+     *
+     * @return mixed
      */
-    public function index(Request $request)
+    public function index(Request $request, UserRepository $repository)
     {
         $request->query->set('with', 'person');
-        $users = repository(User::class)->with(['person', 'profilePhoto', 'lastMessageAt']);
 
-        if ($request->has('id')) {
-            return $users->findMany([(int)$request->query('id')]);
+        $repository->with(['person', 'photo'])
+                   ->pushCriteria(new HaveConversationWithMessageCount($request->user()));
+
+        $users = $repository->paginate();
+
+        return transform($users, ['person'], null, true);
+    }
+
+    /**
+     * Get user by ID.
+     *
+     * @param \Scalex\Zero\User $user
+     *
+     * @return \Scalex\Zero\User
+     */
+    public function show($user, UserRepository $repository, Request $request)
+    {
+        if ($request->user()->id === (int)$user) {
+            return transform($request->user(), ['person'], null, true);
         }
 
-        return $users->pushCriteria(new UserHasSentMessageTo($request->user()))
-                     ->paginate();
+        try {
+            $user = $repository->pushCriteria(new HaveConversationWithMessageCount($request->user()))->find($user);
+        } catch (NotFoundResourceException $e) {
+            $user = User::findOrFail($user);
+        }
+
+        return transform($user, ['person'], null, true);
     }
 }

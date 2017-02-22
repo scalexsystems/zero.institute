@@ -33,7 +33,6 @@ class Handler extends ExceptionHandler
         \Illuminate\Auth\Access\AuthorizationException::class,
         \Symfony\Component\HttpKernel\Exception\HttpException::class,
         \Illuminate\Database\Eloquent\ModelNotFoundException::class,
-        \Illuminate\Session\TokenMismatchException::class,
         \Illuminate\Validation\ValidationException::class,
         \Znck\Repositories\Exceptions\ResourceException::class,
     ];
@@ -41,7 +40,8 @@ class Handler extends ExceptionHandler
     /**
      * @param \Exception $e
      */
-    protected function sentryCapture(Exception $e) {
+    protected function sentryCapture(Exception $e)
+    {
         if (app()->environment('production') and $this->shouldReport($e)) {
             app('sentry')->captureException($e);
         }

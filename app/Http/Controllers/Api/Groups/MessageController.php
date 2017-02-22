@@ -1,98 +1,68 @@
 <?php namespace Scalex\Zero\Http\Controllers\Api\Groups;
 
 use Illuminate\Http\Request;
-use Scalex\Zero\Criteria\MessageIntendedFor;
-use Scalex\Zero\Criteria\MessageSentTo;
+use Illuminate\Support\Debug\Dumper;
+use Scalex\Zero\Criteria\Message\MessageBeforeTimestamp;
+use Scalex\Zero\Criteria\Message\MessageIntendedFor;
+use Scalex\Zero\Criteria\Message\MessageSentTo;
 use Scalex\Zero\Criteria\OrderBy;
-use Scalex\Zero\Events\NewMessage;
+use Scalex\Zero\Events\Message\Created;
 use Scalex\Zero\Http\Controllers\Controller;
 use Scalex\Zero\Models\Group;
 use Scalex\Zero\Models\Message;
 use Carbon\Carbon;
+use Scalex\Zero\Repositories\MessageRepository;
 
 class MessageController extends Controller
 {
+    /**
+     * Add auth middleware to all routes.
+     */
     public function __construct()
     {
         $this->middleware('auth:api,web');
     }
 
     /**
-     * Get messages in the group.
-     * GET /groups/{group}/messages
-     * Requires: auth
+     * List all messages in the group.
+     *
+     * @param \Scalex\Zero\Models\Group $group
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function index(Group $group, Request $request)
+    public function index(Group $group, Request $request, MessageRepository $repository)
     {
-        $this->authorize('messages', $group);
+        $this->authorize('view-messages', $group);
 
-        return
-            repository(Message::class)
+        $messages = $repository
             ->pushCriteria(new MessageSentTo($group))
-            ->pushCriteria(new MessageIntendedFor($request->user()))
+            ->pushCriteria(new MessageBeforeTimestamp($request->input('timestamp', time())))
             ->pushCriteria(new OrderBy('id', 'desc'))
-            ->pushCriteria(criteria(function ($query) use ($request) {
-                $query->where('created_at', '<=', Carbon::createFromTimestamp($request->input('timestamp', time())));
-            }))
-            ->with(['attachments', 'sender', 'userReadAt'])
+            ->with(['attachments', 'sender'])
             ->paginate();
+
+        return $repository->loadMessageStatesFor($messages, $request->user());
     }
 
     /**
      * Send message to group.
-     * POST /groups/{group}/messages
-     * Requires: auth
+     *
+     * @param \Scalex\Zero\Models\Group $group
+     * @param \Illuminate\Http\Request $request
+     * @param \Scalex\Zero\Repositories\MessageRepository $repository
+     *
+     * @return \Scalex\Zero\Models\Message
      */
-    public function store(Group $group, Request $request)
+    public function store(Group $group, Request $request, MessageRepository $repository)
     {
-        $this->authorize('send', $group);
+        $this->authorize('send-message', $group);
 
-        $message = repository(Message::class)->create(
-            [
-                'sender' => $request->user(),
-                'sender_id' => $request->user()->id,
-                'receiver' => $group,
-                'type' => 'text',
-                'content' => $request->input('content'),
-            ] + $request->except('intended_for'));
-        broadcast(new NewMessage($message))->toOthers();
+        $message = $repository->createWithGroup($group, $request->all(), $request->user());
+        $repository->read($message, $request->user());
+
+        broadcast(new Created($message));
 
         return $message;
-    }
-
-
-    /**
-     * Mark message as read.
-     * PUT /groups/{group}/messages/{message}/read
-     * Requires: auth
-     */
-    public function read(Request $request, $group, Message $message = null)
-    {
-        if (is_null($message)) {
-            $message = $group;
-        }
-        if (!$message->receiver instanceof Group) {
-            abort(404);
-        }
-
-        $this->authorize('read', $message->receiver);
-
-        if ($message->intended_for and (int)$message->intended_for !== $request->user()->getKey()) {
-            abort(401);
-        }
-
-        if ((int)$message->sender_id === $request->user()->getKey()) {
-            return $this->accepted();
-        }
-
-        if (!is_null($message->userReadAt)) {
-            return $this->accepted();
-        }
-
-        if ($message->userReadAt()->create($request->user()) !== true) {
-            abort(500);
-        }
-
-        return $this->accepted();
     }
 }

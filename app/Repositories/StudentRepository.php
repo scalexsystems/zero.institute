@@ -1,22 +1,26 @@
 <?php namespace Scalex\Zero\Repositories;
 
-use Illuminate\Support\Collection;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Validation\Rule;
+use Ramsey\Uuid\Uuid;
+use Request;
 use Scalex\Zero\Criteria\OfSchool;
-use Scalex\Zero\Models\Attachment;
-use Scalex\Zero\Models\Geo\Address;
+use Scalex\Zero\Models\Address;
 use Scalex\Zero\Models\Guardian;
 use Scalex\Zero\Models\School;
 use Scalex\Zero\Models\Student;
 use Scalex\Zero\User;
+use UnexpectedValueException;
+use Znck\Attach\Builder;
 use Znck\Repositories\Repository;
 
 /**
- * @method Student find(string|int $id)
+ * @method Student find(string | int $id)
  * @method Student findBy(string $key, $value)
  * @method Student create(array $attr)
- * @method Student update(string|int|Student $id, array $attr, array $o = [])
- * @method Student delete(string|int|Student $id)
- * @method StudentRepository validate(array $attr, Student|null $model)
+ * @method Student update(string | int | Student $id, array $attr, array $o = [])
+ * @method Student delete(string | int | Student $id)
+ * @method StudentRepository validate(array $attr, Student | null $model)
  */
 class StudentRepository extends Repository
 {
@@ -34,12 +38,11 @@ class StudentRepository extends Repository
      */
     protected $rules = [
         // Basic Information.
-        'photo_id' => 'nullable|exists:attachments,id',
         'first_name' => 'required|max:255',
         'middle_name' => 'nullable|max:255',
         'last_name' => 'required|max:255',
         'date_of_birth' => 'required|date',
-        'gender' => 'required|in:female,male,other',
+        'gender' => 'nullable|in:female,male,other',
         'blood_group' => 'nullable|in:A+,A-,AB+,AB-,B+,B-,O+,O-',
         'category' => 'nullable|in:gen,obc,sc,st,ot',
         'religion' => 'nullable|max:255',
@@ -48,19 +51,9 @@ class StudentRepository extends Repository
         'govt_id' => 'nullable|max:255',
 
         // Related to School.
-        'uid' => 'required|unique:students,uid,NULL,id,school_id,',
         'date_of_admission' => 'nullable|date',
         'boarding_type' => 'nullable|in:hosteler,day_scholar',
-        'department_id' => 'required|exists:departments,id',
-        'discipline_id' => 'required|exists:disciplines,id',
         'biometric_id' => 'nullable|max:255',
-
-        // Contact Information.
-        'address_id' => 'required|exists:addresses,id',
-
-        // Parent's Information.
-        'father_id' => 'required|exists:guardians,id',
-        'mother_id' => 'required|exists:guardians,id',
 
         // Medical Information.
         'is_disabled' => 'nullable|boolean',
@@ -68,145 +61,182 @@ class StudentRepository extends Repository
         'disease' => 'nullable|max:255',
         'allergy' => 'nullable|max:255',
         'visible_marks' => 'nullable|max:255',
-        'food_habit' => 'nullable|in:veg,non_veg',
+        'food_habit' => 'nullable|array',
         'medical_remarks' => 'nullable|max:65536',
 
         // Maintenance Information.
         'archived' => 'nullable|boolean',
         'remarks' => 'nullable|max:65536',
-        'school_id' => 'required|exists:schools,id',
     ];
 
+    /**
+     * Push default criteria to limit search to a school.
+     */
     public function boot()
     {
-        if (current_user()) {
-            $this->pushCriteria(new OfSchool(current_user()->school));
+        if ($user = Request::user()) {
+            $this->pushCriteria(new OfSchool($user->school));
         }
     }
 
+    public function getCreateRulesForSchool(School $school)
+    {
+        $id = $school->getKey();
+
+        return $this->rules + [
+                'uid' => [
+                    'required',
+                    Rule::unique('students')->where('school_id', $id),
+                ],
+                'department_id' => [
+                    'required',
+                    Rule::exists('departments', 'id')->where('school_id', $id),
+                ],
+                'discipline_id' => [
+                    'required',
+                    Rule::exists('disciplines', 'id')->where('school_id', $id),
+                ],
+                'photo_id' => [
+                    'nullable',
+                    Rule::exists('attachments', 'id')->where('school_id', $id),
+                ],
+            ];
+    }
+
     /**
+     * Prepare update rules.
+     *
      * @param array $rules
      * @param array $attributes
-     * @param Student $student
+     * @param \Scalex\Zero\Models\Student $student
      *
      * @return array
      */
     public function getUpdateRules(array $rules, array $attributes, $student)
     {
-        $rules += array_dot(
-            [
-                'address' => repository(Address::class)->getRules($attributes, $student->address),
-                'mother' => repository(Guardian::class)->getRules($attributes, $student->mother),
-                'father' => repository(Guardian::class)->getRules($attributes, $student->father),
-            ]);
+        $rules = $this->getCreateRulesForSchool($student->school);
 
-        $rules['uid'] = 'required|unique:students,uid,'.$student->id.',id,school_id,'.current_user()->school_id;
+        $rules['uid'] = [
+            'required',
+            Rule::unique('students')
+                ->where('school_id', $student->school->getKey())
+                ->ignore($student->getKey()),
+        ];
 
         return array_only($rules, array_keys($attributes));
     }
 
-    public function getCreateRules(array $attributes)
+    public function creating()
     {
-        $guardianRules = repository(Guardian::class)->getRules($attributes);
-
-        $this->rules['uid'] = 'required|unique:students,uid,NULL,id,school_id,'.current_user()->school_id;
-
-        return $this->rules + array_dot(
-            [
-                'address' => repository(Address::class)->getRules($attributes),
-                'mother' => $guardianRules,
-                'father' => $guardianRules,
-            ]);
-    }
-
-    public function creating(Student $student, array $attributes)
-    {
-        $student->fill($attributes);
-
-        $student->address()->associate(repository(Address::class)->create(array_get($attributes, 'address', [])));
-        $student->department()->associate(find($attributes, 'department_id'));
-        $student->discipline()->associate(find($attributes, 'discipline_id'));
-        $student->father()->associate(find($attributes, 'father_id', Guardian::class));
-        $student->mother()->associate(find($attributes, 'mother_id', Guardian::class));
-        $student->school()->associate(find($attributes, 'school_id'));
-        attach_attachment($student, 'profilePhoto', find($attributes, 'photo_id', Attachment::class));
-
-        $student->bio = $this->getBio($student);
-
-        $status = $student->save();
-
-        if ($status and $student->address) {
-            $student->address->addressee()->associate($student)->save();
-        }
-
-        return $status;
+        throw new UnexpectedValueException('Use `createForSchool` method instead of `create`.');
     }
 
     public function updating(Student $student, array $attributes)
     {
-        $student->fill($attributes);
+        $student->department()->associate($attributes['department_id'] ?? $student->department_id);
+        $student->discipline()->associate($attributes['discipline_id'] ?? $student->discipline_id);
 
-        if (array_has($attributes, 'address') && !empty($attributes['address'])) {
-            if (isset($student->address)) {
-                repository(Address::class)
-                    ->update($student->address, $attributes['address']);
-
-            } else {
-                $student->address()->associate(repository(Address::class)->create(array_get($attributes, 'address', [])));
-            }
-        }
-        if (array_has($attributes, 'department_id')) {
-            $student->department()->associate(find($attributes, 'department_id'));
-
-
-        }
-        if (array_has($attributes, 'discipline_id')) {
-            $student->discipline()->associate(find($attributes, 'discipline_id'));
-        }
-        if (array_has($attributes, 'photo_id')) {
-            attach_attachment($student, 'profilePhoto', find($attributes, 'photo_id', Attachment::class));
-        }
-
-        $userAttributes = [
-            'photo_id' => data_get($attributes, 'photo_id'),
-            'name' => str_replace('  ', ' ',
-                data_get($attributes, 'first_name') . ' ' .
-                data_get($attributes, 'middle_name') . ' ' .
-                data_get($attributes, 'last_name')
-            ),
-        ];
-        repository(User::class)->update($student->user, $userAttributes);
-
-        $student->bio = $this->getBio($student);
-
-        return $student->update();
+        return $student->update($attributes);
     }
 
-    public function getBio(Student $student)
+    public function createForSchool(School $school, array $attributes)
     {
-        return '';
+        $this->validateWith($attributes, $this->getCreateRulesForSchool($school));
+
+        $student = new Student($attributes);
+
+        $student->department()->associate($attributes['department_id'] ?? null);
+        $student->discipline()->associate($attributes['discipline_id'] ?? null);
+        $student->photo()->associate($attributes['photo_id'] ?? null);
+        $student->school()->associate($school);
+
+        $this->onCreate($student->save());
+
+        return $student;
     }
 
-    public function filterBySchool($students, School $school): Collection
+    public function updateAddress(Student $student, array $attributes)
     {
-        if (is_array($students)) {
-            $students = collect($students);
-        } elseif (! ($students instanceof Collection)) {
-            throw new \InvalidArgumentException('Expected array or collection.');
+        $repository = repository(Address::class);
+
+        if ($student->address) {
+            $repository->update($student->address, $attributes);
+        } else {
+            $address = $repository->create($attributes);
+
+            $student->address()->associate($address);
+
+            $this->onUpdate($student->save());
         }
 
-        $ids = $students->map(function ($student) {
-            if ($student instanceof Student) {
-                return $student->getKey();
-            }
+        return $student;
+    }
 
-            return (int) $student;
-        })->toArray();
+    public function updateFather(Student $student, array $attributes)
+    {
+        $repository = repository(Guardian::class);
 
-        return \DB::table('students')
-                ->select('id')
-                ->whereSchoolId($school->getKey())
-                ->whereIn('id', $ids)
-                ->get()->pluck('id');
+        if ($student->father) {
+            $repository->update($student->father, $attributes);
+        } else {
+            $father = $repository->createForSchool($student->school, $attributes);
+
+            $student->father()->associate($father);
+
+            $this->onUpdate($student->save());
+        }
+
+        return $student;
+    }
+
+    public function updateMother(Student $student, array $attributes)
+    {
+        $repository = repository(Guardian::class);
+
+        if ($student->mother) {
+            $repository->update($student->mother, $attributes);
+        } else {
+            $mother = $repository->createForSchool($student->school, $attributes);
+
+            $student->mother()->associate($mother);
+
+            $this->onUpdate($student->save());
+        }
+
+        return $student;
+    }
+
+    public function uploadPhoto(Student $student, UploadedFile $photo, User $user)
+    {
+        if (!$photo->isValid()) {
+            throw new UploadException('Invalid photo.');
+        }
+
+        // Set path & slug.
+        $attributes['path'] = $this->getPhotoUploadPath($student);
+        $attributes['slug'] = $attributes['slug'] ?? Uuid::uuid4();
+
+        // Prepare uploader.
+        $uploader = Builder::makeFromFile($photo)->resize(360, 'preview', 360);
+
+        // Upload & get attachment.
+        $attachment = $uploader->upload($attributes)->getAttachment();
+
+        $attachment->owner()->associate($user);
+        $attachment->related()->associate($student);
+
+        $this->onCreate($attachment->save());
+
+        // Associate photo to the student.
+        $student->photo()->associate($attachment);
+
+        $this->onUpdate($student->save());
+
+        return $attachment;
+    }
+
+    protected function getPhotoUploadPath(Student $student)
+    {
+        return "schools/{$student->school_id}/students/photo/{$student->id}";
     }
 }

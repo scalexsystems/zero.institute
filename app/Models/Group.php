@@ -1,190 +1,140 @@
 <?php namespace Scalex\Zero\Models;
 
-use DB;
 use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Scalex\Zero\Contracts\Communication\ReceivesMessage;
 use Scalex\Zero\Database\BaseModel;
-use Scalex\Zero\Others\LastMessageAt;
+use Scalex\Zero\ModelTraits\GroupTrait;
+use Scalex\Zero\Database\Relation\LastMessage;
 use Scalex\Zero\User;
 
 class Group extends BaseModel implements ReceivesMessage
 {
-    use \Illuminate\Database\Eloquent\SoftDeletes;
+    use SoftDeletes, GroupTrait;
 
-    protected $fillable = ['name', 'description', 'private'];
+    /**
+     * Mass fillable fields.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name',
+        'description',
+        'private',
+    ];
 
-    protected $casts = ['private' => 'bool'];
+    /**
+     * Property types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'private' => 'bool',
+    ];
 
-    protected $extends = ['count_members'];
+    /**
+     * Extended schema.
+     *
+     * @var array
+     */
+    protected $extends = [
+        'count_members',
+    ];
 
-    protected $isMemberCache = [];
+    protected $observables = [
+        'membersAdded',
+        'membersRemoved',
+    ];
 
-    public function members()
-    {
-        return $this->belongsToMany(User::class)->withTimestamps();
-    }
-
+    /**
+     * Group owner. (@property \Scalex\Zero\User $owner)
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function owner()
     {
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * School of the group. (@property \Scalex\Zero\Models\School $school)
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function school()
     {
         return $this->belongsTo(School::class);
     }
 
+    /**
+     * Group Profile Photo. (@property \Scalex\Zero\Models\Attachment $profilePhoto)
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @deprecated in v0.4.0, use @method photo(). TODO: Remove in v0.5+.
+     */
     public function profilePhoto()
     {
-        return $this->belongsTo(Attachment::class, 'photo_id');
+        return $this->photo();
     }
 
+    /**
+     * Group Profile Photo. (@property \Scalex\Zero\Models\Attachment $photo)
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function photo()
+    {
+        return $this->belongsTo(Attachment::class);
+    }
+
+    /**
+     * Last message. (@property \Scalex\Zero\Models\Message $lastMessageAt)
+     *
+     * @return \Scalex\Zero\Database\Relation\LastMessage
+     * @deprecated in v0.4.0, use @method lastMessage(). TODO: Remove in v0.5+.
+     */
     public function lastMessageAt()
     {
-        return new LastMessageAt((new Message())->newQuery(), $this);
-    }
-
-    /*
-    |
-    | Group Actions.
-    |
-    */
-
-    public function isAdmin(User $member)
-    {
-        return false;
-    }
-
-    public function isMember(User $member)
-    {
-        $id = $member->getKey();
-
-        if (array_key_exists($id, $this->isMemberCache)) {
-            return $this->isMemberCache[$id];
-        }
-
-        return $this->isMemberCache[$id] = !is_null(
-            DB::table('group_user')
-              ->where('group_id', $this->getKey())
-              ->where('user_id', $id)
-              ->first()
-        );
+        return $this->lastMessage();
     }
 
     /**
-     * Get ids of members
+     * Last message. (@property \Scalex\Zero\Models\Message $lastMessage)
      *
-     * @param array|Collection $members
-     *
-     * @return array
+     * @return \Scalex\Zero\Database\Relation\LastMessage
      */
-    public function filterMemberIds($members)
+    public function lastMessage()
     {
-        if ($members instanceof Collection) {
-            $members = $members->modelKeys();
-        }
-
-        return DB::table('group_user')
-                 ->where('group_id', $this->getKey())
-                 ->whereIn('user_id', $members)
-                 ->get()->pluck('user_id')->toArray();
+        return new LastMessage((new Message())->newQuery(), $this);
     }
 
     /**
-     * Get ids of members
+     * List of group members. (@property \Scalex\Zero\User[] $members)
      *
-     * @param array|Collection $members
-     *
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function filterMembers($members)
+    public function members()
     {
-        return User::findMany($this->filterMemberIds($members));
+        return $this->belongsToMany(User::class)->withTimestamps();
     }
 
     /**
-     * Get ids of members
+     * Echo channel name.
      *
-     * @param array|Collection $members
-     *
-     * @return array
+     * @return string
      */
-    public function filterNonMemberIds($members)
-    {
-        if ($members instanceof Collection) {
-            $members = $members->modelKeys();
-        }
-
-        return array_diff($members, $this->filterMemberIds($members));
-    }
-
-    /**
-     * @param array|Collection $members
-     *
-     * @return \Illuminate\Database\Eloquent\Collection
-     */
-    public function filterNonMembers($members)
-    {
-        return User::findMany($this->filterNonMemberIds($members));
-    }
-
-    public function addMembers(array $ids)
-    {
-        $prepared = $this->prepareMemberIds($ids);
-        $ids = $prepared['ids'];
-
-        if (count($ids)) {
-            $this->members()->attach($ids);
-            $this->count_members = $this->members->count();
-            $this->save();
-        }
-
-        return $prepared;
-    }
-
-    public function removeMembers(array $ids)
-    {
-        $prepared = $this->prepareMemberIds($ids, false);
-        $ids = $prepared['ids'];
-
-        if (count($ids)) {
-            $this->members()->detach($ids);
-            $this->count_members = $this->members()->count();
-            $this->save();
-        }
-
-        return $prepared;
-    }
-
-    public function getChannelName() : string
+    public function getChannelName(): string
     {
         return $this->getMorphClass().'-'.$this->getKey();
     }
 
+    /**
+     * Echo channel.
+     *
+     * @return \Illuminate\Broadcasting\PresenceChannel
+     */
     public function getChannel()
     {
         return new PresenceChannel($this->getChannelName());
-    }
-
-    /**
-     * @param array $ids
-     *
-     * @return array
-     */
-    protected function prepareMemberIds(array $ids, bool $add = true):array
-    {
-        $method = $add ? 'filterNonMemberIds' : 'filterMemberIds';
-        $ids = $original = array_map(function ($v) {
-            return (int)$v;
-        }, array_unique($ids));
-
-        if (!is_null($this->school_id)) {
-            $ids = $school = DB::table('users')->select('id')->whereIn('id', $ids)->pluck('id')->toArray();
-        }
-
-        $ids = $filtered = $this->$method($ids);
-
-        return compact('ids', 'original', 'filtered', 'school');
     }
 }

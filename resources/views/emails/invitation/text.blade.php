@@ -1,31 +1,27 @@
-<div>
-    Hello,
+Hello,
 
-    We have received your application to access Scalex Zero. To complete the process, please provide following
-    information about your institute.
+We have received your application to access Scalex Zero. To complete the process, please provide following information about your institute.
 
-    About the Institute -
+About the Institute -
 
-    Name of the Institute: {{ $name }}
-    City:
-    State:
-    Pin Code:
+Name of the Institute: {{ $name }}
+City:
+State:
+Pin Code:
 
-    Contact Person Details -
+Contact Person Details -
 
-    Name:
-    Position/Designation:
-    Contact Number:
-    Email ID:
+Name:
+Position/Designation:
+Contact Number:
+Email ID:
 
-    Please provide the above information to proceed to the next step.
+Please provide the above information to proceed to the next step.
 
-    Thank you for your interest in Scalex Zero.
+Thank you for your interest in Scalex Zero.
 
-    —
-    Suwardhan Ahirrao
-    Head of Operations
-    Scalex Systems
-    http://scalex.xyz/
-
-</div>
+—
+Suwardhan Ahirrao
+Head of Operations
+Scalex Systems
+http://scalex.xyz/

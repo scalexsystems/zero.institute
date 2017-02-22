@@ -3,11 +3,6 @@
 // we are also using it with karma-webpack
 //   https://github.com/webpack/karma-webpack
 require('es6-promise/auto')
-const webpack = require('./webpack.config')
-
-webpack.resolve.alias = {
-  'vue$': 'vue/dist/vue.common.js'
-}
 
 module.exports = function karmaConfig (config) {
   config.set({
@@ -22,7 +17,7 @@ module.exports = function karmaConfig (config) {
     preprocessors: {
       './index.js': ['webpack', 'sourcemap']
     },
-    webpack: webpack,
+    webpack: require('./webpack.config'),
     webpackMiddleware: {
       noInfo: true
     },

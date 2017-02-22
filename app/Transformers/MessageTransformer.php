@@ -1,7 +1,6 @@
 <?php namespace Scalex\Zero\Transformers;
 
 use Scalex\Zero\Models\Message;
-use Scalex\Zero\User;
 use Znck\Transformers\Transformer;
 
 class MessageTransformer extends Transformer
@@ -12,7 +11,14 @@ class MessageTransformer extends Transformer
 
     protected $timestamps = false;
 
-    public function index(Message $message)
+    /**
+     * Bulk transform.
+     *
+     * @param \Scalex\Zero\Models\Message $message
+     *
+     * @return array
+     */
+    public function show(Message $message)
     {
         $readAt = $this->getReadAt($message);
 
@@ -20,45 +26,77 @@ class MessageTransformer extends Transformer
             'type' => $message->type,
             'content' => $message->content,
             'private' => !is_null($message->intended_for),
-            'unread' => is_null($this->getReadAt($message)),
+            'unread' => is_null($readAt),
             'read_at' => iso_date($readAt),
             'received_at' => iso_date($message->created_at),
+            'receiver_type' => (string)$message->receiver_type,
+            'receiver_id' => (int)$message->receiver_id,
         ];
     }
 
-    public function show(Message $message)
+    /**
+     * Single transform.
+     *
+     * @param \Scalex\Zero\Models\Message $message
+     *
+     * @return array
+     */
+    public function index(Message $message)
     {
-        return $this->index($message);
+        return $this->show($message);
     }
 
+    /**
+     * Transform sender.
+     *
+     * @param \Scalex\Zero\Models\Message $message
+     *
+     * @return mixed
+     */
     public function includeSender(Message $message)
     {
         return $this->item($message->sender);
     }
 
+    /**
+     * Transform receiver.
+     *
+     * @param \Scalex\Zero\Models\Message $message
+     *
+     * @return mixed
+     */
     public function includeReceiver(Message $message)
     {
         return $this->item($message->receiver);
     }
 
+    /**
+     * Transform attachments.
+     *
+     * @param \Scalex\Zero\Models\Message $message
+     *
+     * @return mixed
+     */
     public function includeAttachments(Message $message)
     {
         return $this->collection($message->attachments);
     }
 
+    /**
+     * Get message read timestamp.
+     *
+     * @param \Scalex\Zero\Models\Message $message
+     *
+     * @return \Carbon\Carbon|mixed|null
+     */
     protected function getReadAt(Message $message)
     {
-        if (
-            !app()->runningInConsole()
-            and (int)$message->sender->getKey() === (int)current_user()->getKey()
-        ) {
-            return $message->created_at;
+        if ($message->relationLoaded('state')) {
+            $state = $message->state;
+
+            return $state ? $state->read_at : null;
         }
 
-        if ($message->receiver instanceof User) {
-            return $message->read_at;
-        }
-
-        return $message->userReadAt;
+        return null;
     }
 }

@@ -10,10 +10,13 @@ class Discipline extends ExtendibleModel implements BelongsToSchool
 
     protected $fillable = ['name', 'short_name'];
 
-    protected $extends = ['student_count'];
-
     public function school()
     {
         return $this->belongsTo(School::class);
+    }
+
+    public function students()
+    {
+        return $this->hasMany(Student::class);
     }
 }

@@ -15,9 +15,9 @@ class DepartmentTransformer extends Transformer
             'head_id' => $department->head_id,
             'academic' => (bool)$department->academic,
             'stats' => [
-                'student' => $department->student_count ?? 0,
-                'teacher' => $department->teacher_count ?? 0,
-                'employee' => $department->employee_count ?? 0,
+                'student' => $department->students_count ?? 0,
+                'teacher' => $department->teachers_count ?? 0,
+                'employee' => $department->employees_count ?? 0,
             ],
         ];
     }

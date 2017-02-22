@@ -1,6 +1,3 @@
-@extends('layouts.mail')
-
-@section('body')
 <div>Hello,</div>
 <div>We have received your application to access Scalex Zero. To complete the process, please provide following information about your institute.</div>
 <div></div>
@@ -25,4 +22,3 @@
 <div>Head of Operations</div>
 <div>Scalex Systems</div>
 <div>http://scalex.xyz/</div>
-@endsection

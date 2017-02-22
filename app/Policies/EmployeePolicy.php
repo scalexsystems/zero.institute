@@ -2,41 +2,86 @@
 
 use Scalex\Zero\Action;
 use Scalex\Zero\Models\Employee;
+use Scalex\Zero\Policies\Traits\IsHimself;
 use Scalex\Zero\Policies\Traits\VerifiesSchool;
 use Scalex\Zero\User;
 
 class EmployeePolicy extends AbstractPolicy
 {
-    use VerifiesSchool;
+    use VerifiesSchool, IsHimself;
 
-    protected function isHimself(User $user, Employee $employee)
+    public function browse(User $user)
     {
-        return !is_null($user->person) and $employee->getKey() === $user->person->getKey();
+        return true;
     }
 
-    public function index(User $user)
+    public function view(User $user)
     {
         return true;
     }
 
     public function update(User $user, Employee $employee)
     {
-        return trust($user)->to(Action::UPDATE_EMPLOYEE) or $this->isHimself($user, $employee);
+        return $this->canUpdate($user, $employee);
     }
 
-    public function view(User $user, Employee $employee)
+    public function viewPhoto()
     {
-        return trust($user)->to(Action::VIEW_EMPLOYEE)
-               or $this->isHimself($user, $employee);
+        return true;
     }
 
-    public function readAddress(User $user, Employee $employee)
+    public function updatePhoto(User $user, Employee $employee)
     {
-        return $this->view($user, $employee);
+        return $this->canUpdate($user, $employee);
+    }
+
+    public function viewAddress(User $user, Employee $employee)
+    {
+        return $this->canView($employee);
+    }
+
+    public function viewAssociatedUserAccount(User $user, Employee $employee)
+    {
+        return $this->canView($employee);
+    }
+
+    public function readSchoolInfo(User $user, Employee $employee)
+    {
+        return $this->canView($employee);
+    }
+
+    public function readMedicalInfo(User $user, Employee $employee)
+    {
+        return $this->canView($employee);
+    }
+
+    public function readBasicInfo(User $user, Employee $employee)
+    {
+        return $this->canView($employee);
+    }
+
+    public function readQualificationInfo(User $user, Employee $employee)
+    {
+        return $this->canView($employee);
+    }
+
+    public function readBankAccountInfo(User $user, Employee $employee)
+    {
+        return $this->canView($employee);
+    }
+
+    protected function canView(Employee $employee)
+    {
+        return $this->isHimself($this->getUser(), $employee) or trust($this->getUser())->to('employee.read');
     }
 
     public function invite(User $user)
     {
-        return trust($user)->to(Action::INVITE_EMPLOYEE);
+        return trust($user)->to('employee.invite');
+    }
+
+    private function canUpdate(User $user, Employee $employee)
+    {
+        return $this->isHimself($user, $employee) or trust($user)->to('employee.update');
     }
 }

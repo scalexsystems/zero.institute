@@ -4,6 +4,7 @@ use Broadcast;
 use Illuminate\Support\ServiceProvider;
 use Scalex\Zero\Http\Controllers\BroadcastController;
 use Scalex\Zero\Models\Group;
+use Scalex\Zero\Models\School;
 use Scalex\Zero\User;
 
 class BroadcastServiceProvider extends ServiceProvider
@@ -12,7 +13,7 @@ class BroadcastServiceProvider extends ServiceProvider
     {
         $this->registerRoutes();
         Broadcast::channel($this->channel(User::class), function (User $user, $userId) {
-            return (int)$user->id === (int)$userId;
+            return $user->id === (int)$userId;
         });
         Broadcast::channel($this->channel(Group::class), function (User $user, $groupId) {
             $group = Group::find($groupId);
@@ -21,9 +22,14 @@ class BroadcastServiceProvider extends ServiceProvider
                 return transform($user);
             }
         });
+        Broadcast::channel($this->channel(School::class), function (User $user, $schoolId) {
+            if ($user->school_id === (int)$schoolId) {
+                return transform($user);
+            }
+        });
     }
 
-    protected function channel($class):string
+    protected function channel($class): string
     {
         return morph_model($class).'-*';
     }

@@ -2,13 +2,13 @@
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
-use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Scalex\Zero\Contracts\Database\BelongsToSchool;
 use Scalex\Zero\Models\Attachment;
 use Scalex\Zero\Models\School;
 use Znck\Repositories\Exceptions\NotFoundResourceException;
 
+// TODO: Remove this after 5.4 upgrade.
 if (!function_exists('mix')) {
     $manifest = null;
 
@@ -16,36 +16,35 @@ if (!function_exists('mix')) {
      * Laravel Mix Polyfill.
      *
      * @param  string $path
+     *
      * @return string
      */
-     function mix($path, $manifest = false, $shouldHotReload = false)
-     {
-         if (! $manifest) {
-             static $manifest;
-         }
-         if (! $shouldHotReload) {
-             static $shouldHotReload;
-         }
-         if (! $manifest) {
-             $manifestPath = public_path('mix-manifest.json');
-             $shouldHotReload = file_exists(public_path('hot'));
-             if (! file_exists($manifestPath)) {
-                 $manifest = [];
-             } else {
-                 $manifest = json_decode(file_get_contents($manifestPath), true);
-             }
-         }
-         if (!starts_with($path, '/')) {
-             $path = "/${path}";
-         }
+    function mix($path, $manifest = false, $shouldHotReload = false)
+    {
+        if (!$manifest) {
+            static $manifest;
+        }
+        if (!$shouldHotReload) {
+            static $shouldHotReload;
+        }
+        if (!$manifest) {
+            $manifestPath = public_path('mix-manifest.json');
+            $shouldHotReload = file_exists(public_path('hot'));
+            if (!file_exists($manifestPath)) {
+                $manifest = [];
+            } else {
+                $manifest = json_decode(file_get_contents($manifestPath), true);
+            }
+        }
 
-         if (! array_key_exists($path, $manifest)) {
-             return false;
-         }
-         return $shouldHotReload
-             ? "http://localhost:8080{$manifest[$path]}"
-             : url($manifest[$path]);
-     }
+        if (!array_key_exists($path, $manifest)) {
+            return false;
+        }
+
+        return $shouldHotReload
+            ? "http://localhost:8080{$manifest[$path]}"
+            : url($manifest[$path]);
+    }
 }
 
 
@@ -55,6 +54,7 @@ if (!function_exists('find')) {
      * @param string $key
      * @param string|null $class
      *
+     * @deprecated
      * @return \Illuminate\Database\Eloquent\Model|null
      */
     function find(array $attributes, string $key, string $class = null)
@@ -96,6 +96,7 @@ if (!function_exists('verify_school')) {
      * @param \Illuminate\Database\Eloquent\Model|BelongsToSchool $model
      * @param \Scalex\Zero\Models\School|null $school
      *
+     * @deprecated
      * @return bool
      */
     function verify_school($model, School $school = null)
@@ -118,15 +119,28 @@ if (!function_exists('morph_model')) {
      *
      * @return string
      */
-    function morph_model($model)
+    function morph_model($model, $map = false, $invertedMap = false)
     {
         $model = $model instanceof Model ? get_class($model) : (string)$model;
 
-        $map = Relation::morphMap();
-        if (class_exists($model)) {
-            $inverted = array_flip($map);
+        if (!$map) {
+            static $map;
+        }
 
-            return $inverted[$model] ?? $model;
+        if (!$invertedMap) {
+            static $invertedMap;
+        }
+
+        if (!$map) {
+            $map = Relation::morphMap();
+        }
+
+        if (!$invertedMap) {
+            $invertedMap = array_flip($map);
+        }
+
+        if (class_exists($model)) {
+            return $invertedMap[$model] ?? $model;
         } else {
             return $map[$model] ?? $model;
         }
@@ -135,15 +149,25 @@ if (!function_exists('morph_model')) {
 
 if (!function_exists('current_user')) {
     /**
+     * @deprecated
      * @return \Illuminate\Contracts\Auth\Authenticatable|\Scalex\Zero\User
      */
     function current_user()
     {
-        return auth()->user();
+        return Request::user();
     }
 }
 
 if (!function_exists('allow')) {
+    /**
+     * @param string $what
+     * @param $who
+     * @param $resource
+     * @param null $default
+     *
+     * @deprecated
+     * @return null
+     */
     function allow(string $what, $who, $resource, $default = null)
     {
         return Gate::allows($what, $who) ? $resource : $default;
@@ -151,6 +175,13 @@ if (!function_exists('allow')) {
 }
 
 if (!function_exists('attach_attachment')) {
+    /**
+     * @param \Illuminate\Database\Eloquent\Model $related
+     * @param string|null $relation
+     * @param \Scalex\Zero\Models\Attachment $attachment
+     *
+     * @deprecated
+     */
     function attach_attachment(Model $related, string $relation = null, Attachment $attachment)
     {
         if (is_string($relation)) {
@@ -163,10 +194,12 @@ if (!function_exists('attach_attachment')) {
     }
 }
 
-if (!function_exists('schoolify')) {
-    function schoolify(string $key)
+if (!function_exists('schoolScopeCacheKey')) {
+    function schoolScopeCacheKey(string $key, $school = null)
     {
-        return current_user()->school_id.'.'.$key;
+        $school = $school ?? Request::user()->school_id;
+
+        return "school:{$school}.{$key}";
     }
 }
 
@@ -177,6 +210,6 @@ if (!function_exists('iso_date')) {
             return $date->toIso8601String();
         }
 
-        return (string) $date;
+        return $date;
     }
 }

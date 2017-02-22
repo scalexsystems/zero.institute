@@ -14,12 +14,7 @@ class DisciplineController extends Controller
 
     public function index(Request $request)
     {
-        return cache()->rememberForever(
-            schoolify('disciplines'),
-            function () use ($request) {
-                return $this->getPeopleCount($request);
-            }
-        );
+        return repository(Discipline::class)->withCount('students')->all();
     }
 
     public function store(Request $request)
@@ -28,38 +23,21 @@ class DisciplineController extends Controller
 
         $discipline = repository(Discipline::class)->create(
             [
-                'school' => current_user()->school,
-                'school_id' => current_user()->school_id,
+                'school' => \Auth::user()->school,
+                'school_id' => \Auth::user()->school_id,
             ] + $request->all()
         );
 
-        return $this->created($discipline->getKey());
+        return $discipline;
     }
 
     public function update(Request $request, $discipline)
     {
-        $discipline = repository(Discipline::class)->find($discipline);
+        $discipline = repository(Discipline::class)->withCount('students')->find($discipline);
         $this->authorize($discipline);
 
         repository(Discipline::class)->update($discipline, $request->all());
 
-        return $this->accepted();
-    }
-
-    public function getPeopleCount(Request $request)
-    {
-        $disciplines = repository(Discipline::class)->all();
-
-        $students = DB::table('students')
-                      ->where('school_id', $request->user()->school_id)
-                      ->groupBy('discipline_id')
-                      ->select([DB::raw('count(*) as aggregate'), 'discipline_id'])
-                      ->get()->pluck('aggregate', 'discipline_id');
-
-        foreach ($disciplines as $discipline) {
-            $discipline->student_count = $students->get($discipline->getKey(), 0);
-        }
-
-        return $disciplines;
+        return $discipline;
     }
 }

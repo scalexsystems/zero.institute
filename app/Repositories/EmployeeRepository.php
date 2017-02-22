@@ -1,11 +1,18 @@
 <?php namespace Scalex\Zero\Repositories;
 
+use Illuminate\Validation\Rule;
+use Ramsey\Uuid\Uuid;
+use Request;
 use Scalex\Zero\Criteria\OfSchool;
 use Scalex\Zero\Models\Attachment;
 use Scalex\Zero\Models\Employee;
-use Scalex\Zero\Models\Geo\Address;
+use Scalex\Zero\Models\Address;
+use Scalex\Zero\Models\School;
 use Scalex\Zero\User;
+use UnexpectedValueException;
+use Znck\Attach\Builder;
 use Znck\Repositories\Repository;
+use Illuminate\Http\UploadedFile;
 
 /**
  * @method Employee find(string|int $id)
@@ -31,7 +38,7 @@ class EmployeeRepository extends Repository
      */
     protected $rules = [
         // Basic Information
-        'photo_id' => 'nullable|exists:attachments,id',
+        'photo_id' => 'nullable|exists:documents,id',
         'first_name' => 'required|max:255',
         'middle_name' => 'nullable|max:255',
         'last_name' => 'required|max:255',
@@ -46,7 +53,7 @@ class EmployeeRepository extends Repository
         'govt_id' => 'nullable|max:255',
 
         // Related to School
-        'uid' => 'required|unique:teachers,uid,NULL,id,school_id,',
+        'uid' => 'required|unique:employees,uid,NULL,id,school_id,',
         'date_of_joining' => 'nullable|date',
         'job_title' => 'nullable|max:255',
         'department_id' => 'required|exists:departments,id',
@@ -74,7 +81,7 @@ class EmployeeRepository extends Repository
         'disease' => 'nullable|max:255',
         'allergy' => 'nullable|max:255',
         'visible_marks' => 'nullable|max:255',
-        'food_habit' => 'nullable|in:veg,non_veg',
+        'food_habit' => 'nullable|array',
         'medical_remarks' => 'nullable|max:65536',
 
         // Maintenance Information
@@ -85,9 +92,29 @@ class EmployeeRepository extends Repository
 
     public function boot()
     {
-        if (current_user()) {
-            $this->pushCriteria(new OfSchool(current_user()->school));
+        if ($user = Request::user()) {
+            $this->pushCriteria(new OfSchool($user->school));
         }
+    }
+
+    private function getCreateRulesForSchool($school)
+    {
+        $id = $school->getKey();
+
+        return $this->rules + [
+            'uid' => [
+                'required',
+                Rule::unique('employees')->where('school_id', $id),
+            ],
+            'department_id' => [
+                'required',
+                Rule::exists('departments', 'id')->where('school_id', $id),
+            ],
+            'photo_id' => [
+                'nullable',
+                Rule::exists('attachments', 'id')->where('school_id', $id),
+            ],
+        ];
     }
 
     /**
@@ -99,84 +126,92 @@ class EmployeeRepository extends Repository
      */
     public function getUpdateRules(array $rules, array $attributes, $employee)
     {
-        $rules += array_dot(
-            [
-                'address' => repository(Address::class)->getRules($attributes, $employee->address),
-            ]);
+        $rules = $this->getCreateRulesForSchool($employee->school);
 
-        $rules['uid'] ='required|unique:employees,uid,'.$employee->id.',id,school_id,'.current_user()->school_id;
-
+        $rules['uid'] = [
+            'required',
+            Rule::unique('employees')
+                ->where('school_id', $employee->school->getKey())
+                ->ignore($employee->getKey()),
+        ];
         return array_only($rules, array_keys($attributes));
-    }
-
-    public function getCreateRules(array $attributes)
-    {
-        $this->rules['uid'] = 'required|unique:employees,uid,NULL,id,school_id,'.current_user()->school_id;
-
-        return $this->rules + array_dot(
-            [
-                'address' => repository(Address::class)->getRules($attributes),
-            ]);
     }
 
     public function creating(Employee $employee, array $attributes)
     {
-        $employee->fill($attributes);
-
-        $employee->address()->associate(repository(Address::class)->create(array_get($attributes, 'address', [])));
-        $employee->department()->associate(find($attributes, 'department_id'));
-        $employee->school()->associate(find($attributes, 'school_id'));
-        attach_attachment($employee, 'profilePhoto', find($attributes, 'photo_id', Attachment::class));
-
-        $employee->bio = $this->getBio($employee);
-
-        $status = $employee->save();
-
-        if ($status and $employee->address) {
-            $employee->address->addressee()->associate($employee)->save();
-        }
-
-        return $status;
+        throw new UnexpectedValueException('Use `createForSchool` method instead of `create`.');
     }
 
     public function updating(Employee $employee, array $attributes)
     {
-        $attributes = array_except($attributes, ['date_of_birth', 'date_of_admission']);
-        $employee->fill($attributes);
+        $employee->department()->associate($attributes['department_id'] ?? $employee->department_id);
 
-        if (array_has($attributes, 'address') && !empty($attributes['address'])) {
-            if (isset($employee->address)) {
-                repository(Address::class)
-                    ->update($employee->address, $attributes['address']);
-
-            } else {
-                $employee->address()->associate(repository(Address::class)->create(array_get($attributes, 'address', [])));
-            }
-        }
-        if (array_has($attributes, 'department_id')) {
-            $employee->department()->associate(find($attributes, 'department_id'));
-
-
-        }
-        if (array_has($attributes, 'photo_id')) {
-            attach_attachment($employee, 'profilePhoto', find($attributes, 'photo_id', Attachment::class));
+        return $employee->update($attributes);
+    }
+    public function uploadPhoto(Employee $employee, UploadedFile $photo, User $user)
+    {
+        if (!$photo->isValid()) {
+            throw new UploadException('Invalid photo.');
         }
 
-        $employee->bio = $this->getBio($employee);
-        $userAttributes = [
-            'photo_id' => data_get($attributes, 'photo_id'),
-            'name' => str_replace('  ', ' ',
-                data_get($attributes, 'first_name') . ' ' .
-                data_get($attributes, 'middle_name') . ' ' .
-                data_get($attributes, 'last_name')
-            ),
-        ];
-        repository(User::class)->update($employee->user, $userAttributes);
-        return $employee->update();
+        // Set path & slug.
+        $attributes['path'] = $this->getPhotoUploadPath($employee);
+        $attributes['slug'] = $attributes['slug'] ?? Uuid::uuid4();
+
+        // Prepare uploader.
+        $uploader = Builder::makeFromFile($photo)->resize(360, 'preview', 360);
+        ;
+
+        // Upload & get attachment.
+        $attachment = $uploader->upload($attributes)->getAttachment();
+
+        $attachment->owner()->associate($user);
+        $attachment->related()->associate($employee);
+
+        $this->onCreate($attachment->save());
+
+        // Associate photo to the employee.
+        $employee->photo()->associate($attachment);
+
+        $this->onUpdate($employee->save());
+
+        return $attachment;
     }
 
-    public function getBio(Employee $employee)
+    protected function getPhotoUploadPath(Employee $employee)
     {
-        return '';
+        return "schools/{$employee->school_id}/employees/photo/{$employee->id}";
+    }
+
+    public function createForSchool(School $school, array $attributes)
+    {
+        $this->validateWith($attributes, $this->getCreateRulesForSchool($school));
+
+        $employee = new Employee($attributes);
+
+        $employee->department()->associate($attributes['department_id'] ?? null);
+        $employee->photo()->associate($attributes['photo_id'] ?? null);
+        $employee->school()->associate($school);
+
+        $this->onCreate($employee->save());
+
+        return $employee;
+    }
+
+    public function updateAddress(Employee $employee, array $attributes)
+    {
+        $repository = repository(Address::class);
+
+        if ($employee->address) {
+            $repository->update($employee->address, $attributes);
+        } else {
+            $address = $repository->create($attributes);
+
+            $employee->address()->associate($address);
+
+            $this->onUpdate($employee->save());
+        }
+
+        return $employee;
     }
 }

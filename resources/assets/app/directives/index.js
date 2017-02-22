@@ -1,2 +1,5 @@
-export { default as tooltip } from './tooltip'
-export const foo = 0
+import autofocus from './autofocus'
+
+export default function (Vue) {
+  Vue.directive('autofocus', autofocus)
+}

@@ -1,71 +1,144 @@
 <?php
 
+namespace Test\Api\Groups;
+
+use Scalex\Zero\Events\Group\MemberJoined;
+use Scalex\Zero\Events\Group\MemberLeft;
 use Scalex\Zero\Models\Group;
-use Scalex\Zero\User;
 
-class MemberControllerTest extends TestCase
+class MemberControllerTest extends \TestCase
 {
-    public function createGroup($attributes = [])
+    use MessagingTestHelper;
+
+    public function test_index_api_structure()
     {
-        return factory(Group::class)->create($attributes);
+        $group = $this->createGroupWithMembers(['private' => false]);
+
+        $this->actingAs($this->getUser())->get('/api/groups/'.$group->id.'/members')
+             ->assertResponseStatus(200)
+             ->seeJsonStructure([
+                                    'users' => [
+                                        '*' => [
+                                            'id',
+                                            'type',
+                                            'name',
+                                            'photo',
+                                        ],
+                                    ],
+                                    'meta' => [
+                                        'pagination',
+                                    ],
+                                ]);
     }
 
-    public function test_it_can_list_all_members()
+    public function test_index_can_get_members()
     {
-        $user = $this->createAnUser();
-        $group = $this->createGroup([
-            'school_id' => $user->school_id,
-            'owner_id' => $user->id,
-        ]);
-        $users = factory(User::class, 2)->create();
-        $group->addMembers([$user->id]);
-        $group->addMembers(collect($users)->keys()->toArray());
+        $group = $this->createGroupWithMembers(['private' => false]);
 
-        $this->actingAs($user)
-            ->json('GET', "/api/groups/{$group->id}/members")
-            ->seeStatusCode(200)
-            ->seeJsonContains(transform($group->members));
+        $this->actingAs($this->getUser())->get('/api/groups/'.$group->id.'/members')
+             ->assertResponseStatus(200);
     }
 
-    public function test_it_can_add_members()
+    public function test_index_can_get_members_for_a_member()
     {
-        $user = $this->createAnUser();
-        $other = $this->createAnUser(['school_id' => $user->school_id]);
-        $group = $this->createGroup(['school_id' => $user->school_id, 'owner_id' => $user->id]);
-        $group->addMembers([$user->id]);
+        $group = $this->createGroupWithMembers(['private' => true]);
 
-        $data = [
-            'members' => [(string)$other->id],
-        ];
+        $group->addMembers($this->getUser());
 
-        $this->actingAs($user)
-            ->json('POST', "/api/groups/{$group->id}/members/add", $data)
-            ->seeStatusCode(200)
-            ->seeJsonContains($data['members'])
-            ->seeInDatabase('group_user', [
-                'user_id' => $other->id,
-                'group_id' => $group->id,
-            ]);
+        $this->actingAs($this->getUser())->get('/api/groups/'.$group->id.'/members')
+             ->assertResponseStatus(200);
     }
 
-    public function test_it_can_remove_members()
+    public function test_index_cannot_get_members_of_a_private_group()
     {
-        $user = $this->createAnUser();
-        $other = $this->createAnUser(['school_id' => $user->school_id]);
-        $group = $this->createGroup(['school_id' => $user->school_id, 'owner_id' => $user->id]);
-        $group->addMembers([$user->id, $other->id]);
+        $group = $this->createGroupWithMembers(['private' => true]);
 
-        $data = [
-            'members' => [(string)$other->id],
-        ];
+        $this->actingAs($this->getUser())->get('/api/groups/'.$group->id.'/members')
+             ->assertResponseStatus(401);
+    }
 
-        $this->actingAs($user)
-            ->json('DELETE', "/api/groups/{$group->id}/members/remove", $data)
-            ->seeStatusCode(200)
-            ->seeJsonContains($data['members'])
-            ->dontSeeInDatabase('group_user', [
-                'user_id' => $other->id,
-                'group_id' => $group->id,
-            ]);
+    public function test_store_failed_validation_without_members()
+    {
+        $group = $this->createPrivateGroup();
+
+        $this->actingAs($group->owner)->post('/api/groups/'.$group->id.'/members')
+             ->assertResponseStatus(422)
+             ->seeJsonStructure(['errors' => ['member']]);
+    }
+
+    public function test_store_can_add_members()
+    {
+        $group = $this->createPrivateGroup();
+
+        $this->expectsEvents(MemberJoined::class);
+        $this->expectsModelEvents(Group::class, 'membersAdded');
+        $this->actingAs($group->owner)->post('/api/groups/'.$group->id.'/members',
+                                             ['member' => $id = $this->createUser()->id])
+            ->assertResponseStatus(200);
+        $this->seeInDatabase('group_user', ['group_id' => $group->id, 'user_id' => $id]);
+    }
+
+    public function test_store_only_owner_can_add_members()
+    {
+        $group = $this->createPrivateGroup();
+        $user = $this->createUser();
+
+        $group->addMembers($user);
+
+        $this->actingAs($user)->post('/api/groups/'.$group->id.'/members',
+                                     ['members' => $this->createUser()->id])
+             ->assertResponseStatus(401);
+    }
+
+    public function test_delete_failed_validation_without_members()
+    {
+        $group = $this->createPrivateGroup();
+
+        $this->actingAs($group->owner)->delete('/api/groups/'.$group->id.'/members')
+             ->assertResponseStatus(422)
+             ->seeJsonStructure(['errors' => ['member']]);
+    }
+
+    public function test_delete_can_remove_members()
+    {
+        $group = $this->createPrivateGroup();
+        $user = $this->createUser();
+
+        $group->addMembers($user);
+
+        $this->seeInDatabase('group_user', ['group_id' => $group->id, 'user_id' => $user->id]);
+        $this->expectsEvents(MemberLeft::class);
+        $this->expectsModelEvents(Group::class, 'membersRemoved');
+        $this->actingAs($group->owner)->delete('/api/groups/'.$group->id.'/members',
+                                             ['member' => $user->id])
+             ->assertResponseStatus(200);
+        $this->dontSeeInDatabase('group_user', ['group_id' => $group->id, 'user_id' => $user->id]);
+    }
+
+    public function test_owner_cannot_remove_himself()
+    {
+        $group = $this->createPrivateGroup();
+
+        $group->addMembers($group->owner_id);
+
+        $this->seeInDatabase('group_user', ['group_id' => $group->id, 'user_id' => $group->owner->id]);
+        $this->doesntExpectModelEvents(Group::class, 'membersRemoved');
+        $this->doesntExpectEvents(MemberLeft::class);
+        $this->actingAs($group->owner)->delete('/api/groups/'.$group->id.'/members',
+                                               ['member' => $group->owner->id])
+             ->assertResponseStatus(400);
+        $this->seeInDatabase('group_user', ['group_id' => $group->id, 'user_id' => $group->owner->id]);
+    }
+
+    public function test_delete_only_owner_can_add_members()
+    {
+        $group = $this->createPrivateGroup();
+        $user = $this->createUser();
+
+        $group->addMembers($user);
+
+        $this->actingAs($user)->post('/api/groups/'.$group->id.'/members',
+                                     ['members' => $this->createUser()->id])
+             ->assertResponseStatus(401);
     }
 }

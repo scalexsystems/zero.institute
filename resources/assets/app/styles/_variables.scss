@@ -1,10 +1,8 @@
-/*
- |
- | Bootstrap v4.0.0-alpha.4 configuration.
- |
- */
+//
+// Bootstrap v4 configuration.
+// 
 
-$grid-gutter-width: 20px !default;
+$grid-gutter-width-base: 16px;
 
 $enable-flex: true !default;
 $enable-rounded: true !default;
@@ -35,6 +33,7 @@ $black: #000000 !default;
 $border-color: #e7e7e7 !default;
 $input-border-color: $border-color !default;
 $card-border-color: $border-color !default;
+$dropdown-border-color: $border-color !default;
 
 $btn-primary-color: #ffffff;
 $btn-primary-bg: #20a0ff;
@@ -44,11 +43,9 @@ $input-color: #333;
 
 @import '~bootstrap/scss/variables';
 
-/*
- |
- | Font Awesome configuration.
- |
- */
+//
+// Font Awesome configuration.
+//
 $fa-font-path: '/fonts' !default;
 
-$navbar-height: 46px;
+$navbar-height: 48px;

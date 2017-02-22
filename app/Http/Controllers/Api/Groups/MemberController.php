@@ -1,79 +1,62 @@
 <?php namespace Scalex\Zero\Http\Controllers\Api\Groups;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Debug\Dumper;
 use Scalex\Zero\Events\Group\MemberJoined;
 use Scalex\Zero\Events\Group\MemberLeft;
 use Scalex\Zero\Http\Controllers\Controller;
 use Scalex\Zero\Models\Group;
 use Scalex\Zero\Models\Message;
+use Scalex\Zero\Repositories\GroupRepository;
+use Scalex\Zero\User;
 
 class MemberController extends Controller
 {
+    /**
+     * Add auth middleware for all routes.
+     */
     public function __construct()
     {
         $this->middleware('auth:api,web');
     }
 
-    /**
-     * Get members of the group.
-     * GET /groups/{group}/members
-     * Requires: auth
-     */
-    public function index(Group $group, Request $request)
+    public function index(Group $group, GroupRepository $repository)
     {
-        $this->authorize('members', $group);
+        $this->authorize('view-members', $group);
 
-        $members = $group->members();
-
-        // TODO: Add support to search here.
-
-        $members->orderBy('name');
-
-        $paginator = $members->paginate();
-        $collection = $paginator->getCollection();
-
-        $collection->load(['person', 'profilePhoto']);
-
-        return $paginator;
+        return $repository->members($group);
     }
 
-    /**
-     * Add members to the group.
-     * POST /groups/{group}/add
-     * Requires: auth
-     */
     public function store(Group $group, Request $request)
     {
-        $this->authorize('add-member', $group);
+        $this->authorize('add-members', $group);
+        $this->validate($request, [
+            'member' => 'required|exists:users,id',
+        ]);
 
-        $result = $group->addMembers((array)$request->get('members', []));
+        $members = $group->addMembers((array)$request->input('member'));
 
-        if (count($result['ids'])) {
-            event(new MemberJoined($result['ids'], $group));
+        if (count($members)) {
+            event(new MemberJoined($group, $members));
         }
 
-        return [
-            'data' => $result['ids'],
-        ];
+        return User::find($members->toArray());
     }
 
-    /**
-     * Remove members from the group.
-     * DELETE /groups/{group}/remove
-     * Requires: auth
-     */
     public function destroy(Group $group, Request $request)
     {
-        $this->authorize($group);
+        $this->authorize('remove-members', $group);
+        $this->validate($request, ['member' => 'required']);
 
-        $result = $group->removeMembers((array)$request->get('members', []));
+        if ((int) $group->owner_id === (int) $request->input('member')) {
+            abort(400, 'You cannot remove group moderator.');
+        }
+        $members = $group->removeMembers($request->input('member'));
 
-        if (count($result['ids'])) {
-            event(new MemberLeft($result['ids'], $group));
+        if (count($members)) {
+            event(new MemberLeft($group, $members));
         }
 
-        return [
-            'data' => $result['ids'],
-        ];
+        return $members->toArray();
     }
 }

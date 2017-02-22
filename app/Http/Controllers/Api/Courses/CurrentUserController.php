@@ -3,11 +3,13 @@
 namespace Scalex\Zero\Http\Controllers\Api\Courses;
 
 use Illuminate\Http\Request;
-use Illuminate\Database\Eloquent\Collection;
 use Scalex\Zero\Http\Controllers\Controller;
-use Scalex\Zero\Models\Teacher;
 use Scalex\Zero\Models\Course;
+use Scalex\Zero\Models\CourseSession;
+use Scalex\Zero\Models\Employee;
 use Scalex\Zero\Models\Student;
+use Scalex\Zero\Models\Teacher;
+use Scalex\Zero\Repositories\CourseRepository;
 
 class CurrentUserController extends Controller
 {
@@ -16,34 +18,37 @@ class CurrentUserController extends Controller
         $this->middleware('auth:api,web');
     }
 
-    /**
-     * List of current courses related to user.
-     *
-     * @return \Illuminate\Database\Eloquent\Collection
-     */
-    public function index(Request $request)
+    public function index(Request $request, CourseRepository $repository)
     {
-        $user = $request->user();
-        $request->query->set('with', ['sessions', 'instructors', 'prerequisites', 'active_sessions', 'future_sessions']);
-        $request->query->add(['with' => 'session']);
+        $person = $this->getPerson($request);
 
-        if ($user->person instanceof Teacher or $user->person instanceof Student) {
-            $user->person->load('sessions', 'sessions.course');
-            $courses = $user->person->sessions->map(function ($session) {
-                $session->course->session = $session;
-
-                return $session->course;
-            });
-            $courses->load(array_merge(['photo', 'prerequisites']));
-
-            return $courses;
+        if ($person instanceof Employee) {
+            return collect([]);
         }
 
-        abort(401, 'You are not allowed to join courses.');
+        if ($person instanceof Teacher) {
+            return CourseSession::where('instructor_id', $person->getKey())
+                                ->where('session_id', $request->user()->school->session_id)
+                                ->get();
+        }
+
+        if ($person instanceof Student) {
+            $ids = $person->sessions->pluck('id')->toArray();
+
+            return CourseSession::where('session_id', $request->user()->school->session_id)->find($ids);
+        }
+
+        abort(404);
     }
 
-    public function show(Request $request, $courseId)
+
+    /**
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Scalex\Zero\Models\Student|\Scalex\Zero\Models\Teacher|\Scalex\Zero\Models\Employee
+     */
+    protected function getPerson(Request $request)
     {
-        abort(401, 'You are not allowed to join courses.');
+        return $request->user()->person;
     }
 }
