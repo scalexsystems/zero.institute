@@ -7,7 +7,7 @@
   <div class="d-flex align-items-center">
     <div class="hidden-md-down d-flex flex-column mr-2 text-right">
       <div class="name">{{ user.name }}</div>
-      <small class="school text-capitalize"> {{ user.type }}</small>
+      <small class="school text-capitalize">{{ user.type }} @ {{ user.school.name }}</small>
     </div>
 
     <img class="rounded fit-cover" width="32" height="32" :src="user.photo">
