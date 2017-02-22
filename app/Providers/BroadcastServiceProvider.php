@@ -23,7 +23,9 @@ class BroadcastServiceProvider extends ServiceProvider
             }
         });
         Broadcast::channel($this->channel(School::class), function (User $user, $schoolId) {
-            return $user->school_id === (int)$schoolId;
+            if ($user->school_id === (int)$schoolId) {
+                return transform($user);
+            }
         });
     }
 
