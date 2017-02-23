@@ -20,6 +20,7 @@ class CreateAttendancesTable extends Migration
             $table->date('date');
             $table->json('additional')->default('[]');
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('course_session_id')->references('id')->on('course_session')->onDelete('cascade');
             $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');

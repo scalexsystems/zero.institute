@@ -1,0 +1,32 @@
+<?php namespace Scalex\Zero\Http\Controllers\Api\Attendance;
+
+use Illuminate\Http\Request;
+use Scalex\Zero\Criteria\Attendance\ofCourseSession;
+use Scalex\Zero\Http\Controllers\Controller;
+use Scalex\Zero\Models\CourseSession;
+use Scalex\Zero\Repositories\AttendanceRepository;
+
+class SessionController extends Controller
+{
+
+    /**
+     * Add auth middleware for all routes.
+     */
+    public function __construct()
+    {
+        $this->middleware('auth:api,web');
+    }
+
+    public function index(CourseSession $session, AttendanceRepository $repository)
+    {
+        $this->authorize('view-attendance', $session);
+
+        return $repository->pushCriteria(new ofCourseSession($session->id));
+    }
+
+
+
+
+
+
+}
