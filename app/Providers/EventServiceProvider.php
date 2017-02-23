@@ -2,7 +2,6 @@
 
 namespace Scalex\Zero\Providers;
 
-use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Scalex\Zero\Events;
 use Scalex\Zero\Listeners;
@@ -15,7 +14,7 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        Events\School\InvitationRequest::class => [
+        Events\InvitationRequest::class => [
             Listeners\Invitation\SendInvitationVerification::class,
             Listeners\Invitation\ReportNewInvitationRequest::class,
         ],
@@ -25,6 +24,7 @@ class EventServiceProvider extends ServiceProvider
     protected $subscribe = [
         Listeners\UserEventSubscriber::class,
     ];
+
     /**
      * Register any events for your application.
      *
