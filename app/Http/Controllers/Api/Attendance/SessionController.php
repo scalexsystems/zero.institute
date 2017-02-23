@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Scalex\Zero\Criteria\Attendance\ofCourseSession;
 use Scalex\Zero\Http\Controllers\Controller;
 use Scalex\Zero\Models\CourseSession;
+use Scalex\Zero\Models\Student;
 use Scalex\Zero\Repositories\AttendanceRepository;
 
 class SessionController extends Controller
@@ -17,12 +18,19 @@ class SessionController extends Controller
         $this->middleware('auth:api,web');
     }
 
-    public function index(CourseSession $session, AttendanceRepository $repository)
+    public function index(Request $request, CourseSession $session)
     {
         $this->authorize('view-attendance', $session);
 
-        return $repository->pushCriteria(new ofCourseSession($session->id));
+        return $session->attendances();
     }
+
+    public function show(Request $request, CourseSession $session, Student $student, AttendanceRepository $repository)
+    {
+        $this->authorize('view-attendance', $session);
+        return $repository->getAttendanceFor($student, $session);
+    }
+
 
 
 
