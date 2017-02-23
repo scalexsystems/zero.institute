@@ -130,7 +130,6 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
         $image = imagecreate(30, 30);
         imagejpeg($image, '/tmp/' . $name);
         return new UploadedFile('/tmp/'. $name, $name, 'image/jpeg', null, null, true);
-
     }
 
     public function assignRoleTo(\Scalex\Zero\User $user, string $role)
