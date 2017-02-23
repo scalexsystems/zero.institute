@@ -162,7 +162,7 @@ class UserRepository extends Repository
             $uploader->resize(4096)->resize($width, 'preview');
         }
 
-        $attachment = $uploader->upload($attributes)->getAttachment();
+        $attachment = $uploader->upload($attributes);
 
         $attachment->owner()->associate($user);
         $attachment->related()->associate($user);

@@ -1,18 +1,17 @@
 <?php namespace Scalex\Zero\Repositories;
 
+use Illuminate\Http\UploadedFile;
 use Illuminate\Validation\Rule;
 use Ramsey\Uuid\Uuid;
 use Request;
 use Scalex\Zero\Criteria\OfSchool;
-use Scalex\Zero\Models\Attachment;
-use Scalex\Zero\Models\Employee;
 use Scalex\Zero\Models\Address;
+use Scalex\Zero\Models\Employee;
 use Scalex\Zero\Models\School;
 use Scalex\Zero\User;
 use UnexpectedValueException;
 use Znck\Attach\Builder;
 use Znck\Repositories\Repository;
-use Illuminate\Http\UploadedFile;
 
 /**
  * @method Employee find(string|int $id)
@@ -163,7 +162,7 @@ class EmployeeRepository extends Repository
         ;
 
         // Upload & get attachment.
-        $attachment = $uploader->upload($attributes)->getAttachment();
+        $attachment = $uploader->upload($attributes);
 
         $attachment->owner()->associate($user);
         $attachment->related()->associate($employee);

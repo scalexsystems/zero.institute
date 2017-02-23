@@ -220,7 +220,7 @@ class StudentRepository extends Repository
         $uploader = Builder::makeFromFile($photo)->resize(360, 'preview', 360);
 
         // Upload & get attachment.
-        $attachment = $uploader->upload($attributes)->getAttachment();
+        $attachment = $uploader->upload($attributes);
 
         $attachment->owner()->associate($user);
         $attachment->related()->associate($student);

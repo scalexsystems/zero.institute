@@ -1,14 +1,8 @@
 <?php namespace Scalex\Zero\Http\Controllers\Api\Schools;
 
-use Ramsey\Uuid\Uuid;
-use Scalex\Zero\Repositories\SchoolRepository;
-use Znck\Attach\Builder;
-use Znck\Attach\Processors\Resize;
 use Illuminate\Http\Request;
-use Scalex\Zero\Models\Group;
-use Scalex\Zero\Models\Message;
 use Scalex\Zero\Http\Controllers\Controller;
-use Scalex\Zero\User;
+use Scalex\Zero\Repositories\SchoolRepository;
 
 class FileController extends Controller
 {

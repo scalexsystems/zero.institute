@@ -3,9 +3,8 @@
 namespace Scalex\Zero\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Scalex\Zero\Models\School;
-use Znck\Attach\Builder;
 use Ramsey\Uuid\Uuid;
+use Znck\Attach\Builder;
 
 class SchoolSetupController extends Controller
 {
@@ -48,8 +47,7 @@ class SchoolSetupController extends Controller
 
         $photo = Builder::make($request, 'logo')
                         ->resize(300, null, 300)
-                        ->upload(compact('slug', 'path'))
-                        ->getAttachment();
+                        ->upload(compact('slug', 'path'));
 
         $school->logo()->associate($photo);
 

@@ -4,11 +4,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Scalex\Zero\Database\ExtendibleModel;
 use Scalex\Zero\User;
-use Znck\Attach\Contracts\Attachment as AttachmentContract;
+use Znck\Attach\Contracts\AttachmentContract;
+use Znck\Attach\Traits\AttachmentTrait;
 
 class Attachment extends ExtendibleModel implements AttachmentContract
 {
-    use \Znck\Attach\Traits\Attachment;
+    use AttachmentTrait;
 
     use SoftDeletes;
 
@@ -40,7 +41,7 @@ class Attachment extends ExtendibleModel implements AttachmentContract
         return $this->morphTo();
     }
 
-    public function getAttachmentKeyName() : string
+    public function getAttachmentKeyName(): string
     {
         return 'slug';
     }

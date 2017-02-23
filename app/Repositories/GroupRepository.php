@@ -1,14 +1,12 @@
 <?php namespace Scalex\Zero\Repositories;
 
 use Carbon\Carbon;
-use DB;
 use Illuminate\Http\UploadedFile;
 use Ramsey\Uuid\Uuid;
 use Request;
 use Scalex\Zero\Criteria\Group\MessagesCount;
 use Scalex\Zero\Criteria\OfSchool;
 use Scalex\Zero\Models\Attachment;
-use Scalex\Zero\Models\Course;
 use Scalex\Zero\Models\Group;
 use Scalex\Zero\User;
 use Symfony\Component\HttpFoundation\File\Exception\UploadException;
@@ -236,7 +234,7 @@ class GroupRepository extends Repository
             $uploader->resize(4096)->resize($width, 'preview');
         }
 
-        $attachment = $uploader->upload($attributes)->getAttachment();
+        $attachment = $uploader->upload($attributes);
 
         $attachment->owner()->associate($user);
         $attachment->related()->associate($group);
