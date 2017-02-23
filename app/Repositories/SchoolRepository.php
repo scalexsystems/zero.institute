@@ -1,10 +1,7 @@
 <?php namespace Scalex\Zero\Repositories;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
-use Log;
 use Ramsey\Uuid\Uuid;
-use Scalex\Zero\Models\Attachment;
 use Scalex\Zero\Models\Address;
 use Scalex\Zero\Models\School;
 use Scalex\Zero\User;
@@ -83,7 +80,7 @@ class SchoolRepository extends Repository
         ;
 
         // Upload & get attachment.
-        $attachment = $uploader->upload($attributes)->getAttachment();
+        $attachment = $uploader->upload($attributes);
 
         $attachment->owner()->associate($user);
         $attachment->related()->associate($school);

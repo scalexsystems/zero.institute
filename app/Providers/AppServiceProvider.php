@@ -4,16 +4,14 @@ namespace Scalex\Zero\Providers;
 
 use DB;
 use Event;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Str;
 use Log;
 use Scalex\Zero\Models;
 use Scalex\Zero\Observers;
 use Scalex\Zero\User;
 use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
-use Znck\Attach\AttachServiceProvider;
+use Znck\Attach\Providers\AttachServiceProvider;
 use Znck\Attach\Util\GuessMimeFromExtension;
 use Znck\Transformers\Serializers\EmbedSerializer;
 use Znck\Transformers\Transformer;
