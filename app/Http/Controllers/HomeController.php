@@ -2,11 +2,11 @@
 
 namespace Scalex\Zero\Http\Controllers;
 
-use Illuminate\Support\Facades\Cache;
+use Cache;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
+use DB;
 use Illuminate\Http\Request;
-use Scalex\Zero\Events\School\InvitationRequest;
+use Scalex\Zero\Events\InvitationRequest;
 
 class HomeController extends Controller
 {
@@ -14,7 +14,7 @@ class HomeController extends Controller
      * Show the app homepage.
      *
      * @route GET /
-     * @auth yes
+     * @auth  yes
      */
     public function app()
     {
@@ -23,8 +23,9 @@ class HomeController extends Controller
 
     /**
      * Show the zero homepage.
+     *
      * @route GET /
-     * @auth no
+     * @auth  no
      */
     public function home()
     {
@@ -35,7 +36,8 @@ class HomeController extends Controller
 
         $count = Cache::rememberForever('requests.count', function () {
             return DB::connection('sqlite')
-                                 ->table('requests')->count();
+                     ->table('requests')
+                     ->count();
         });
 
         return view('web.home', compact('count'));
@@ -43,6 +45,7 @@ class HomeController extends Controller
 
     /**
      * Show social media share intent.
+     *
      * @route GET /share
      */
     public function share()
@@ -52,6 +55,7 @@ class HomeController extends Controller
 
     /**
      * Accept invite request.
+     *
      * @route GET|POST /request
      */
     public function request(Request $request)
@@ -70,13 +74,13 @@ class HomeController extends Controller
 
         if (
             DB::connection('sqlite')
-                ->table('requests')
-                ->where('email', $email)
-                ->count() === 0
+              ->table('requests')
+              ->where('email', $email)
+              ->count() === 0
         ) {
             DB::connection('sqlite')
-                ->table('requests')
-                ->insert(compact('email', 'name', 'created_at'));
+              ->table('requests')
+              ->insert(compact('email', 'name', 'created_at'));
             Cache::forget('requests.count');
 
             event(new InvitationRequest($name, $email));
