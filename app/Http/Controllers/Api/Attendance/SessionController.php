@@ -20,15 +20,23 @@ class SessionController extends Controller
 
     public function index(Request $request, CourseSession $session)
     {
-        $this->authorize('view-attendance', $session);
+        $this->authorize('view', $session);
 
         return $session->attendances();
     }
 
     public function show(Request $request, CourseSession $session, Student $student, AttendanceRepository $repository)
     {
-        $this->authorize('view-attendance', $session);
+        $this->authorize('view', $session);
         return $repository->getAttendanceFor($student, $session);
+    }
+
+    public function store(Request $request, CourseSession $session, AttendanceRepository $repository)
+    {
+        $this->authorize('take-attendance', $session);
+        $studentIds = collect($request->input['students']);
+        $repository->takeAttendance($request, $session);
+
     }
 
 
