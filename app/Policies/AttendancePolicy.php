@@ -11,7 +11,7 @@ class AttendancePolicy extends AbstractPolicy
 {
     use VerifiesSchool;
 
-    public function view(User $user, CourseSession $session)
+    public function viewAttendance(User $user, CourseSession $session)
     {
         return trust($user)->can('attendance.view') and $session->instructor->id === $user->id;
     }

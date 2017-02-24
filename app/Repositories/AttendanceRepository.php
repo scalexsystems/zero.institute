@@ -1,7 +1,7 @@
 <?php namespace Scalex\Zero\Repositories;
 
 use Illuminate\Support\Collection;
-use Scalex\Zero\Criteria\Attendance\ofCourseSession;
+use Scalex\Zero\Criteria\Attendance\OfCourseSession;
 use Scalex\Zero\Models\Attendance;
 use Scalex\Zero\Models\CourseSession;
 use Scalex\Zero\Models\Student;
@@ -38,7 +38,7 @@ class AttendanceRepository extends Repository
 
     public function getAttendanceFor(Student $student, CourseSession $session)
     {
-        return $this->pushCriteria(new ofCourseSession($session))
+        return $this->pushCriteria(new OfCourseSession($session->id))
             ->where('student_id', $student->id)->get();
     }
 

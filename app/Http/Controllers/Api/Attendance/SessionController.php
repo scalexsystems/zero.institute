@@ -1,7 +1,6 @@
 <?php namespace Scalex\Zero\Http\Controllers\Api\Attendance;
 
 use Illuminate\Http\Request;
-use Scalex\Zero\Criteria\Attendance\ofCourseSession;
 use Scalex\Zero\Http\Controllers\Controller;
 use Scalex\Zero\Models\CourseSession;
 use Scalex\Zero\Models\Student;
@@ -20,14 +19,14 @@ class SessionController extends Controller
 
     public function index(Request $request, CourseSession $session)
     {
-        $this->authorize('view', $session);
+        $this->authorize('view-attendance', $session);
 
         return $session->attendances();
     }
 
     public function show(Request $request, CourseSession $session, Student $student, AttendanceRepository $repository)
     {
-        $this->authorize('view', $session);
+        $this->authorize('view-attendance', $session);
         return $repository->getAttendanceFor($student, $session);
     }
 

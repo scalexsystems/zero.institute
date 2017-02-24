@@ -3,7 +3,7 @@
 use Znck\Repositories\Contracts\Criteria;
 use Znck\Repositories\Contracts\Repository;
 
-class ofCourseSession implements Criteria
+class OfCourseSession implements Criteria
 {
     protected $ids;
 
