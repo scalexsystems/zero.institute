@@ -1,4 +1,5 @@
 <?php
+use Scalex\Zero\Models\Attendance;
 use Scalex\Zero\Models\Course;
 use Scalex\Zero\Models\CourseSession;
 
@@ -8,7 +9,7 @@ use Scalex\Zero\Models\CourseSession;
  * Date: 24/2/17
  * Time: 5:06 PM
  */
-trait CourseSessionTestHelper
+trait AttendanceTestHelper
 {
 
     public function createCourse($count = 0)
@@ -25,6 +26,13 @@ trait CourseSessionTestHelper
     {
         $course = $this->createCourse($count);
         return factory(CourseSession::class)->create(['course_id' => $course->id]);
+
+    }
+
+    public function markAttendanceForSessionAndStudent($count = 0)
+    {
+        $courseSession = $this->createCourseWithSession($count);
+        return factory(Attendance::class)->create(['course_session' => $courseSession->id]);
 
     }
 
