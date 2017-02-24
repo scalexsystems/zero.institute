@@ -1,6 +1,6 @@
 <?php
 
-namespace Scalex\Zero\Console\Commands\V04;
+namespace Scalex\Zero\Console\Commands\V05;
 
 use Illuminate\Console\Command;
 
@@ -18,7 +18,7 @@ class UpgradeCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Upgrade to version 0.4; Run all zero:upgrade-0.4* commands';
+    protected $description = 'Upgrade to version 0.5; Run all zero:upgrade-0.5* commands';
 
     /**
      * Execute the console command.
@@ -27,9 +27,6 @@ class UpgradeCommand extends Command
      */
     public function handle()
     {
-        $this->call('zero:upgrade-0.4-create-school-sessions');
-        $this->call('zero:upgrade-0.4-move-course-constraints');
-        $this->call('zero:upgrade-0.4-make-course-groups-private');
         $this->info('Upgraded to version 0.5');
     }
 }
