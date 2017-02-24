@@ -1,4 +1,4 @@
-<?php
+<?php namespace Test\Api\Attendance;
 use Scalex\Zero\Models\Attendance;
 use Scalex\Zero\Models\Course;
 use Scalex\Zero\Models\CourseSession;
