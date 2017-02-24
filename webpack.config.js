@@ -117,7 +117,7 @@ module.exports.module = {
       },
       loader: 'file-loader',
       options: {
-        name: 'images/[name].[ext]?[hash]',
+        name: 'images/[path][name].[ext]?[hash]',
         publicPath: Mix.resourceRoot
       }
     },
