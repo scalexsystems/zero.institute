@@ -58,7 +58,7 @@ abstract class AbstractGroupEvent extends Event
         }
 
         if (!$channels->count()) {
-            return (array)parent::broadcastOn();
+            return parent::broadcastOn();
         }
 
         return $channels->toArray();

@@ -15,7 +15,7 @@ abstract class Event implements ShouldBroadcast
 
     public function broadcastOn()
     {
-        return new PrivateChannel('noop');
+        return [new PrivateChannel('noop')];
     }
 
     public function broadcastWith()
