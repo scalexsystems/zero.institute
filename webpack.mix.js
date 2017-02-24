@@ -1,7 +1,4 @@
-const { mix, config } = require('laravel-mix')
-const Mix = config
-
-Mix.vueExtract = !(Mix.hmr || ['production', 'development'].indexOf(process.env.NODE_ENV) > -1)
+const mix = require('laravel-mix')
 
 /*
  |--------------------------------------------------------------------------
@@ -14,22 +11,74 @@ Mix.vueExtract = !(Mix.hmr || ['production', 'development'].indexOf(process.env.
  |
  */
 
-mix.js('resources/assets/app/main.js', 'public/js/app.js')
-  .sass('resources/assets/sass/web.scss', 'public/css/web.css')
-  .version()
-  .sourceMaps()
-  .disableNotifications()
+if (mix.config.isProduction) {
+  mix.version()
+}
+
+mix
+    .sourceMaps()
+    .setPublicPath('public/app/')
+    .setResourceRoot('/app/')
+    .options({ extractVueStyles: 'css/app.css', processCssUrls: true })
+    .js('resources/assets/app/main.js', 'main.js')
+    .extract([
+      'vue',
+      'vue-resource',
+      'vue-router',
+      'vuex',
+    ], 'vendor/vue')
+    .extract([
+      'jquery',
+      'bootstrap',
+      'tether',
+    ], 'vendor/bootstrap')
+    .extract([
+      // 'echo-for-vue',
+      'pusher-js',
+      'socket.io-client',
+    ], 'vendor/echo')
+    .extract([
+      'Validator',
+      'autosize',
+      'filesize',
+      'lodash.debounce',
+      'lodash.sortby',
+      'lodash.throttle',
+      'marked',
+      'moment',
+      'perfect-scrollbar',
+      'raven-js',
+      'sifter',
+      'scrollmonitor'
+    ], 'vendor/plugins')
+    .extract([
+      'bootstrap-for-vue',
+      'vue-infinite-loading'
+    ], 'vendor/components')
 
 // Full API
 // mix.js(src, output);
+// mix.react(src, output); <-- Identical to mix.js(), but registers React Babel compilation.
 // mix.extract(vendorLibs);
 // mix.sass(src, output);
 // mix.less(src, output);
+// mix.stylus(src, output);
+// mix.browserSync('my-site.dev');
 // mix.combine(files, destination);
+// mix.babel(files, destination); <-- Identical to mix.combine(), but also includes Babel compilation.
 // mix.copy(from, to);
 // mix.minify(file);
 // mix.sourceMaps(); // Enable sourcemaps
 // mix.version(); // Enable versioning.
 // mix.disableNotifications();
-// mix.setPublicPath('path/to/public'); <-- Useful for Node apps.
+// mix.setPublicPath('path/to/public');
+// mix.setResourceRoot('prefix/for/resource/locators');
+// mix.autoload({}); <-- Will be passed to Webpack's ProvidePlugin.
 // mix.webpackConfig({}); <-- Override webpack.config.js, without editing the file directly.
+// mix.then(function () {}) <-- Will be triggered each time Webpack finishes building.
+// mix.options({
+//   extractVueStyles: false, // Extract .vue component styling to file, rather than inline.
+//   processCssUrls: true, // Process/optimize relative stylesheet url()'s. Set to false, if you don't want them touched.
+//   uglify: {}, // Uglify-specific options. https://webpack.github.io/docs/list-of-plugins.html#uglifyjsplugin
+//   postCss: [] // Post-CSS options: https://github.com/postcss/postcss/blob/master/docs/plugins.md
+// });
