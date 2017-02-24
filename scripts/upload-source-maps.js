@@ -10,7 +10,7 @@ const glob = require('glob')
 require('dotenv').config()
 
 const version = package.version
-
+const buildDir = path.resolve(__dirname, '../public/app')
 // 1. Create release.
 function createRelease(resolve, reject) {
   request({
@@ -36,8 +36,8 @@ function createRelease(resolve, reject) {
 
 
 // 2. Upload source maps.
-function upload(resolve) {
-  const files = glob.sync(`${buildDir}/*.map`).concat(glob.sync(`${buildDir}/**/*.map`))
+function upload() {
+  const files = glob.sync(`${buildDir}/**/*.map`)
 
   let uploaded = 0
 
@@ -53,14 +53,13 @@ function upload(resolve) {
     }, (error, response, body) => {
       uploaded += 1
 
-      console.log('POST: ', file.replace(buildDir, ''))
-      console.log('Status: ', response)
+      console.log(`\n- ${uploaded} of ${files.length}`)
+      console.log('  POST: ', file.replace(buildDir, ''))
+      console.log('  Status: ', response && response.statusMessage)
       if (error) console.log(error)
-      else console.log(body)
-
-      if (uploaded === files.length && resolve) resolve()
+      else console.log(' ', body)
     })
   })
 }
 
-(new Promise(createRelease)).then(() => new Promise(upload))
+(new Promise(createRelease)).then(() => upload())

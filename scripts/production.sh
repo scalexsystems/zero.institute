@@ -6,8 +6,11 @@ PACKAGE_VERSION=$(cat package.json \
   | awk -F: '{ print $2 }' \
   | sed 's/[",]//g')
 
+__DIR=`dirname $PWD/$0`
+
+
 rm -rf public/app || true
 
-yarn run build:prod && git add --force public package.json \
+yarn run build:prod && git add public package.json \
  && git commit -m ":package: Build ${PACKAGE_VERSION}" \
- && node ./upload-source-maps.js
+ && node ${__DIR}/upload-source-maps.js

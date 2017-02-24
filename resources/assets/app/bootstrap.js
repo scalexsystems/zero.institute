@@ -21,7 +21,7 @@ const Laravel = window.Laravel || {}
 const dsn = process.env.NODE_ENV === 'production' ? 'https://0e3651de5e1d425da8e296428b4795ea@sentry.io/131049' : false
 
 // Install plugins.
-Raven.config(dsn).addPlugin(RavenVue, Vue).install()
+Raven.config(dsn, { release: require('../../../package.json').version }).addPlugin(RavenVue, Vue).install()
 Vue.use(VueResource)
 Vue.use(VueDebug, { debug: process.env.NODE_ENV !== 'production' })
 Vue.use(VueEcho, Laravel.broadcast)
