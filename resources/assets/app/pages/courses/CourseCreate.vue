@@ -71,7 +71,7 @@
 </template>
 
 <script lang="babel">
-import throttle from 'lodash/throttle'
+import throttle from 'lodash.throttle'
 import { formHelper } from 'bootstrap-for-vue'
 import { mapGetters, mapActions } from 'vuex'
 import CourseCard from '../../components/course/Card.vue'

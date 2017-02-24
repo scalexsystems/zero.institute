@@ -17,10 +17,11 @@ const config = require('./config')
 
 const log = config.logger
 const servers = {}
+const hot = path.resolve(__dirname, '../public/hot')
 
 cleanup(function () {
   env.cleanup()
-  fs.unlinkSync(path.resolve(__dirname, '../public/hot'))
+  if (fs.existsSync(hot)) fs.unlinkSync(hot)
   if (servers.laravel) servers.laravel.kill()
   if (servers.webpack) servers.webpack.kill()
 })

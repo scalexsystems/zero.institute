@@ -2,6 +2,7 @@ let path = require('path');
 let webpack = require('webpack');
 let Mix = require('laravel-mix').config;
 let plugins = require('laravel-mix').plugins;
+plugins.BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 /*
  |--------------------------------------------------------------------------
@@ -54,7 +55,7 @@ module.exports.entry = Mix.entry();
  */
 
 module.exports.output = Mix.output();
-
+module.exports.output.publicPath = Mix.isHmr ? 'http://localhost:8080/' : '/app/'
 /*
  |--------------------------------------------------------------------------
  | Rules
@@ -81,31 +82,24 @@ module.exports.module = {
       loader: 'vue-loader',
       options: {
         loaders: Mix.options.extractVueStyles ? {
-              js: 'babel-loader' + Mix.babelConfig(),
+              js: ['babel-loader' + Mix.babelConfig(), 'strip-loader?strip[]=this.$debug'],
               scss: vueExtractTextPlugin.extract({
                 use: 'css-loader!sass-loader',
                 fallback: 'vue-style-loader'
               }),
-              sass: vueExtractTextPlugin.extract({
-                use: 'css-loader!sass-loader?indentedSyntax',
-                fallback: 'vue-style-loader'
-              }),
-              stylus: vueExtractTextPlugin.extract({
-                use: 'css-loader!stylus-loader?paths[]=node_modules',
-                fallback: 'vue-style-loader'
-              }),
-              css: vueExtractTextPlugin.extract({
-                use: 'css-loader',
-                fallback: 'vue-style-loader'
-              })
             } : {
               js: 'babel-loader' + Mix.babelConfig(),
-              scss: 'vue-style-loader!css-loader!sass-loader',
-              sass: 'vue-style-loader!css-loader!sass-loader?indentedSyntax',
-              stylus: 'vue-style-loader!css-loader!stylus-loader?paths[]=node_modules'
+              scss: 'vue-style-loader!css-loader!sass-loader'
             },
 
-        postcss: Mix.options.postCss
+        cssModules: {
+          localIdentName: '[name]---[local]---[hash:base64:5]',
+          camelCase: true
+        },
+
+        postcss: Mix.options.postCss,
+
+        sourceMaps: true
       }
     },
 
@@ -163,11 +157,7 @@ if (Mix.preprocessors) {
  */
 
 module.exports.resolve = {
-  extensions: ['*', '.js', '.jsx', '.vue'],
-
-  alias: {
-    'vue$': 'vue/dist/vue.common.js'
-  }
+  extensions: ['*', '.js', '.jsx', '.vue']
 };
 
 /*
@@ -204,7 +194,7 @@ module.exports.performance = { hints: false };
  |
  */
 
-module.exports.devtool = Mix.sourcemaps;
+module.exports.devtool = (Mix.inProduction ? '#source-map' : '#inline-source-map');
 
 /*
  |--------------------------------------------------------------------------
@@ -235,11 +225,28 @@ module.exports.devServer = {
  */
 
 module.exports.plugins = (module.exports.plugins || []).concat([
+
+  new webpack.ProvidePlugin({
+    jQuery: 'jquery',
+    $: 'jquery',
+    jquery: 'jquery',
+    Tether: 'tether',
+    io: 'socket.io-client'
+  }),
+
   new plugins.FriendlyErrorsWebpackPlugin(),
 
   new plugins.StatsWriterPlugin({
     filename: '../mix-manifest.json',
-    transform: Mix.manifest.transform.bind(Mix.manifest),
+    transform (paths, options) {
+      const result = JSON.parse(Mix.manifest.transform.call(Mix.manifest, paths, options))
+
+      Object.keys(result).forEach(key => {
+        result[key] = '/app' + result[key]
+      })
+
+      return JSON.stringify(result, null, 2)
+    },
   }),
 
   new plugins.WebpackMd5HashPlugin(),
@@ -251,7 +258,9 @@ module.exports.plugins = (module.exports.plugins || []).concat([
       context: __dirname,
       output: { path: './' }
     }
-  })
+  }),
+
+  new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
 ]);
 
 if (Mix.browserSync) {
@@ -294,15 +303,74 @@ if (Mix.copy) {
 }
 
 if (Mix.extract) {
+  const names = Mix.entryBuilder.extractions.concat([
+    path.join(Mix.js.base, 'manifest').replace(/\\/g, '/')
+  ])
+
   module.exports.plugins.push(
       new webpack.optimize.CommonsChunkPlugin({
-        names: Mix.entryBuilder.extractions.concat([
-          path.join(Mix.js.base, 'manifest').replace(/\\/g, '/')
-        ]),
-        minChunks: Infinity
+        names: names,
+        minChunks: Infinity,
+        children: true
       })
-  );
+  )
 }
+
+// ----- Extracting Chunks -----
+exports.entry['vendor/vue'] = ['vue', 'vuex', 'vue-resource', 'vue-router']
+exports.entry['vendor/bootstrap'] = ['jquery', 'bootstrap', 'tether']
+exports.entry['vendor/components'] = ['bootstrap-for-vue']
+exports.entry['vendor/plugins'] = ['moment', 'sifter']
+exports.entry['vendor/echo'] = ['pusher-js', 'laravel-echo', 'echo-for-vue']
+module.exports.plugins.push(
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'manifest'
+    }),
+
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'main',
+      children: true,
+      minChunks: 4,
+    }),
+
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor/others',
+      chunks: ['main'],
+      minChunks (module) {
+        return module.context && module.context.indexOf('node_modules') !== -1
+      }
+    }),
+
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor/vue',
+      chunks: ['main', 'vendor/bootstrap', 'vendor/components', 'vendor/echo', 'vendor/others'],
+      minChunks: Infinity
+    }),
+
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor/bootstrap',
+      chunks: ['main', 'vendor/echo', 'vendor/others', 'vendor/components'],
+      minChunks: Infinity
+    }),
+
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor/components',
+      chunks: ['main', 'vendor/echo', 'vendor/others', 'vendor/components'],
+      minChunks: Infinity
+    }),
+
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor/plugins',
+      chunks: ['main', 'vendor/bootstrap', 'vendor/components', 'vendor/echo', 'vendor/others'],
+      minChunks: Infinity
+    }),
+
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor/echo',
+      chunks: ['main', 'vendor/others'],
+      minChunks: Infinity
+    })
+)
 
 if (Mix.inProduction) {
   module.exports.plugins.push(
@@ -312,10 +380,31 @@ if (Mix.inProduction) {
         }
       }),
 
-      new webpack.optimize.UglifyJsPlugin(Mix.options.uglify),
+      new webpack.optimize.UglifyJsPlugin({
+        beautify: false,
+        comments: false,
+        extractComments: false,
+        compress: {
+          warnings: false,
+          drop_console: false, // Drop `console` statements
+        },
+        mangle: {
+          except: ['$'], // Don't mangle $
+          screw_ie8: true, // Don't care about IE8
+          keep_fnames: true, // Don't mangle function names
+        },
+        sourceMap: true
+      })
 
-      new webpack.NormalModuleReplacementPlugin(/socket\.io-client/, path.resolve(__dirname, 'resources/assets/app/empty.js'))
+      // new webpack.NormalModuleReplacementPlugin(
+      //     /(socket\.io-client)/,
+      //     path.resolve(__dirname, 'resources/assets/app/empty.js')
+      // )
   );
+}
+
+if (process.env.VIS !== undefined) {
+  exports.plugins.push(new plugins.BundleAnalyzerPlugin())
 }
 
 module.exports.plugins.push(

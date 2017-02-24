@@ -8,4 +8,6 @@ PACKAGE_VERSION=$(cat package.json \
 
 rm -rf public/app || true
 
-yarn run build:prod && git add --force public package.json && git commit -m ":package: Build ${PACKAGE_VERSION}"
+yarn run build:prod && git add --force public package.json \
+ && git commit -m ":package: Build ${PACKAGE_VERSION}" \
+ && node ./upload-source-maps.js

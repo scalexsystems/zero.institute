@@ -11,50 +11,16 @@ const mix = require('laravel-mix')
  |
  */
 
-if (mix.config.isProduction) {
+if (mix.config.inProduction) {
   mix.version()
 }
 
 mix
-    .sourceMaps()
     .setPublicPath('public/app/')
     .setResourceRoot('/app/')
-    .options({ extractVueStyles: 'css/app.css', processCssUrls: true })
+    .options({ extractVueStyles: 'css/app.css' })
     .js('resources/assets/app/main.js', 'main.js')
-    .extract([
-      'vue',
-      'vue-resource',
-      'vue-router',
-      'vuex',
-    ], 'vendor/vue')
-    .extract([
-      'jquery',
-      'bootstrap',
-      'tether',
-    ], 'vendor/bootstrap')
-    .extract([
-      // 'echo-for-vue',
-      'pusher-js',
-      'socket.io-client',
-    ], 'vendor/echo')
-    .extract([
-      'Validator',
-      'autosize',
-      'filesize',
-      'lodash.debounce',
-      'lodash.sortby',
-      'lodash.throttle',
-      'marked',
-      'moment',
-      'perfect-scrollbar',
-      'raven-js',
-      'sifter',
-      'scrollmonitor'
-    ], 'vendor/plugins')
-    .extract([
-      'bootstrap-for-vue',
-      'vue-infinite-loading'
-    ], 'vendor/components')
+    .sass('resources/assets/sass/web.scss', 'css/web.css')
 
 // Full API
 // mix.js(src, output);
