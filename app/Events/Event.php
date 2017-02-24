@@ -1,6 +1,7 @@
 <?php namespace Scalex\Zero\Events;
 
 use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Database\Eloquent\Model;
@@ -11,6 +12,11 @@ use ReflectionProperty;
 abstract class Event implements ShouldBroadcast
 {
     use InteractsWithSockets, SerializesModels;
+
+    public function broadcastOn()
+    {
+        return new PrivateChannel('noop');
+    }
 
     public function broadcastWith()
     {
