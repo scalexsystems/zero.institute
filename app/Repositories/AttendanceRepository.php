@@ -24,7 +24,7 @@ class AttendanceRepository extends Repository
      *
      * @var string
      */
-    protected $model = Attendance::class; 
+    protected $model = Attendance::class;
 
     /**
      * Validation rules.
@@ -33,7 +33,7 @@ class AttendanceRepository extends Repository
      */
     protected $rules = [
         'students' => 'required|array',
-        'date' => 'required|date'
+        'date' => 'required|date|before:tomorrow'
     ];
 
     public function getAttendanceFor(Student $student, CourseSession $session)
@@ -42,10 +42,14 @@ class AttendanceRepository extends Repository
             ->where('student_id', $student->id)->get();
     }
 
-    public function takeAttendance(Collection $students, CourseSession $session)
+    public function takeAttendance(Collection $students, CourseSession $session, $date)
     {
-
-
-
+        $attendances = $students->map(function ($studentId) use ($session, $date) {
+            $attendance = new Attendance();
+            $attendance->student()->associate($studentId);
+            $attendance->date = $date;
+            $attendance->course_session()->associate($session);
+            $attendance->save();
+        });
     }
 }

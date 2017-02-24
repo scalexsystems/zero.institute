@@ -34,8 +34,9 @@ class SessionController extends Controller
     {
         $this->authorize('take-attendance', $session);
         $studentIds = collect($request->input['students']);
-        $repository->takeAttendance($request, $session);
-
+        $date = $request->input('date');
+        $repository->takeAttendance($studentIds, $session, $date);
+        return $this->accepted();
     }
 
 
