@@ -28,7 +28,6 @@ class InstallCommand extends Command
     public function handle()
     {
         $this->call('trust:roles', ['--force' => true]);
-        $this->call('cache:clear'); // Update roles.
         $this->call('countries:update');
         $this->call('states:update');
         $this->call('cities:update');
