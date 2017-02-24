@@ -34,11 +34,11 @@ class GroupController extends Controller
     {
         $repository->with(['photo', 'lastMessage'])->pushCriteria(new PrivateGroup(false));
 
-        $repository->withCount('members');
 
         if ($request->has('q')) {
             $repository->search($request->query('q'));
         } else {
+            $repository->withCount('members');
             $repository->pushCriteria(new OrderBy('name'));
             $repository->pushCriteria(new MessagesCount($request->user()));
         }
