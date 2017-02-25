@@ -377,7 +377,8 @@ if (Mix.inProduction) {
       new webpack.DefinePlugin({
         'process.env': {
           NODE_ENV: '"production"'
-        }
+        },
+        VERSION: JSON.stringify(require("package.json").version)
       }),
 
       new webpack.optimize.UglifyJsPlugin({

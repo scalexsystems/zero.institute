@@ -7,8 +7,6 @@ PACKAGE_VERSION=$(cat package.json \
   | sed 's/[",]//g')
 
 __DIR=`dirname $PWD/$0`
-
-
 rm -rf public/app || true
 
 yarn run build:prod && git add public package.json \
