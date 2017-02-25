@@ -25,7 +25,7 @@ test:
     - echo 'APP_KEY=' | cat > .env
     - php artisan key:generate
     - php artisan passport:keys
-    - composer test:api
+    - composer test:api:parallel -- -p16
     # - yarn prod -- --bail
     - git diff --name-only --diff-filter=ACMRTUXB $COMMIT_RANGE| grep -E '\.(js|vue)$' | xargs yarn run eslint -- --ext .js,.vue
     # - yarn test:unit
