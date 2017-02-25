@@ -191,4 +191,9 @@ class Student extends BaseModel implements Person, BelongsToSchool
             return $this->date_of_admission->year;
         }
     }
+
+    public function attendances()
+    {
+        return $this->hasMany(Attendance::class);
+    }
 }
