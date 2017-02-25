@@ -7,7 +7,6 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Illuminate\Http\Exception\HttpResponseException;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Log;
@@ -62,7 +61,7 @@ class Handler extends ExceptionHandler
 
     protected function unauthenticatedApi($request, AuthenticationException $exception)
     {
-        return response()->json(['error' => 'unauthenticated'], 403);
+        return \Response::json(['error' => 'unauthenticated'], 403);
     }
 
     /**
@@ -101,7 +100,7 @@ class Handler extends ExceptionHandler
         } elseif ($e instanceof AuthenticationException) {
             return $this->unauthenticatedApi($request, $e);
         } elseif ($e instanceof AuthorizationException) {
-            return response()->json(['message' => 'You are not authorised to access this content.'], Response::HTTP_UNAUTHORIZED);
+            return \Response::json(['message' => 'You are not authorised to access this content.'], Response::HTTP_UNAUTHORIZED);
         } elseif ($e instanceof ValidationException) {
             return $this->convertValidationExceptionToJson($e, $request);
         } elseif (
@@ -109,9 +108,9 @@ class Handler extends ExceptionHandler
             $e instanceof ModelNotFoundException or
             $e instanceof NotFoundResourceException
         ) {
-            return response()->json(['message' => $e->getMessage()], Response::HTTP_NOT_FOUND);
+            return \Response::json(['message' => $e->getMessage()], Response::HTTP_NOT_FOUND);
         } elseif ($e instanceof HttpException and $e->getStatusCode() >= 400 and $e->getStatusCode() < 500) {
-            return response()->json(['message' => $e->getMessage()], $e->getStatusCode());
+            return \Response::json(['message' => $e->getMessage()], $e->getStatusCode());
         }
 
         $response = ['message' => 'Whoops! something very bad just happened!'];
@@ -133,7 +132,7 @@ class Handler extends ExceptionHandler
             $response += ['debug' => $context];
         }
 
-        return response()->json($response, 500);
+        return \Response::json($response, 500);
     }
 
     /**
@@ -144,7 +143,7 @@ class Handler extends ExceptionHandler
      */
     public function convertValidationExceptionToJson($e, $request)
     {
-        return response()->json(
+        return \Response::json(
             [
                 'message' => $e->getMessage(),
                 'errors' => $e instanceof ValidationException ? $e->validator->getMessageBag() : $e->getErrors(),
