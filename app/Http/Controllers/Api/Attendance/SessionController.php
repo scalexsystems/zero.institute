@@ -21,7 +21,7 @@ class SessionController extends Controller
     {
         $this->authorize('view-attendance', $session);
 
-        return $session->attendances();
+        return $session->attendances;
     }
 
     public function show(Request $request, CourseSession $session, Student $student, AttendanceRepository $repository)

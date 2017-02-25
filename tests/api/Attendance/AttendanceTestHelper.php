@@ -2,6 +2,7 @@
 use Scalex\Zero\Models\Attendance;
 use Scalex\Zero\Models\Course;
 use Scalex\Zero\Models\CourseSession;
+use Scalex\Zero\Models\Teacher;
 
 /**
  * Created by PhpStorm.
@@ -12,7 +13,7 @@ use Scalex\Zero\Models\CourseSession;
 trait AttendanceTestHelper
 {
 
-    public function createCourse($count = 0)
+    public function createCourse($count = 1)
     {
         $school = $this->getSchool();
 
@@ -22,18 +23,22 @@ trait AttendanceTestHelper
 
     }
 
-    public function createCourseWithSession($count = 0)
+    public function createCourseWithSession($count = 1)
     {
-        $course = $this->createCourse($count);
-        return factory(CourseSession::class)->create(['course_id' => $course->id]);
+        return factory(CourseSession::class, $count)->create();
+    }
+
+    public function markAttendanceForSessionAndStudent($count = 1)
+    {
+        return factory(Attendance::class, $count)->create();
 
     }
 
-    public function markAttendanceForSessionAndStudent($count = 0)
+    public function addInstructorTo(CourseSession $session, Teacher $teacher)
     {
-        $courseSession = $this->createCourseWithSession($count);
-        return factory(Attendance::class)->create(['course_session' => $courseSession->id]);
-
+        $session->instructor()->associate($teacher);
+        $session->save();
+        return $session;
     }
 
 

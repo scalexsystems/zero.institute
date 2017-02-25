@@ -60,4 +60,9 @@ class CourseSessionPolicy
     {
         return $this->isInstructor($user->person, $session);
     }
+
+    public function viewAttendance(User $user, CourseSession $session)
+    {
+       return trust($user)->can('attendance.view') and $session->instructor->id === $user->id;
+    }
 }

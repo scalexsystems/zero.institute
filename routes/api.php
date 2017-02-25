@@ -110,3 +110,9 @@ Route::delete('courses/{course}/instructors', 'Api\Courses\InstructorController@
 Route::resource('courses', 'Api\Courses\CourseController', $resource);
 
 Route::get('me/courses', 'Api\Courses\CurrentUserController@index');
+
+//======================================================================================//
+//                                  Attendance                                          //
+//======================================================================================//
+
+Route::get('sessions/{session}/attendances', 'Api\Attendance\SessionController@index');

@@ -12,8 +12,6 @@ use Scalex\Zero\Models\Teacher;
 
 $factory->define(CourseSession::class, function (Generator $f, array $attributes) {
 
-    $attributes['school_id'] = $attributes['school_id'] ?? factory(School::class)->create()->id;
-
     $attributes['course_id'] = $attributes['course_id'] ?? factory(Course::class)->create()->id;
 
     $attributes['instructor_id'] = $attributes['instructor_id'] ?? factory(Teacher::class)->create()->id;
@@ -22,10 +20,9 @@ $factory->define(CourseSession::class, function (Generator $f, array $attributes
         'name' => $f->name,
         'course_id' => $attributes['course_id'],
         'group_id' => factory(Group::class)->create(),
-
-        'school_id' => $attributes['school_id'],
+        'instructor_id' => $attributes['instructor_id'],
         // TODO:: change it to meaningful dates if necessary
-        'start_date' => $f->date(),
-        'end_date' => $f->date(),
+        'started_on' => $f->date(),
+        'ended_on' => $f->date(),
     ];
 });
