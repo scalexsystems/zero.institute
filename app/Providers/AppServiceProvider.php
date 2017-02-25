@@ -66,7 +66,7 @@ class AppServiceProvider extends ServiceProvider
             ];
         });
 
-        Event::listen('kernel.handled', function () {
+        Event::listen(\Illuminate\Foundation\Http\Events\RequestHandled::class, function () {
             if (config('app.debug')) {
                 foreach ($this->logs as $log) {
                     Log::debug('DB QUERY: '.\Request::url(), $log);
