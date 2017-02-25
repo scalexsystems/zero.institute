@@ -5,7 +5,6 @@
 /.env
 /.env.backup
 /public/hot
-/resources/assets/app/components/_old
 
 
 ## Vendor Files
@@ -22,8 +21,5 @@ npm-debug.log
 /tests/unit/dist
 
 ## FORCE ADD ON PRODUCTION BUILD
-/public/js
-/public/css
-/public/img
-/public/fonts
+/public/app/**/*.map
 /public/mix-manifest.json

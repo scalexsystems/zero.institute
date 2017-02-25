@@ -9,9 +9,14 @@
 @endsection
 
 @section('scripts')
-    <script src="{{ mix('manifest.js') }}"></script>
-    <script src="{{ mix('vendor.js') }}"></script>
-    <script src="{{ mix('/js/app.js') }}"></script>
+    <script src="{{ mix('/manifest.js') }}" defer></script>
+    <script src="{{ mix('/vendor/vue.js') }}" defer></script>
+    <script src="{{ mix('/vendor/plugins.js') }}" defer></script>
+    <script src="{{ mix('/vendor/others.js') }}" defer></script>
+    <script src="{{ mix('/vendor/bootstrap.js') }}" defer></script>
+    <script src="{{ mix('/vendor/components.js') }}" defer></script>
+    <script src="{{ mix('/vendor/echo.js') }}" defer></script>
+    <script src="{{ mix('/main.js') }}" defer></script>
 @endsection
 
 @section('snippets')
