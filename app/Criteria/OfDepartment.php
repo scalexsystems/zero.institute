@@ -19,8 +19,10 @@ class OfDepartment implements Criteria
     {
         if (is_numeric($this->ids)) {
             $model->where('department_id', $this->ids);
-        } elseif (is_array($this->ids)) {
+        } elseif (is_array($this->ids) and method_exists($model, 'whereIn')) {
             $model->whereIn('department_id', $this->ids);
+        } elseif (is_array($this->ids)) {
+            // TODO: Add whereIn support to algolia.
         }
     }
 }
