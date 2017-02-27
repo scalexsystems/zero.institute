@@ -75,7 +75,7 @@ class EmployeePolicy extends AbstractPolicy
         return $this->isHimself($this->getUser(), $employee) or trust($this->getUser())->to('employee.read');
     }
 
-    public function invite(User $user)
+    public function sendInvitation(User $user)
     {
         return trust($user)->to('employee.invite');
     }

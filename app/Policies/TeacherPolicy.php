@@ -80,13 +80,13 @@ class TeacherPolicy extends AbstractPolicy
         return $this->isHimself($this->getUser(), $teacher) or trust($this->getUser())->to('teacher.read');
     }
 
-    public function invite(User $user)
-    {
-        return trust($user)->to('teacher.invite');
-    }
-
     private function canUpdate(User $user, Teacher $teacher): bool
     {
         return $this->isHimself($user, $teacher) or trust($user)->to('teacher.update');
+    }
+
+    public function sendInvitation(User $user)
+    {
+        return trust($user)->to('teacher.invite');
     }
 }
