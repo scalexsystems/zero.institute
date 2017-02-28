@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="list-group">
-            <a role="button" class="list-group-item list-group-item-action" v-for="item in items" @click="itemClicked(item)">
+            <a role="button" class="list-group-item list-group-item-action" v-for="item in items" @click.native="itemClicked(item)">
                 {{ item.name }}
             </a>
             <div>
