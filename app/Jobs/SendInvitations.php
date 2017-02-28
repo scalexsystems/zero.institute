@@ -93,7 +93,7 @@ class SendInvitations implements ShouldQueue
             return [
                 'name' => $email,
                 'email' => $email,
-                'school_id' => 1,// $this->schoolId,
+                'school_id' => $this->schoolId,
                 'password' => bcrypt(str_random(32)),
                 'created_at' => $timestamp,
                 'updated_at' => $timestamp,
