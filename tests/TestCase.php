@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
 
@@ -39,32 +40,32 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
      */
     public function createUser($attributes = [], $count = 1)
     {
-        return factory(Scalex\Zero\User::class, $count)->create($attributes);
+        return factory(Scalex\Zero\User::class, $count)->create($attributes)->first();
     }
 
     /**
-     * @param \Scalex\Zero\User|string $user
+     * @param \Scalex\Zero\User|string $userOrPermissionString
      * @param string|null $permission
      *
      * @return $this
      */
-    public function givePermissionTo($user, string $permission = null)
+    public function givePermissionTo($userOrPermissionString, string $permission = null)
     {
         if (is_null($permission)) {
-            $permission = $user;
-            $user = $this->getUser();
+            $permission = $userOrPermissionString;
+            $userOrPermissionString = $this->getUser();
         }
 
         Znck\Trust\Models\Permission::create(['slug' => $permission, 'name' => $permission]);
 
-        $user->grantPermission($permission)->refreshPermissions();
+        $userOrPermissionString->grantPermission($permission)->refreshPermissions();
 
         return $this;
     }
 
-    public function seeResources(string $type, array $ids, string $key = 'id')
+    public function seeResources(TestResponse $response, string $type, array $ids, string $key = 'id')
     {
-        $actual = collect(collect((array)$this->decodeResponseJson())->get($type))->pluck($key)->toArray();
+        $actual = collect(collect((array)$response->decodeResponseJson())->get($type))->pluck($key)->toArray();
 
         $this->assertEquals(Arr::sortRecursive($actual), Arr::sortRecursive($ids));
 
@@ -91,9 +92,9 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
         return $this->anUser ?? ($this->anUser = $this->createUser());
     }
 
-    public function getResponseJson()
+    public function getResponseJson(TestResponse $response)
     {
-        return json_decode($this->response->getContent());
+        return json_decode($response->getContent());
     }
 
     public function getUserWithPerson(string $type = 'student')
@@ -113,9 +114,7 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
     {
         $server = $this->transformHeadersToServerVars($headers);
 
-        $this->call('POST', $uri, $data, [], $files, $server);
-
-        return $this;
+        return $this->call('POST', $uri, $data, [], $files, $server);
     }
 
     public function getSomeFile($name = 'foo.txt', $contents = null)
@@ -128,9 +127,9 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
     public function getSomeImage($name = 'foo.png')
     {
         $image = imagecreate(30, 30);
-        imagejpeg($image, '/tmp/' . $name);
-        return new UploadedFile('/tmp/'. $name, $name, 'image/jpeg', null, null, true);
+        imagejpeg($image, '/tmp/'.$name);
 
+        return new UploadedFile('/tmp/'.$name, $name, 'image/jpeg', null, null, true);
     }
 
     public function assignRoleTo(\Scalex\Zero\User $user, string $role)

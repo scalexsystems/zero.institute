@@ -6,8 +6,6 @@ use Illuminate\Http\Request;
 use Scalex\Zero\Http\Controllers\Controller;
 use Scalex\Zero\Models\Group;
 use Scalex\Zero\Repositories\GroupRepository;
-use Znck\Attach\Builder;
-use Ramsey\Uuid\Uuid;
 
 class ProfilePhotoController extends Controller
 {

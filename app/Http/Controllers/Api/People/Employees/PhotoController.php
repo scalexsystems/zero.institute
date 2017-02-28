@@ -1,13 +1,11 @@
 <?php namespace Scalex\Zero\Http\Controllers\Api\People\Employees;
 
 use Illuminate\Http\Request;
-use Ramsey\Uuid\Uuid;
 use Scalex\Zero\Events\Employee\PhotoUpdated;
 use Scalex\Zero\Http\Controllers\Controller;
 use Scalex\Zero\Models\Employee;
 use Scalex\Zero\Models\Student;
 use Scalex\Zero\Repositories\EmployeeRepository;
-use Znck\Attach\Builder;
 
 class PhotoController extends Controller
 {

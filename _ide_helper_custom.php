@@ -18,7 +18,7 @@ namespace Znck\Attach {
         /**
          * @param array $attr
          *
-         * @return \Znck\Attach\Contracts\Uploader
+         * @return \Scalex\Zero\Models\Attachment
          */
         public function upload($attr)
         {

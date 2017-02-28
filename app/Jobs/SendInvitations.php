@@ -2,6 +2,7 @@
 
 namespace Scalex\Zero\Jobs;
 
+use DB;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -69,15 +70,15 @@ class SendInvitations implements ShouldQueue
             $emails = $emails->diff($duplicates);
 
             try {
-                \DB::beginTransaction();
+                DB::beginTransaction();
                 $users = $this->createUsers($emails);
 
                 $users->each(function ($user) {
                     Mail::to($user->email)->send(new InvitationMail($user, $this->admin));
                 });
-                \DB::commit();
+                DB::commit();
             } catch (\Exception $e) {
-                \DB::rollback();
+                DB::rollback();
 
                 throw $e;
             }
@@ -93,7 +94,7 @@ class SendInvitations implements ShouldQueue
             return [
                 'name' => $email,
                 'email' => $email,
-                'school_id' => 1,// $this->schoolId,
+                'school_id' => $this->schoolId,
                 'password' => bcrypt(str_random(32)),
                 'created_at' => $timestamp,
                 'updated_at' => $timestamp,

@@ -4,12 +4,12 @@ export default [
   {
     name: 'dm',
     path: '/hub/messages',
-    component: require('../pages/messages/PeopleDirectory.vue')
+    component: () => import('../pages/messages/PeopleDirectory.vue')
   },
   {
     name: 'user.messages',
     path: '/hub/messages/:id',
-    component: require('../pages/messages/PeopleMessages.vue'),
+    component: () => import('../pages/messages/PeopleMessages.vue'),
     props: route => ({
       id: toInt(route.params.id)
     })
@@ -17,7 +17,7 @@ export default [
   {
     name: 'user.show',
     path: '/hub/messages/:id/show',
-    component: require('../pages/messages/QuickProfile.vue'),
+    component: () => import('../pages/messages/QuickProfile.vue'),
     props: route => ({
       id: toInt(route.params.id)
     })

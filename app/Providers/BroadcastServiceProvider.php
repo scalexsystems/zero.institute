@@ -12,17 +12,17 @@ class BroadcastServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerRoutes();
-        Broadcast::channel($this->channel(User::class), function (User $user, $userId) {
+        Broadcast::channel($this->channel(User::class).'{userId}', function (User $user, $userId) {
             return $user->id === (int)$userId;
         });
-        Broadcast::channel($this->channel(Group::class), function (User $user, $groupId) {
+        Broadcast::channel($this->channel(Group::class).'{groupId}', function (User $user, $groupId) {
             $group = Group::find($groupId);
 
             if ($group->isMember($user)) {
                 return transform($user);
             }
         });
-        Broadcast::channel($this->channel(School::class), function (User $user, $schoolId) {
+        Broadcast::channel($this->channel(School::class).'{schoolId}', function (User $user, $schoolId) {
             if ($user->school_id === (int)$schoolId) {
                 return transform($user);
             }
@@ -31,7 +31,7 @@ class BroadcastServiceProvider extends ServiceProvider
 
     protected function channel($class): string
     {
-        return morph_model($class).'-*';
+        return morph_model($class).'-';
     }
 
     protected function registerRoutes()

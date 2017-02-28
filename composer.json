@@ -7,13 +7,20 @@
   ],
   "license": "MIT",
   "type": "project",
+
+  "repositories": [
+    {
+      "url": "https://github.com/razorpay/omnipay-razorpay.git",
+      "type": "git"
+    }
+  ],
+
   "require": {
-    "php": ">=5.6.4",
-    "laravel/framework": "5.3.*",
-    "laravel/passport": "^1.0",
-    "laravel/scout": "^1.1",
-    "laravel/socialite": "^2.0",
-    "league/fractal": "^0.14.0",
+    "php": ">=7.0.0",
+    "laravel/framework": "5.4.*",
+    "laravel/passport": "^2.0",
+    "laravel/scout": "^3.0",
+    "laravel/socialite": "^3.0",
     "znck/attach": "dev-master",
     "znck/extend": "dev-master",
     "znck/cities": "dev-master",
@@ -25,19 +32,24 @@
     "pda/pheanstalk": "^3.1",
     "predis/predis": "^1.1",
     "sentry/sentry-laravel": "^0.6.0",
-    "teamtnt/laravel-scout-tntsearch-driver": "^2.0"
+    "teamtnt/laravel-scout-tntsearch-driver": "^2.0",
+    "laravel/tinker": "^1.0",
+    "symfony/event-dispatcher": "^2.8",
+    "omnipay/common": "^2.5",
+    "razorpay/omnipay-razorpay": "dev-master"
   },
   "require-dev": {
     "barryvdh/laravel-ide-helper": "^2.2",
     "themsaid/laravel-mail-preview": "^1.2",
-    "fzaninotto/faker": "~1.4",
-    "mockery/mockery": "0.9.*",
-    "phpunit/phpunit": "~5.0",
-    "symfony/css-selector": "3.1.*",
-    "symfony/dom-crawler": "3.1.*",
+    "fzaninotto/faker": "^1.4",
+    "mockery/mockery": "^0.9",
+    "phpunit/phpunit": "~5.7",
+    "symfony/css-selector": "^3.1",
+    "symfony/dom-crawler": "^3.1",
     "doctrine/dbal": "^2.5",
     "friendsofphp/php-cs-fixer": "^2.0",
-    "mmieluch/laravel-vfs-provider": "^1.0"
+    "mmieluch/laravel-vfs-provider": "^1.0",
+    "brianium/paratest": "^0.14"
   },
   "autoload": {
     "classmap": [
@@ -46,14 +58,16 @@
     "psr-4": {
       "Scalex\\Zero\\": "app/"
     },
-    "files": ["app/helpers.php"]
+    "files": [
+      "app/helpers.php"
+    ]
   },
   "autoload-dev": {
     "classmap": [
       "tests/TestCase.php"
     ],
     "psr-4": {
-      "Test\\Api\\": "tests/api"
+      "Tests\\": "tests/"
     }
   },
   "scripts": {
@@ -71,21 +85,17 @@
       "Illuminate\\Foundation\\ComposerScripts::postUpdate",
       "php artisan optimize"
     ],
-
+    "test:api:parallel": "paratest --phpunit ./vendor/bin/phpunit --testsuite api",
     "test:api": "phpunit --testsuite api",
     "test:e2e": "phpunit --testsuite e2e",
     "test:unit": "phpunit --testsuite unit --coverage-html tests/reports/unit/phpunit",
-
     "test:api:cover": "composer test:api -- --coverage-html tests/reports/unit/phpunit",
-
     "test": [
       "composer lint",
       "composer test:unit",
       "composer test:api",
       "composer test:e2e"
     ],
-
-
     "lint": "php-cs-fixer fix --config=.php_cs --dry-run",
     "lint:fix": "php-cs-fixer fix --config=.php_cs"
   },
