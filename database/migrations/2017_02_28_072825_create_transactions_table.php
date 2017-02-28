@@ -23,12 +23,12 @@ class CreateTransactionsTable extends Migration
                 Transaction::PENDING,
                 Transaction::SUCCESSFUL,
                 Transaction::FAILED,
-            ])->default(Transaction::PENDING);
+            ]);
 
             // Gateway info.
             $table->string('gateway_reference_id')->nullable();
             $table->string('gateway')->nullable();
-            $table->string('payment_method')->nullable();
+            $table->string('payment_method');
 
             // Product info.
             $table->string('purpose');
@@ -47,7 +47,7 @@ class CreateTransactionsTable extends Migration
 
             // Indices & Constraints.
             $table->index('school_id');
-            $table->index(['gateway', 'transaction_id']);
+            $table->index(['gateway', 'gateway_reference_id']);
             $table->foreign('school_id')->references('id')->on('schools')->onDelete('SET NULL');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('SET NULL');
         });

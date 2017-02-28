@@ -2,10 +2,13 @@
 
 namespace Scalex\Zero\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Scalex\Zero\Database\BaseModel;
 
-class Transaction extends Model
+class Transaction extends BaseModel
 {
+    use SoftDeletes;
+
     const PENDING = 'pending';
     const SUCCESSFUL = 'success';
     const FAILED = 'failed';
