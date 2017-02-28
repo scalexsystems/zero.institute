@@ -294,6 +294,7 @@ namespace Scalex\Zero\Models{
  * @property \Carbon\Carbon $updated_at
  * @property mixed $extended
  * @property-read \Scalex\Zero\Models\School $school
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Scalex\Zero\Models\Student[] $students
  * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Discipline whereAdditional($value)
  * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Discipline whereCreatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Discipline whereDeletedAt($value)
@@ -618,6 +619,7 @@ namespace Scalex\Zero\Models{
  * @property int $level
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
+ * @property mixed $extended
  * @property-read \Illuminate\Database\Eloquent\Collection|\Znck\Trust\Models\Permission[] $permissions
  * @property-read \Illuminate\Database\Eloquent\Collection|\Scalex\Zero\User[] $users
  * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Role whereCreatedAt($value)
@@ -950,6 +952,16 @@ namespace Scalex\Zero\Models{
  * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Teacher whereVisibleMarks($value)
  */
 	class Teacher extends \Eloquent {}
+}
+
+namespace Scalex\Zero\Models{
+/**
+ * Scalex\Zero\Models\Transaction
+ *
+ * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $payable
+ * @property-read \Scalex\Zero\Models\School $school
+ */
+	class Transaction extends \Eloquent {}
 }
 
 namespace Scalex\Zero{
