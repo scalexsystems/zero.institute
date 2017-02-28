@@ -25,7 +25,9 @@
     "predis/predis": "^1.1",
     "sentry/sentry-laravel": "^0.6.0",
     "teamtnt/laravel-scout-tntsearch-driver": "^2.0",
-    "laravel/tinker": "^1.0"
+    "laravel/tinker": "^1.0",
+    "symfony/event-dispatcher": "^2.8",
+    "omnipay/common": "^2.5"
   },
   "require-dev": {
     "barryvdh/laravel-ide-helper": "^2.2",
