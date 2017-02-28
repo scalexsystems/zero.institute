@@ -110,3 +110,9 @@ Route::delete('courses/{course}/instructors', 'Api\Courses\InstructorController@
 Route::resource('courses', 'Api\Courses\CourseController', $resource);
 
 Route::get('me/courses', 'Api\Courses\CurrentUserController@index');
+
+
+//======================================================================================//
+//                                  Academics                                           //
+//======================================================================================//
+Route::resource('finance/sessions', 'Api\Finance\FeeSessionsController', $resource);

@@ -1,6 +1,7 @@
 <?php
 
 namespace PHPSTORM_META {
+
     $STATIC_METHOD_TYPES = [
         \repository('') => [
             '\Scalex\Zero\User' instanceof \Scalex\Zero\Repositories\UserRepository,
@@ -18,6 +19,7 @@ namespace PHPSTORM_META {
             '\Scalex\Zero\Models\Geo\Address' instanceof \Scalex\Zero\Repositories\AddressRepository,
             '\Scalex\Zero\Models\Course' instanceof \Scalex\Zero\Repositories\CourseRepository,
             '\Scalex\Zero\Models\CourseSession' instanceof \Scalex\Zero\Repositories\CourseSessionRepository,
-        ]
+            '\Scalex\Zero\Models\FeeSession' instanceof \Scalex\Zero\Repositories\FeeSessionRepository,
+        ],
     ];
 };
