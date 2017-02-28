@@ -116,3 +116,4 @@ Route::get('me/courses', 'Api\Courses\CurrentUserController@index');
 //======================================================================================//
 
 Route::get('sessions/{session}/attendances', 'Api\Attendance\SessionController@index');
+Route::get('sessions/{session}/students/{student}/attendances', 'Api\Attendance\SessionController@show');
