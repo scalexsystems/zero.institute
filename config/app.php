@@ -177,15 +177,15 @@ return [
         Sentry\SentryLaravel\SentryLaravelServiceProvider::class,
 
         /*
-         * Development Service Providers...
+         * App Service Providers
          */
-
         Scalex\Zero\Providers\AppServiceProvider::class,
         Scalex\Zero\Providers\TrustServiceProvider::class,
         Scalex\Zero\Providers\AuthServiceProvider::class,
         Scalex\Zero\Providers\BroadcastServiceProvider::class,
         Scalex\Zero\Providers\EventServiceProvider::class,
         Scalex\Zero\Providers\RouteServiceProvider::class,
+        Scalex\Zero\Providers\PaymentServiceProvider::class,
         Scalex\Zero\Providers\DevelopmentServiceProvider::class,
     ],
 

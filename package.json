@@ -81,7 +81,7 @@
     "bootstrap-for-vue": "^0.1.14",
     "css-loader": "^0.26.1",
     "debug": "^2.6.1",
-    "echo-for-vue": "^0.1.2",
+    "echo-for-vue": "^0.1.3",
     "filesize": "^3.3.0",
     "font-awesome": "^4.7.0",
     "jquery": "^3.1.1",

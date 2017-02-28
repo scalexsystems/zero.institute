@@ -7,10 +7,11 @@ use Illuminate\Support\AggregateServiceProvider;
 class DevelopmentServiceProvider extends AggregateServiceProvider
 {
     protected $providers = [
-        'TeamTNT\Scout\TNTSearchScoutServiceProvider',
-        '\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
-        '\Themsaid\MailPreview\MailPreviewServiceProvider',
-        '\Mmieluch\LaravelVfsProvider\LaravelVfsServiceProvider',
+        \TeamTNT\Scout\TNTSearchScoutServiceProvider::class,
+        \Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
+        \Themsaid\MailPreview\MailPreviewServiceProvider::class,
+        \Mmieluch\LaravelVfsProvider\LaravelVfsServiceProvider::class,
+        \Laravel\Tinker\TinkerServiceProvider::class,
     ];
 
     public function register()
