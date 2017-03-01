@@ -34,12 +34,20 @@
     <router-link class="card-link" :to="{ name: 'user.messages', params: { id: source.user_id } }">
       Send Message
     </router-link>
+
+  </div>
+
+  <hr class="m-0">
+
+  <div class="card-block">
+    <attendance-panel/>
   </div>
 </div>
 </template>
 
 <script lang="babel">
 import SourceType from './view/type'
+import AttendancePanel from '../../components/attendance/AttendancePanel.vue'
 
 export default {
   name: 'ProfileCard',
@@ -50,6 +58,7 @@ export default {
       required: true
     }
   },
+  components: { AttendancePanel },
 
   computed: {
     name () {

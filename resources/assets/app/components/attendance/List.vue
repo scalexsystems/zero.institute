@@ -4,18 +4,17 @@
             <a role="button" class="list-group-item list-group-item-action" v-for="item in items" @click.native="itemClicked(item)">
                 {{ item.name }}
             </a>
-            <div>
             </div>
+    </div>
 </template>
 
 <script lang="babel">
 
     export default {
         name: 'List',
-
         props: {
             items: {
-                type: Object,
+                type: Array,
                 required: true
             }
         },
@@ -24,7 +23,5 @@
                 this.$emit('listClicked', item);
             }
         }
-
-        components: { SidebarButton }
     }
 </script>

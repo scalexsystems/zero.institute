@@ -124,7 +124,9 @@ const getters = {
 
   sessions: state => sortBy(state.sessions, 'name'),
 
-  sessionById: state => (id) => binarySearchFind(state.sessions, id)
+  sessionById: state => (id) => binarySearchFind(state.sessions, id),
+
+  sessionsBySemester: (_, getters) => (semesterId) => getters.sessions.filter(session => session.semester_id === semesterId)
 }
 
 const state = () => ({

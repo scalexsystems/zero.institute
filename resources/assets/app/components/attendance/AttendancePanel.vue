@@ -8,7 +8,7 @@
         <div class="card-block">
            <div class="row">
              <div class="col-6 col-lg-6">
-                 <input-select title="Semester" v-model.number="semester_id" :feedback="errors.semester_id" :options="semesters" />
+                 <input-select title="Semester" v-model.number="semester" :options="semesters" />
                  <list :items="sessions" @listClicked="sessionClicked">
 
                  </list>
@@ -21,29 +21,38 @@
 
 <script lang="babel">
     import List from './List.vue'
-    import { mapGetters } from 'vuex'
+    import { mapGetters, mapActions } from 'vuex'
 
     export default {
         name: 'AttendancePanel',
-        data: () => [{
-          activeSession: null
-        }],
+        components: { List },
+        data: () => ({
+            semester: 0,
+            errors: {},
+        }),
         computed: {
-          items() {
-           const sessions = this.sessions;
-           sessions.forEach(session => {
-           })
-
-
+          semesterList() {
           },
-        ...mapGetters('courses', ['sessions']),
-
+          items() {
+          },
+         sessions(){
+           return this.sessionsBySemester(this.semester);
+         },
+         attendances() {
+           return this.find();
+         },
+        ...mapGetters('courses', ['sessionsBySemester']),
+        ...mapGetters('semesters', ['semesters']),
         },
+
+
 
         methods: {
           sessionClicked(event, session){
             this.activeSession = session;
-          }
+          },
+
+        ...mapActions('attendances', ['find'])
         }
 
     }
