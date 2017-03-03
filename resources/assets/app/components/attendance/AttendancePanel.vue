@@ -8,7 +8,7 @@
         <div class="card-block">
            <div class="row">
              <div class="col-6 col-lg-6">
-                 <input-select title="Semester" v-model.number="semester" :options="semesters" />
+                 <input-select title="Semester" v-model.number="semester" :options="semesters" @input="semesterChosen"/>
                  <list :items="courseSessions" @listClicked="sessionClicked">
 
                  </list>
@@ -29,18 +29,12 @@
         data: () => ({
             semester: 0,
             errors: {},
-            items: {}
+            items: {},
+            courseSessions: [],
         }),
         computed: {
           semesterList() {
           },
-         courseSessions(){
-           const { sessions, _ } = this.sessions;
-           this.items = sessions ? Object.keys(sessions).filter(key => sessions[key].semester_id === this.semester) : {};
-           debugger;
-           return sessions;
-
-         },
          attendances() {
            return this.find();
          },
@@ -51,8 +45,16 @@
 
 
         methods: {
+          semesterChosen(event, semester) {
+            this.getCourseSessions();
+          },
           sessionClicked(event, session){
             this.activeSession = session;
+          },
+          getCourseSessions(){
+            const sessions = this.sessions;
+            this.items = sessions ? Object.keys(sessions).filter(key => sessions[key].semester_id === this.semester) : {};
+            this.courseSessions = [sessions];
           },
 
         ...mapActions('attendances', ['find']),
