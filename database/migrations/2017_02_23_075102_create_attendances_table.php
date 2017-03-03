@@ -22,7 +22,7 @@ class CreateAttendancesTable extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('course_session_id')->references('id')->on('course_session')->onDelete('cascade');
+            $table->foreign('course_session_id')->references('id')->on('course_sessions')->onDelete('cascade');
             $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
         });
     }
