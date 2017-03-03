@@ -32,13 +32,18 @@
             items: {},
             courseSessions: [],
         }),
+        props: {
+          source: {
+            type: Object,
+            required: true,
+          },
+        },
         computed: {
           semesterList() {
           },
          attendances() {
            return this.find();
          },
-        ...mapGetters('courses', ['sessions']),
         ...mapGetters('semesters', ['semesters']),
         },
 
@@ -51,14 +56,14 @@
           sessionClicked(event, session){
             this.activeSession = session;
           },
-          getCourseSessions(){
-            const sessions = this.sessions;
-            this.items = sessions ? Object.keys(sessions).filter(key => sessions[key].semester_id === this.semester) : {};
+          async getCourseSessions(){
+            debugger;
+            const { sessions } = await this.forSemesterAndStudent(this.semester, this.source);
             this.courseSessions = [sessions];
           },
 
         ...mapActions('attendances', ['find']),
-        ...mapActions('courses', ['my']),
+        ...mapActions('sessions', ['forSemesterAndStudent']),
         }
 
     }

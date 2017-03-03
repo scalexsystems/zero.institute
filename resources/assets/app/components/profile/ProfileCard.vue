@@ -40,7 +40,7 @@
   <hr class="m-0">
 
   <div class="card-block">
-    <attendance-panel/>
+    <attendance-panel :source="source"></attendance-panel>
   </div>
 </div>
 </template>

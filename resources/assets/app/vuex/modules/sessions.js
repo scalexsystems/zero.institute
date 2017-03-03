@@ -49,6 +49,16 @@ const actions = {
 
   async addToStore ({ commit }, items) {
     if (items) commit('INSERT', items)
+  },
+
+  async forSemesterAndStudent({dispatch}, { semesterId, student }) {
+    try {
+        const { sessions } = await http.get(true, `me/semesters/${semesterId}/student/${student.id}/sessions`);
+        return { sessions };
+    } catch (e) {
+       return e;
+    }
+
   }
 }
 

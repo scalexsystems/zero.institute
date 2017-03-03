@@ -1,3 +1,4 @@
+import attendances from './attendances'
 import cities from './cities'
 import courses from './courses'
 import departments from './departments'
@@ -14,6 +15,7 @@ import students from './students'
 import teachers from './teachers'
 
 export default {
+  attendances,
   cities,
   courses,
   departments,
