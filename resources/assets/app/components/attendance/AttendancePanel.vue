@@ -56,9 +56,9 @@
           sessionClicked(event, session){
             this.activeSession = session;
           },
-          async getCourseSessions(){
-            debugger;
-            const { sessions } = await this.forSemesterAndStudent(this.semester, this.source);
+          getCourseSessions(){
+
+            const { sessions } = this.forSemesterAndStudent(this.semester, this.source);
             this.courseSessions = [sessions];
           },
 
