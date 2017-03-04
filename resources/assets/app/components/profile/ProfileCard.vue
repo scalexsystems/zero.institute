@@ -47,7 +47,7 @@
 
 <script lang="babel">
 import SourceType from './view/type'
-import AttendancePanel from '../../components/attendance/AttendancePanel.vue'
+import AttendancePanel from '../attendance/View.vue'
 
 export default {
   name: 'ProfileCard',
