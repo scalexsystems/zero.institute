@@ -14,6 +14,7 @@
 <script lang="babel">
     import DateSelector from '../../components/attendance/DateSelector.vue'
 
+
     export default {
         name: 'CreateAttendance',
         components: { DateSelector },
@@ -23,7 +24,6 @@
         }),
         computed: {
         },
-
 
 
         methods: {
