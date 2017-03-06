@@ -9,6 +9,8 @@
                     <span class="text-muted">Roll Number:</span> {{ student.uid }} <br>
                     {{ attendanceStatus }}
                 </div>
+
+                <!--<switch :value="false"> </switch>-->
             </div>
             <div>
 
@@ -21,7 +23,10 @@
 
 <script lang="babel">
     import { mapGetters } from 'vuex'
+    import { Switch } from '../shared/Toggle.vue'
+
     export default {
+        name: 'AttendanceCard',
         data: () => ({
           attendance: true,
         }),
@@ -47,7 +52,9 @@
                 return this.departmentById(student.department_id) || {}
             },
             ...mapGetters('departments', ['departmentById'])
-        }
+        },
+
+        components: { Switch }
     }
 </script>
 

@@ -19,10 +19,6 @@ export default {
     students: [],
   }),
   props: {
-    session: {
-      type: Object,
-      required: true,
-    },
   },
   computed: {
   },

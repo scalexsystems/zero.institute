@@ -126,7 +126,6 @@ const getters = {
 
   sessionById: state => (id) => binarySearchFind(state.sessions, id),
 
-  sessionsBySemester: state => (semesterId) => state.sessions.filter(session => session.semester_id === semesterId)
 }
 
 const state = () => ({

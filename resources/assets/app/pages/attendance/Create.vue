@@ -8,26 +8,49 @@
             <a role="button" href="#" class="btn btn-primary"> Take Attendance </a>
           </div>
         </div>
+
+        <div class="row">
+            <!--<student-list></student-list>-->
+        </div>
     </container-window>
 </template>
 
 <script lang="babel">
     import DateSelector from '../../components/attendance/DateSelector.vue'
+    import StudentList from '../../components/attendance/StudentList.vue'
+    import { mapGetters, mapActions } from 'vuex'
 
 
     export default {
         name: 'CreateAttendance',
-        components: { DateSelector },
+        components: { DateSelector, StudentList },
         data: () => ({
             semester: 0,
             errors: {},
         }),
+        props: {
+//          id: {
+//            type: Number,
+//            required: true,
+//          }
+        },
         computed: {
+//          session() {
+//            this.sessionById(this.id)
+//          },
+//          students() {
+//                this.enrolled(this.id);
+//          },
+          ...mapGetters('courses', ['sessionById'])
+
+        },
+
+        methods: {
+
+            ...mapActions('courses' ['enrolled'])
         },
 
 
-        methods: {
-        }
 
     }
 </script>

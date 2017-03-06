@@ -42,6 +42,21 @@
             },
 
         },
+        methods: {
+            prev() {
+              const date = this.date;
+              if(date >= this.startDate) {
+              date.setDate(date.getDate() - 1);
+              }
+            },
+
+            next() {
+              const date = this.date;
+              if(date < this.endDate) {
+                  date.setDate(date.getDate() + 1);
+              }
+            }
+        }
 
     }
 </script>
