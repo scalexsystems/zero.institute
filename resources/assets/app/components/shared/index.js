@@ -8,6 +8,7 @@ export { default as UserCard } from './UserCard.vue'
 export { default as PhotoUploader } from './PhotoUploader.vue'
 export { default as FormCard } from './FormCard.vue'
 export { default as AbstractCard } from './AbstractCard.vue'
+export { default as Toggle } from './Toggle.vue'
 
 // Select (Typeahead) Options
 export { default as SelectOptionUser } from './options/UserOption.vue'
