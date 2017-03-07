@@ -1,5 +1,6 @@
 <template>
     <div>
+
       <div class="student-list-wrapper">
           <attendance-card :student="student" v-for="student in students"></attendance-card>
       </div>
@@ -11,26 +12,22 @@
 </template>
 
 <script lang="babel">
-import { mapGetters, mapActions } from 'vuex'
+import { mapActions } from 'vuex'
+import AttendanceCard  from './Card.vue'
 
 export default {
   name: 'StudentList',
-  data: () => ({
-    students: [],
-  }),
+  data: () => ({}),
   props: {
-  },
-  computed: {
-  },
+        students: {
+            type: Array,
+            required: true
+        }
+    },
+    computed: {},
+    components: { AttendanceCard },
 
-  methods: {
-     async getEnrollments() {
-       const { students, meta } = await this.enrollments();
-       this.students = students;
-     },
-    ...mapActions('courses', ['enrollments']),
-  },
-
+    methods: {},
 }
 </script>
 

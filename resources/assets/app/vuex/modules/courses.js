@@ -62,7 +62,7 @@ const actions = {
 
   async enrollments ({ commit, dispatch, getters }, id) {
     if (!getters.sessionById(id)) {
-      await dispatch('myFind', id)
+      await dispatch('find', id)
     }
 
     const session = getters.sessionById(id)

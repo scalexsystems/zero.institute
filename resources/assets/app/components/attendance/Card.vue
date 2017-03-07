@@ -10,7 +10,7 @@
                     {{ attendanceStatus }}
                 </div>
 
-                <!--<switch :value="false"> </switch>-->
+                <toggle :value="false"> </toggle>
             </div>
             <div>
 
@@ -23,7 +23,6 @@
 
 <script lang="babel">
     import { mapGetters } from 'vuex'
-    import { Switch } from '../shared/Toggle.vue'
 
     export default {
         name: 'AttendanceCard',
@@ -45,7 +44,7 @@
         computed: {
             attendanceStatus() {
               return this.attendance ? 'Present' : 'Absent';
-            }
+            },
             department () {
                 const student = this.student
 
@@ -54,7 +53,6 @@
             ...mapGetters('departments', ['departmentById'])
         },
 
-        components: { Switch }
     }
 </script>
 

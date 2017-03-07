@@ -10,7 +10,9 @@
         </div>
 
         <div class="row">
-            <!--<student-list></student-list>-->
+            <div class="col-12 col-lg-8 offset-lg-2">
+              <student-list :students="students"></student-list>
+            </div>
         </div>
     </container-window>
 </template>
@@ -25,30 +27,33 @@
         name: 'CreateAttendance',
         components: { DateSelector, StudentList },
         data: () => ({
-            semester: 0,
-            errors: {},
+          students: []
         }),
         props: {
-//          id: {
-//            type: Number,
-//            required: true,
-//          }
+          id: {
+            type: Number,
+            required: true,
+          }
         },
         computed: {
-//          session() {
-//            this.sessionById(this.id)
-//          },
-//          students() {
-//                this.enrolled(this.id);
-//          },
+          session() {
+            return this.sessionById(this.id)
+          },
           ...mapGetters('courses', ['sessionById'])
 
         },
 
         methods: {
-
-            ...mapActions('courses' ['enrolled'])
+          async init() {
+            const { students } = await this.enrollments(this.id);
+            this.students = students;
+          },
+            ...mapActions('courses', ['enrollments'])
         },
+
+        created() {
+          this.init()
+        }
 
 
 
