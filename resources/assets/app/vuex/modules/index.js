@@ -3,6 +3,7 @@ import courses from './courses'
 import departments from './departments'
 import disciplines from './disciplines'
 import employees from './employees'
+import feeSessions from './fee-sessions'
 import groups from './groups'
 import invitations from './invitations'
 import messages from './messages'
@@ -19,6 +20,7 @@ export default {
   departments,
   disciplines,
   employees,
+  feeSessions,
   groups,
   invitations,
   messages,

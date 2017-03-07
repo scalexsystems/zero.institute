@@ -23,7 +23,7 @@
     <div class="container-zero">
 
       <div class="row">
-        <div class="col-12 col-lg-6 mb-3" v-for="item in course.prerequisites">
+        <div class="col-12 col-lg-6 mb-3" v-for="item in course.prerequisites" :key="item">
           <router-link class="no-link" :to="{ name: 'course.show', params: { id: item.id } }">
             <course-card v-bind="{ course: item }"/>
           </router-link>
@@ -41,7 +41,7 @@
 
       <div class="row">
 
-        <div class="col-12 col-lg-6 mb-3" v-for="item in course.sessions">
+        <div class="col-12 col-lg-6 mb-3" v-for="item in course.sessions" :key="item">
           <session-card v-bind="{ session: item }"/>
         </div>
 

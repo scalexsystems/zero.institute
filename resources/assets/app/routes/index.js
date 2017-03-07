@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import store from '../vuex'
 
 import courses from './courses'
+import finance from './finance'
 import groups from './groups'
 import messages from './messages'
 import people from './people'
@@ -31,10 +32,11 @@ const routes = [
     }
   },
   ...courses,
+  ...finance,
   ...groups,
   ...messages,
   ...people,
-  ...settings
+  ...settings,
 ]
 
 export default new VueRouter({

@@ -113,6 +113,8 @@ Route::get('me/courses', 'Api\Courses\CurrentUserController@index');
 
 
 //======================================================================================//
-//                                  Academics                                           //
+//                                    Finance                                           //
 //======================================================================================//
-Route::resource('finance/sessions', 'Api\Finance\FeeSessionsController', $resource);
+Route::resource('finance/fee/sessions', 'Api\Finance\FeeSessionsController', $resource);
+
+Route::get('me/fee/payments', 'Api\Finance\FeePaymentsController@index');

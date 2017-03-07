@@ -13,6 +13,11 @@ class FeeSession extends BaseModel
 
     protected $extends = ['fee_details_url'];
 
+    protected $dates = [
+        'ended_at',
+        'started_at',
+    ];
+
     public function school()
     {
         return $this->belongsTo(School::class);

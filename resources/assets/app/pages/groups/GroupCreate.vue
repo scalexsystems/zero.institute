@@ -25,7 +25,7 @@
 
       <div class="col-12 col-lg-8 offset-lg-2">
         <div class="row">
-          <div class="col-12 col-lg-6 mb-3" v-for="member in members">
+          <div class="col-12 col-lg-6 mb-3" v-for="member in members" :key="member">
             <user-card :user="member"></user-card>
           </div>
         </div>

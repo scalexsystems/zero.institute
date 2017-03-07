@@ -39,7 +39,7 @@ class FeeSessionsController extends Controller
     {
         $this->authorize('create', FeeSession::class);
 
-        return $this->repository->create($request->all());
+        return $this->repository->createWithSchool($request->user()->school, $request->all());
     }
 
     public function update(Request $request, FeeSession $session)

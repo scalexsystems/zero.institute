@@ -6,7 +6,7 @@
  */
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development'
-process.env.DEBUG = process.env.DEBUG || require('../package.json').name+'*'
+process.env.DEBUG = process.env.DEBUG || require('../package.json').name + '*'
 
 const spawn = require('cross-spawn')
 const fs = require('fs')
@@ -27,13 +27,17 @@ cleanup(function () {
 })
 
 require('./serve').then(
-  function (laravel) {
-    log(`Open: ${config.laravel.address}`)
-    servers.laravel = laravel
-    servers.webpack = spawn(
-      './node_modules/.bin/webpack-dev-server',
-      ['--inline', '--hot'],
-      { env: process.env, stdio: 'inherit' }
-    )
-  }
+    function (laravel) {
+      log(`Open: ${config.laravel.address}`)
+      servers.laravel = laravel
+      servers.webpack = spawn(
+          './node_modules/.bin/webpack-dev-server',
+          ['--inline', '--hot'],
+          { env: process.env, stdio: 'inherit' }
+      )
+    }
+).then(
+    function () {
+      fs.writeFileSync(path.resolve(__dirname, '../public/hot'), 'hot module enabled.')
+    }
 )

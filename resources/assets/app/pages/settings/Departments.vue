@@ -22,7 +22,7 @@
 
       <h2 class="col-12 text-center">{{ title }}</h2>
 
-      <div class="col-12 col-lg-6 mt-3" v-for="department in departments">
+      <div class="col-12 col-lg-6 mt-3" v-for="department in departments" :key="department">
         <department-card v-bind="{ department, footer: true }" role="button" @click.native="edit(department)"/>
       </div>
 

@@ -134,7 +134,7 @@ class AppServiceProvider extends ServiceProvider
                  * Academics
                  */
                 'course' => Models\Course::class,
-                'session' => Models\CourseSession::class,
+                'course_session' => Models\CourseSession::class,
             ]
         );
     }

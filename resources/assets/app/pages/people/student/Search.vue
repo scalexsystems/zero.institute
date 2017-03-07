@@ -20,7 +20,7 @@
       <div class="card-block">
         <h5>Departments</h5>
 
-        <div class="item" v-for="department of departments">
+        <div class="item" v-for="department of departments" :key="department">
           <router-link :to="{name: 'student.index', query: {department: [department.id]}}" class="btn btn-secondary">
             {{ department.name }}
           </router-link>
@@ -29,7 +29,7 @@
       <div class="card-block">
         <h5>Disciplines</h5>
 
-        <div class="item" v-for="discipline of disciplines">
+        <div class="item" v-for="discipline of disciplines" :key="discipline">
           <router-link :to="{name: 'student.index', query: {discipline: [discipline.id]}}" class="btn btn-secondary">
             {{ discipline.name }}
           </router-link>

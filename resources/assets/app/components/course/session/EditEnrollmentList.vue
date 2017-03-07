@@ -12,7 +12,7 @@
       <alert type="danger" v-html="error" dissmissable/>
     </div>
 
-    <div class="col-12 col-lg-6 mt-3" v-for="student in source">
+    <div class="col-12 col-lg-6 mt-3" v-for="student in source" :key="student">
 
       <student-card :student="student" remove @remove="remove(student)"/>
 

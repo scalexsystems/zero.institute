@@ -41,6 +41,7 @@ namespace Illuminate\Database\Schema {
      * @method void primary(string|array $columns, string $name = null)
      * @method BlueprintColumn string(string  $column, int  $length = 255)
      * @method BlueprintColumn text(string  $column)
+     * @method BlueprintColumn timestamp(string  $column)
      * @method void unique(string $column, string $name = null)
      * @method BlueprintColumn unsignedInteger(string $column)
      */

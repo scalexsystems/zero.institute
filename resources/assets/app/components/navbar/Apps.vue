@@ -8,7 +8,7 @@
 
   <div class="dropdown-menu dropdown-menu-right">
 
-    <router-link v-for="app in apps" class="app dropdown-item d-flex flex-row py-2 align-items-center" :to="app.link"
+    <router-link v-for="app in apps" :key="app" class="app dropdown-item d-flex flex-row py-2 align-items-center" :to="app.link"
                  :ref="app">
       <img :src="app.icon" class="icon mr-2">
       <div class="label">{{ app.name }}</div>
