@@ -3,14 +3,17 @@
         <div class="d-flex flex-row align-items-center">
             <img :src="student.photo" class="rounded-circle c-attendance-card-photo fit-cover">
             <div>
-                <div class="c-attendance-card-title" :class="{ 'text-muted': !student.name.trim() }">{{ student.name.trim() || 'Name not set' }}
+                <div class="c-attendance-card-title" :class="{ 'text-muted': !student.name.trim() }">
+                    {{ student.name.trim() || 'Name not set' }}
                 </div>
-                <div class="c-attendance-card-subtitle">
+                <div class="c-attendance-card-subtitle flex-auto">
                     <span class="text-muted">Roll Number:</span> {{ student.uid }} <br>
                     {{ attendanceStatus }}
                 </div>
 
-                <toggle :value="false"> </toggle>
+                <div class="flex-auto">
+                    <toggle :value="false" @toggle="toggle"> </toggle>
+                </div>
             </div>
             <div>
 
@@ -52,6 +55,12 @@
             },
             ...mapGetters('departments', ['departmentById'])
         },
+
+        methods: {
+          toggle(event, value) {
+            return this.$emit('toggle', value, this.student.id);
+          }
+        }
 
     }
 </script>

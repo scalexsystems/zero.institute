@@ -7,11 +7,12 @@
 
             <a role="button" href="#" class="btn btn-primary"> Take Attendance </a>
           </div>
+
         </div>
 
         <div class="row">
             <div class="col-12 col-lg-8 offset-lg-2">
-              <student-list :students="students"></student-list>
+              <student-list :students="students" :session="id"></student-list>
             </div>
         </div>
     </container-window>
