@@ -11,6 +11,7 @@ export { default as AbstractCard } from './AbstractCard.vue'
 export { default as FormComponent } from './FormComponent.vue'
 export { default as WaitLoading } from './WaitLoading.vue'
 export { default as Paginator } from './paginator'
+export { default as InputPerson } from './typeahead'
 // Select (Typeahead) Options
 export { default as SelectOptionUser } from './options/UserOption.vue'
 export { default as SelectOptionAdd } from './options/AddOption.vue'

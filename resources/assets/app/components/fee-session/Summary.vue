@@ -1,5 +1,5 @@
 <template lang="html">
-<div class="card">
+<div class="card c-fee-session-summary">
   <div class="card-block">
 
     <h5 class="card-title">{{ session.name }}</h5>
@@ -65,5 +65,7 @@ export default {
 
 
 <style lang="scss">
-
+.c-fee-session-summary {
+  height: 100%;
+}
 </style>

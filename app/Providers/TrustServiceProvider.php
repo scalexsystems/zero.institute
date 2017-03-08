@@ -35,6 +35,9 @@ class TrustServiceProvider extends OriginalTrustServiceProvider
         // Settings
         'settings.app' => 'Access school settings',
 
+        // Finances
+        'finance.app' => 'Access institute finances',
+
         // Roles & Permissions
         'manage_roles' => 'Manage roles',
     ];

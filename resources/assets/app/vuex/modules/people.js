@@ -1,5 +1,6 @@
 import http from '../api'
 import { insert, binarySearchFind } from '../helpers'
+import { isArray } from '../../util'
 
 const actions = {
   async index ({ dispatch }, { page = 1, q, personType } = {}) {
@@ -28,7 +29,7 @@ const actions = {
 
   // -- LOCAL ACTIONS --
   addToStore ({ commit }, items) {
-    if (!items) return
+    if (!isArray(items)) return
 
     commit('INSERT', items)
   }

@@ -33,13 +33,14 @@
 
   <div v-if="isSessionFetched">
     <div class="bg-faded">
-      <div class="container py-3">
+      <div class="container pt-3">
         <div class="row">
 
-          <div class="col-12 col-lg-8">
+          <div class="col-12 col-lg-8 mb-3">
+            <transaction-summary-card :session="session"/>
           </div>
 
-          <div class="col-12 col-lg-4">
+          <div class="col-12 col-lg-4 mb-3">
             <fee-session-summary-card :session="session"/>
           </div>
 
@@ -47,11 +48,23 @@
       </div>
     </div>
 
-    <div class="container-zero py-3">
-      <paginator :value="paginator" bottom @next="fetchTransactions">
+    <modal class="ps-child" v-if="showTransactionModal" open @close="showTransactionModal = false" :dismissable="false">
+      <div class="container-zero">
+        <create-transaction @done="showTransactionModal = false"/>
+      </div>
+    </modal>
 
-      </paginator>
-    </div>
+    <paginator :value="paginator" bottom @next="fetchTransactions" class="mb-3">
+      <div class="container-zero my-3">
+        <div class="d-flex flex-row mb-3">
+          <h2>Transactions</h2>
+
+          <input-button class="ml-auto" icon="plus-circle" value="Add new" @click.native="showTransactionModal = true"/>
+        </div>
+
+        <transaction-card v-for="transaction in transactions" :key="transaction" v-bind="{ transaction }"/>
+      </div>
+    </paginator>
   </div>
 
   <loading v-else/>
@@ -62,6 +75,10 @@
 import { directive as onClickAway } from 'vue-clickaway'
 import { mapActions, mapGetters } from 'vuex'
 import FeeSessionSummaryCard from '../../components/fee-session/Summary.vue'
+import TransactionSummaryCard from '../../components/fee-session/TransactionSummary.vue'
+import TransactionCard from '../../components/fee-session/Transaction.vue'
+import CreateTransaction from '../../components/fee-session/CreateTransaction.vue'
+
 export default {
   name: 'FeeSession',
 
@@ -74,7 +91,9 @@ export default {
 
   data: () => ({
     showSessionDropdown: false,
-    paginator: {}
+    showTransactionModal: false,
+    paginator: {},
+    transactions: [{ id: 1 }]
   }),
 
   computed: {
@@ -100,7 +119,12 @@ export default {
     },
 
     fetchTransactions ({ done }) {
-      setTimeout(done, 4000)
+      setTimeout(() => {
+        this.transactions.push({ id: this.transactions.length })
+
+        done()
+
+      }, 400)
     },
 
     ...mapActions('feeSessions', ['find', 'index'])
@@ -111,7 +135,7 @@ export default {
     if (!this.allSessions.length) this.index()
   },
 
-  components: { FeeSessionSummaryCard },
+  components: { FeeSessionSummaryCard, TransactionSummaryCard, TransactionCard, CreateTransaction },
 
   directives: { onClickAway }
 }

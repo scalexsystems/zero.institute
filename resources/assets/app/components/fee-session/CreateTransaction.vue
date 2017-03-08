@@ -1,0 +1,103 @@
+<template lang="html">
+<div class="card">
+  <div class="card-header bg-white">
+    <h5 class="my-2">Add offline transaction</h5>
+  </div>
+
+  <div class="card-block">
+    <form-component>
+      <div class="row">
+
+        <div class="col-12">
+          <input-student v-model="attributes.student_id"
+                         title="Paid by" subtitle="Name of the student."
+                         autofocus required/>
+        </div>
+
+        <div class="col-12 col-lg-6">
+          <input-typeahead v-model="attributes.payment_mode"
+                           title="Mode of payment" :suggestions="paymentModes"
+                           required/>
+        </div>
+
+        <div class="col-12 col-lg-6">
+          <input-text type="number" v-model="attributes.amount"
+                      title="Amount" subtitle="In rupees (INR)" min="0"
+                      required/>
+        </div>
+
+        <div class="col-12" v-if="attributes.payment_mode === 'cash'">
+          <input-employee v-model="attributes.accountant_id" title="Collected By" subtitle="Name of the accountant."/>
+        </div>
+
+        <div class="col-12" v-else-if="attributes.payment_mode === 'cheque'">
+          <input-text v-model="attributes.cheque_number" title="Cheque Number" required/>
+        </div>
+
+        <div class="col-12" v-else-if="attributes.payment_mode === 'dd'">
+          <input-text v-model="attributes.dd_number" title="Demand Draft Number" required/>
+        </div>
+
+        <div class="col-12">
+          <input-textarea v-model="attributes.remark" title="Remarks"/>
+        </div>
+
+        <div class="col-12 text-right mt-3">
+          <input-button value="Cancel" variant="secondary" @click.native="$emit('done')"/>
+          <input-button type="submit" value="Add Transaction"/>
+        </div>
+
+      </div>
+    </form-component>
+  </div>
+</div>
+</template>
+
+<script lang="babel">
+import resource from '../mixins/resource'
+import InputStudent from '../student/InputStudent.vue'
+import InputEmployee from '../employee/InputEmployee.vue'
+
+export default {
+  name: 'CreateTransaction',
+
+  resource: 'fee_payment',
+
+  data: () => ({
+    attributes: {
+      student_id: 0,
+      payment_mode: '',
+      amount: '',
+      accountant_id: 0,
+      cheque_number: '',
+      dd_number: '',
+      remark: '',
+    }
+  }),
+
+  computed: {
+    paymentModes: () => ([
+      { id: 'cash', name: 'Cash' },
+      { id: 'dd', name: 'Demand Draft' },
+      { id: 'cheque', name: 'Cheque' },
+    ])
+  },
+
+  methods: {
+    onCreate () {
+    },
+
+    onCreated () {
+    }
+  },
+
+  components: { InputStudent, InputEmployee },
+
+  mixins: [resource]
+}
+</script>
+
+
+<style lang="scss">
+
+</style>

@@ -24,6 +24,6 @@ export default {
   render (h, ctx) {
     const component = themes[ctx.props.theme]
 
-    return h(component, ctx.data)
+    return h(component, ctx.data, ctx.children)
   }
 }

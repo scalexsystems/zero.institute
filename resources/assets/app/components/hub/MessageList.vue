@@ -24,6 +24,7 @@
 import { isArray, last, isImageExtension } from '../../util'
 import Message from './message'
 import PhotoBrowser from './PhotoBrowser.vue'
+import scrollbar from '../mixins/scrollbar'
 
 export default {
   name: 'MessageList',
@@ -36,7 +37,14 @@ export default {
   },
 
   data () {
-    return { cursor: -1, fetching: false, complete: false, position: 0, offset: 0 }
+    return {
+      cursor: -1,
+      fetching: false,
+      complete: false,
+      position: 0,
+      offset: 0,
+      scrollSelector: true,
+    }
   },
 
   computed: {
@@ -153,6 +161,8 @@ export default {
   },
 
   components: { Message, PhotoBrowser },
+
+  mixins: [scrollbar],
 
   watch: {
     messages (messages, old) {

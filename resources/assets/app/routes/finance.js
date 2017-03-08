@@ -1,5 +1,9 @@
 import { toInt } from '../util'
 export default [
+  {
+    path: '/finance',
+    redirect: '/finance/fee/sessions'
+  },
 
   {
     name: 'fee-session.index',
