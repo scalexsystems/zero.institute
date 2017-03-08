@@ -3,16 +3,23 @@
 
         <div class="row">
           <div class="col-12 col-lg-8 offset-lg-2">
-            <date-selector startDate="01-01-2015"></date-selector>
+            <date-selector startDate="01-01-2015" v-model="date"></date-selector>
 
-            <a role="button" href="#" class="btn btn-primary"> Take Attendance </a>
-          </div>
+            <div v-if="!enabled">
+              <a role="button" class="btn btn-primary" @click.prevent="takeAttendance"> Take Attendance </a>
+            </div>
+            <div v-else>
+                <a role="button" class="btn btn-primary" @click.prevent="cancel"> Cancel </a>
+                <a role="button" class="btn btn-primary" @click.prevent="saveAttendance"> Save Attendance </a>
+             </div>
+
+            </div>
 
         </div>
 
         <div class="row">
             <div class="col-12 col-lg-8 offset-lg-2">
-              <student-list :students="students" :session="id"></student-list>
+                <attendance-card :student="student" v-for="student in students" @toggle="toggleAttendance"></attendance-card>
             </div>
         </div>
     </container-window>
@@ -20,15 +27,18 @@
 
 <script lang="babel">
     import DateSelector from '../../components/attendance/DateSelector.vue'
-    import StudentList from '../../components/attendance/StudentList.vue'
+    import AttendanceCard from '../../components/attendance/Card.vue'
     import { mapGetters, mapActions } from 'vuex'
 
 
     export default {
         name: 'CreateAttendance',
-        components: { DateSelector, StudentList },
+        components: { DateSelector, AttendanceCard },
         data: () => ({
-          students: []
+          students: [],
+          attendance: [],
+          enabled: false,
+          date: '',
         }),
         props: {
           id: {
@@ -49,7 +59,35 @@
             const { students } = await this.enrollments(this.id);
             this.students = students;
           },
-            ...mapActions('courses', ['enrollments'])
+          takeAttendance() {
+             this.enabled = true;
+          },
+          cancel() {
+             this.enabled = false;
+          },
+          toggleAttendance(value, studentId){
+            debugger;
+            if(!value) {
+                const index = this.attendance.indexOf(studentId);
+                if(index) {
+                    this.attendance.splice(index, 1);
+                }
+             }
+             else {
+              this.attendance.push(studentId);
+             }
+            },
+
+            async saveAttendance() {
+                const attendance = {
+                   date: this.date,
+                   attendance: this.attendance,
+                };
+                const { attendances } = await this.store({ session: this.session, attendance })
+            },
+
+            ...mapActions('courses', ['enrollments']),
+            ...mapActions('attendance', ['store']),
         },
 
         created() {

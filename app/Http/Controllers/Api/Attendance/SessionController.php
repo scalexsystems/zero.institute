@@ -32,11 +32,18 @@ class SessionController extends Controller
 
     public function store(Request $request, CourseSession $session, AttendanceRepository $repository)
     {
-        $this->authorize('take-attendance', $session);
+
+        $this->authorize('create-attendance', $session);
         $studentIds = collect($request->input['students']);
         $date = $request->input('date');
         $repository->takeAttendance($studentIds, $session, $date);
         return $this->accepted();
+    }
+
+    public function destroy()
+    {
+        abort('401');
+
     }
 
 

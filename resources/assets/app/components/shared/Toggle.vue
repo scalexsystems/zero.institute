@@ -1,7 +1,7 @@
 <template>
    <div>
     <label class="toggle">
-        <input class="toggle-input" @change="$emit('toggle', currentValue)" type="checkbox" v-model="currentValue">
+        <input class="toggle-input" type="checkbox" v-model="currentValue">
         <span class="toggle-core"></span>
         <div class="toggle-label">
             <slot></slot>
@@ -18,10 +18,15 @@ export default {
     value: Boolean
   },
   computed: {
-    currentValue() {
-      return this.value;
-    }
+    currentValue: {
+      get() {
+        return this.value;
+      },
+      set(val) {
+        this.$emit('toggle', val);
   }
+  }
+ }
 };
 </script>
 

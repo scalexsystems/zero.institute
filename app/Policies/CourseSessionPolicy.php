@@ -65,4 +65,9 @@ class CourseSessionPolicy
     {
        return trust($user)->can('attendance.view') and $session->instructor->id === $user->id;
     }
+
+    public function createAttendance(User $user, CourseSession $session)
+    {
+        return trust($user)->can('attendance.create');
+    }
 }

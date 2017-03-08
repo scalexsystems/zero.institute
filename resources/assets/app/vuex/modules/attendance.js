@@ -14,12 +14,13 @@ const actions = {
       return { attendances }
     },
 
-    async store (_, { session, payload }) {
+    async store (_, { session, attendance } ) {
 
-        const {attendances} = http.post(`sessions/${session.id}/attendances`, payload);
+        await http.post(`sessions/${session.id}/attendances`, attendance);
+
+        return { attendances }
 
     }
-
 
 }
 

@@ -57,12 +57,11 @@
         },
 
         methods: {
-          toggle(event, value) {
-            return this.$emit('toggle', value, this.student.id);
+          toggle(value) {
+            return this.$emit('toggle', value, this.student.user_id);
           }
         }
-
-    }
+        }
 </script>
 
 <style lang="scss">
