@@ -4,7 +4,7 @@
         <a role="button" @click.prevent="prev">
             <icon class="icon" type="chevron-left"></icon>
         </a>
-        <h3> {{ date }} </h3>
+        <h3> {{ date | dateForHumans }} </h3>
 
         <h5> {{ dayOfWeek }} </h5>
 
@@ -15,10 +15,12 @@
 </template>
 
 <script lang="babel">
+    import moment from 'moment'
+    import { dateForHumans } from '../../filters'
     export default {
         name: 'DateSelector',
         data: () => ({
-          date: new Date(),
+          date: moment(),
           weekdays: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
 
         }),
@@ -29,7 +31,7 @@
             },
             endDate: {
                 type: String,
-                default: new Date().toDateString(),
+                default: () => new Date().toDateString(),
             },
 
             format: {
@@ -38,15 +40,14 @@
         },
         computed: {
             dayOfWeek() {
-              return this.weekdays[this.date.getDay()];
-            },
-
+//              return this.weekdays[this.date.getDay()];
+            }
         },
         methods: {
             prev() {
               const date = this.date;
-              if(date >= this.startDate) {
-              date.setDate(date.getDate() - 1);
+              if(date.isAfter(this.startDate, 'date')) {
+                date.subtract(1, 'days');
               }
             },
 
@@ -56,6 +57,9 @@
                   date.setDate(date.getDate() + 1);
               }
             }
+        },
+        filters: {
+            dateForHumans
         }
 
     }

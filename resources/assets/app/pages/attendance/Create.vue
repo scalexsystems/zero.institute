@@ -9,7 +9,7 @@
               <a role="button" class="btn btn-primary" @click.prevent="takeAttendance"> Take Attendance </a>
             </div>
             <div v-else>
-                <a role="button" class="btn btn-primary" @click.prevent="cancel"> Cancel </a>
+                <a role="button" class="btn btn-default" @click.prevent="cancel"> Cancel </a>
                 <a role="button" class="btn btn-primary" @click.prevent="saveAttendance"> Save Attendance </a>
              </div>
 
@@ -29,7 +29,6 @@
     import DateSelector from '../../components/attendance/DateSelector.vue'
     import AttendanceCard from '../../components/attendance/Card.vue'
     import { mapGetters, mapActions } from 'vuex'
-
 
     export default {
         name: 'CreateAttendance',
@@ -66,7 +65,6 @@
              this.enabled = false;
           },
           toggleAttendance(value, studentId){
-            debugger;
             if(!value) {
                 const index = this.attendance.indexOf(studentId);
                 if(index) {
