@@ -4,8 +4,8 @@
         <input class="toggle-input" @change="$emit('toggle', currentValue)" type="checkbox" v-model="currentValue">
         <span class="toggle-core"></span>
         <div class="toggle-label">
-            <slot></slot><
-            /div>
+            <slot></slot>
+        </div>
     </label>
    </div>
 </template>
@@ -18,13 +18,8 @@ export default {
     value: Boolean
   },
   computed: {
-    currentValue {
-      get() {
-        return this.value;
-      },
-      set(val) {
-        this.$emit('input', val);
-      }
+    currentValue() {
+      return this.value;
     }
   }
 };
