@@ -39,15 +39,11 @@
 
   <hr class="m-0">
 
-  <div class="card-block">
-    <attendance-panel :source="source"></attendance-panel>
-  </div>
 </div>
 </template>
 
 <script lang="babel">
 import SourceType from './view/type'
-import AttendancePanel from '../attendance/View.vue'
 
 export default {
   name: 'ProfileCard',

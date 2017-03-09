@@ -9,9 +9,9 @@
            <div class="row">
              <div class="col-6 col-lg-6">
                  <input-select title="Semester" v-model.number="semester" :options="semesters" @input="semesterChosen"/>
-                 <list :items="courseSessions" @listClicked="sessionClicked">
+                 <session-list :items="courseSessions" @listClicked="sessionClicked">
 
-                 </list>
+                 </session-list>
              </div>
            </div>
          </div>
@@ -20,12 +20,12 @@
 </template>
 
 <script lang="babel">
-    import List from './List.vue'
+    import SessionList from './SessionList.vue'
     import { mapGetters, mapActions } from 'vuex'
 
     export default {
-        name: 'AttendancePanel',
-        components: { List },
+        name: 'AttendanceDisplay',
+        components: { SessionList },
         data: () => ({
             semester: 0,
             errors: {},
@@ -42,7 +42,6 @@
           semesterList() {
           },
          attendances() {
-           return this.find();
          },
         ...mapGetters('semesters', ['semesters']),
         },
@@ -56,9 +55,8 @@
           sessionClicked(event, session){
             this.activeSession = session;
           },
-          getCourseSessions(){
-
-            const { sessions } = this.forSemesterAndStudent(this.semester, this.source);
+          async getCourseSessions(){
+            const { sessions } = await this.forSemesterAndStudent({ semesterId: this.semester, student: this.source});
             this.courseSessions = [sessions];
           },
 

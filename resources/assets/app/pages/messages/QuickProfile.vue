@@ -25,7 +25,11 @@
         <router-link :to="{name: 'user.messages', params: { id: user.id } }" class="btn btn-primary">Send Message</router-link>
         <router-link :to="{name:`${user.type}.show`, params: { uid: user.person.uid } }" class="btn btn-secondary">View Profile</router-link>
       </div>
+
+
+
     </div>
+    <attendance-display :source="user"></attendance-display>
   </div>
 
   <loading v-else/>
@@ -35,6 +39,7 @@
 <script lang="babel">
 import { mapGetters } from 'vuex'
 import UserRoute from './mixins/route'
+import AttendanceDisplay from '../../components/attendance/AttendanceDisplay.vue'
 
 export default {
   name: 'User',
@@ -58,7 +63,8 @@ export default {
     ...mapGetters('departments', ['departmentById'])
   },
 
-  mixins: [UserRoute]
+  mixins: [UserRoute],
+  components: { AttendanceDisplay }
 }
 </script>
 
