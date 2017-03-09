@@ -4,7 +4,7 @@
             <icon class="icon" type="chevron-left"></icon>
         </a>
         <div class="date-selector-datebox">
-          <p> {{ date | dateForHumans }} </p>
+          <p> {{ currentDate | dateForHumans }} </p>
           <!--<h5> {{ dayOfWeek }} </h5>-->
         </div>
         <a role="button" @click.prevent="next">
@@ -41,12 +41,22 @@
         computed: {
             dayOfWeek() {
 //              return this.weekdays[this.date.getDay()];
+            },
+
+            currentDate: {
+                get() {
+                    return this.value;
+                },
+                set(val) {
+                    this.$emit('input', val);
+                }
             }
         },
         methods: {
             prev() {
-              const date = this.date;
-              if(date.isAfter(this.startDate, 'date')) {
+              debugger;
+              const date = this.currentDate;
+              if(date.isAfter(this.min, 'date')) {
                 date.subtract(1, 'days');
               }
             },
@@ -63,6 +73,7 @@
         }
 
     }
+
 </script>
 
 <style lang="scss" scoped>

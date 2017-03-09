@@ -3,7 +3,7 @@
 
         <div class="row">
           <div class="col-12 col-lg-8 offset-lg-2">
-            <date-selector startDate="01-01-2015" v-model="date"></date-selector>
+            <date-selector min="01-01-2015" v-model="date"></date-selector>
 
             <div v-if="!enabled">
               <a role="button" class="btn btn-primary" @click.prevent="takeAttendance"> Take Attendance </a>
@@ -70,8 +70,7 @@
                 if(index >= 0) {
                     this.attendance.splice(index, 1);
                 }
-             }
-             else {
+             } else {
               this.attendance.push(studentId);
              }
             },
