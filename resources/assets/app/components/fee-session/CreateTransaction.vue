@@ -57,11 +57,20 @@
 import resource from '../mixins/resource'
 import InputStudent from '../student/InputStudent.vue'
 import InputEmployee from '../employee/InputEmployee.vue'
+import { mapActions } from 'vuex'
+import { only } from '../../util'
 
 export default {
   name: 'CreateTransaction',
 
   resource: 'fee_payment',
+
+  props: {
+    feeSession: {
+      type: Number,
+      required: true,
+    }
+  },
 
   data: () => ({
     attributes: {
@@ -85,10 +94,32 @@ export default {
 
   methods: {
     onCreate () {
+      const attributes = only(this.attributes, ['student_id', 'payment_mode', 'amount', 'remark'])
+
+      switch (this.attributes.payment_mode) {
+        case 'cash':
+          attributes.accountant_id = this.attributes.accountant_id
+          break
+        case 'dd':
+          attributes.dd_number = this.attributes.dd_number
+          break
+        case 'cheque':
+          attributes.cheque_number = this.attributes.cheque_number
+          break
+      }
+
+      return this.offline({
+        id: this.feeSession,
+        attributes,
+      })
     },
 
-    onCreated () {
-    }
+    onCreated (transaction) {
+      this.$emit('created', transaction)
+      this.$emit('done')
+    },
+
+    ...mapActions('feeSessions', ['offline'])
   },
 
   components: { InputStudent, InputEmployee },

@@ -115,6 +115,8 @@ Route::get('me/courses', 'Api\Courses\CurrentUserController@index');
 //======================================================================================//
 //                                    Finance                                           //
 //======================================================================================//
+Route::post('finance/fee/sessions/{session}/offline', 'Api\Finance\OfflineFeePaymentsController@store');
+Route::get('finance/fee/sessions/{session}/payments', 'Api\Finance\FeePaymentsController@index');
 Route::resource('finance/fee/sessions', 'Api\Finance\FeeSessionsController', $resource);
 
 Route::get('me/fee/payments', 'Api\Finance\FeePaymentsController@index');

@@ -406,13 +406,48 @@ namespace Scalex\Zero\Models{
 
 namespace Scalex\Zero\Models{
 /**
+ * Scalex\Zero\Models\FeePayment
+ *
+ * @property int $id
+ * @property mixed $paid
+ * @property int $amount
+ * @property \Carbon\Carbon $deadline
+ * @property int $fee_template_id
+ * @property int $fee_session_id
+ * @property int $student_id
+ * @property int $school_id
+ * @property string $deleted_at
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property-read \Scalex\Zero\Models\FeeSession $feeSession
+ * @property mixed $extended
+ * @property-read \Scalex\Zero\Models\School $school
+ * @property-read \Scalex\Zero\Models\Student $student
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Scalex\Zero\Models\Transaction[] $transactions
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\FeePayment whereAmount($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\FeePayment whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\FeePayment whereDeadline($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\FeePayment whereDeletedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\FeePayment whereFeeSessionId($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\FeePayment whereFeeTemplateId($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\FeePayment whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\FeePayment wherePaid($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\FeePayment whereSchoolId($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\FeePayment whereStudentId($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\FeePayment whereUpdatedAt($value)
+ */
+	class FeePayment extends \Eloquent {}
+}
+
+namespace Scalex\Zero\Models{
+/**
  * Scalex\Zero\Models\FeeSession
  *
  * @property int $id
  * @property string $name
  * @property int $session_id
- * @property string $started_at
- * @property string $ended_at
+ * @property \Carbon\Carbon $started_at
+ * @property \Carbon\Carbon $ended_at
  * @property bool $accepting
  * @property int $school_id
  * @property array $additional
@@ -1012,6 +1047,7 @@ namespace Scalex\Zero\Models{
  * @property mixed $extended
  * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $payable
  * @property-read \Scalex\Zero\Models\School $school
+ * @property-read \Scalex\Zero\User $user
  * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Transaction whereAdditional($value)
  * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Transaction whereAmount($value)
  * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Transaction whereCreatedAt($value)

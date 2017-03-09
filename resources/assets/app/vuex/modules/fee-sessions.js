@@ -45,6 +45,18 @@ const actions = {
     }
   },
 
+  async offline (_, { id, attributes }) {
+    try {
+      return await http.post(true, `finance/fee/sessions/${id}/offline`, attributes)
+    } catch (e) {
+      return e
+    }
+  },
+
+  async transactions (_, { id, page = 1, pending } = {}) {
+    return await http.get(`finance/fee/sessions/${id}/payments`, { query: { page, pending } })
+  },
+
   async delete ({ dispatch }, id) {
     try {
       await http.delete(true, `finance/fee/sessions/${id}`)

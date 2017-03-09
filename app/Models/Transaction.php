@@ -4,6 +4,7 @@ namespace Scalex\Zero\Models;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Scalex\Zero\Database\BaseModel;
+use Scalex\Zero\User;
 
 class Transaction extends BaseModel
 {
@@ -13,7 +14,25 @@ class Transaction extends BaseModel
     const SUCCESSFUL = 'success';
     const FAILED = 'failed';
 
-    protected $fillable = ['purpose', 'description'];
+    protected $fillable = [
+        'amount',
+        'status',
+        'refundable',
+        'gateway',
+        'gateway_reference_id',
+        'payment_method',
+        'dd_number',
+        'cheque_number',
+        'accountant_id',
+        'purpose',
+        'description',
+    ];
+
+    protected $extends = [
+        'dd_number',
+        'cheque_number',
+        'accountant_id',
+    ];
 
     public function school()
     {
@@ -23,6 +42,11 @@ class Transaction extends BaseModel
     public function payable()
     {
         return $this->morphTo();
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
     public function isPending()

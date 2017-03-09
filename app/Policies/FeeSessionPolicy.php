@@ -34,4 +34,10 @@ class FeeSessionPolicy extends AbstractPolicy
         return (int)$user->school_id === (int)$session->school_id and
                trust($user)->to('fee_session.delete');
     }
+
+    public function addOfflinePayment(User $user, FeeSession $session)
+    {
+        return (int)$user->school_id === (int)$session->school_id and
+               trust($user)->to('fee_session.add_offline');
+    }
 }

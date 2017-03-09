@@ -50,7 +50,7 @@
 
     <modal class="ps-child" v-if="showTransactionModal" open @close="showTransactionModal = false" :dismissable="false">
       <div class="container-zero">
-        <create-transaction @done="showTransactionModal = false"/>
+        <create-transaction :fee-session="session_id" @done="showTransactionModal = false"/>
       </div>
     </modal>
 
