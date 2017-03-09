@@ -65,9 +65,9 @@
              this.enabled = false;
           },
           toggleAttendance(value, studentId){
-            if(!value) {
+            if(value) {
                 const index = this.attendance.indexOf(studentId);
-                if(index) {
+                if(index >= 0) {
                     this.attendance.splice(index, 1);
                 }
              }

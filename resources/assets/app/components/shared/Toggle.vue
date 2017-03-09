@@ -1,12 +1,9 @@
 <template>
    <div>
-    <label class="toggle">
-        <input class="toggle-input" type="checkbox" v-model="currentValue">
-        <span class="toggle-core"></span>
-        <div class="toggle-label">
-            <slot></slot>
-        </div>
-    </label>
+     <label class="toggle">
+         <input type="checkbox" v-model="currentValue">
+           <div class="slider round"></div>
+       </label>
    </div>
 </template>
 
@@ -23,8 +20,8 @@ export default {
         return this.value;
       },
       set(val) {
-        this.$emit('toggle', val);
-  }
+        this.$emit('input', val);
+      }
   }
  }
 };
@@ -33,4 +30,57 @@ export default {
 <style lang="scss" scoped>
 @import '../../styles/variables';
 
+.toggle {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 20px;
+}
+
+/* Hide default HTML checkbox */
+.toggle input {display:none;}
+
+/* The slider */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 4px;
+    bottom: 0;
+    background-color: white;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+    transform: translateX(36px);
+}
+
+.slider.round {
+    border-radius: 20px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
 </style>

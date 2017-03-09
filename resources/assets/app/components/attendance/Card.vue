@@ -2,23 +2,20 @@
     <abstract-card v-bind="{ remove }" class="c-attendance-card" @remove="$emit('remove', student)">
         <div class="d-flex flex-row align-items-center">
             <img :src="student.photo" class="rounded-circle c-attendance-card-photo fit-cover">
-            <div>
+            <div class="mr-auto">
                 <div class="c-attendance-card-title" :class="{ 'text-muted': !student.name.trim() }">
                     {{ student.name.trim() || 'Name not set' }}
                 </div>
                 <div class="c-attendance-card-subtitle flex-auto">
-                    <span class="text-muted">Roll Number:</span> {{ student.uid }} <br>
-                    {{ attendanceStatus }}
+                    <span class="text-muted">Roll Number: {{ student.uid }} {{ attendanceStatus }} </span>
                 </div>
 
-                <div class="flex-auto">
-                    <toggle :value="false" @toggle="toggle"> </toggle>
-                </div>
+             </div>
+             <div class="flex ml-auto">
+                    <toggle v-model="attendance" @input="toggle"> </toggle>
+              </div>
             </div>
-            <div>
 
-            </div>
-        </div>
 
         <slot></slot>
     </abstract-card>
