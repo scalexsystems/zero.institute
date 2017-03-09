@@ -1,13 +1,12 @@
 <template>
 <div>
-
         <a role="button" @click.prevent="prev">
             <icon class="icon" type="chevron-left"></icon>
         </a>
-        <h3> {{ date | dateForHumans }} </h3>
-
-        <h5> {{ dayOfWeek }} </h5>
-
+        <div class="date-selector-datebox">
+          <p> {{ date | dateForHumans }} </p>
+          <!--<h5> {{ dayOfWeek }} </h5>-->
+        </div>
         <a role="button" @click.prevent="next">
             <icon class="icon" type="chevron-right"></icon>
         </a>
@@ -20,22 +19,23 @@
     export default {
         name: 'DateSelector',
         data: () => ({
-          date: moment(),
+          value: moment(),
           weekdays: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
 
         }),
         props: {
-            startDate: {
+            min: {
                 type: String,
                 required: true,
             },
-            endDate: {
+            max: {
                 type: String,
                 default: () => new Date().toDateString(),
             },
 
             format: {
-                type: String
+                type: String,
+                default: 'DD-MM-YYYY'
             }
         },
         computed: {
@@ -71,6 +71,11 @@
 
     .icon {
       display: inline;
+    }
+
+    .date-selector-datebox {
+       display: inline;
+       width: 400px;
     }
 
 </style>
