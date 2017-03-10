@@ -1,21 +1,25 @@
 <template>
     <container-window title="Student Attendance" subtitle="Attendance" back @back="$router.go(-1)">
 
+        <smart-form>
         <div class="row">
-          <div class="col-12 col-lg-8 offset-lg-2">
+          <div class="col-12 col-lg-8 offset-lg-3">
             <date-selector min="01-01-2015" v-model="date"></date-selector>
 
-            <div v-if="!enabled">
-              <a role="button" class="btn btn-primary" @click.prevent="takeAttendance"> Take Attendance </a>
+            <div class="mb-3 text-center py-2">
+            <div v-if="!enabled" >
+              <input-button @click.native="takeAttendance" value="Take Attendance"/>
             </div>
             <div v-else>
-                <a role="button" class="btn btn-default" @click.prevent="cancel"> Cancel </a>
-                <a role="button" class="btn btn-primary" @click.prevent="saveAttendance"> Save Attendance </a>
+                <input-button @click.native="cancel" value="Cancel"/>
+                <input-button :type="submit" @click.native="saveAttendance" value="Save Attendance"/>
              </div>
 
             </div>
+            </div>
 
         </div>
+        </smart-form>
 
         <div class="row">
             <div class="col-12 col-lg-8 offset-lg-2">

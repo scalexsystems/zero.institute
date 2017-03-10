@@ -1,11 +1,11 @@
 <template>
-<div>
+<div class="d-flex flex-row align-items-center text-center">
         <a role="button" @click.prevent="prev">
             <icon class="icon" type="chevron-left"></icon>
         </a>
-        <div class="date-selector-datebox">
-          <p> {{ currentDate | dateForHumans }} </p>
-          <!--<h5> {{ dayOfWeek }} </h5>-->
+        <div class="date-selector-datebox text-center">
+          <h3> {{ currentDate | dateForHumans }} </h3>
+          <h5> {{ dayOfWeek }} </h5>
         </div>
         <a role="button" @click.prevent="next">
             <icon class="icon" type="chevron-right"></icon>
@@ -19,7 +19,7 @@
     export default {
         name: 'DateSelector',
         data: () => ({
-          value: moment(),
+          value: new Date().toDateString(),
           weekdays: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
 
         }),
@@ -40,12 +40,12 @@
         },
         computed: {
             dayOfWeek() {
-//              return this.weekdays[this.date.getDay()];
+                return moment(this.value).format('dddd');
             },
 
             currentDate: {
                 get() {
-                    return this.value;
+                    return moment(this.value);
                 },
                 set(val) {
                     this.$emit('input', val);
@@ -54,17 +54,16 @@
         },
         methods: {
             prev() {
-              debugger;
               const date = this.currentDate;
               if(date.isAfter(this.min, 'date')) {
-                date.subtract(1, 'days');
+                this.value = date.subtract(1, 'days');
               }
             },
 
             next() {
-              const date = this.date;
-              if(date < this.endDate) {
-                  date.setDate(date.getDate() + 1);
+               const date = this.currentDate;
+               if(date.isBefore(this.max, 'date')) {
+                this.value = date.add(1, 'days');
               }
             }
         },
