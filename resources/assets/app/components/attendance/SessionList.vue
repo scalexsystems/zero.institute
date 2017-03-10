@@ -1,11 +1,9 @@
 <template>
-    <div>
-        <div class="list-group">
-            <a role="button" class="list-group-item list-group-item-action" v-for="item in items" @click.native="itemClicked(item)">
-                {{ item.name }}
-            </a>
-            </div>
-    </div>
+    <div class="list-group">
+            <input-button class="list-group-item list-group-item-action session-item" v-for="(item, index) in items" @click.native="itemClicked(item)">
+                <div @click.native="itemClicked(index)"> {{ item.name }} </div>
+            </input-button>
+        </div>
 </template>
 
 <script lang="babel">
@@ -25,3 +23,10 @@
         }
     }
 </script>
+
+<style lang="scss" scoped>
+  .session-item {
+    color: black;
+  }
+
+</style>

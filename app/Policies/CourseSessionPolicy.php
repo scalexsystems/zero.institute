@@ -70,4 +70,9 @@ class CourseSessionPolicy
     {
         return trust($user)->can('attendance.create');
     }
+
+    public function viewSession(User $user, CourseSession $session)
+    {
+        return $this->isInstructor($user->person, $session) or $session->group->isMember($user);
+    }
 }

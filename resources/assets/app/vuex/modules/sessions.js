@@ -52,8 +52,8 @@ const actions = {
   },
 
   async forSemesterAndStudent(_, { semesterId, student }) {
-    const { sessions } = await http.get(`me/semesters/${semesterId}/student/${student.id}/sessions`);
-    return { sessions };
+    const { course_sessions } = await http.get(`me/semesters/${semesterId}/students/${student.person.uid}/sessions`);
+    return { course_sessions };
   }
 }
 

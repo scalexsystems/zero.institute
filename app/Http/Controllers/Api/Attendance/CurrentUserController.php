@@ -23,17 +23,15 @@ class CurrentUserController extends Controller
         $this->middleware('auth:api,web');
     }
 
-    public function index(Request $request, Semester $semester, Student $student)
+    public function index(Semester $semester, Student $student, Request $request)
     {
-        $this->authorize('view-sessions', $student);
-
         $user = request()->user();
 
         if ($user->person instanceof Teacher) {
             return CourseSession::with(['course' => function ($query) use ($semester) {
                 return $query->where('semester_id', $semester->id);
             }])
-                ->where('instructor_id', $user->id)
+                ->where('instructor_id', $user->person->id)
                 ->get();
 
         }

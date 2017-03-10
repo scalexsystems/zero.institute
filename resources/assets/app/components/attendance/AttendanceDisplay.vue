@@ -39,10 +39,6 @@
           },
         },
         computed: {
-          semesterList() {
-          },
-         attendances() {
-         },
         ...mapGetters('semesters', ['semesters']),
         },
 
@@ -52,15 +48,18 @@
           semesterChosen(event, semester) {
             this.getCourseSessions();
           },
-          sessionClicked(event, session){
+          async sessionClicked(event, session){
             this.activeSession = session;
+            const { attendance } = await this.find({session: session, student: this.source});
+            this.attendance = attendance;
+
           },
           async getCourseSessions(){
-            const { sessions } = await this.forSemesterAndStudent({ semesterId: this.semester, student: this.source});
-            this.courseSessions = [sessions];
+            const { course_sessions } = await this.forSemesterAndStudent({ semesterId: this.semester, student: this.source});
+            this.courseSessions = course_sessions;
           },
 
-        ...mapActions('attendances', ['find']),
+        ...mapActions('attendance', ['find']),
         ...mapActions('sessions', ['forSemesterAndStudent']),
         }
 
