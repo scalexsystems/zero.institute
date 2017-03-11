@@ -98,4 +98,9 @@ class HomeController extends Controller
     {
         return view('web.aboutUs');
     }
+
+    public function pricing()
+    {
+        return view('web.pricing');
+    }
 }

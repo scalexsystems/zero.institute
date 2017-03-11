@@ -15,6 +15,7 @@ Route::get('/account/update/email/verify/{token}', 'Auth\VerificationController@
 Route::get('/account/email/verify/{token}', 'Auth\VerificationController@verifyEmail');
 
 Route::get('/about-us', 'HomeController@aboutUs');
+Route::get('/pricing', 'HomeController@pricing');
 
 Auth::routes();
 
