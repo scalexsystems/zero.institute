@@ -1,10 +1,12 @@
 @extends('layouts.web')
 
 @section('content')
-<section id="about">
+    @include('web.partials.header')
+
+    <section id="about">
    <div class="container">
        <div class="row">
-           <div class="col-10 py-3 offset-lg-1">
+           <div class="col-10 py-5 offset-lg-1">
                <div class="text-center">
                    <h1><strong>About Us </strong></h1>
                </div>
