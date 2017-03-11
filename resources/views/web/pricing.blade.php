@@ -12,16 +12,23 @@
 
                     <div class="nav pricing-nav-tabs">
                         <li class="nav-item pricing-nav-item px-4">
-                            <a href="#free" class="nav-link pricing-nav-link active"> Free </a>
+                            <a href="#free" data-toggle="tab" class="nav-link pricing-nav-link active"> Free </a>
                         </li>
                         <li class="nav-item pricing-nav-item">
-                            <a href="#" class="nav-link pricing-nav-link"> Fee Payments </a>
+                            <a href="#fee" data-toggle="tab" class="nav-link pricing-nav-link"> Fee Payments </a>
                         </li>
                     </div>
 
-                    <div id="free" class="tab-content">
-                        @include('web.partials.free')
+                    <div class="tab-content">
+                        <div id="free" class="tab-pane pricing-tab-content">
+                            @include('web.partials.free')
 
+                        </div>
+
+                        <div id="fee" class="tab-pane active pricing-tab-content">
+                            @include('web.partials.feePayments')
+
+                        </div>
                     </div>
 
 

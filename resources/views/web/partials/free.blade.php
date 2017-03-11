@@ -38,7 +38,8 @@
 <style lang="scss" scoped>
     .feature-list-item {
         list-style: none;
-        padding-left: 2em;
+        padding-left: 2rem;
+        padding-bottom: 1rem;
     }
 
     .feature-set {
