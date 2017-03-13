@@ -1,32 +1,68 @@
-<div class="nav payment-type-nav-tabs">
-    <li class="nav-item payment-type-nav-item px-4">
-        <a href="#free" data-toggle="tab" class="nav-link payment-type-nav-link active"> <i class="fa fa-fw fa-credit-card"> </i> Cards </a>
+<div class="nav nav-justified">
+    <li class="nav-item">
+        <a href="#cards" data-toggle="tab" class="nav-link fee-payment-link p-3 active">
+            <div class="text-center"><img src="{{ 'img/web/pricing/icons/Card.svg' }}"></div> <div class="text-center"> Cards </div>
+        </a>
     </li>
-    <li class="nav-item payment-type-nav-item">
-        <a href="#fee" data-toggle="tab" class="nav-link payment-type-nav-link"> <i class="fa fa-fw fa-university"> </i> Net Banking </a>
+    <li class="nav-item ">
+        <a href="#net-banking" data-toggle="tab" class="nav-link fee-payment-link p-1 ">
+            <div class="text-center"><img src="{{ 'img/web/pricing/icons/Net-banking.svg' }}"></div> <div class="text-center"> Net Banking </div>
+        </a>
     </li>
-    <li class="nav-item payment-type-nav-item">
-        <a href="#fee" data-toggle="tab" class="nav-link payment-type-nav-link"> <i class="fa fa-fw fa-university"> </i> UPI </a>
+    <li class="nav-item ">
+        <a href="#upi" data-toggle="tab" class="nav-link fee-payment-link p-3 ">
+            <div class="text-center"><img src="{{ 'img/web/pricing/icons/UPI.svg' }}"></div> <div class="text-center"> UPI </div>
+        </a>
     </li>
-    <li class="nav-item payment-type-nav-item">
-        <a href="#fee" data-toggle="tab" class="nav-link payment-type-nav-link"> <i class="fa fa-fw fa-university"> </i> Wallets  </a>
+    <li class="nav-item ">
+        <a href="#wallet" data-toggle="tab" class="nav-link fee-payment-link p-3 ">
+            <div class="text-center"><img src="{{ 'img/web/pricing/icons/Wallet.svg' }}"></div> <div class="text-center"> Wallets </div>
+        </a>
     </li>
 </div>
 
 <div class="tab-content">
-    <div id="free" class="tab-pane payment-type-tab-content">
+    <div id="cards" class="tab-pane active">
+        <div class="image-wrapper p-5">
+            <img src="{{ asset('img/web/pricing/cards.png') }}">
+        </div>
+
 
     </div>
 
-    <div id="fee" class="tab-pane active payment-type-tab-content">
+    <div id="net-banking" class="tab-pane ">
+        <div class="image-wrapper p-5">
+            <img src="{{ asset('img/web/pricing/netb.png') }}">
+        </div>
 
     </div>
+
+    <div id="upi" class="tab-pane ">
+        <div class="image-wrapper p-5">
+            <img src="{{ asset('img/web/pricing/upi.png') }}">
+        </div>
+    </div>
+
+    <div id="wallet" class="tab-pane">
+        <div class="image-wrapper p-5">
+            <img src="{{ asset('img/web/pricing/wallets.png') }}">
+        </div>
+    </div>
+
 </div>
 
 <style lang="scss" scoped>
-    .fee-payments-nav-link {
-        padding: 1.6rem 6rem;
-        background-color: #dfdfdf;
+    .fee-payment-link {
+        background-color: #f7f7f7;
         color: black;
+        border: 1px solid #e7e7e7;
+    }
+
+    .active {
+      background-color: white;
+    }
+
+    .image-wrapper img{
+      width: 100%;
     }
 </style>

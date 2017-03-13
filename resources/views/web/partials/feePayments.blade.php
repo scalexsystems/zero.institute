@@ -4,7 +4,7 @@
             Upgrade your institute's fee payment system!
         </div>
 
-            <div class="col-lg-4 py-5">
+            <div class="col-lg-5 py-5">
                 <div class="per-transaction-rate text-center">
                     <h3> 2% + ₹50 </h3>
                     per transaction <br/>
@@ -16,12 +16,11 @@
                Refunds will be processed in 9-10 business days.
               </div>
 
-              @include('web.partials.paymentTypes');
-
+              @include('web.partials.paymentTypes')
 
             </div>
 
-            <div class="col-lg-8 py-5">
+            <div class="col-lg-7 py-5">
                 <ul class="feature-set"> <i class="fa fa-fw fa-check-square-o"> </i> <strong> Features </strong>
                     <li class="feature-list-item"> Powerful and Flexible - Fees can be paid via net-banking, credit/debit cards, UPI or wallets.
                         All in one system. </li>
@@ -43,9 +42,4 @@
        background-color: black;
        padding: 1.5rem;
    }
-
-
-
-
-
 </style>

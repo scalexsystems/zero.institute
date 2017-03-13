@@ -20,12 +20,12 @@
                     </div>
 
                     <div class="tab-content">
-                        <div id="free" class="tab-pane pricing-tab-content">
+                        <div id="free" class="tab-pane pricing-tab-content active">
                             @include('web.partials.free')
 
                         </div>
 
-                        <div id="fee" class="tab-pane active pricing-tab-content">
+                        <div id="fee" class="tab-pane pricing-tab-content">
                             @include('web.partials.feePayments')
 
                         </div>
