@@ -20,12 +20,12 @@
                     </div>
 
                     <div class="tab-content">
-                        <div id="free" class="tab-pane pricing-tab-content active">
+                        <div id="free" class="tab-pane active">
                             @include('web.partials.free')
 
                         </div>
 
-                        <div id="fee" class="tab-pane pricing-tab-content">
+                        <div id="fee" class="tab-pane">
                             @include('web.partials.feePayments')
 
                         </div>
@@ -59,9 +59,10 @@
            padding: 3rem 0 0 6rem;
         }
 
-
-
     </style>
+
+    {{--<script src="{{ mix('/vendor/bootstrap.js') }}" defer></script>--}}
+
 @endsection
 
 
