@@ -15,14 +15,14 @@
 
           <li class="nav-item hidden-sm-down mx-4">
           <a class="nav-link"
-             href="/">
+             href="/pricing">
               Pricing
           </a>
         </li>
 
           <li class="nav-item hidden-sm-down mx-4">
           <a class="nav-link"
-             href="/">
+             href="/about">
               About
           </a>
         </li>

@@ -62,6 +62,7 @@
     </style>
 
     {{--<script src="{{ mix('/vendor/bootstrap.js') }}" defer></script>--}}
+    @include('web.partials.footer')
 
 @endsection
 
