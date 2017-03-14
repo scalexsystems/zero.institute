@@ -1,11 +1,8 @@
-<?php
+<?php namespace Tests\Api\Attendance;
 
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Test\Api\Attendance\AttendanceTestHelper;
-use Test\Api\People\Students\StudentTestHelper;
-use Test\Api\People\Teachers\TeacherTestHelper;
+use TestCase;
+use Tests\Api\People\Students\StudentTestHelper;
+use Tests\Api\People\Teachers\TeacherTestHelper;
 
 class SessionControllerTest extends TestCase
 {
@@ -23,7 +20,7 @@ class SessionControllerTest extends TestCase
         $this->givePermissionTo($teacher->user, 'attendance.view');
 
         $this->actingAs($teacher->user)->get('api/sessions/'. $session->id . '/attendances')
-            ->assertResponseStatus(200)
+            ->assertStatus(200)
             ->seeJsonStructure('attendances', []);
 
     }
@@ -39,7 +36,22 @@ class SessionControllerTest extends TestCase
         $this->givePermissionTo($teacher->user, 'attendance.view');
 
         $this->actingAs($teacher->user)->get('api/sessions/' . $session->id . '/attendances')
-            ->assertResponseStatus(401);
+            ->assertStatus(401);
+
+    }
+
+    public function test_store_can_take_attendance()
+    {
+        $teacher = $this->createTeacherAndUser();
+
+        $students = $this->createStudent(2);
+
+        $session = $this->createCourseWithSession();
+
+        $this->givePermissionTo($teacher->user, 'attendance.create');
+
+        $this->actingAs($teacher->user)->post('api/sessions' . $session->id . '/attendances', $students->pluck('id'))
+            ->assertStatus(202);
 
     }
 }
