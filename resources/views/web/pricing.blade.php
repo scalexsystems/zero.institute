@@ -15,7 +15,7 @@
                             <a href="#free" data-toggle="tab" class="nav-link pricing-nav-link active"> Free </a>
                         </li>
                         <li class="nav-item pricing-nav-item">
-                            <a href="#fee" data-toggle="tab" class="nav-link pricing-nav-link"> Fee Payments </a>
+                            <a href="#fee-payments" data-toggle="tab" class="nav-link pricing-nav-link"> Fee Payments </a>
                         </li>
                     </div>
 
@@ -25,7 +25,7 @@
 
                         </div>
 
-                        <div id="fee" class="tab-pane">
+                        <div id="fee-payments" class="tab-pane">
                             @include('web.partials.feePayments')
 
                         </div>
@@ -61,7 +61,9 @@
 
     </style>
 
-    {{--<script src="{{ mix('/vendor/bootstrap.js') }}" defer></script>--}}
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
     @include('web.partials.footer')
 
 @endsection

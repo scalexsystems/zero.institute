@@ -45,7 +45,7 @@
 
     <div id="wallet" class="tab-pane">
         <div class="image-wrapper p-5">
-            <img src="{{ asset('img/web/pricing/wallets.png') }}">
+            <img src="{{ asset('img/web/pricing/wallet.png') }}">
         </div>
     </div>
 

@@ -1,4 +1,4 @@
-N<div class="free-wrapper py-5">
+<div class="free-wrapper py-5">
     <div class="row px-5">
         <div class="col-12 text-center">
             Upgrade your institute's fee payment system!
