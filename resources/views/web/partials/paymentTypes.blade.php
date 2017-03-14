@@ -1,25 +1,25 @@
-<div class="nav nav-justified">
+<ul class="nav nav-justified">
     <li class="nav-item">
-        <a href="#cards" data-toggle="tab" class="nav-link fee-payment-link p-3 active">
+        <a href="#cards" data-toggle="tab" class="nav-link fee-payment-link active">
             <div class="text-center"><img src="{{ 'img/web/pricing/icons/Card.svg' }}"></div> <div class="text-center"> Cards </div>
         </a>
     </li>
     <li class="nav-item ">
-        <a href="#net-banking" data-toggle="tab" class="nav-link fee-payment-link p-1 ">
+        <a href="#net-banking" data-toggle="tab" class="nav-link fee-payment-link ">
             <div class="text-center"><img src="{{ 'img/web/pricing/icons/Net-banking.svg' }}"></div> <div class="text-center"> Net Banking </div>
         </a>
     </li>
     <li class="nav-item ">
-        <a href="#upi" data-toggle="tab" class="nav-link fee-payment-link p-3 ">
+        <a href="#upi" data-toggle="tab" class="nav-link fee-payment-link ">
             <div class="text-center"><img src="{{ 'img/web/pricing/icons/UPI.svg' }}"></div> <div class="text-center"> UPI </div>
         </a>
     </li>
     <li class="nav-item ">
-        <a href="#wallet" data-toggle="tab" class="nav-link fee-payment-link p-3 ">
+        <a href="#wallet" data-toggle="tab" class="nav-link fee-payment-link ">
             <div class="text-center"><img src="{{ 'img/web/pricing/icons/Wallet.svg' }}"></div> <div class="text-center"> Wallets </div>
         </a>
     </li>
-</div>
+</ul>
 
 <div class="tab-content">
     <div id="cards" class="tab-pane active">
@@ -56,6 +56,7 @@
         background-color: #f7f7f7;
         color: black;
         border: 1px solid #e7e7e7;
+        padding: 0.75rem;
     }
 
     .active {

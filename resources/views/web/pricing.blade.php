@@ -5,12 +5,12 @@
 
         <div class="container">
             <div class="row">
-                <div class="col-10 py-5 offset-lg-1">
+                <div class="col-10 pt-5 offset-lg-1 p-0">
                     <div class="text-center">
                         <h1><strong> Pricing </strong></h1>
                     </div>
 
-                    <div class="nav pricing-nav-tabs">
+                    <ul class="nav pricing-nav-tabs">
                         <li class="nav-item pricing-nav-item px-4">
                             <a href="#free" data-toggle="tab" class="nav-link pricing-nav-link active"> Free </a>
                         </li>
@@ -61,9 +61,7 @@
 
     </style>
 
-    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    @include('web.partials.bootstrap')
     @include('web.partials.footer')
 
 @endsection
