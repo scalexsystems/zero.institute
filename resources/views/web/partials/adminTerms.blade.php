@@ -1,4 +1,4 @@
-<h3>Institute Admin Terms</h3>
+<h1>Institute Admin Terms</h1>
 
 <p><br />
 </p>
