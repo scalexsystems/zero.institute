@@ -108,7 +108,7 @@
 <p><br />
 </p>
 
-<p>Please review our Privacy Policy for more information on how we collect and use data relating to the use and performance of our products.</p>
+<p>Please review our <a href="#privacy" target="_blank"> Privacy Policy for more information on how we collect and use data relating to the use and performance of our products.</p>
 
 <p><br />
 </p>
@@ -140,4 +140,4 @@
 <p><br />
 </p>
 
-<p>Please also feel free to contact us if you have any questions about Scalex System’s Institute Admin Terms of Service. You may contact us at feedback@scalex.systems</p>
+<p>Please also feel free to contact us if you have any questions about Scalex System’s Institute Admin Terms of Service. You may contact us at <a href="mailto:feedback@scalex.systems"> feedback@scalex.systems </a> </p>

@@ -10,15 +10,15 @@
                 <li class="nav-item"> <a class="nav-link privacy-link" href="#user-terms"> User Terms </a> </li>
             </ul>
             <div class="tab-content">
-                <div class="col-10 py-5 tab-pane active" id="privacy-policy">
+                <div class="col-10 p-5 tab-pane active" id="privacy-policy">
                     @include('web.partials.privacyPolicy')
                 </div>
 
-                <div class="col-10 py-5 tab-pane" id="admin-terms">
+                <div class="col-10 p-5 tab-pane" id="admin-terms">
                     @include('web.partials.adminTerms')
                 </div>
 
-                <div class="col-10 py-5 tab-pane" id="user-terms">
+                <div class="col-10 p-5 tab-pane" id="user-terms">
                     @include('web.partials.userTerms')
                 </div>
             </div>
