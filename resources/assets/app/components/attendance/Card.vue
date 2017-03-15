@@ -12,7 +12,7 @@
 
              </div>
              <div class="flex ml-auto">
-                    <toggle v-model="attendance" @input="toggle"> </toggle>
+                    <input-switch :value="attendance" @input="toggle"> </input-switch>
               </div>
             </div>
 
