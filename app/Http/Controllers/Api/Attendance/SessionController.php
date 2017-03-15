@@ -17,20 +17,20 @@ class SessionController extends Controller
         $this->middleware('auth:api,web');
     }
 
-    public function index(Request $request, CourseSession $session)
+    public function index(CourseSession $session, Request $request)
     {
         $this->authorize('view-attendance', $session);
 
         return $session->attendances;
     }
 
-    public function show(Request $request, CourseSession $session, Student $student, AttendanceRepository $repository)
+    public function show(CourseSession $session, Student $student, AttendanceRepository $repository, Request $request)
     {
         $this->authorize('view-attendance', $session);
         return $repository->getAttendanceFor($student, $session);
     }
 
-    public function store(Request $request, CourseSession $session, AttendanceRepository $repository)
+    public function store(CourseSession $session, AttendanceRepository $repository, Request $request)
     {
 
         $this->authorize('create-attendance', $session);
