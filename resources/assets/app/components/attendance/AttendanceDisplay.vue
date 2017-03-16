@@ -13,6 +13,9 @@
 
                  </session-list>
              </div>
+
+             <div class="col-6 col-lg-6">
+                 <contribution-graph v-bind="{ rowHeadings, columnHeadings}"></contribution-graph>
            </div>
          </div>
        </div>
@@ -22,15 +25,18 @@
 <script lang="babel">
     import SessionList from './SessionList.vue'
     import { mapGetters, mapActions } from 'vuex'
+    import ContributionGraph from './ContributionGraph.vue'
 
     export default {
         name: 'AttendanceDisplay',
-        components: { SessionList },
+        components: { SessionList, ContributionGraph },
         data: () => ({
             semester: 0,
             errors: {},
             items: {},
             courseSessions: [],
+            rowHeadings: ['M', 'T', 'W', 'T', 'F', 'S', 'Su'],
+            columnHeadings: ['W1', '2', '3'],
         }),
         props: {
           source: {
@@ -39,6 +45,7 @@
           },
         },
         computed: {
+
         ...mapGetters('semesters', ['semesters']),
         },
 
@@ -61,7 +68,8 @@
 
         ...mapActions('attendance', ['find']),
         ...mapActions('sessions', ['forSemesterAndStudent']),
-        }
+        },
+
 
     }
 </script>
