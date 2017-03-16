@@ -35,6 +35,7 @@ class TransactionRepository extends Repository
     {
         $transaction = new Transaction($attributes);
 
+        $transaction->status = Transaction::SUCCESSFUL;
         $transaction->payable()->associate($payable);
         $transaction->school()->associate($school);
         $transaction->user()->associate($user);

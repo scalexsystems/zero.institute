@@ -18,6 +18,11 @@ class FeeSession extends BaseModel
         'started_at',
     ];
 
+    protected $events = [
+        'created' => \Scalex\Zero\Events\FeeSession\Created::class,
+        'updated' => \Scalex\Zero\Events\FeeSession\Updated::class,
+    ];
+
     public function school()
     {
         return $this->belongsTo(School::class);
@@ -26,5 +31,10 @@ class FeeSession extends BaseModel
     public function session()
     {
         return $this->belongsTo(Session::class);
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(FeePayment::class);
     }
 }

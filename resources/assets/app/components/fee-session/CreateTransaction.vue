@@ -9,32 +9,32 @@
       <div class="row">
 
         <div class="col-12">
-          <input-student v-model="attributes.student_id"
+          <input-student v-model="attributes.student_id" input-name="student_id"
                          title="Paid by" subtitle="Name of the student."
                          autofocus required/>
         </div>
 
         <div class="col-12 col-lg-6">
-          <input-typeahead v-model="attributes.payment_mode"
+          <input-typeahead v-model="attributes.payment_method"
                            title="Mode of payment" :suggestions="paymentModes"
                            required/>
         </div>
 
         <div class="col-12 col-lg-6">
-          <input-text type="number" v-model="attributes.amount"
+          <input-text type="number" v-model="attributes.amount" step="0.01"
                       title="Amount" subtitle="In rupees (INR)" min="0"
                       required/>
         </div>
 
-        <div class="col-12" v-if="attributes.payment_mode === 'cash'">
+        <div class="col-12" v-if="attributes.payment_method === 'cash'">
           <input-employee v-model="attributes.accountant_id" title="Collected By" subtitle="Name of the accountant."/>
         </div>
 
-        <div class="col-12" v-else-if="attributes.payment_mode === 'cheque'">
+        <div class="col-12" v-else-if="attributes.payment_method === 'cheque'">
           <input-text v-model="attributes.cheque_number" title="Cheque Number" required/>
         </div>
 
-        <div class="col-12" v-else-if="attributes.payment_mode === 'dd'">
+        <div class="col-12" v-else-if="attributes.payment_method === 'dd'">
           <input-text v-model="attributes.dd_number" title="Demand Draft Number" required/>
         </div>
 
@@ -75,7 +75,7 @@ export default {
   data: () => ({
     attributes: {
       student_id: 0,
-      payment_mode: '',
+      payment_method: '',
       amount: '',
       accountant_id: 0,
       cheque_number: '',
@@ -94,9 +94,9 @@ export default {
 
   methods: {
     onCreate () {
-      const attributes = only(this.attributes, ['student_id', 'payment_mode', 'amount', 'remark'])
+      const attributes = only(this.attributes, ['student_id', 'payment_method', 'amount', 'remark'])
 
-      switch (this.attributes.payment_mode) {
+      switch (this.attributes.payment_method) {
         case 'cash':
           attributes.accountant_id = this.attributes.accountant_id
           break

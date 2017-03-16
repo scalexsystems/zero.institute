@@ -12,20 +12,26 @@
     </input-button>
 
     <div class="dropdown-menu dropdown-menu-right mt-2">
-      <div class="dropdown-item">
+      <div class="dropdown-item" @click="showSessionCreate = true">
         <icon type="plus-circle" class="text-muted mr-2"/>
         Add new session
       </div>
 
       <div class="dropdown-divider"></div>
 
-      <div class="dropdown-item py-2 justify-content-between" v-for="s in activeSessions" :key="s">
+      <router-link v-for="s in activeSessions" :key="s"
+                   active-class="active" replace tag="div"
+                   class="dropdown-item py-2 justify-content-between"
+                   :to="{ name: 'fee-session.show', params: { id: s.id } }">
         {{ s.name }} <span class="badge badge-success badge-pill ml-2">active</span>
-      </div>
+      </router-link>
 
-      <div class="dropdown-item py-2 justify-content-between" v-for="s in oldSessions" :key="s">
+      <router-link v-for="s in oldSessions" :key="s"
+                   active-class="active" replace tag="div"
+                   class="dropdown-item py-2 justify-content-between"
+                   :to="{ name: 'fee-session.show', params: { id: s.id } }">
         {{ s.name }}
-      </div>
+      </router-link>
 
     </div>
   </div>
@@ -68,6 +74,13 @@
   </div>
 
   <loading v-else/>
+
+
+  <modal v-if="showSessionCreate" open :dismissable="false">
+    <div class="container-zero">
+      <session-create @done="showSessionCreate = false"/>
+    </div>
+  </modal>
 </container>
 </template>
 
@@ -78,6 +91,7 @@ import FeeSessionSummaryCard from '../../components/fee-session/Summary.vue'
 import TransactionSummaryCard from '../../components/fee-session/TransactionSummary.vue'
 import TransactionCard from '../../components/fee-session/Transaction.vue'
 import CreateTransaction from '../../components/fee-session/CreateTransaction.vue'
+import SessionCreate from '../../components/fee-session/Create.vue'
 
 export default {
   name: 'FeeSession',
@@ -92,6 +106,7 @@ export default {
   data: () => ({
     showSessionDropdown: false,
     showTransactionModal: false,
+    showSessionCreate: false,
     paginator: {},
     transactions: [{ id: 1 }]
   }),
@@ -135,7 +150,10 @@ export default {
     if (!this.allSessions.length) this.index()
   },
 
-  components: { FeeSessionSummaryCard, TransactionSummaryCard, TransactionCard, CreateTransaction },
+  components: {
+    FeeSessionSummaryCard, TransactionSummaryCard, TransactionCard,
+    CreateTransaction, SessionCreate
+  },
 
   directives: { onClickAway }
 }

@@ -21,6 +21,8 @@ class CreateFeePaymentsTable extends Migration
             $table->integer('fee_session_id')->unsigned();
             $table->integer('student_id')->unsigned();
             $table->integer('school_id')->unsigned();
+
+            $table->json('additional')->default('{}');
             $table->softDeletes();
             $table->timestamps();
 

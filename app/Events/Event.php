@@ -23,7 +23,7 @@ abstract class Event implements ShouldBroadcast
         $payload = [];
 
         foreach ((new ReflectionClass($this))->getProperties(ReflectionProperty::IS_PUBLIC) as $property) {
-            $payload[$property->getName()] = $this->formatProperty($property->getValue($this));
+            $payload[snake_case($property->getName())] = $this->formatProperty($property->getValue($this));
         }
 
         return $payload;

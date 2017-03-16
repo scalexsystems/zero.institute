@@ -2,7 +2,11 @@
 <div class="card c-fee-session-summary">
   <div class="card-block">
 
-    <h5 class="card-title">{{ session.name }}</h5>
+    <h5 class="card-title clearfix">
+      {{ session.name }}
+      <input-switch v-model="accepting" inline class="float-right"/>
+      <icon v-if="working" type="circle-o-notch" class="fa-spin float-right mr-2"/>
+    </h5>
 
     <div class="progress m-3">
       <div class="progress-bar" role="progressbar" style="height: 4px;" :style="{ width: progress + '%' }"
@@ -30,6 +34,7 @@
 <script lang="babel">
 import { dateForHumans } from '../../filters'
 import moment from 'moment'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'SessionSummary',
@@ -40,6 +45,8 @@ export default {
       required: true,
     }
   },
+
+  data: () => ({ working: false }),
 
   computed: {
     progress () {
@@ -53,11 +60,25 @@ export default {
       const total = end.diff(start, 'days')
       const passed = today.diff(start, 'days')
 
-      this.$debug(total, passed)
-
       return (passed / total * 100).toFixed(2)
+    },
+
+    accepting: {
+      get () {
+        return this.session.accepting
+      },
+
+      set (value) {
+        this.working = true
+        this.update({ id: this.session.id, attributes: { accepting: value } })
+            .then(() => {
+              this.working = false
+            })
+      }
     }
   },
+
+  methods: mapActions('feeSessions', ['update']),
 
   filters: { dateForHumans }
 }

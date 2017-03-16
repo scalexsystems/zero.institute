@@ -24,6 +24,6 @@ class OfflineFeePaymentsController extends Controller
     {
         $this->authorize('add-offline-payment', $session);
 
-        return $this->repository->createForSession($session, $request->all());
+        return $this->repository->createTransactionForPayment($session, $request->all());
     }
 }

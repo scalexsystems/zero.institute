@@ -4,6 +4,7 @@ use Auth;
 use Illuminate\Validation\Rule;
 use Scalex\Zero\Models\FeePayment;
 use Scalex\Zero\Models\FeeSession;
+use Scalex\Zero\Models\Student;
 use Scalex\Zero\Models\Transaction;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Znck\Repositories\Repository;
@@ -39,7 +40,7 @@ class FeePaymentRepository extends Repository
         return $this;
     }
 
-    public function createForSession(FeeSession $session, array $attributes)
+    public function createTransactionForPayment(FeeSession $session, array $attributes)
     {
         $this->validateWith($attributes, $this->getRulesForSession($session));
 
@@ -55,11 +56,32 @@ class FeePaymentRepository extends Repository
             throw new HttpException(400, 'The student has already paid for the session.');
         }
 
-        app(TransactionRepository::class)->createForManual($session, $session->school, Auth::user(), $attributes);
-
+        $attributes['amount'] = $payment->amount = (int)($attributes['amount'] * 100); // Convert amount to paise.
+        $attributes['purpose'] = 'Manual entry for fee payment.';
         $payment->paid = true;
 
+        app(TransactionRepository::class)->createForManual($session, $session->school, Auth::user(), $attributes);
+
         $this->onUpdate($payment->update());
+
+        return $payment;
+    }
+
+    public function createWith(FeeSession $session, Student $student, array $attributes)
+    {
+        $payment = FeePayment::where('student_id', $student->id)
+                             ->where('fee_session_id', $session->id)
+                             ->first();
+
+        if ($payment) {
+            return $payment;
+        }
+
+        $payment = new FeePayment($attributes);
+        $payment->feeSession()->associate($session);
+        $payment->student()->associate($student);
+        $payment->school()->associate($session->school_id);
+        $this->onCreate($payment->save());
 
         return $payment;
     }
@@ -73,7 +95,7 @@ class FeePaymentRepository extends Repository
                 Rule::exists('students', 'id')->where('school_id', $session->school_id),
             ],
 
-            'payment_mode' => 'required|in:cash,dd,cheque',
+            'payment_method' => 'required|in:cash,dd,cheque',
 
             'dd_number' => 'required_if:payment_mode,dd',
 

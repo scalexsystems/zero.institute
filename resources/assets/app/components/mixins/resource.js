@@ -1,12 +1,14 @@
-import  { formHelper } from 'bootstrap-for-vue'
+import  { formHelper } from 'bootstrap-for-vue/dist/mixins'
 import { isFunction, isObject, isBoolean } from '../../util'
 
 export default {
 
   provide () {
-    return {
-      formState: this
-    }
+    const provided = formHelper.provide.call(this)
+
+    provided.onFormSubmit = this.onFormSubmit
+
+    return provided
   },
 
   methods: {
@@ -16,7 +18,7 @@ export default {
     },
 
     async onFormSubmit () {
-      this.clearErrors()
+      this.clearFormErrors()
 
       const item = this.$options.resource
 
@@ -26,10 +28,10 @@ export default {
         if (isObject(response) && response[item]) {
           this.onUpdated(response[item])
         } else if (isObject(response) && response.errors) {
-          this.setErrors(response.errors)
-          this.formStatus = response.errors.$message
+          this.setFormErrors(response.errors)
+          this.setFormStatus(response.errors.$message)
         } else {
-          this.formStatus = 'Ah! Oh! This is not expected. Contact support.'
+          this.setFormStatus('Ah! Oh! This is not expected. Contact support.')
         }
       } else if (isFunction(this.onCreate)) {
         const response = await this.onCreate()
@@ -38,10 +40,10 @@ export default {
           this.onCreated(response[item])
           this.resetAttributes()
         } else if (isObject(response) && response.errors) {
-          this.setErrors(response.errors)
-          this.formStatus = response.errors.$message
+          this.setFormErrors(response.errors)
+          this.setFormStatus(response.errors.$message)
         } else {
-          this.formStatus = 'Ah! Oh! This is not expected. Contact support.'
+          this.setFormStatus('Ah! Oh! This is not expected. Contact support.')
         }
       } else {
         throw new Error('Resource component should have create or update method.')
@@ -55,7 +57,7 @@ export default {
         return
       }
 
-      this.clearErrors()
+      this.clearFormErrors()
 
       const response = await this.onDelete()
 
@@ -63,10 +65,10 @@ export default {
         this.onDeleted()
         this.resetAttributes()
       } else if (isObject(response) && response.errors) {
-        this.setErrors(response.errors)
-        this.formStatus = response.errors.$message
+        this.setFormErrors(response.errors)
+        this.setFormStatus(response.errors.$message)
       } else {
-        this.formStatus = 'Ah! Oh! This is not expected. Contact support.'
+        this.setFormStatus('Ah! Oh! This is not expected. Contact support.')
       }
     },
 

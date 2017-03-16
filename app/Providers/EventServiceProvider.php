@@ -18,6 +18,9 @@ class EventServiceProvider extends ServiceProvider
             Listeners\Invitation\SendInvitationVerification::class,
             Listeners\Invitation\ReportNewInvitationRequest::class,
         ],
+        Events\FeeSession\Updated::class => [
+            Listeners\GenerateFeePaymentRequests::class,
+        ],
     ];
 
 

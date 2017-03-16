@@ -7,10 +7,13 @@ use Scalex\Zero\Database\ExtendibleModel;
 
 class FeePayment extends ExtendibleModel implements BelongsToSchool
 {
-    protected $fillable = ['amount'];
+    protected $fillable = ['amount', 'amount_manual', 'deadline'];
+
+    protected $extends = ['amount_manual'];
 
     protected $casts = [
-        'paid' => false,
+        'paid' => 'boolean',
+        'amount_manual' => 'boolean',
     ];
 
     protected $dates = [

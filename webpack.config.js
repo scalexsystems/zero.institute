@@ -161,6 +161,7 @@ module.exports.resolve = {
   extensions: ['*', '.js', '.jsx', '.vue'],
   alias: {
     'vue$': 'vue/dist/vue.runtime.esm.js',
+    'bootstrap-for-vue$': 'bootstrap-for-vue/dist/bootstrap-for-vue.esm.js',
   }
 };
 

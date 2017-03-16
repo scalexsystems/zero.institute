@@ -54,4 +54,27 @@ class FeeSessionRepository extends Repository
 
         return $session;
     }
+
+    /**
+     * Prepare update rules.
+     *
+     * @param array $rules
+     * @param array $attributes
+     * @param FeeSession $model
+     *
+     * @return array
+     */
+    public function getUpdateRules(array $rules, array $attributes, $model)
+    {
+        return array_only($this->getCreateRulesForSchool($model->school), array_keys($attributes));
+    }
+
+    public function updating(FeeSession $session, array $attributes)
+    {
+        if (array_has($attributes, 'accepting')) {
+            $session->accepting = $attributes['accepting'];
+        }
+
+        return $session->update($attributes);
+    }
 }
