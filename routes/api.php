@@ -117,6 +117,6 @@ Route::get('me/courses', 'Api\Courses\CurrentUserController@index');
 
 Route::get('sessions/{session}/attendances', 'Api\Attendance\SessionController@index');
 Route::get('sessions/{session}/students/{student}/attendances', 'Api\Attendance\SessionController@show');
-Route::post('sessions/{session}/attendances', 'Api\Attendance\SessionController@show');
+Route::post('sessions/{session}/attendances', 'Api\Attendance\SessionController@store');
 
 Route::get('me/semesters/{semester}/students/{student}/sessions', 'Api\Attendance\CurrentUserController@index');

@@ -67,8 +67,10 @@
           },
           cancel() {
              this.enabled = false;
+             this.attendance = [];
           },
           toggleAttendance(value, studentId){
+            debugger;
             if(value) {
                 const index = this.attendance.indexOf(studentId);
                 if(index >= 0) {
@@ -79,13 +81,15 @@
              }
             },
 
-            async saveAttendance() {
+          async saveAttendance() {
                 const attendance = {
                    date: this.date,
                    attendance: this.attendance,
                 };
-                const { attendances } = await this.store({ session: this.session, attendance })
-            },
+
+               await this.store({ session: this.session, attendance })
+               this.enabled = false;
+          },
 
             ...mapActions('courses', ['enrollments']),
             ...mapActions('attendance', ['store']),
@@ -103,6 +107,11 @@
 <style lang="scss" scoped>
     @import '../../styles/methods';
     @import '../../styles/variables';
+
+    .switch .slider {
+       background-color: $gray-lightest
+    }
+
 
 
 </style>

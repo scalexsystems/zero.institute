@@ -999,9 +999,9 @@ boom@2.x.x:
   dependencies:
     hoek "2.x.x"
 
-bootstrap-for-vue@^0.2.10:
-  version "0.2.10"
-  resolved "https://registry.yarnpkg.com/bootstrap-for-vue/-/bootstrap-for-vue-0.2.10.tgz#10c26a702b0bb486231485522e5a73c9b5d1ff47"
+bootstrap-for-vue@^0.2.11:
+  version "0.2.11"
+  resolved "https://registry.yarnpkg.com/bootstrap-for-vue/-/bootstrap-for-vue-0.2.11.tgz#2d2c24433dcb89bd940380103213799a963c556a"
   dependencies:
     lodash.debounce "^4.0.8"
     lodash.throttle "^4.1.1"

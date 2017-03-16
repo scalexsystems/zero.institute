@@ -18,8 +18,6 @@ const actions = {
 
         await http.post(`sessions/${session.id}/attendances`, attendance);
 
-        return { attendances }
-
     }
 
 }
