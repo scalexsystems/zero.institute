@@ -17,7 +17,7 @@
             }
         },
         methods: {
-            itemClicked(event, item){
+            itemClicked(item){
                 this.$emit('listClicked', item);
             }
         }

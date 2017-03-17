@@ -63,7 +63,7 @@ class CourseSessionPolicy
 
     public function viewAttendance(User $user, CourseSession $session)
     {
-       return trust($user)->can('attendance.view') and $session->instructor->id === $user->id;
+       return $this->isInstructor($user->person, $session);
     }
 
     public function createAttendance(User $user, CourseSession $session)

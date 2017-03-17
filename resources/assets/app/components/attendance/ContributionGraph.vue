@@ -4,14 +4,14 @@
 
             <div class="row-heading flex-column">
                 <div class="row-heading-cell align-self-center" v-for="heading in rowHeadings">
-                    {{ heading }}
+                    <div class="small"> {{ heading }} </div>
                 </div>
             </div>
             <div class="d-inline-flex flex-row align-items-center align-self-start" v-for="(column, r) in columnHeadings">
                 <div class="flex-column">
-                    <span class="text-center"> {{ column }} </span>
+                    <div class="small text-center"> {{ column }} </div>
                 <div v-for="(row, c) in rowHeadings">
-                    <div class=square>  </div>
+                    <div class="square">  </div>
                     <slot></slot>
                 </div>
             </div>
@@ -23,15 +23,7 @@
     export default {
         name: 'ContributionGraph',
         data: () => ({
-           data: {
-              W1 : {
-                 M : 'test',
-                 T : 'test',
-                },
-              W2: {
-                 M: 'test'
-              }
-           } ,
+          chartInput: {},
         }),
         props: {
             rowHeadings: {
@@ -42,16 +34,36 @@
                 type: Array,
                 default: () => [],
             },
-//            data: {
-//               type: Object,
+            startDate: {
+                type: String,
+                default: () => new Date().toDateString(),
+            },
+            dates: {
+               type: Object,
 //               required: true,
-//            },
+            },
         },
         computed: {
+
         },
         methods: {
-        },
-        filters: {
+          dayofWeek(date) {
+            return moment(date).format('dddd');
+          },
+          getWeek(date) {
+            return moment(date).diff(this.startDate);
+          },
+          formatData() {
+             this.data.forEach(data => {
+                 const dayofWeek = this.dayofWeek()
+                 const getWeek = this.getWeek()
+             })
+          }
+
+
+
+
+
         },
 
     }
@@ -80,7 +92,7 @@
     }
 
     .row-heading {
-        padding-top: $padding;
-    }
+        padding-top: 1rem;
+        }
 
 </style>

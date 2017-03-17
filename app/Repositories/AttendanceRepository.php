@@ -38,7 +38,7 @@ class AttendanceRepository extends Repository
     public function getAttendanceFor(Student $student, CourseSession $session)
     {
         return $this->pushCriteria(new OfCourseSession($session->id))
-            ->where('student_id', $student->id)->get();
+            ->where('student_id', $student->id);
     }
 
     public function takeAttendance(Collection $students, CourseSession $session, $date)

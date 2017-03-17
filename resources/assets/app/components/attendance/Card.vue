@@ -56,7 +56,7 @@
         methods: {
           toggle(value) {
             this.attendance = value;
-            return this.$emit('toggle', value, this.student.user_id);
+            return this.$emit('toggle', value, this.student.id);
           }
         }
         }

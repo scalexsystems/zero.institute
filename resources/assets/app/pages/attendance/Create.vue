@@ -70,7 +70,6 @@
              this.attendance = [];
           },
           toggleAttendance(value, studentId){
-            debugger;
             if(value) {
                 const index = this.attendance.indexOf(studentId);
                 if(index >= 0) {

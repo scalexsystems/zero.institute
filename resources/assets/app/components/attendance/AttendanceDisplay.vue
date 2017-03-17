@@ -14,8 +14,8 @@
                  </session-list>
              </div>
 
-             <div class="col-6 col-lg-6">
-                 <contribution-graph v-bind="{ rowHeadings, columnHeadings}"></contribution-graph>
+             <div class="col-6 col-lg-6" v-if="activeSession">
+                 <contribution-graph v-bind="{ rowHeadings, columnHeadings}" :startDate="activeSession.started_on"></contribution-graph>
            </div>
          </div>
        </div>
@@ -35,6 +35,8 @@
             errors: {},
             items: {},
             courseSessions: [],
+            activeSession: 0,
+            attendance: [],
             rowHeadings: ['M', 'T', 'W', 'T', 'F', 'S', 'Su'],
             columnHeadings: ['W1', '2', '3'],
         }),
@@ -49,16 +51,14 @@
         ...mapGetters('semesters', ['semesters']),
         },
 
-
-
         methods: {
-          semesterChosen(event, semester) {
+          semesterChosen(semester) {
             this.getCourseSessions();
           },
-          async sessionClicked(event, session){
+          async sessionClicked(session){
             this.activeSession = session;
-            const { attendance } = await this.find({session: session, student: this.source});
-            this.attendance = attendance;
+            const { attendances } = await this.find({sessionId: session.id, student: this.source});
+            this.attendance = attendances;
 
           },
           async getCourseSessions(){
