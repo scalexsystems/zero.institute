@@ -14,6 +14,9 @@ Route::get('/privacy', 'HomeController@privacy');
 Route::get('/account/update/email/verify/{token}', 'Auth\VerificationController@updateEmail');
 Route::get('/account/email/verify/{token}', 'Auth\VerificationController@verifyEmail');
 
+Route::get('/about', 'HomeController@aboutUs');
+Route::get('/pricing', 'HomeController@pricing');
+
 Auth::routes();
 
 // NOTE: **This should be last in list. It captures everything.**
