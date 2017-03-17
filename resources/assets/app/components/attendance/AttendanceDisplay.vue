@@ -15,7 +15,8 @@
              </div>
 
              <div class="col-6 col-lg-6" v-if="activeSession">
-                 <contribution-graph v-bind="{ rowHeadings, columnHeadings}" :startDate="activeSession.started_on"></contribution-graph>
+                 <contribution-graph v-bind="{ rowHeadings, columnHeadings}" :startDate="activeSession.started_on" :dates="attendance">
+                 </contribution-graph>
            </div>
          </div>
        </div>
@@ -23,6 +24,7 @@
 </template>
 
 <script lang="babel">
+    import moment from 'moment'
     import SessionList from './SessionList.vue'
     import { mapGetters, mapActions } from 'vuex'
     import ContributionGraph from './ContributionGraph.vue'
@@ -36,7 +38,7 @@
             items: {},
             courseSessions: [],
             activeSession: 0,
-            attendance: [],
+            attendance: {},
             rowHeadings: ['M', 'T', 'W', 'T', 'F', 'S', 'Su'],
             columnHeadings: ['W1', '2', '3'],
         }),
@@ -57,8 +59,14 @@
           },
           async sessionClicked(session){
             this.activeSession = session;
-            const { attendances } = await this.find({sessionId: session.id, student: this.source});
-            this.attendance = attendances;
+              const dates = {};
+              const { attendances } = await this.find({sessionId: session.id, student: this.source});
+            attendances.forEach(data => {
+                Object.assign(dates, ({
+                    [data.date]: false
+                }))
+            })
+            this.attendance = dates;
 
           },
           async getCourseSessions(){

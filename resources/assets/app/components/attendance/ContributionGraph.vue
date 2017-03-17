@@ -11,15 +11,18 @@
                 <div class="flex-column">
                     <div class="small text-center"> {{ column }} </div>
                 <div v-for="(row, c) in rowHeadings">
-                    <div class="square">  </div>
+                    <div class="square" :class="{ filled : isData(r, c)}">  </div>
                     <slot></slot>
                 </div>
             </div>
         </div>
     </div>
+    </div>
 </template>
-
 <script lang="babel">
+import moment from 'moment'
+import { each } from 'lodash'
+
     export default {
         name: 'ContributionGraph',
         data: () => ({
@@ -40,30 +43,29 @@
             },
             dates: {
                type: Object,
-//               required: true,
+               required: true,
             },
         },
         computed: {
+          datesInWeekForm() {
+              return Object.keys(this.dates).map(date => moment(date));
 
+          }
         },
         methods: {
-          dayofWeek(date) {
+           constructDate(r, c) {
+              return moment(this.startDate).day(c * 7 + r);
+           },
+
+          fromDayofWeek(date) {
             return moment(date).format('dddd');
           },
-          getWeek(date) {
+          fromWeek(date) {
             return moment(date).diff(this.startDate);
           },
-          formatData() {
-             this.data.forEach(data => {
-                 const dayofWeek = this.dayofWeek()
-                 const getWeek = this.getWeek()
-             })
-          }
-
-
-
-
-
+          isData( r, c) {
+             return this.datesInWeekForm.indexOf(this.constructDate(r,c)) > -1
+          },
         },
 
     }
@@ -77,6 +79,7 @@
     $dimension: 1.5rem !default;
     $padding: $dimension / 2 !default;
     $background: $gray-lightest !default;
+    $dataColour: #ee1100 !default;
 
 
     .square {
@@ -93,6 +96,10 @@
 
     .row-heading {
         padding-top: 1rem;
-        }
+    },
+
+    .filled {
+        background: $dataColour;
+    }
 
 </style>
