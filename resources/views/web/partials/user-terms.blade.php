@@ -108,7 +108,7 @@
 <p><br />
 </p>
 
-<p>Please review our <a href="#privacy" target="_blank"> Privacy Policy for more information on how we collect and use data relating to the use and performance of our products.</p>
+<p>Please review our <a href="#privacy"> Privacy Policy </a> for more information on how we collect and use data relating to the use and performance of our products.</p>
 
 <p><br />
 </p>

@@ -26,7 +26,7 @@
                         </div>
 
                         <div id="fee-payments" class="tab-pane">
-                            @include('web.partials.feePayments')
+                            @include('web.partials.fee-payments')
 
                         </div>
                     </div>

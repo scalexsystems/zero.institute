@@ -16,7 +16,7 @@
                Refunds will be processed in 9-10 business days.
               </div>
 
-              @include('web.partials.paymentTypes')
+              @include('web.partials.payment-types')
 
             </div>
 

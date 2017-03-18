@@ -96,7 +96,7 @@ class HomeController extends Controller
 
     public function aboutUs()
     {
-        return view('web.aboutUs');
+        return view('web.about-us');
     }
 
     public function pricing()

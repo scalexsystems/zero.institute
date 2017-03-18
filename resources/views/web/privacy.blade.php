@@ -11,15 +11,15 @@
             </ul>
             <div class="tab-content">
                 <div class="col-10 p-5 tab-pane active" id="privacy-policy">
-                    @include('web.partials.privacyPolicy')
+                    @include('web.partials.privacy-policy')
                 </div>
 
                 <div class="col-10 p-5 tab-pane" id="admin-terms">
-                    @include('web.partials.adminTerms')
+                    @include('web.partials.admin-terms')
                 </div>
 
                 <div class="col-10 p-5 tab-pane" id="user-terms">
-                    @include('web.partials.userTerms')
+                    @include('web.partials.user-terms')
                 </div>
             </div>
         </div>
