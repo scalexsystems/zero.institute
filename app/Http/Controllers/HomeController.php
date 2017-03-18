@@ -93,4 +93,14 @@ class HomeController extends Controller
     {
         return view('web.privacy');
     }
+
+    public function aboutUs()
+    {
+        return view('web.about-us');
+    }
+
+    public function pricing()
+    {
+        return view('web.pricing');
+    }
 }
