@@ -47,11 +47,17 @@
 </header>
 
 <style lang="scss" scoped>
+  header .navbar {
+    padding: 1.5rem 1rem;
+  }
+
  .login-link {
     border: 1px solid;
+    border-radius: 2px;
     padding-top: 0;
     padding-bottom: 0;
     margin-top: 7px;
+
  }
 
  header .navbar-brand {

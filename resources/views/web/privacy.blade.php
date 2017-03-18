@@ -3,22 +3,23 @@
 @section('content')
     @include('web.partials.header')
     <div class="container-fluid">
-        <div class="row">
+        <div class="row privacy-tabs-wrapper">
             <ul class="nav nav-pills privacy-tabs col-12 pl-4">
                 <li class="nav-item"> <a class="nav-link privacy-link active" data-toggle="tab" href="#privacy-policy" > Privacy Policy </a> </li>
                 <li class="nav-item"> <a class="nav-link privacy-link" data-toggle="tab" href="#admin-terms"> Admin Terms </a> </li>
                 <li class="nav-item"> <a class="nav-link privacy-link" data-toggle="tab" href="#user-terms"> User Terms </a> </li>
             </ul>
-            <div class="tab-content">
-                <div class="col-10 p-5 tab-pane active" id="privacy-policy">
+        </div>
+            <div class="tab-content privacy-tab-content py-5">
+                <div class="col-10 tab-pane active" id="privacy-policy">
                     @include('web.partials.privacy-policy')
                 </div>
 
-                <div class="col-10 p-5 tab-pane" id="admin-terms">
+                <div class="col-10 tab-pane" id="admin-terms">
                     @include('web.partials.admin-terms')
                 </div>
 
-                <div class="col-10 p-5 tab-pane" id="user-terms">
+                <div class="col-10 tab-pane" id="user-terms">
                     @include('web.partials.user-terms')
                 </div>
             </div>
@@ -26,8 +27,9 @@
     </div>
 
     <style lang="scss" scoped>
-        .privacy-tabs {
+        .privacy-tabs-wrapper {
             background-color: #f7f7f7;
+            padding-left: 8rem;
         }
 
         .container-fluid {
@@ -42,6 +44,14 @@
 
         .privacy-link {
             color: #939393 !important;
+        }
+
+        .privacy-tab-content {
+            padding-left: 8rem;
+        }
+
+        footer {
+            margin-top: 0 !important;
         }
 
 

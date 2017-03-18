@@ -60,6 +60,22 @@
             padding-top: 3rem;
         }
 
+        .nav-link:hover {
+            color: inherit;
+        }
+
+        .active:hover {
+            color: inherit;
+        }
+
+        .nav-link:focus {
+            color: inherit;
+        }
+
+        .active:focus {
+            color: inherit;
+        }
+
     </style>
 
     @include('web.partials.bootstrap')

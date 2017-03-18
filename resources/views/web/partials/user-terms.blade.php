@@ -1,4 +1,4 @@
-<h1>User Terms</h1>
+<h1><strong>User Terms </strong></h1>
 
 <p><br />
 </p>

@@ -1,22 +1,22 @@
 <ul class="nav nav-justified">
     <li class="nav-item">
         <a href="#cards" data-toggle="tab" class="nav-link fee-payment-link p-2 active">
-            <div class="text-center"><img src="{{ 'img/web/pricing/icons/Card.svg' }}"></div> <div class="text-center small"> Cards </div>
+            <div class="text-center"><img src="{{ 'img/web/pricing/icons/card.svg' }}"></div> <div class="text-center small"> Cards </div>
         </a>
     </li>
     <li class="nav-item ">
         <a href="#net-banking" data-toggle="tab" class="nav-link fee-payment-link p-2">
-            <div class="text-center"><img src="{{ 'img/web/pricing/icons/Net-banking.svg' }}"></div> <div class="text-center small"> Net Banking </div>
+            <div class="text-center"><img src="{{ 'img/web/pricing/icons/net-banking.svg' }}"></div> <div class="text-center small"> Net Banking </div>
         </a>
     </li>
     <li class="nav-item ">
         <a href="#upi" data-toggle="tab" class="nav-link fee-payment-link p-2 ">
-            <div class="text-center"><img src="{{ 'img/web/pricing/icons/UPI.svg' }}"></div> <div class="text-center small"> UPI </div>
+            <div class="text-center"><img src="{{ 'img/web/pricing/icons/upi.svg' }}"></div> <div class="text-center small"> UPI </div>
         </a>
     </li>
     <li class="nav-item ">
         <a href="#wallet" data-toggle="tab" class="nav-link fee-payment-link p-2 ">
-            <div class="text-center"><img src="{{ 'img/web/pricing/icons/Wallet.svg' }}"></div> <div class="text-center small"> Wallets </div>
+            <div class="text-center"><img src="{{ 'img/web/pricing/icons/wallet.svg' }}"></div> <div class="text-center small"> Wallets </div>
         </a>
     </li>
 </ul>

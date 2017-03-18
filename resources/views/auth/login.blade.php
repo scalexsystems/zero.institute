@@ -67,8 +67,12 @@
             </div>
             <div class="text-center">
                 <a href="{{ url('/privacy') }}" class="text-muted">
-                    <small>Privacy Policy</small>
+                    <small>Privacy Policy </small>
+                </a> &centerdot;
+                <a href="{{ url('/privacy/#user-terms') }}" class="text-muted">
+                    <small>Terms </small>
                 </a>
+
             </div>
         </div>
     </div>
