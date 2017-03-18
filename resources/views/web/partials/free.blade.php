@@ -1,7 +1,7 @@
 <div class="free-wrapper py-5">
     <div class="row">
         <div class="col-12 text-center">
-            Scalex Zero is free for students, teachers and administration of the Institutes. It includes all the following features.
+            <h3 class="main-text"> Scalex Zero is free for students, teachers and administration of the Institutes. It includes all the following features. </h3>
         </div>
     </div>
 
@@ -9,7 +9,7 @@
         <div class="col-lg-6">
             <ul class="feature-set"> <i class="fa fa-fw fa-check-square-o"> </i> <strong> Administration </strong>
                 <li class="feature-list-item"> Digitally reimagine academic and administrative processes:
-                        Manage departments, disciplines, semesters and sessions </li>
+                    Manage departments, disciplines, semesters and sessions </li>
                 <li class="feature-list-item"> Personnel Information - Maintain database for every member of the institute </li>
                 <li class="feature-list-item"> Course Management - Add institute courses and assign faculty </li>
                 <li class="feature-list-item"> Course Assessments - Generate reports on assessments for every student (Coming Soon) </li>
@@ -47,8 +47,13 @@
     }
 
     .fa-check-square-o {
-      padding-right: 1.6rem;
-      color: green;
+        padding-right: 1.6rem;
+        color: green;
+    }
+
+    .main-text {
+        padding-left: 6rem;
+        padding-right: 6rem;
     }
 
 </style>

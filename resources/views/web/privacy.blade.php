@@ -2,9 +2,9 @@
 
 @section('content')
     @include('web.partials.header')
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
-            <ul class="nav nav-pills privacy-tabs col-12 pb-2 pl-4">
+            <ul class="nav nav-pills privacy-tabs col-12 pl-4">
                 <li class="nav-item"> <a class="nav-link privacy-link active" data-toggle="tab" href="#privacy-policy" > Privacy Policy </a> </li>
                 <li class="nav-item"> <a class="nav-link privacy-link" data-toggle="tab" href="#admin-terms"> Admin Terms </a> </li>
                 <li class="nav-item"> <a class="nav-link privacy-link" data-toggle="tab" href="#user-terms"> User Terms </a> </li>
@@ -27,10 +27,10 @@
 
     <style lang="scss" scoped>
         .privacy-tabs {
-            background-color: #dfdfdf;
+            background-color: #f7f7f7;
         }
 
-        .container {
+        .container-fluid {
             background-color: white;
         }
 

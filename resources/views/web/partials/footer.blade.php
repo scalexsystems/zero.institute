@@ -64,6 +64,7 @@
   <style lang="scss" scoped>
     footer {
       background: white;
+      margin-top: 5rem;
     }
 
 

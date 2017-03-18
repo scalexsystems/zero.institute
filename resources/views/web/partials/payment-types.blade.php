@@ -1,22 +1,22 @@
 <ul class="nav nav-justified">
     <li class="nav-item">
-        <a href="#cards" data-toggle="tab" class="nav-link fee-payment-link active">
-            <div class="text-center"><img src="{{ 'img/web/pricing/icons/Card.svg' }}"></div> <div class="text-center"> Cards </div>
+        <a href="#cards" data-toggle="tab" class="nav-link fee-payment-link p-2 active">
+            <div class="text-center"><img src="{{ 'img/web/pricing/icons/Card.svg' }}"></div> <div class="text-center small"> Cards </div>
         </a>
     </li>
     <li class="nav-item ">
-        <a href="#net-banking" data-toggle="tab" class="nav-link fee-payment-link ">
-            <div class="text-center"><img src="{{ 'img/web/pricing/icons/Net-banking.svg' }}"></div> <div class="text-center"> Net Banking </div>
+        <a href="#net-banking" data-toggle="tab" class="nav-link fee-payment-link p-2">
+            <div class="text-center"><img src="{{ 'img/web/pricing/icons/Net-banking.svg' }}"></div> <div class="text-center small"> Net Banking </div>
         </a>
     </li>
     <li class="nav-item ">
-        <a href="#upi" data-toggle="tab" class="nav-link fee-payment-link ">
-            <div class="text-center"><img src="{{ 'img/web/pricing/icons/UPI.svg' }}"></div> <div class="text-center"> UPI </div>
+        <a href="#upi" data-toggle="tab" class="nav-link fee-payment-link p-2 ">
+            <div class="text-center"><img src="{{ 'img/web/pricing/icons/UPI.svg' }}"></div> <div class="text-center small"> UPI </div>
         </a>
     </li>
     <li class="nav-item ">
-        <a href="#wallet" data-toggle="tab" class="nav-link fee-payment-link ">
-            <div class="text-center"><img src="{{ 'img/web/pricing/icons/Wallet.svg' }}"></div> <div class="text-center"> Wallets </div>
+        <a href="#wallet" data-toggle="tab" class="nav-link fee-payment-link p-2 ">
+            <div class="text-center"><img src="{{ 'img/web/pricing/icons/Wallet.svg' }}"></div> <div class="text-center small"> Wallets </div>
         </a>
     </li>
 </ul>
@@ -56,14 +56,14 @@
         background-color: #f7f7f7;
         color: black;
         border: 1px solid #e7e7e7;
-        padding: 0.75rem;
+        min-height: 3.5rem;
     }
 
     .active {
-      background-color: white;
+        background-color: white;
     }
 
     .image-wrapper img{
-      width: 100%;
+        width: 100%;
     }
 </style>
