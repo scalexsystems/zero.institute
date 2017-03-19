@@ -36,4 +36,5 @@
    }
 </style>
 
+    @include('web.partials.footer')
 @endsection

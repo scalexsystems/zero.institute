@@ -1,9 +1,9 @@
-<h1>Institute Admin Terms</h1>
+<h1><strong>Institute Admin Terms</strong></h1>
 
 <p><br />
 </p>
 
-<p class="small text-muted">Effective: >Monday, 13 March y </p>
+<p class="small text-muted">Effective: Monday, 13 March 2017 </p>
 
 <p><br />
 </p>
