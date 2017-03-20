@@ -7,11 +7,11 @@
                     <div class="small"> {{ heading }} </div>
                 </div>
             </div>
-            <div class="d-inline-flex flex-row align-items-center align-self-start" v-for="(column, r) in columnHeadings">
+            <div class="d-inline-flex flex-row align-items-center align-self-start" v-for="(column, weekNumber) in columnHeadings">
                 <div class="flex-column">
                     <div class="small text-center"> {{ column }} </div>
-                <div v-for="(row, c) in rowHeadings">
-                    <div class="square" :class="{ filled : isData(r, c)}">  </div>
+                <div v-for="(row, dayNumber) in rowHeadings">
+                    <div class="square" :class="{ filled : isData(weekNumber, dayNumber)}">  </div>
                     <slot></slot>
                 </div>
             </div>
@@ -21,7 +21,7 @@
 </template>
 <script lang="babel">
 import moment from 'moment'
-import { each } from 'lodash'
+import { forOwn } from 'lodash'
 
     export default {
         name: 'ContributionGraph',
@@ -47,28 +47,41 @@ import { each } from 'lodash'
             },
         },
         computed: {
-          datesInWeekForm() {
-              return Object.keys(this.dates).map(date => moment(date));
+            datesInWeekForm() {
+                if (Object.keys(this.dates).length) {
+                    const dates = {};
+                    Object.keys(this.dates).forEach(date => {
+                        const week = this.fromWeek(date);
+                        const weekday = this.fromDayOfWeek(date);
+                        if(dates[week]) {
+                            dates[week].push(weekday);
 
-          }
+                        } else {
+                            Object.assign(dates, {
+                                [week] : [weekday]
+                            })
+                        }
+
+                    }   )
+                    return dates;
+                }
+                return {};
+            },
         },
         methods: {
-           constructDate(r, c) {
-              return moment(this.startDate).day(c * 7 + r);
-           },
-
-          fromDayofWeek(date) {
-            return moment(date).format('dddd');
+          fromDayOfWeek(date) {
+            return moment(date).isoWeekday();
           },
           fromWeek(date) {
-            return moment(date).diff(this.startDate);
+            const startingWeek = moment(this.startDate).isoWeek()
+            const startingMonday = moment().day('Sunday').isoWeek(startingWeek-1)
+            return moment(date).diff(startingMonday, 'weeks') + 1
           },
-          isData( r, c) {
-             return this.datesInWeekForm.indexOf(this.constructDate(r,c)) > -1
+          isData(weekNumber, dayNumber) {
+            return this.datesInWeekForm[weekNumber+1] && this.datesInWeekForm[weekNumber+1].indexOf(dayNumber + 1) > -1
           },
-        },
-
-    }
+    },
+}
 
 </script>
 
