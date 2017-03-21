@@ -1,20 +1,20 @@
 <template>
-    <div>
-      <div class="card">
+    <div class="row">
+      <div class="col-lg-10 card m-3">
         <div class="card-header">
             Attendance
         </div>
 
         <div class="card-block">
            <div class="row">
-             <div class="col-6 col-lg-6">
+             <div class="col-6 col-lg-4">
                  <input-select title="Semester" v-model.number="semester" :options="semesters" @input="semesterChosen"/>
                  <session-list :items="courseSessions" @listClicked="sessionClicked">
 
                  </session-list>
              </div>
 
-             <div class="col-6 col-lg-6" v-if="activeSession">
+             <div class="col-6 col-lg-8 graph-wrapper px-2" v-if="activeSession">
                  <contribution-graph v-bind="{ rowHeadings, columnHeadings}" :startDate="activeSession.started_on" :dates="attendance">
                  </contribution-graph>
            </div>
@@ -25,6 +25,7 @@
 
 <script lang="babel">
     import moment from 'moment'
+    import { range } from 'lodash/util'
     import SessionList from './SessionList.vue'
     import { mapGetters, mapActions } from 'vuex'
     import ContributionGraph from './ContributionGraph.vue'
@@ -35,12 +36,10 @@
         data: () => ({
             semester: 0,
             errors: {},
-            items: {},
             courseSessions: [],
             activeSession: 0,
             attendance: {},
             rowHeadings: ['M', 'T', 'W', 'T', 'F', 'S', 'Su'],
-            columnHeadings: ['W1', '2', '3'],
         }),
         props: {
           source: {
@@ -49,6 +48,12 @@
           },
         },
         computed: {
+          columnHeadings(){
+            const startingWeek = moment(this.activeSession.started_on).isoWeek()
+            const startingMonday = moment().day('Sunday').isoWeek(startingWeek - 1)
+            const difference = moment(this.activeSession.ended_on).diff(startingMonday, 'weeks') + 1;
+            return range(1, difference);
+          },
 
         ...mapGetters('semesters', ['semesters']),
         },
@@ -61,19 +66,21 @@
             this.activeSession = session;
               const dates = {};
               const { attendances } = await this.find({sessionId: session.id, student: this.source});
-            attendances.forEach(data => {
-                Object.assign(dates, ({
-                    [data.date]: false
-                }))
-            })
-            this.attendance = dates;
-
+              if(attendances) {
+                  attendances.forEach(data => {
+                      Object.assign(dates, ({
+                          [data.date]: false
+                      }))
+                  })
+                  this.attendance = dates;
+              } else {
+                 this.attendance = {};
+              }
           },
           async getCourseSessions(){
             const { course_sessions } = await this.forSemesterAndStudent({ semesterId: this.semester, student: this.source});
             this.courseSessions = course_sessions;
           },
-
         ...mapActions('attendance', ['find']),
         ...mapActions('sessions', ['forSemesterAndStudent']),
         },

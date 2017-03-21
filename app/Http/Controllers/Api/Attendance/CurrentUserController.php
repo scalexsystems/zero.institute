@@ -28,9 +28,9 @@ class CurrentUserController extends Controller
         $user = request()->user();
 
         if ($user->person instanceof Teacher) {
-            return CourseSession::with(['course' => function ($query) use ($semester) {
+            return CourseSession::whereHas('course', function ($query) use ($semester) {
                 return $query->where('semester_id', $semester->id);
-            }])
+            })
                 ->where('instructor_id', $user->person->id)
                 ->get();
 

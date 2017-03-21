@@ -1,6 +1,5 @@
 <template>
-    <div>
-        <div class="d-flex flex-row align-items-center" >
+        <div class="d-flex flex-row align-items-center">
 
             <div class="row-heading flex-column">
                 <div class="row-heading-cell align-self-center" v-for="heading in rowHeadings">
@@ -16,7 +15,6 @@
                 </div>
             </div>
         </div>
-    </div>
     </div>
 </template>
 <script lang="babel">

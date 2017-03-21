@@ -1,7 +1,8 @@
 <template>
     <div class="list-group">
-            <input-button class="list-group-item list-group-item-action session-item" v-for="(item, index) in items" @click.native="itemClicked(item)">
-                <div @click.native="itemClicked(index)"> {{ item.name }} </div>
+            <input-button class="list-group-item list-group-item-action session-item" :class="{ active : isActive(index) }"
+                  v-for="(item, index) in items" @click.native="itemClicked(item, index)" >
+                <div> {{ item.name }} </div>
             </input-button>
         </div>
 </template>
@@ -10,6 +11,10 @@
 
     export default {
         name: 'List',
+        data: () => ({
+          activeIndex: null,
+        }),
+
         props: {
             items: {
                 type: Array,
@@ -17,8 +22,12 @@
             }
         },
         methods: {
-            itemClicked(item){
-                this.$emit('listClicked', item);
+            itemClicked(item, index){
+                this.activeIndex = index
+                this.$emit('listClicked', item)
+            },
+            isActive(index) {
+              return index === this.activeIndex
             }
         }
     }
@@ -28,5 +37,12 @@
   .session-item {
     color: black;
   }
+
+  .session-item.active {
+    background-color: black;
+    color: white;
+    border-color: black;
+  }
+
 
 </style>
