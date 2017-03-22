@@ -23,7 +23,7 @@
 
         <div class="row">
             <div class="col-12 col-lg-8 offset-lg-2">
-                <attendance-card :student="student" v-for="student in students" @toggle="toggleAttendance"></attendance-card>
+                <attendance-card :student="student" v-for="student in students" @toggle="toggleAttendance" :disabled="!enabled"></attendance-card>
             </div>
         </div>
     </container-window>

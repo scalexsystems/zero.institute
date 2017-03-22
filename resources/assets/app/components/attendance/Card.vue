@@ -7,7 +7,9 @@
                     {{ student.name.trim() || 'Name not set' }}
                 </div>
                 <div class="c-attendance-card-subtitle flex-auto">
-                    <span class="text-muted">Roll Number: {{ student.uid }} {{ attendanceStatus }} </span>
+                    <span class="text-muted" :class="{ 'text-danger': !attendance }">
+                        Roll Number: {{ student.uid }} {{ attendanceStatus }}
+                    </span>
                 </div>
 
              </div>
@@ -38,7 +40,12 @@
             remove: {
                 type: Boolean,
                 default: false
-            }
+            },
+
+            disabled: {
+                type: Boolean,
+                default: false
+            },
         },
 
         computed: {
@@ -55,8 +62,10 @@
 
         methods: {
           toggle(value) {
-            this.attendance = value;
-            return this.$emit('toggle', value, this.student.id);
+            if(this.enabled) {
+                this.attendance = value;
+                return this.$emit('toggle', value, this.student.id);
+            }
           }
         }
         }
