@@ -1,18 +1,27 @@
 <template>
+    <div>
         <div class="d-flex flex-row align-items-center">
 
             <div class="row-heading flex-column">
                 <div class="row-heading-cell align-self-center" v-for="heading in rowHeadings">
-                    <div class="small"> {{ heading }} </div>
+                    <div class="small text-muted"> {{ heading }} </div>
                 </div>
             </div>
             <div class="d-inline-flex flex-row align-items-center align-self-start" v-for="(column, weekNumber) in columnHeadings">
                 <div class="flex-column">
-                    <div class="small text-center"> {{ column }} </div>
-                <div v-for="(row, dayNumber) in rowHeadings">
-                    <div class="square" :class="{ filled : isData(weekNumber, dayNumber)}">  </div>
-                    <slot></slot>
+                    <div class="small text-center text-muted"> {{ column }} </div>
+                    <div v-for="(row, dayNumber) in rowHeadings">
+                        <div class="square" :class="{ filled : isData(weekNumber, dayNumber)}">  </div>
+                        <slot></slot>
+                    </div>
                 </div>
+            </div>
+        </div>
+
+        <div class="legend my-2">
+            <div class="d-flex flex-row align-items-center" v-for="entry in legend">
+                <div class="legend-square square" :class="entry.styleClass"></div>
+                <div class="legend-text text-muted text-uppercase px-2"> {{ absentLength }} {{ entry.name }} </div>
             </div>
         </div>
     </div>
@@ -43,6 +52,13 @@ import { forOwn } from 'lodash'
                type: Object,
                required: true,
             },
+            legend: {
+               type: Array,
+               default: () => ([{
+                   name: 'Absent',
+                   styleClass: 'filled',
+               }]),
+            },
         },
         computed: {
             datesInWeekForm() {
@@ -65,6 +81,9 @@ import { forOwn } from 'lodash'
                 }
                 return {};
             },
+            absentLength() {
+              return Object.keys(this.dates).length || 0;
+            }
         },
         methods: {
           fromDayOfWeek(date) {
@@ -95,7 +114,7 @@ import { forOwn } from 'lodash'
 
     .square {
         min-height: $dimension;
-        min-width: $dimension;
+        width: $dimension;
         background: $background;
         border-radius: 0.5rem;
         margin: $padding / 2 $padding / 2 0 0 !important;
@@ -112,5 +131,15 @@ import { forOwn } from 'lodash'
     .filled {
         background: $dataColour;
     }
+
+    .legend-text {
+        height: $dimension;
+    }
+
+    .legend-square {
+        margin: 0 !important;
+    }
+
+
 
 </style>

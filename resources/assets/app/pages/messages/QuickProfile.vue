@@ -29,7 +29,8 @@
 
 
     </div>
-    <attendance-display :source="user"></attendance-display>
+
+    <attendance-display v-if="user.type == 'student'" :source="user"></attendance-display>
   </div>
 
   <loading v-else/>

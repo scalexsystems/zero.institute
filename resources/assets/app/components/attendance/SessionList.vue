@@ -36,6 +36,7 @@
 <style lang="scss" scoped>
   .session-item {
     color: black;
+    border: 0;
   }
 
   .session-item.active {

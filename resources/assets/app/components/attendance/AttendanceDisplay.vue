@@ -1,25 +1,27 @@
 <template>
-    <div class="row">
-      <div class="col-lg-10 card m-3">
+    <div class="row mx-5">
+      <div class="col-lg-10">
+         <div class="card">
         <div class="card-header">
             Attendance
         </div>
 
         <div class="card-block">
            <div class="row">
-             <div class="col-6 col-lg-4">
+             <div class="col-6 col-lg-5 mr-3">
                  <input-select title="Semester" v-model.number="semester" :options="semesters" @input="semesterChosen"/>
                  <session-list :items="courseSessions" @listClicked="sessionClicked">
 
                  </session-list>
              </div>
 
-             <div class="col-6 col-lg-8 graph-wrapper px-2" v-if="activeSession">
+             <div class="col-6 col-lg-6 graph-wrapper align-items-center mx-3 px-2" v-if="activeSession">
                  <contribution-graph v-bind="{ rowHeadings, columnHeadings}" :startDate="activeSession.started_on" :dates="attendance">
                  </contribution-graph>
            </div>
          </div>
        </div>
+     </div>
      </div>
 </template>
 
@@ -60,6 +62,7 @@
 
         methods: {
           semesterChosen(semester) {
+            this.attendance = {};
             this.getCourseSessions();
           },
           async sessionClicked(session){
@@ -79,7 +82,7 @@
           },
           async getCourseSessions(){
             const { course_sessions } = await this.forSemesterAndStudent({ semesterId: this.semester, student: this.source});
-            this.courseSessions = course_sessions;
+            this.courseSessions = course_sessions || [];
           },
         ...mapActions('attendance', ['find']),
         ...mapActions('sessions', ['forSemesterAndStudent']),
@@ -93,4 +96,7 @@
     @import '../../styles/methods';
     @import '../../styles/variables';
 
+    .card-header {
+       margin: 0;
+    }
 </style>
