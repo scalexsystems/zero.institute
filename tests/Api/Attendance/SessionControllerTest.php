@@ -21,7 +21,7 @@ class SessionControllerTest extends TestCase
 
         $this->actingAs($teacher->user)->get('api/sessions/'. $session->id . '/attendances')
             ->assertStatus(200)
-            ->seeJsonStructure('attendances', []);
+            ->assertJsonStructure(['attendances' => []]);
 
     }
 
@@ -48,9 +48,9 @@ class SessionControllerTest extends TestCase
 
         $session = $this->createCourseWithSession();
 
-        $this->givePermissionTo($teacher->user, 'attendance.create');
+        $this->addInstructorTo($session->first(), $teacher);
 
-        $this->actingAs($teacher->user)->post('api/sessions' . $session->id . '/attendances', $students->pluck('id'))
+        $this->actingAs($teacher->user)->post('api/sessions/' . $session->first()->id . '/attendances', [$students->pluck('id')])
             ->assertStatus(202);
 
     }
