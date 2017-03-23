@@ -43,7 +43,7 @@
         },
         computed: {
             dayOfWeek() {
-                return moment(this.value).format('dddd');
+                return this.isToday() ? 'today' : moment(this.value).format('dddd');
             },
 
             currentDate: {
@@ -58,7 +58,7 @@
         methods: {
             prev() {
               const date = this.currentDate;
-              if(date.isAfter(this.min, 'date')) {
+              if(!this.min || date.isAfter(this.min, 'date')) {
                 this.currentDate = date.subtract(1, 'days');
               }
             },
@@ -68,6 +68,10 @@
                if(date.isBefore(this.max, 'date')) {
                 this.currentDate = date.add(1, 'days');
               }
+            },
+
+            isToday() {
+               return !this.currentDate.diff(moment(), 'days')
             }
         },
         filters: {

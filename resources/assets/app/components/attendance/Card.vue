@@ -62,7 +62,7 @@
 
         methods: {
           toggle(value) {
-            if(this.enabled) {
+            if(!this.disabled) {
                 this.attendance = value;
                 return this.$emit('toggle', value, this.student.id);
             }

@@ -1,10 +1,9 @@
 <template>
     <container-window title="Student Attendance" subtitle="Attendance" back @back="$router.go(-1)">
 
-        <!--<smart-form>-->
         <div class="row py-4">
           <div class="col-12 col-lg-8 offset-lg-2">
-            <date-selector min="01-01-2015" class="col-12 col-lg-8 mx-auto" v-model="date"></date-selector>
+            <date-selector :min="startDate" class="col-12 col-lg-8 mx-auto" v-model="date"></date-selector>
 
             <div class="mb-3 text-center py-2">
             <div v-if="!enabled">
@@ -19,11 +18,15 @@
             </div>
 
         </div>
-        <!--</smart-form>-->
 
         <div class="row">
-            <div class="col-12 col-lg-8 offset-lg-2">
-                <attendance-card :student="student" v-for="student in students" @toggle="toggleAttendance" :disabled="!enabled"></attendance-card>
+            <div class="col-12 col-lg-8 offset-lg-2" :class="{ disabled : !enabled }">
+                <div class="text-center">
+                    Attendance: {{ aggregate.percent }}% | {{ aggregate.total }} Students - {{ aggregate.absent }} Absent
+                </div>
+                <div class="py-4">
+                    <attendance-card :student="student" v-for="student in students" @toggle="toggleAttendance" :disabled="!enabled"></attendance-card>
+                </div>
             </div>
         </div>
     </container-window>
@@ -40,6 +43,7 @@
         data: () => ({
           students: [],
           attendance: [],
+          startedOn: '',
           enabled: false,
           date: new Date().toDateString(),
         }),
@@ -51,7 +55,20 @@
         },
         computed: {
           session() {
-            return this.sessionById(this.id)
+            const session = this.sessionById(this.id);
+            this.startDate = session.started_on;
+            return session;
+          },
+          startDate() {
+            return this.startedOn;
+          },
+          aggregate() {
+              const total = this.students.length
+              const absent = this.attendance.length
+              const  percent = (1 - absent / total) * 100
+              return {
+                  total, absent, percent
+              }
           },
           ...mapGetters('courses', ['sessionById'])
 
@@ -107,8 +124,8 @@
     @import '../../styles/methods';
     @import '../../styles/variables';
 
-    .switch .slider {
-       background-color: $gray-lightest
+    .disabled {
+       opacity: 0.6;
     }
 
 
