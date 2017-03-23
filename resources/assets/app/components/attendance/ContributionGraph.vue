@@ -9,7 +9,7 @@
             </div>
             <div class="d-inline-flex flex-row align-items-center align-self-start" v-for="(column, weekNumber) in columnHeadings">
                 <div class="flex-column">
-                    <div class="small text-center text-muted"> {{ column }} </div>
+                    <div class="small text-center text-muted"> <span v-if="!weekNumber"> W </span> {{ column }} </div>
                     <div v-for="(row, dayNumber) in rowHeadings">
                         <div class="square" :class="{ filled : isData(weekNumber, dayNumber)}">  </div>
                         <slot></slot>

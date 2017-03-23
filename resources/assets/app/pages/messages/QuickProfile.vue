@@ -30,7 +30,9 @@
 
     </div>
 
-    <attendance-display v-if="user.type == 'student'" :source="user"></attendance-display>
+    <div class="my-5" v-id="user.type == 'student'">
+      <attendance-display :source="user"></attendance-display>
+    </div>
   </div>
 
   <loading v-else/>

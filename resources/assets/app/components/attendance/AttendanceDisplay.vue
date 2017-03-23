@@ -1,6 +1,6 @@
 <template>
-    <div class="row mx-5">
-      <div class="col-lg-10">
+    <div class="row">
+      <div class="col-lg-10 m-auto">
          <div class="card">
         <div class="card-header">
             Attendance
