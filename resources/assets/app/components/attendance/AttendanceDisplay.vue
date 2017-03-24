@@ -15,7 +15,7 @@
                  </session-list>
              </div>
 
-             <div class="col-6 col-lg-6 graph-wrapper align-items-center mx-3 px-2" v-if="activeSession">
+             <div class="col-6 col-lg-6 graph-wrapper align-items-center mx-3 px-2">
                  <contribution-graph v-bind="{ rowHeadings, columnHeadings}" :startDate="activeSession.started_on" :dates="attendance">
                  </contribution-graph>
            </div>
@@ -65,6 +65,17 @@
             this.attendance = {};
             this.getCourseSessions();
           },
+          init() {
+            const semester = this.semesters[0] || {};
+            if(semester) {
+              this.semester = semester.id;
+              this.semesterChosen();
+              if(this.courseSessions.length)
+              {
+              this.sessionClicked(this.courseSessions[0]);
+              }
+            }
+          },
           async sessionClicked(session){
             this.activeSession = session;
               const dates = {};
@@ -88,7 +99,9 @@
         ...mapActions('sessions', ['forSemesterAndStudent']),
         },
 
-
+        created(){
+          this.init();
+        }
     }
 </script>
 

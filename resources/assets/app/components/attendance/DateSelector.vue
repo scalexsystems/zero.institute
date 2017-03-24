@@ -48,7 +48,7 @@
 
             currentDate: {
                 get() {
-                    return moment(this.value);
+                    return moment(this.value).utc();
                 },
                 set(val) {
                     this.$emit('input', val);
