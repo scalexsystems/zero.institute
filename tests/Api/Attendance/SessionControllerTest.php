@@ -54,4 +54,5 @@ class SessionControllerTest extends TestCase
             ->assertStatus(202);
 
     }
+
 }

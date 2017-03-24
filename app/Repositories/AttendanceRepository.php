@@ -43,7 +43,7 @@ class AttendanceRepository extends Repository
 
     public function takeAttendance(Collection $students, CourseSession $session, $date)
     {
-        $attendances = $students->map(function ($studentId) use ($session, $date) {
+        $students->map(function ($studentId) use ($session, $date) {
             $attendance = new Attendance();
             $attendance->student()->associate($studentId);
             $attendance->date = $date;
