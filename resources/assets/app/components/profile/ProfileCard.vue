@@ -34,7 +34,11 @@
     <router-link class="card-link" :to="{ name: 'user.messages', params: { id: source.user_id } }">
       Send Message
     </router-link>
+
   </div>
+
+  <hr class="m-0">
+
 </div>
 </template>
 
@@ -50,6 +54,7 @@ export default {
       required: true
     }
   },
+  components: { AttendancePanel },
 
   computed: {
     name () {

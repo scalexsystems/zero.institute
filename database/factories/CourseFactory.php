@@ -6,6 +6,7 @@ use Scalex\Zero\Models\Department;
 use Scalex\Zero\Models\Discipline;
 use Scalex\Zero\Models\Attachment;
 use Faker\Generator;
+use Scalex\Zero\Models\Semester;
 
 $factory->define(Course::class, function (Generator $f, array $attributes) {
     $courses = [
@@ -45,5 +46,10 @@ $factory->define(Course::class, function (Generator $f, array $attributes) {
                     ->create(array_only($attributes, ['school_id']))
                     ->id;
         },
+        'semester_id' => function () use ($attributes) {
+            return factory(Semester::class)
+                ->create(array_only($attributes, ['school_id']))
+                ->id;
+        }
     ];
 });

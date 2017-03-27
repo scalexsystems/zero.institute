@@ -22,6 +22,9 @@ class TrustServiceProvider extends OriginalTrustServiceProvider
 
         // Finance.
         [Models\FeeSession::class, ['add_offline']],
+
+        // Addendance
+        Models\Attendance::class,
     ];
 
     protected $permissions = [

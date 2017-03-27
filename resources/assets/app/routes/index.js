@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from '../vuex'
 
+import attendance from './attendance'
 import courses from './courses'
 import finance from './finance'
 import groups from './groups'
@@ -31,6 +32,7 @@ const routes = [
       return '/hub/groups'
     }
   },
+  ...attendance,
   ...courses,
   ...finance,
   ...groups,

@@ -60,4 +60,19 @@ class CourseSessionPolicy
     {
         return $this->isInstructor($user->person, $session);
     }
+
+    public function viewAttendance(User $user, CourseSession $session)
+    {
+       return $this->isInstructor($user->person, $session);
+    }
+
+    public function createAttendance(User $user, CourseSession $session)
+    {
+        return $this->isInstructor($user->person, $session);
+    }
+
+    public function viewSession(User $user, CourseSession $session)
+    {
+        return $this->isInstructor($user->person, $session) or $session->group->isMember($user);
+    }
 }

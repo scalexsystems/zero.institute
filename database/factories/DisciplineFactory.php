@@ -18,7 +18,7 @@ $factory->define(Scalex\Zero\Models\Discipline::class, function (Faker\Generator
         'name' => $name,
         'short_name' => $code,
         'school_id' => function () use ($attributes) {
-            return factory(Scalex\Zereo\Models\School::class)->create()->id;
+            return factory(Scalex\Zero\Models\School::class)->create()->id;
         },
     ];
 });

@@ -62,7 +62,7 @@ const actions = {
 
   async enrollments ({ commit, dispatch, getters }, id) {
     if (!getters.sessionById(id)) {
-      await dispatch('myFind', id)
+      await dispatch('find', id)
     }
 
     const session = getters.sessionById(id)
@@ -124,7 +124,8 @@ const getters = {
 
   sessions: state => sortBy(state.sessions, 'name'),
 
-  sessionById: state => (id) => binarySearchFind(state.sessions, id)
+  sessionById: state => (id) => binarySearchFind(state.sessions, id),
+
 }
 
 const state = () => ({
