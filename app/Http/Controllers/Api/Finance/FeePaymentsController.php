@@ -27,7 +27,14 @@ class FeePaymentsController extends Controller
     {
         $this->authorize('view', $session);
 
-        $this->repository->pushCriteria(new OfStudent($person))
+        $this->repository->pushCriteria(
+            criteria(function (
+                /* @var $query \Illuminate\Database\Query\Builder */
+                $query
+            ) use ($session) {
+                return $query->where('fee_session_id', $session->getKey());
+            })
+        )
                          ->pushCriteria(new OrderBy('id', 'desc'));
 
         if ($request->input('pending') === true) {

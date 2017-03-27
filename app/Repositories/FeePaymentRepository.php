@@ -60,7 +60,7 @@ class FeePaymentRepository extends Repository
         $attributes['purpose'] = 'Manual entry for fee payment.';
         $payment->paid = true;
 
-        app(TransactionRepository::class)->createForManual($session, $session->school, Auth::user(), $attributes);
+        app(TransactionRepository::class)->createForManual($payment, $session->school, Auth::user(), $attributes);
 
         $this->onUpdate($payment->update());
 

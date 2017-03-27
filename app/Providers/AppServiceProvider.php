@@ -135,6 +135,13 @@ class AppServiceProvider extends ServiceProvider
                  */
                 'course' => Models\Course::class,
                 'course_session' => Models\CourseSession::class,
+
+                /**
+                 * Finance
+                 */
+                'fee_session' => Models\FeeSession::class,
+                'fee_payment' => Models\FeePayment::class,
+                'transaction' => Models\Transaction::class,
             ]
         );
     }

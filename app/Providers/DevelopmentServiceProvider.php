@@ -12,6 +12,7 @@ class DevelopmentServiceProvider extends AggregateServiceProvider
         \Themsaid\MailPreview\MailPreviewServiceProvider::class,
         \Mmieluch\LaravelVfsProvider\LaravelVfsServiceProvider::class,
         \Laravel\Tinker\TinkerServiceProvider::class,
+        \Laravel\Dusk\DuskServiceProvider::class,
     ];
 
     public function register()
