@@ -20,6 +20,5 @@ npm-debug.log
 /tests/reports
 /tests/unit/dist
 
-## FORCE ADD ON PRODUCTION BUILD
+## Public
 /public/app/**/*.map
-/public/mix-manifest.json

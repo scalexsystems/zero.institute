@@ -242,7 +242,7 @@ module.exports.plugins = (module.exports.plugins || []).concat([
   new plugins.FriendlyErrorsWebpackPlugin(),
 
   new plugins.StatsWriterPlugin({
-    filename: '../mix-manifest.json',
+    filename: 'mix-manifest.json',
     transform (paths, options) {
       const result = JSON.parse(Mix.manifest.transform.call(Mix.manifest, paths, options))
 
@@ -250,7 +250,10 @@ module.exports.plugins = (module.exports.plugins || []).concat([
         result[key] = '/app' + result[key]
       })
 
-      return JSON.stringify(result, null, 2)
+      const contents = JSON.stringify(result, null, 2)
+      require('fs').writeFileSync(path.resolve(__dirname, 'public/mix-manifest.json'), contents)
+
+      return contents
     },
   }),
 

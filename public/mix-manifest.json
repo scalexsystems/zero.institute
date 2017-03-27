@@ -1,0 +1,22 @@
+{
+  "/main.js": "/app/main.0e4a74bb3d0f0b877ef7.js",
+  "/css/app.css": "/app/css/app.dabc13bee9782a497b72.css",
+  "/css/web.css": "/app/css/web.dabc13bee9782a497b72.css",
+  "/main.js.map": "/app/main.0e4a74bb3d0f0b877ef7.js.map",
+  "/css/app.css.map": "/app/css/app.dabc13bee9782a497b72.css.map",
+  "/css/web.css.map": "/app/css/web.dabc13bee9782a497b72.css.map",
+  "/vendor/others.js": "/app/vendor/others.2487b8f9729ef4047218.js",
+  "/vendor/others.js.map": "/app/vendor/others.2487b8f9729ef4047218.js.map",
+  "/vendor/components.js": "/app/vendor/components.707c3c08f9f4cf7238b7.js",
+  "/vendor/components.js.map": "/app/vendor/components.707c3c08f9f4cf7238b7.js.map",
+  "/vendor/echo.js": "/app/vendor/echo.c5f6999ee20e096c43f1.js",
+  "/vendor/echo.js.map": "/app/vendor/echo.c5f6999ee20e096c43f1.js.map",
+  "/vendor/vue.js": "/app/vendor/vue.09b732e44343076e97e3.js",
+  "/vendor/vue.js.map": "/app/vendor/vue.09b732e44343076e97e3.js.map",
+  "/vendor/plugins.js": "/app/vendor/plugins.4d1a65f05ef94bc2b9fc.js",
+  "/vendor/plugins.js.map": "/app/vendor/plugins.4d1a65f05ef94bc2b9fc.js.map",
+  "/vendor/bootstrap.js": "/app/vendor/bootstrap.04170b11dc09d145fad1.js",
+  "/vendor/bootstrap.js.map": "/app/vendor/bootstrap.04170b11dc09d145fad1.js.map",
+  "/manifest.js": "/app/manifest.d41d8cd98f00b204e980.js",
+  "/manifest.js.map": "/app/manifest.d41d8cd98f00b204e980.js.map"
+}
