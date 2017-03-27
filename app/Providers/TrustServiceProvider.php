@@ -19,6 +19,11 @@ class TrustServiceProvider extends OriginalTrustServiceProvider
         Models\Department::class,
         Models\Discipline::class,
         Models\Semester::class,
+
+        // Finance.
+        [Models\FeeSession::class, ['add_offline']],
+
+        // Addendance
         Models\Attendance::class,
     ];
 
@@ -32,6 +37,9 @@ class TrustServiceProvider extends OriginalTrustServiceProvider
 
         // Settings
         'settings.app' => 'Access school settings',
+
+        // Finances
+        'finance.app' => 'Access institute finances',
 
         // Roles & Permissions
         'manage_roles' => 'Manage roles',

@@ -57,7 +57,7 @@
         </div>
       </div>
 
-      <div class="col-12 col-lg-6 mb-3" v-for="course in prerequisites">
+      <div class="col-12 col-lg-6 mb-3" v-for="course in prerequisites" :key="course">
         <course-card v-bind="{ course }" remove @remove="onCourseRemove"/>
       </div>
 

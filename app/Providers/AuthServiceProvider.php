@@ -4,6 +4,7 @@ namespace Scalex\Zero\Providers;
 
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Laravel\Passport\Passport;
+use PhpParser\Node\Expr\AssignOp\Mod;
 use Scalex\Zero\Models;
 use Scalex\Zero\Policies;
 use Scalex\Zero\User;
@@ -35,6 +36,8 @@ class AuthServiceProvider extends ServiceProvider
         /** Course */
         Models\Course::class => Policies\CoursePolicy::class,
         Models\CourseSession::class => Policies\CourseSessionPolicy::class,
+        /** Finance */
+        Models\FeeSession::class => Policies\FeeSessionPolicy::class,
     ];
 
     /**

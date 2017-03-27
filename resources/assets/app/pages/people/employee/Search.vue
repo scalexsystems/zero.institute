@@ -20,7 +20,7 @@
       <div class="card-block">
         <h5>Departments</h5>
 
-        <div class="item" v-for="department of departments">
+        <div class="item" v-for="department of departments" :key="department">
           <router-link :to="{name: 'employee.index', query: {department: [department.id]}}" class="btn btn-secondary">
             {{ department.name }}
           </router-link>

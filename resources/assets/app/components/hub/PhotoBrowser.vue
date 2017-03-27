@@ -19,7 +19,7 @@
 
 
       <div :class="[$style.ticker]">
-        <div v-for="(photo, index) in photos" :class="{ [$style.tick]: true, [$style.active]: index === cursor }" @click="cursor = index"></div>
+        <div v-for="(photo, index) in photos" :key="photo" :class="{ [$style.tick]: true, [$style.active]: index === cursor }" @click="cursor = index"></div>
       </div>
     </div>
   </div>

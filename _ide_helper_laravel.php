@@ -32,12 +32,16 @@ namespace Illuminate\Database\Schema {
      *
      * @method BlueprintColumn boolean(string $column)
      * @method BlueprintColumn date(string $column)
+     * @method BlueprintColumn enum(string $column, array $values)
      * @method BlueprintForeign foreign(string|array $columns, string $name = null)
      * @method void index(string|array $columns, string $name = null)
      * @method BlueprintColumn integer(string  $column, bool $autoIncrement = false, bool $unsigned = false)
+     * @method BlueprintColumn ipAddress(string $column)
      * @method BlueprintColumn json(string $column)
      * @method void primary(string|array $columns, string $name = null)
      * @method BlueprintColumn string(string  $column, int  $length = 255)
+     * @method BlueprintColumn text(string  $column)
+     * @method BlueprintColumn timestamp(string  $column)
      * @method void unique(string $column, string $name = null)
      * @method BlueprintColumn unsignedInteger(string $column)
      */

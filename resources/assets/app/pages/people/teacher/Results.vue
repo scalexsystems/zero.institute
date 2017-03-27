@@ -7,7 +7,7 @@
           <div class="row">
             <div class="col-12">
               <checkbox-wrapper title="Department">
-                <input-box v-for="item of departments" :checkbox="item.id" v-model="department" :title="item.name"
+                <input-box v-for="item of departments" :key="item" :checkbox="item.id" v-model="department" :title="item.name"
                            :custom="false"/>
               </checkbox-wrapper>
             </div>

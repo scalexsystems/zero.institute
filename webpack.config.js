@@ -55,7 +55,8 @@ module.exports.entry = Mix.entry();
  */
 
 module.exports.output = Mix.output();
-module.exports.output.publicPath = Mix.isHmr ? 'http://localhost:8080/' : '/app/'
+module.exports.output.publicPath = Mix.hmr ? 'http://localhost:8080/app/' : '/app/'
+
 /*
  |--------------------------------------------------------------------------
  | Rules
@@ -82,15 +83,15 @@ module.exports.module = {
       loader: 'vue-loader',
       options: {
         loaders: Mix.options.extractVueStyles ? {
-              js: ['babel-loader' + Mix.babelConfig(), 'strip-loader?strip[]=this.$debug'],
-              scss: vueExtractTextPlugin.extract({
-                use: 'css-loader!sass-loader',
-                fallback: 'vue-style-loader'
-              }),
-            } : {
-              js: 'babel-loader' + Mix.babelConfig(),
-              scss: 'vue-style-loader!css-loader!sass-loader'
-            },
+          js: ['babel-loader' + Mix.babelConfig(), 'strip-loader?strip[]=this.$debug'],
+          scss: vueExtractTextPlugin.extract({
+            use: 'css-loader!sass-loader',
+            fallback: 'vue-style-loader'
+          }),
+        } : {
+          js: 'babel-loader' + Mix.babelConfig(),
+          scss: 'vue-style-loader!css-loader!sass-loader'
+        },
 
         cssModules: {
           localIdentName: '[name]---[local]---[hash:base64:5]',
@@ -118,7 +119,7 @@ module.exports.module = {
       loader: 'file-loader',
       options: {
         name: 'images/[path][name].[ext]?[hash]',
-        publicPath: Mix.resourceRoot
+        publicPath: Mix.hmr ? 'http://localhost:8080' + Mix.resourceRoot : Mix.resourceRoot
       }
     },
 
@@ -157,7 +158,11 @@ if (Mix.preprocessors) {
  */
 
 module.exports.resolve = {
-  extensions: ['*', '.js', '.jsx', '.vue']
+  extensions: ['*', '.js', '.jsx', '.vue'],
+  alias: {
+    'vue$': 'vue/dist/vue.runtime.esm.js',
+    'bootstrap-for-vue$': 'bootstrap-for-vue/dist/bootstrap-for-vue.esm.js',
+  }
 };
 
 /*
@@ -377,7 +382,7 @@ if (Mix.inProduction) {
       new webpack.DefinePlugin({
         'process.env': {
           NODE_ENV: '"production"',
-          ZERO_VERSION: JSON.stringify(require("./package.json").version)
+          VERSION: JSON.stringify(require("./package.json").version)
         },
       }),
 

@@ -9,19 +9,18 @@ import VueACL from './services/acl'
 import VueDebug from './services/debug'
 import components from './components'
 import directives from './directives'
+import 'bootstrap'
 
-// Bootstrap & jQuery
-window.$ = window.jQuery = require('jquery')
-window.Tether = require('tether')
-require('bootstrap')
-window.Vue = Vue
-window.io = (...args) => import('socket.io-client')(...args)
-
+//
 const Laravel = window.Laravel || {}
 const dsn = process.env.NODE_ENV === 'production' ? 'https://0e3651de5e1d425da8e296428b4795ea@sentry.io/131049' : false
 
+if (Laravel.broadcast.broadcaster === 'socket.io') {
+  window.io = import('socket.io-client')
+}
+
 // Install plugins.
-Raven.config(dsn, { release: process.env.ZERO_VERSION }).addPlugin(RavenVue, Vue).install()
+Raven.config(dsn, { release: process.env.VERSION }).addPlugin(RavenVue, Vue).install()
 Vue.use(VueResource)
 Vue.use(VueDebug, { debug: process.env.NODE_ENV !== 'production' })
 Vue.use(VueEcho, Laravel.broadcast)

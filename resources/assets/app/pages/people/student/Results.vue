@@ -7,13 +7,13 @@
           <div class="row">
             <div class="col-6 col-md-12 mb-1">
               <checkbox-wrapper title="Dicipline">
-                <input-box v-for="item of disciplines" :checkbox="item.id" v-model="discipline" :title="item.name"
+                <input-box v-for="item of disciplines" :key="item" :checkbox="item.id" v-model="discipline" :title="item.name"
                            :custom="false"/>
               </checkbox-wrapper>
             </div>
             <div class="col-6 col-md-12">
               <checkbox-wrapper title="Department">
-                <input-box v-for="item of departments" :checkbox="item.id" v-model="department" :title="item.name"
+                <input-box v-for="item of departments" :key="item" :checkbox="item.id" v-model="department" :title="item.name"
                            :custom="false"/>
               </checkbox-wrapper>
             </div>

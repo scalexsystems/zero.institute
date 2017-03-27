@@ -6,7 +6,7 @@
     <strong class="text-uppercase" style="letter-spacing: 1px">Settings</strong>
   </div>
 
-  <sidebar-button v-for="item in items" :route="{ name: item.id }" class="sidebar-list-item-settings px-3">{{ item.title }}</sidebar-button>
+  <sidebar-button v-for="item in items" :key="item" :route="{ name: item.id }" class="sidebar-list-item-settings px-3">{{ item.title }}</sidebar-button>
 </div>
 </template>
 

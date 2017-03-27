@@ -18,5 +18,5 @@ Auth::routes();
 
 // NOTE: **This should be last in list. It captures everything.**
 Route::group(['middleware' => 'auth'], function () {
-    Route::get('/{anything}', 'HomeController@app')->where('anything', '^(?!api).*$');
+    Route::get('/{anything}', 'HomeController@app')->where('anything', '^(?!(api|attach|app|icon|img)).*$');
 });

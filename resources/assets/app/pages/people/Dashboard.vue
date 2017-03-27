@@ -65,7 +65,7 @@
           <div class="card">
             <h4 class="card-header p-3 bg-white">Zero: Release Schedule</h4>
             <div class="card-block">
-              <div class="d-flex flex-row mb-1" v-for="stage of stages">
+              <div class="d-flex flex-row mb-1" v-for="stage of stages" :key="stage">
                 <div class="px-1">
                   <i v-if="stage.completed" class="fa fa-check text-success"></i>
                   <i v-else class="fa fa-clock-o text-muted"></i>

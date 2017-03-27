@@ -8,7 +8,8 @@
 
   <div class="dropdown-menu dropdown-menu-right">
 
-    <router-link v-for="app in apps" class="app dropdown-item d-flex flex-row py-2 align-items-center" :to="app.link"
+    <router-link v-for="app in apps" :key="app" class="app dropdown-item d-flex flex-row py-2 align-items-center"
+                 :to="app.link"
                  :ref="app">
       <img :src="app.icon" class="icon mr-2">
       <div class="label">{{ app.name }}</div>
@@ -63,7 +64,7 @@ const APPS = [
   },
   {
     name: 'Finances',
-    link: '/finances',
+    link: '/finance',
     icon: require('../../assets/apps/finance.svg'),
     permission: 'finance.app'
   },
@@ -105,6 +106,7 @@ export default {
 .c-navbar-apps {
   .dropdown-menu {
     margin-top: 2px;
+    max-height: calc(100vh - #{$navbar-height});
   }
   .app {
     min-width: 250px;

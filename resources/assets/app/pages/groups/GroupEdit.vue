@@ -25,7 +25,7 @@
 
       <div class="col-12 col-lg-8 offset-lg-2">
         <infinite-loader class="row" @infinite="fetchMembers" ref="is">
-          <div class="col-12 col-lg-6 mb-3" v-for="member in groupMembers">
+          <div class="col-12 col-lg-6 mb-3" v-for="member in groupMembers" :key="member">
             <user-card :user="member" remove @remove="removeMember(member)" />
           </div>
         </infinite-loader>

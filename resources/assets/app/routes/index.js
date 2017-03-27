@@ -4,6 +4,7 @@ import store from '../vuex'
 
 import attendance from './attendance'
 import courses from './courses'
+import finance from './finance'
 import groups from './groups'
 import messages from './messages'
 import people from './people'
@@ -33,10 +34,11 @@ const routes = [
   },
   ...attendance,
   ...courses,
+  ...finance,
   ...groups,
   ...messages,
   ...people,
-  ...settings
+  ...settings,
 ]
 
 export default new VueRouter({

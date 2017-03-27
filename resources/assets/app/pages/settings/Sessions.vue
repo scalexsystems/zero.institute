@@ -22,7 +22,7 @@
 
       <h2 class="col-12 text-center">{{ title }}</h2>
 
-      <div class="col-12 col-lg-6 mt-3" v-for="session in sessions">
+      <div class="col-12 col-lg-6 mt-3" v-for="session in sessions" :key="session">
         <session-card v-bind="{ session, footer: true }" role="button" @click.native="edit(session)"/>
       </div>
 

@@ -18,7 +18,7 @@
     </div>
   </div>
 
-  <div v-for="role in roles">
+  <div v-for="role in roles" :key="role">
 
     <h6 class="split-header text-uppercase my-3 py-3">{{ role.name }}</h6>
 
@@ -37,7 +37,7 @@
           <alert type="danger" v-html="role.$error"/>
         </div>
 
-        <div class="col-12 col-lg-6 mt-3" v-for="person in role.$users">
+        <div class="col-12 col-lg-6 mt-3" v-for="person in role.$users" :key="person">
           <person-card :person="person" remove @remove="remove(role, person)" :class="{ disabled: person.$wait }"/>
         </div>
 

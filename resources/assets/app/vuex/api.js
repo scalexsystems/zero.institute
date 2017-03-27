@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-async function format (response) {
+async function format(response) {
   if (/(text|application)\/json/i.test(response.headers.get('Content-Type'))) {
     return await response.json()
   }
@@ -8,7 +8,7 @@ async function format (response) {
   return response
 }
 
-async function process (response) {
+async function process(response) {
   const result = await format(response)
 
   if (response.status === 422) {
@@ -20,7 +20,7 @@ async function process (response) {
   }
 
   if (response.status === 403) {
-    window.location = '/login'
+    return { $message: 'Ah! Oh! Feels like you session has expired. Go to <a href="/login">login page</a> and authenticate again.' }
   }
 
   if (response.status === 405) {

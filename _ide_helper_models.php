@@ -294,6 +294,7 @@ namespace Scalex\Zero\Models{
  * @property \Carbon\Carbon $updated_at
  * @property mixed $extended
  * @property-read \Scalex\Zero\Models\School $school
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Scalex\Zero\Models\Student[] $students
  * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Discipline whereAdditional($value)
  * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Discipline whereCreatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Discipline whereDeletedAt($value)
@@ -401,6 +402,74 @@ namespace Scalex\Zero\Models{
  * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Employee whereVisibleMarks($value)
  */
 	class Employee extends \Eloquent {}
+}
+
+namespace Scalex\Zero\Models{
+/**
+ * Scalex\Zero\Models\FeePayment
+ *
+ * @property int $id
+ * @property mixed $paid
+ * @property int $amount
+ * @property \Carbon\Carbon $deadline
+ * @property int $fee_template_id
+ * @property int $fee_session_id
+ * @property int $student_id
+ * @property int $school_id
+ * @property string $deleted_at
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property-read \Scalex\Zero\Models\FeeSession $feeSession
+ * @property mixed $extended
+ * @property-read \Scalex\Zero\Models\School $school
+ * @property-read \Scalex\Zero\Models\Student $student
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Scalex\Zero\Models\Transaction[] $transactions
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\FeePayment whereAmount($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\FeePayment whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\FeePayment whereDeadline($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\FeePayment whereDeletedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\FeePayment whereFeeSessionId($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\FeePayment whereFeeTemplateId($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\FeePayment whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\FeePayment wherePaid($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\FeePayment whereSchoolId($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\FeePayment whereStudentId($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\FeePayment whereUpdatedAt($value)
+ */
+	class FeePayment extends \Eloquent {}
+}
+
+namespace Scalex\Zero\Models{
+/**
+ * Scalex\Zero\Models\FeeSession
+ *
+ * @property int $id
+ * @property string $name
+ * @property int $session_id
+ * @property \Carbon\Carbon $started_at
+ * @property \Carbon\Carbon $ended_at
+ * @property bool $accepting
+ * @property int $school_id
+ * @property array $additional
+ * @property string $deleted_at
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property mixed $extended
+ * @property-read \Scalex\Zero\Models\School $school
+ * @property-read \Scalex\Zero\Models\Session $session
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\FeeSession whereAccepting($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\FeeSession whereAdditional($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\FeeSession whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\FeeSession whereDeletedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\FeeSession whereEndedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\FeeSession whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\FeeSession whereName($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\FeeSession whereSchoolId($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\FeeSession whereSessionId($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\FeeSession whereStartedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\FeeSession whereUpdatedAt($value)
+ */
+	class FeeSession extends \Eloquent {}
 }
 
 namespace Scalex\Zero\Models{
@@ -618,6 +687,7 @@ namespace Scalex\Zero\Models{
  * @property int $level
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
+ * @property mixed $extended
  * @property-read \Illuminate\Database\Eloquent\Collection|\Znck\Trust\Models\Permission[] $permissions
  * @property-read \Illuminate\Database\Eloquent\Collection|\Scalex\Zero\User[] $users
  * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Role whereCreatedAt($value)
@@ -950,6 +1020,54 @@ namespace Scalex\Zero\Models{
  * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Teacher whereVisibleMarks($value)
  */
 	class Teacher extends \Eloquent {}
+}
+
+namespace Scalex\Zero\Models{
+/**
+ * Scalex\Zero\Models\Transaction
+ *
+ * @property int $id
+ * @property int $amount
+ * @property bool $refundable
+ * @property string $status
+ * @property string $gateway_reference_id
+ * @property string $gateway
+ * @property string $payment_method
+ * @property string $purpose
+ * @property string $description
+ * @property int $payable_id
+ * @property string $payable_type
+ * @property string $ip
+ * @property int $user_id
+ * @property int $school_id
+ * @property array $additional
+ * @property string $deleted_at
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property mixed $extended
+ * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $payable
+ * @property-read \Scalex\Zero\Models\School $school
+ * @property-read \Scalex\Zero\User $user
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Transaction whereAdditional($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Transaction whereAmount($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Transaction whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Transaction whereDeletedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Transaction whereDescription($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Transaction whereGateway($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Transaction whereGatewayReferenceId($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Transaction whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Transaction whereIp($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Transaction wherePayableId($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Transaction wherePayableType($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Transaction wherePaymentMethod($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Transaction wherePurpose($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Transaction whereRefundable($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Transaction whereSchoolId($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Transaction whereStatus($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Transaction whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\Scalex\Zero\Models\Transaction whereUserId($value)
+ */
+	class Transaction extends \Eloquent {}
 }
 
 namespace Scalex\Zero{

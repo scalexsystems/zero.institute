@@ -2,6 +2,11 @@
 
 namespace Scalex\Zero;
 
+/**
+ * Class Action
+ *
+ * @deprecated
+ */
 class Action
 {
     const UPDATE_SCHOOL = 'school.update';

@@ -1,5 +1,4 @@
-
-// export const bool = any => [true, 'true', 'yes', '1', 1].indexOf(any) > -1
+import moment from 'moment'
 
 export const escapeHtml = (unsafeString) => {
   const div = document.createElement('div')
@@ -25,39 +24,43 @@ export const each = (any, cb) => {
   }
 }
 
-export function isObject (any) {
+export function isObject(any) {
   return any !== null && typeof (any) === 'object'
 }
 
-export function last (any) {
+export function isBoolean(any) {
+  return typeof (any) === 'boolean'
+}
+
+export function last(any) {
   return isArray(any) ? any[any.length - 1] : null
 }
 
-export function isArray (any) {
-  return isObject(any) && any instanceof Array
+export function isArray(any) {
+  return Array.isArray(any)
 }
 
-export function toArray (any) {
+export function toArray(any) {
   return isArray(any) ? any : [any]
 }
 
-export function isString (any) {
+export function isString(any) {
   return typeof (any) === 'string'
 }
 
-export function isFunction (any) {
+export function isFunction(any) {
   return any instanceof Function
 }
 
-export function toInt (any) {
+export function toInt(any) {
   return parseInt(any, 10)
 }
 
-export function clone (any) {
+export function clone(any) {
   return JSON.parse(JSON.stringify(any))
 }
 
-export function isImageExtension (any) {
+export function isImageExtension(any) {
   return ['png', 'gif', 'jpg', 'jpeg', 'webp', 'tiff', 'svg'].indexOf(any) > -1
 }
 
@@ -71,16 +74,23 @@ export const only = (source, keys) => {
   return output
 }
 
-export function notLastPage (meta) {
+export function notLastPage(meta) {
   return meta && meta.pagination && meta.pagination.current_page < meta.pagination.total_pages
 }
 
-export function nextPage (meta) {
+export function nextPage(meta) {
   if (meta && meta.pagination) {
     return meta.pagination.current_page + 1
   }
 
   return 1
+}
+
+// -- Date Helpers --
+export function dateIsoToInput(any) {
+  const date = moment(any, moment.ISO_8601, true)
+
+  return date.isValid() ? date.format('YYYY-MM-DD') : ''
 }
 
 // NOTICE: UNSAFE with unsafe strings; only use on previously-escaped ones!

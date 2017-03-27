@@ -25,7 +25,9 @@
     "predis/predis": "^1.1",
     "sentry/sentry-laravel": "^0.6.0",
     "teamtnt/laravel-scout-tntsearch-driver": "^2.0",
-    "laravel/tinker": "^1.0"
+    "laravel/tinker": "^1.0",
+    "symfony/event-dispatcher": "^2.8",
+    "omnipay/common": "^2.5"
   },
   "require-dev": {
     "barryvdh/laravel-ide-helper": "^2.2",
@@ -38,7 +40,8 @@
     "doctrine/dbal": "^2.5",
     "friendsofphp/php-cs-fixer": "^2.0",
     "mmieluch/laravel-vfs-provider": "^1.0",
-    "brianium/paratest": "^0.14"
+    "brianium/paratest": "^0.14",
+    "laravel/dusk": "^1.0"
   },
   "autoload": {
     "classmap": [

@@ -23,7 +23,7 @@
 
       <div class="card-block" style="overflow: auto">
         <template v-for="(title, index) of titles">
-        <div v-if="index === 0" class="form-group">
+        <div v-if="index === 0" class="form-group" :key="title">
           <label for="file-uploader-1">Name of the file</label>
           <div class="input-group">
                 <span class="input-group-addon">
@@ -32,7 +32,7 @@
             <input type="text" v-model="titles[index]" class="form-control" id="file-uploader-1">
           </div>
         </div>
-        <div class="form-group" v-else>
+        <div class="form-group" v-else :key="title">
           <div class="input-group">
                 <span class="input-group-addon">
                   <i class="fa fa-fw" :class="[getClassFor(index)]"></i>
@@ -193,31 +193,39 @@ export default{
         case 'jpeg':
         case 'jpg':
         case 'gif':
-        case 'png': return 'fa-file-picture-o'
+        case 'png':
+          return 'fa-file-picture-o'
         case '7z':
         case 'gz':
         case 'tar':
         case 'rar':
-        case 'zip': return 'fa-file-zip-o'
+        case 'zip':
+          return 'fa-file-zip-o'
         case 'rtf':
         case 'odt':
         case 'pages':
         case 'doc':
-        case 'docx': return 'fa-file-word-o'
+        case 'docx':
+          return 'fa-file-word-o'
         case 'ods':
         case 'numbers':
         case 'xls':
         case 'csv':
-        case 'xlsx': return 'fa-file-excel-o'
+        case 'xlsx':
+          return 'fa-file-excel-o'
         case 'odp':
         case 'keynote':
         case 'ppt':
-        case 'pptx': return 'fa-file-powerpoint-o'
+        case 'pptx':
+          return 'fa-file-powerpoint-o'
         case 'eps':
         case 'ps':
-        case 'pdf': return 'fa-file-pdf-o'
-        case 'txt': return 'fa-file-text-o'
-        default: return 'fa-file-o'
+        case 'pdf':
+          return 'fa-file-pdf-o'
+        case 'txt':
+          return 'fa-file-text-o'
+        default:
+          return 'fa-file-o'
       }
     },
     getExtension (file) {

@@ -8,46 +8,6 @@ use Scalex\Zero\Models\Attachment;
 use Scalex\Zero\Models\School;
 use Znck\Repositories\Exceptions\NotFoundResourceException;
 
-// TODO: Remove this after 5.4 upgrade.
-if (!function_exists('mix')) {
-    $manifest = null;
-
-    /**
-     * Laravel Mix Polyfill.
-     *
-     * @param  string $path
-     *
-     * @return string
-     */
-    function mix($path, $manifest = false, $shouldHotReload = false)
-    {
-        if (!$manifest) {
-            static $manifest;
-        }
-        if (!$shouldHotReload) {
-            static $shouldHotReload;
-        }
-        if (!$manifest) {
-            $manifestPath = public_path('mix-manifest.json');
-            $shouldHotReload = file_exists(public_path('hot'));
-            if (!file_exists($manifestPath)) {
-                $manifest = [];
-            } else {
-                $manifest = json_decode(file_get_contents($manifestPath), true);
-            }
-        }
-
-        if (!array_key_exists($path, $manifest)) {
-            return false;
-        }
-
-        return $shouldHotReload
-            ? "http://localhost:8080{$manifest[$path]}"
-            : url($manifest[$path]);
-    }
-}
-
-
 if (!function_exists('find')) {
     /**
      * @param array $attributes

@@ -46,7 +46,7 @@
             <small>{{ group.member_count_text }}</small>
           </div>
 
-          <div class="col-12 col-lg-6 mb-3" v-for="member in groupMembers">
+          <div class="col-12 col-lg-6 mb-3" v-for="member in groupMembers" :key="member">
             <user-card :user="member"></user-card>
           </div>
         </infinite-loader>

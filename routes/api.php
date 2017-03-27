@@ -112,6 +112,15 @@ Route::resource('courses', 'Api\Courses\CourseController', $resource);
 Route::get('me/courses', 'Api\Courses\CurrentUserController@index');
 
 //======================================================================================//
+//                                    Finance                                           //
+//======================================================================================//
+Route::post('finance/fee/sessions/{session}/offline', 'Api\Finance\OfflineFeePaymentsController@store');
+Route::get('finance/fee/sessions/{session}/payments', 'Api\Finance\FeePaymentsController@index');
+Route::resource('finance/fee/sessions', 'Api\Finance\FeeSessionsController', $resource);
+
+Route::get('me/fee/payments', 'Api\Finance\FeePaymentsController@index');
+
+//======================================================================================//
 //                                  Attendance                                          //
 //======================================================================================//
 
@@ -120,3 +129,4 @@ Route::get('sessions/{session}/students/{student}/attendances', 'Api\Attendance\
 Route::post('sessions/{session}/attendances', 'Api\Attendance\SessionController@store');
 
 Route::get('me/semesters/{semester}/students/{student}/sessions', 'Api\Attendance\CurrentUserController@index');
+
