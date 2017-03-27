@@ -40,7 +40,8 @@
     "doctrine/dbal": "^2.5",
     "friendsofphp/php-cs-fixer": "^2.0",
     "mmieluch/laravel-vfs-provider": "^1.0",
-    "brianium/paratest": "^0.14"
+    "brianium/paratest": "^0.14",
+    "laravel/dusk": "^1.0"
   },
   "autoload": {
     "classmap": [
