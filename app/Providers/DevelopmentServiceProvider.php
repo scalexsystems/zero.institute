@@ -11,6 +11,7 @@ class DevelopmentServiceProvider extends AggregateServiceProvider
         '\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
         '\Themsaid\MailPreview\MailPreviewServiceProvider',
         '\Mmieluch\LaravelVfsProvider\LaravelVfsServiceProvider',
+        '\Laravel\Tinker\TinkerServiceProvider',
     ];
 
     public function register()
