@@ -63,7 +63,7 @@ class CourseSessionPolicy
 
     public function viewAttendance(User $user, CourseSession $session)
     {
-       return $this->isInstructor($user->person, $session);
+       return $this->isInstructor($user->person, $session) or trust($user)->is('admin');
     }
 
     public function createAttendance(User $user, CourseSession $session)
