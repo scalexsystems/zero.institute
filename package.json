@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "add-asset-html-webpack-plugin": "^1.0.2",
-    "babel-eslint": "^7.1.1",
+    "babel-eslint": "^7.2.1",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-es2015-native-modules": "^6.9.4",
     "babel-preset-stage-2": "^6.22.0",
@@ -81,7 +81,7 @@
     "Validator": "^1.0.4",
     "autosize": "^3.0.20",
     "bootstrap": "next",
-    "bootstrap-for-vue": "^0.3.7",
+    "bootstrap-for-vue": "^0.3.11",
     "debug": "^2.6.3",
     "echo-for-vue": "^0.1.4",
     "filesize": "^3.5.6",
