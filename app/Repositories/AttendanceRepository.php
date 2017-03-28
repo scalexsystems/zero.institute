@@ -51,4 +51,18 @@ class AttendanceRepository extends Repository
             $attendance->save();
         });
     }
+    public function getAttendanceAggregate()
+    {
+        $attendance = Attendance::groupBy(['date', 'course_session_id'])
+            ->select(['course_session_id', 'date'])
+            ->selectRaw('COUNT(*)')
+            ->with(['course_session' => function($query) {
+                return $query->withCount('students');
+        }])
+            ->get();
+
+
+        return $attendance;
+
+    }
 }

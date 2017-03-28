@@ -8,5 +8,11 @@ export default [
         props: route => ({
             id: toInt(route.params.id)
         })
-    }
+    },
+
+    {
+        name: 'report',
+        path: '/attendances',
+        component: () => import('../pages/attendance/Report.vue'),
+    },
 ]
