@@ -34,7 +34,12 @@ class SessionController extends Controller
     public function store(Request $request, CourseSession $session, AttendanceRepository $repository)
     {
         $this->authorize('create-attendance', $session);
-        $studentIds = collect($request->attendance);
+        $studentIds = $request->attendance;
+        $allStudents = [];
+        $session->students->each(function ($student) use (&$allStudents) {
+            $allStudents[$student->id] = true;
+        });
+        $studentIds = array_replace($allStudents, $studentIds);
         $date = \Carbon\Carbon::parse($request->date);
         $repository->takeAttendance($studentIds, $session, $date);
         return $this->accepted();

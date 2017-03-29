@@ -37,20 +37,24 @@ class AttendanceRepository extends Repository
 
     public function getAttendanceFor(Student $student, CourseSession $session)
     {
-        return $this->pushCriteria(new OfCourseSession($session->id))
-            ->where('student_id', $student->id);
-    }
+        $attendances = $session->attendances;
+        $studentId = $student->id;
+        return $attendances->transform(function ($attendance) use ($studentId) {
+            return collect($attendance)->except('attendance')
+                ->merge([ 'attendance' => data_get($attendance->attendance, $studentId)]);
 
-    public function takeAttendance(Collection $students, CourseSession $session, $date)
-    {
-        $students->map(function ($studentId) use ($session, $date) {
-            $attendance = new Attendance();
-            $attendance->student()->associate($studentId);
-            $attendance->date = $date;
-            $attendance->course_session()->associate($session);
-            $attendance->save();
         });
     }
+
+    public function takeAttendance(array $students, CourseSession $session, $date)
+    {
+        $attendance = new Attendance();
+        $attendance->date = $date;
+        $attendance->course_session()->associate($session);
+        $attendance->attendance = $students;
+        $attendance->save();
+    }
+
     public function getAttendanceAggregate()
     {
         $attendance = Attendance::groupBy(['date', 'course_session_id'])
