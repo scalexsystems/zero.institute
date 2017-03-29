@@ -25,7 +25,9 @@
                     Attendance: {{ aggregate.percent }}% | {{ aggregate.total }} Students - {{ aggregate.absent }} Absent
                 </div>
                 <div class="py-4">
-                    <attendance-card :student="student" v-for="student in students" @toggle="toggleAttendance" :disabled="!enabled"></attendance-card>
+                    <attendance-card :student="student" v-for="student in students" :key="item.id"
+                                     @toggle="toggleAttendance" :disabled="!enabled"></attendance-card>
+
                 </div>
             </div>
         </div>

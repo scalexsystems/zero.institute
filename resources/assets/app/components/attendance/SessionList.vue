@@ -1,7 +1,7 @@
 <template>
     <div class="list-group">
             <input-button class="list-group-item list-group-item-action session-item" :class="{ active : isActive(index) }"
-                  v-for="(item, index) in items" @click.native="itemClicked(item, index)" >
+                  v-for="(item, index) in items" :key="index" @click.native="itemClicked(item, index)" >
                 <div> {{ item.name }} </div>
             </input-button>
         </div>
