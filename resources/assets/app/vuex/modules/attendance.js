@@ -9,8 +9,7 @@ const actions = {
     },
 
     async find (_, { sessionId, student }){
-      const { attendances } = await http.get(`sessions/${sessionId}/students/${student.person.uid}/attendances`);
-
+      const { attendances } = await http.get(true, `sessions/${sessionId}/students/${student.person.uid}/attendances`);
       return { attendances };
     },
 
@@ -18,12 +17,10 @@ const actions = {
 
         await http.post(`sessions/${session.id}/attendances`, attendance);
 
-    }
+    },
 
-}
-
-// THE STORE!
-export default {
-    namespaced: true,
-    actions,
+    async getReport ({ dispatch }) {
+        const { attendances } = await http.get(`attendances`)
+        return { attendances }
+    },
 }
