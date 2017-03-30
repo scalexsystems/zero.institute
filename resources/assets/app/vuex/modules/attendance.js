@@ -1,5 +1,7 @@
 import http from '../api';
 
+const state = () => {}
+
 const actions = {
     async index(_, { session }){
       const {attendances} = await http.get(`sessions/${session.id}/attendances`);
@@ -19,8 +21,14 @@ const actions = {
 
     },
 
-    async getReport ({ dispatch }) {
+    async getAggregates ({ dispatch }) {
         const { attendances } = await http.get(`attendances`)
         return { attendances }
     },
+}
+
+export default {
+    namespaced: true,
+    actions,
+    state: state()
 }

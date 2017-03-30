@@ -19,6 +19,7 @@
 
                         <vue-chart chartType="BarChart" :columns="sessionDates">
 
+
                         </vue-chart>
 
 
@@ -32,43 +33,51 @@
 </template>
 
 <script lang="babel">
-    import { mapGetters, mapActions } from 'vuex'
-    import vueChart from 'vue-charts'
+import { mapGetters, mapActions } from 'vuex'
+import vueChart from 'vue-charts'
 
-    export default {
-        name: 'AttendanceReport',
-        components: {},
-        data: () => ({
-            query: '',
-            semester: 0,
-            courses: 0,
-        }),
-        props: {},
-        computed: {
-            sessionDates() {
-                return ['1', '2', '3', '4']
-            },
-            ...mapGetters('semesters', ['semesters']),
-
-
+export default {
+    name: 'AttendanceReport',
+    components: {},
+    data: () => ({
+        query: '',
+        semester: 0,
+        courses: 0,
+        aggregates: {},
+    }),
+    props: {},
+    computed: {
+        sessionDates() {
+            return ['1', '2', '3', '4']
         },
-
-        methods: {
-          semesterChosen() {
-                this.getCourseSessions();
-          },
-
-          async getCourseSessions(){
-                const { course_sessions } = await this.forSemester({ semesterId: this.semester });
-                this.courseSessions = course_sessions || [];
-          },
-        },
-
-        created() {
-        }
+        ...mapGetters('semesters', ['semesters']),
 
 
-    };
+    },
+
+    methods: {
+      semesterChosen() {
+
+            this.loadAggregates();
+      },
+
+      onInput() {
+
+      },
+      async loadAggregates() {
+        const { aggregates } = await this.getAggregates();
+        this.aggregates = aggregates || {};
+      },
+
+     ...mapActions('attendance', ['getAggregates'])
+    },
+
+    created() {
+      this.loadAggregates();
+    }
+
+
+};
 </script>
 
 <style lang="scss" scoped>

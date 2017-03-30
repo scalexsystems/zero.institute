@@ -1,5 +1,6 @@
 <?php namespace Scalex\Zero\Repositories;
 
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Scalex\Zero\Criteria\Attendance\OfCourseSession;
 use Scalex\Zero\Models\Attendance;
@@ -61,9 +62,13 @@ class AttendanceRepository extends Repository
 
         return $attendance->reduce(function ($attendanceStats, $dailySession) {
 
-            $attendanceStats[$dailySession->date] = array_sum(array_values($dailySession->attendance)) +
-                $attendanceStats[$dailySession->date] ?? 0;
-
+            $attendance = array_values($dailySession->attendance);
+            $date = (string) Carbon::parse($dailySession->date)->format('Y-m-d');
+            if (isset($attendanceStats[$date])) {
+                $attendanceStats[$date] += array_sum($attendance);
+            } else {
+                $attendanceStats[$date] = array_sum($attendance);
+            }
             return $attendanceStats;
 
         });
