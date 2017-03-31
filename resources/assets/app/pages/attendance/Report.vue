@@ -17,10 +17,7 @@
                         <!--{{ semester }}-->
                         <!--{{ course }}-->
 
-                        <vue-chart chartType="BarChart" :columns="sessionDates">
-
-
-                        </vue-chart>
+                        <chart :attributes="chartData"></chart>
 
 
                     </div>
@@ -34,39 +31,63 @@
 
 <script lang="babel">
 import { mapGetters, mapActions } from 'vuex'
-import vueChart from 'vue-charts'
+import moment from 'moment'
+import Chart from '../../components/attendance/Chart'
 
 export default {
     name: 'AttendanceReport',
-    components: {},
     data: () => ({
         query: '',
         semester: 0,
-        courses: 0,
+        course: 0,
         aggregates: {},
+        chartData: [],
     }),
     props: {},
     computed: {
-        sessionDates() {
-            return ['1', '2', '3', '4']
-        },
         ...mapGetters('semesters', ['semesters']),
-
-
     },
+    components: { Chart },
 
     methods: {
       semesterChosen() {
-
             this.loadAggregates();
+      },
+
+      getFirstOrLast(end = false) {
+         const keys = Object.keys(this.aggregates)
+         const dates = this.convertToDate(keys).sort((first, second) => {
+             return first - second
+         })
+         return end ? dates.pop() : dates[0]
+      },
+
+      convertToDate(strings){
+          return strings.map(string => moment(string));
       },
 
       onInput() {
 
       },
+
+      prepareDatesWithData(){
+          const startDate = this.getFirstOrLast();
+          const dates = Object.keys(this.aggregates);
+          const chartData = [];
+          dates.forEach((date) => {
+              const diff = moment(date).diff(startDate, 'days');
+              debugger
+              chartData[diff] = this.aggregates[date];
+              return chartData;
+          });
+
+          return chartData;
+      },
+
       async loadAggregates() {
-        const { aggregates } = await this.getAggregates();
-        this.aggregates = aggregates || {};
+        const { attendances } = await this.getAggregates();
+        this.aggregates = attendances || {};
+        this.chartData = this.prepareDatesWithData();
       },
 
      ...mapActions('attendance', ['getAggregates'])

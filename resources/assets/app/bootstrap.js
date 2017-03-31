@@ -10,7 +10,6 @@ import VueDebug from './services/debug'
 import components from './components'
 import directives from './directives'
 import 'bootstrap'
-import vueCharts from 'vue-charts'
 
 //
 const Laravel = window.Laravel || {}
@@ -27,7 +26,6 @@ Vue.use(VueDebug, { debug: process.env.NODE_ENV !== 'production' })
 Vue.use(VueEcho, Laravel.broadcast)
 Vue.use(VueACL)
 Vue.use(VueBootstrap, { all: true, custom: true })
-Vue.use(vueCharts)
 
 // HTTP lib config.
 Vue.http.options.root = '/api'

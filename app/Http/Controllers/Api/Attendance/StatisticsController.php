@@ -17,6 +17,6 @@ class StatisticsController extends Controller
     public function index(Request $request, AttendanceRepository $repository)
     {
 //        $this->authorize('view-attendance-report');
-        return $repository->getAttendanceAggregate();
+        return [ 'attendances' => $repository->getAttendanceAggregate()];
     }
 }
