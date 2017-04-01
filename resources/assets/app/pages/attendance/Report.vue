@@ -17,7 +17,7 @@
                         <!--{{ semester }}-->
                         <!--{{ course }}-->
 
-                        <chart :attributes="chartData"></chart>
+                        <chart :chartData="chartData"></chart>
 
 
                     </div>
@@ -41,7 +41,7 @@ export default {
         semester: 0,
         course: 0,
         aggregates: {},
-        chartData: [],
+        chartData: {},
     }),
     props: {},
     computed: {
@@ -73,15 +73,24 @@ export default {
       prepareDatesWithData(){
           const startDate = this.getFirstOrLast();
           const dates = Object.keys(this.aggregates);
-          const chartData = [];
+          const data = [];
           dates.forEach((date) => {
               const diff = moment(date).diff(startDate, 'days');
               debugger
-              chartData[diff] = this.aggregates[date];
-              return chartData;
+              data[diff] = this.aggregates[date];
+              return data;
           });
 
-          return chartData;
+          return {
+                  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                      datasets: [
+                          {
+                              label: 'News reports',
+                              backgroundColor: '#3c8dbc',
+                              data: [12, 20, 12, 18, 10, 6, 9, 32, 29, 19, 12, 11]
+                          }
+                      ]
+              }
       },
 
       async loadAggregates() {

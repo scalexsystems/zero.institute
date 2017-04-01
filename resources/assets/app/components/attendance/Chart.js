@@ -1,8 +1,9 @@
 import { Bar, mixins } from 'vue-chartjs'
+const { ReactiveProp } = mixins;
 
 export default Bar.extend ({
         name: 'AttendanceChart',
-        mixins: [ mixins ],
+        mixins: [ReactiveProp],
         props: {
             options: {
                 type: Object,
@@ -14,12 +15,13 @@ export default Bar.extend ({
         }),
         computed: {
 
-        },
+            },
 
         methods: {
         },
 
         mounted() {
+           debugger;
            this.renderChart(this.chartData, this.options)
         }
 
