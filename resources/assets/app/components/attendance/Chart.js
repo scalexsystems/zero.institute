@@ -1,13 +1,12 @@
-import { Bar, mixins } from 'vue-chartjs'
-const { ReactiveProp } = mixins;
+import Vue from 'vue'
+import charts from 'vue-charts'
 
-export default Bar.extend ({
-        name: 'AttendanceChart',
-        mixins: [ReactiveProp],
-        props: {
-            options: {
-                type: Object,
-            },
+
+Vue.use(charts);
+
+export default {
+    name: 'AttendanceChart',
+    props: {
 
         },
         components: {},
@@ -26,4 +25,4 @@ export default Bar.extend ({
         }
 
 
-});
+};

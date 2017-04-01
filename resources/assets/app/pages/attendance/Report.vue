@@ -17,7 +17,7 @@
                         <!--{{ semester }}-->
                         <!--{{ course }}-->
 
-                        <chart :chartData="chartData"></chart>
+                        <vue-chart chart-type="BarChart" :rows="rows" :columns="columns" :options="options"></vue-chart>
 
 
                     </div>
@@ -41,13 +41,50 @@ export default {
         semester: 0,
         course: 0,
         aggregates: {},
-        chartData: {},
+        chartData: [],
     }),
     props: {},
     computed: {
+        columns() {
+            return [{
+                'type': 'string',
+                'label': 'Year'
+            }, {
+                'type': 'number',
+                'label': 'Sales'
+            }, {
+                'type': 'number',
+                'label': 'Expenses'
+            }]
+        },
+        rows() {
+            return [
+            ['2004', 1000, 400],
+            ['2005', 1170, 460],
+            ['2006', 660, 1120],
+            ['2007', 1030, 540]
+        ]},
+        options() {
+            return {
+                title: 'Company Performance',
+                hAxis: {
+                    title: 'Year',
+                    minValue: '2004',
+                    maxValue: '2007'
+                },
+                vAxis: {
+                    title: '',
+                    minValue: 300,
+                    maxValue: 1200
+                },
+                width: 900,
+                height: 500,
+                curveType: 'function'
+            }
+        },
         ...mapGetters('semesters', ['semesters']),
     },
-    components: { Chart },
+    mixins: { Chart },
 
     methods: {
       semesterChosen() {
@@ -73,24 +110,7 @@ export default {
       prepareDatesWithData(){
           const startDate = this.getFirstOrLast();
           const dates = Object.keys(this.aggregates);
-          const data = [];
-          dates.forEach((date) => {
-              const diff = moment(date).diff(startDate, 'days');
-              debugger
-              data[diff] = this.aggregates[date];
-              return data;
-          });
-
-          return {
-                  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-                      datasets: [
-                          {
-                              label: 'News reports',
-                              backgroundColor: '#3c8dbc',
-                              data: [12, 20, 12, 18, 10, 6, 9, 32, 29, 19, 12, 11]
-                          }
-                      ]
-              }
+          return dates.map((date) => ['test', this.aggregates[date]]);
       },
 
       async loadAggregates() {
