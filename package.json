@@ -104,6 +104,7 @@
     "vue-charts": "^0.2.1",
     "vue-clickaway": "latest",
     "vue-infinite-loading": "^2.0.3",
+    "vue-morris": "^0.0.6",
     "vue-resource": "^1.2.0",
     "vue-router": "^2.3.0",
     "vuex": "^2.2.1"

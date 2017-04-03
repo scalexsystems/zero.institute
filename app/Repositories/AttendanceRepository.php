@@ -58,16 +58,16 @@ class AttendanceRepository extends Repository
 
     public function getAttendanceAggregate()
     {
-        $attendance = Attendance::get();
+        $attendance = Attendance::orderBy('date')->get();
 
         return $attendance->reduce(function ($attendanceStats, $dailySession) {
 
             $attendance = array_values($dailySession->attendance);
             $date = (string) Carbon::parse($dailySession->date)->format('Y-m-d');
             if (isset($attendanceStats[$date])) {
-                $attendanceStats[$date] += array_sum($attendance);
+                $attendanceStats[$date] += array_sum($attendance) / count($attendance) * 100;
             } else {
-                $attendanceStats[$date] = array_sum($attendance);
+                $attendanceStats[$date] = array_sum($attendance) / count($attendance) * 100;
             }
             return $attendanceStats;
 

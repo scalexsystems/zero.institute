@@ -17,7 +17,11 @@
                         <!--{{ semester }}-->
                         <!--{{ course }}-->
 
-                        <vue-chart chart-type="BarChart" :rows="rows" :columns="columns" :options="options"></vue-chart>
+                        <bar-chart
+                                id="bar" :data="chartData" xkey="date" ykeys='[ "attendance" ]' resize="true"
+                                labels='["attendance"]' bar-colors='[ "#36A2EB" ]'
+                                grid="true" grid-text-weight="bold">
+                        </bar-chart>
 
 
                     </div>
@@ -30,9 +34,12 @@
 </template>
 
 <script lang="babel">
+import Raphael from 'raphael/raphael'
 import { mapGetters, mapActions } from 'vuex'
 import moment from 'moment'
-import Chart from '../../components/attendance/Chart'
+import { BarChart } from 'vue-morris'
+import { range, sortBy, uniqBy } from 'lodash'
+global.Raphael = Raphael
 
 export default {
     name: 'AttendanceReport',
@@ -44,48 +51,11 @@ export default {
         chartData: [],
     }),
     props: {},
+    components: { BarChart },
     computed: {
-        columns() {
-            return [{
-                'type': 'string',
-                'label': 'Year'
-            }, {
-                'type': 'number',
-                'label': 'Sales'
-            }, {
-                'type': 'number',
-                'label': 'Expenses'
-            }]
-        },
-        rows() {
-            return [
-            ['2004', 1000, 400],
-            ['2005', 1170, 460],
-            ['2006', 660, 1120],
-            ['2007', 1030, 540]
-        ]},
-        options() {
-            return {
-                title: 'Company Performance',
-                hAxis: {
-                    title: 'Year',
-                    minValue: '2004',
-                    maxValue: '2007'
-                },
-                vAxis: {
-                    title: '',
-                    minValue: 300,
-                    maxValue: 1200
-                },
-                width: 900,
-                height: 500,
-                curveType: 'function'
-            }
-        },
+
         ...mapGetters('semesters', ['semesters']),
     },
-    mixins: { Chart },
-
     methods: {
       semesterChosen() {
             this.loadAggregates();
@@ -109,8 +79,33 @@ export default {
 
       prepareDatesWithData(){
           const startDate = this.getFirstOrLast();
-          const dates = Object.keys(this.aggregates);
-          return dates.map((date) => ['test', this.aggregates[date]]);
+          const dateSeries = this.getDatesBetween(startDate, moment());
+
+
+          const aggregates = Object.keys(this.aggregates).map(( key) => ({
+             date: key,
+             attendance: this.aggregates[key]
+          }));
+
+
+
+          return uniqBy(sortBy([...aggregates, ...dateSeries ], ((dateObject) => {
+              return moment(dateObject.date)
+          })), (dateObject => { return dateObject.date }));
+
+      },
+
+      getDatesBetween(startDate, endDate){
+          const diff = moment(endDate).diff(startDate, 'days');
+          const diffRange = range(0, diff + 1);
+          const dates = [];
+          diffRange.forEach((offset) => {
+              const date = moment(startDate).add(offset, 'days').format('YYYY-MM-DD');
+              dates.push({ date, attendance: 0 });
+              return dates;
+          });
+
+          return dates;
       },
 
       async loadAggregates() {
