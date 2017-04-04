@@ -56,9 +56,22 @@ class AttendanceRepository extends Repository
         $attendance->save();
     }
 
-    public function getAttendanceAggregate()
+    public function getAttendanceAggregate($semester = null, $course= null )
     {
-        $attendance = Attendance::orderBy('date')->get();
+        $query = Attendance::orderBy('date');
+        if ($semester) {
+            $query->whereHas('course_session.course.semester', function ($q) use ($semester) {
+                return $q->where('id', $semester);
+            });
+        }
+
+        if ($course) {
+            $query->whereHas('course_session.course', function ($q) use ($course) {
+                return $q->where('id', $course);
+            });
+        }
+
+        $attendance = $query->get();
 
         return $attendance->reduce(function ($attendanceStats, $dailySession) {
 

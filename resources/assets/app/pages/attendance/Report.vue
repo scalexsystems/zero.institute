@@ -8,8 +8,9 @@
 
                 <div class="card">
                     <div class="card-header">
+
                         <input-select title="Semester" v-model.number="semester" :options="semesters" @input="semesterChosen"/>
-                        <!--<input-select title="Courses" v-model.number="courses" :options="courses" @input="courseChosen"/>-->
+                        <input-select title="Courses" v-model.number="course" :options="courses" @input="courseChosen" />
 
                     </div>
 
@@ -55,10 +56,17 @@ export default {
     computed: {
 
         ...mapGetters('semesters', ['semesters']),
+        ...mapGetters('courses', ['courses']),
+
     },
     methods: {
       semesterChosen() {
             this.loadAggregates();
+            this.loadCourses();
+      },
+
+      courseChosen() {
+          this.loadAggregates();
       },
 
       getFirstOrLast(end = false) {
@@ -108,10 +116,18 @@ export default {
           return dates;
       },
 
+      loadCourses() {
+         const semester = this.semester;
+         this.courses = this.courses.filter(course => course.semester_id === semester);
+
+      },
+
       async loadAggregates() {
-        const { attendances } = await this.getAggregates();
-        this.aggregates = attendances || {};
-        this.chartData = this.prepareDatesWithData();
+          const params = (this.semester || this.course) ? { semester: this.semester, course: this.course} : {};
+
+          const { attendances } = await this.getAggregates(params);
+          this.aggregates = attendances || {};
+          this.chartData = this.prepareDatesWithData();
       },
 
      ...mapActions('attendance', ['getAggregates'])

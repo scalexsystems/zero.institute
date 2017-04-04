@@ -21,8 +21,8 @@ const actions = {
 
     },
 
-    async getAggregates ({ dispatch }) {
-        const { attendances } = await http.get(`attendances`)
+    async getAggregates ({ dispatch },  params = {}) {
+        const { attendances } = await http.get(`attendances`, { params })
         return { attendances }
     },
 }
