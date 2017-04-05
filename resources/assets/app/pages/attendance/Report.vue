@@ -7,10 +7,10 @@
 
 
                 <div class="card">
-                    <div class="card-header">
+                    <div class="card-header row">
 
-                        <input-select title="Semester" v-model.number="semester" :options="semesters" @input="semesterChosen"/>
-                        <input-select title="Courses" v-model.number="course" :options="courses" @input="courseChosen" />
+                        <input-select title="Semester" class="col-lg-4" v-model.number="semester" :options="semesters" @input="semesterChosen"/>
+                        <input-select title="Courses" class="col-lg-4" v-model.number="course" :options="courses" @input="courseChosen" />
 
                     </div>
 
