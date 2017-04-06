@@ -1,8 +1,8 @@
 <template>
-    <container-window title="Institute Attendance Report"  back @back="$router.go(-1)">
+    <container title="Institute Attendance Report"  back @back="$router.go(-1)">
 
         <div class="row py-2">
-            <div class="col-12 col-lg-10 m-auto">
+            <div class="col-12 col-lg-8 m-auto">
                 <input-search v-model="query" input-class="form-control-lg" @input="onInput"></input-search>
 
 
@@ -14,15 +14,20 @@
 
                     </div>
 
-                    <div class="card-block py-5">
+                    <div class="card-block chart-block">
                         <div class="chart-semester-name"> {{ semesterName }} </div>
                         <h4> {{ courseName }} </h4>
 
-                        <bar-chart
-                                id="bar" :data="chartData" xkey="date" ykeys='[ "attendance" ]' resize="true"
-                                labels='["attendance"]' bar-colors='[ "#36A2EB" ]'
-                                grid="true" grid-text-weight="bold">
-                        </bar-chart>
+                        <div class="chart-wrapper">
+                            <bar-chart
+                                    id="bar" :data="chartData" xkey="date" ykeys='[ "attendance" ]' resize="true"
+                                    labels='["attendance"]' bar-colors='[ "#36A2EB" ]'
+                                    grid="true" grid-text-weight="bold" ref="chart">
+                            </bar-chart>
+                        </div>
+
+                        <input-button value="<" @click.native="moveLeft"></input-button>
+                        <input-button value=">" @click.native="moveRight"></input-button>
 
 
                     </div>
@@ -31,7 +36,7 @@
             </div>
         </div>
 
-    </container-window>
+    </container>
 </template>
 
 <script lang="babel">
@@ -164,6 +169,10 @@ export default {
 
 .chart-semester-name {
     color: $brand-primary;
+}
+
+.chart-block {
+    padding-left: to-rem(40px);
 }
 
 
