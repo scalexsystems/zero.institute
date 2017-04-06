@@ -6,9 +6,9 @@
 
         <div class="col-lg-5 py-5">
             <div class="per-transaction-rate text-center">
-                <h1> <strong> 2% + ₹50 </strong> </h1>
+                <h1> <strong> 2.95% </strong> </h1>
                 per transaction <br/>
-                <small> Service Tax applicable (on 2% + ₹50) </small>
+                <small> Service Tax applicable (on 2.95%) </small>
             </div>
 
             <div class="small text-muted py-3">
