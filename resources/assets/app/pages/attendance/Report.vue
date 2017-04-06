@@ -7,16 +7,16 @@
 
 
                 <div class="card">
-                    <div class="card-header row">
+                    <div class="card-header row mx-0">
 
                         <input-select title="Semester" class="col-lg-4" v-model.number="semester" :options="semesters" @input="semesterChosen"/>
                         <input-select title="Courses" class="col-lg-4" v-model.number="course" :options="courses" @input="courseChosen" />
 
                     </div>
 
-                    <div class="card-block">
-                        <!--{{ semester }}-->
-                        <!--{{ course }}-->
+                    <div class="card-block py-5">
+                        <div class="chart-semester-name"> {{ semesterName }} </div>
+                        <h4> {{ courseName }} </h4>
 
                         <bar-chart
                                 id="bar" :data="chartData" xkey="date" ykeys='[ "attendance" ]' resize="true"
@@ -39,7 +39,7 @@ import Raphael from 'raphael/raphael'
 import { mapGetters, mapActions } from 'vuex'
 import moment from 'moment'
 import { BarChart } from 'vue-morris'
-import { range, sortBy, uniqBy } from 'lodash'
+import { map, range, sortBy, uniqBy } from 'lodash'
 global.Raphael = Raphael
 
 export default {
@@ -50,23 +50,35 @@ export default {
         course: 0,
         aggregates: {},
         chartData: [],
+        semesterName: '',
+        courseName: '',
+
     }),
     props: {},
     components: { BarChart },
     computed: {
+        semesterName () {
+            return this.semester ? this.semesterById(this.semester) || {} : {}
+        },
 
-        ...mapGetters('semesters', ['semesters']),
-        ...mapGetters('courses', ['courses']),
+        courseName() {
+            return this.course ? this.courseById(this.semester) || {} : {}
+        },
+
+        ...mapGetters('semesters', ['semesters', 'semesterById' ]),
+        ...mapGetters('courses', ['courses', 'courseById']),
 
     },
     methods: {
       semesterChosen() {
             this.loadAggregates();
             this.loadCourses();
+            this.semesterName = this.semesterById(this.semester).name || '';
       },
 
       courseChosen() {
           this.loadAggregates();
+          this.courseName = this.courseById(this.course).name || '';
       },
 
       getFirstOrLast(end = false) {
@@ -90,17 +102,15 @@ export default {
           const dateSeries = this.getDatesBetween(startDate, moment());
 
 
-          const aggregates = Object.keys(this.aggregates).map(( key) => ({
-             date: key,
-             attendance: this.aggregates[key]
+          const aggregates = Object.keys(this.aggregates).map((date) => ({
+             date: moment(date),
+             attendance: this.aggregates[date]
           }));
 
-
-
-          return uniqBy(sortBy([...aggregates, ...dateSeries ], ((dateObject) => {
-              return moment(dateObject.date)
-          })), (dateObject => { return dateObject.date }));
-
+          const mergedDates =  uniqBy(sortBy([...aggregates, ...dateSeries ], ((dateObject) => {
+              return dateObject.date
+          })), (dateObject => { return dateObject.date.format('YYYY-MM-DD') }), );
+          return this.formatDataForChart(mergedDates);
       },
 
       getDatesBetween(startDate, endDate){
@@ -108,12 +118,19 @@ export default {
           const diffRange = range(0, diff + 1);
           const dates = [];
           diffRange.forEach((offset) => {
-              const date = moment(startDate).add(offset, 'days').format('YYYY-MM-DD');
+              const date = moment(startDate).add(offset, 'days');
               dates.push({ date, attendance: 0 });
               return dates;
           });
 
           return dates;
+      },
+
+      formatDataForChart(dates){
+          return map(dates, (entity) => ({
+              date: moment(entity.date).format('D'),
+              attendance: entity.attendance
+          }))
       },
 
       loadCourses() {
@@ -142,9 +159,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    @import '../../styles/methods';
-    @import '../../styles/variables';
+@import '../../styles/methods';
+@import '../../styles/variables';
 
+.chart-semester-name {
+    color: $brand-primary;
+}
 
 
 

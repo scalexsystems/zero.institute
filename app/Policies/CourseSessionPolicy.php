@@ -79,7 +79,6 @@ class CourseSessionPolicy extends AbstractPolicy
 
     public function viewAttendanceReport(User $user)
     {
-        return true;
-
+        return trust($user)->is('admin');
     }
 }

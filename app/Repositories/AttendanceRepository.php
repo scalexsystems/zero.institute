@@ -6,6 +6,7 @@ use Scalex\Zero\Criteria\Attendance\OfCourseSession;
 use Scalex\Zero\Models\Attendance;
 use Scalex\Zero\Models\CourseSession;
 use Scalex\Zero\Models\Student;
+use Scalex\Zero\User;
 use Znck\Repositories\Repository;
 
 /**
@@ -56,9 +57,11 @@ class AttendanceRepository extends Repository
         $attendance->save();
     }
 
-    public function getAttendanceAggregate($semester = null, $course= null )
+    public function getAttendanceAggregate(User $user, $semester = null, $course= null )
     {
-        $query = Attendance::orderBy('date');
+        $query = Attendance::whereHas('course_session.course', function ($query) use ($user) {
+            return $query->where('school_id', $user->school->id);
+        })->orderBy('date');
         if ($semester) {
             $query->whereHas('course_session.course.semester', function ($q) use ($semester) {
                 return $q->where('id', $semester);
