@@ -20,9 +20,10 @@ class StatisticsController extends Controller
         $this->authorize('view-attendance-report', CourseSession::class);
         $semester = $request->input('semester', null);
         $course = $request->input('course', null);
+        $month = $request->month;
 
         $user = $request->user();
 
-        return [ 'attendances' => $repository->getAttendanceAggregate($user, $semester, $course)];
+        return [ 'attendances' => $repository->getAttendanceAggregate($user, $semester, $course, $month)];
     }
 }

@@ -44,7 +44,7 @@ import Raphael from 'raphael/raphael'
 import { mapGetters, mapActions } from 'vuex'
 import moment from 'moment'
 import { BarChart } from 'vue-morris'
-import { map, range, sortBy, uniqBy } from 'lodash'
+import { isEmpty, map, range, sortBy, uniqBy } from 'lodash'
 global.Raphael = Raphael
 
 export default {
@@ -57,21 +57,18 @@ export default {
         chartData: [],
         semesterName: '',
         courseName: '',
+        month: 1,
 
     }),
     props: {},
     components: { BarChart },
     computed: {
-        semesterName () {
-            return this.semester ? this.semesterById(this.semester) || {} : {}
+        session(){
+            return this.sessionById();
         },
-
-        courseName() {
-            return this.course ? this.courseById(this.semester) || {} : {}
-        },
-
         ...mapGetters('semesters', ['semesters', 'semesterById' ]),
         ...mapGetters('courses', ['courses', 'courseById']),
+        ...mapGetters('sessions', ['sessionById']),
 
     },
     methods: {
@@ -79,6 +76,7 @@ export default {
             this.loadAggregates();
             this.loadCourses();
             this.semesterName = this.semesterById(this.semester).name || '';
+
       },
 
       courseChosen() {
@@ -87,7 +85,7 @@ export default {
       },
 
       getFirstOrLast(end = false) {
-         const keys = Object.keys(this.aggregates)
+          const keys = Object.keys(this.aggregates)
          const dates = this.convertToDate(keys).sort((first, second) => {
              return first - second
          })
@@ -103,32 +101,39 @@ export default {
       },
 
       prepareDatesWithData(){
-          const startDate = this.getFirstOrLast();
-          const dateSeries = this.getDatesBetween(startDate, moment());
+          const month = this.getMonthFromAggregate();
 
+          const dateSeries = this.getDatesForMonth(month)
 
           const aggregates = Object.keys(this.aggregates).map((date) => ({
-             date: moment(date),
+             date: moment(date).format('D'),
              attendance: this.aggregates[date]
           }));
 
           const mergedDates =  uniqBy(sortBy([...aggregates, ...dateSeries ], ((dateObject) => {
               return dateObject.date
-          })), (dateObject => { return dateObject.date.format('YYYY-MM-DD') }), );
+          })), (dateObject => { return dateObject.date }), );
           return this.formatDataForChart(mergedDates);
       },
 
-      getDatesBetween(startDate, endDate){
-          const diff = moment(endDate).diff(startDate, 'days');
-          const diffRange = range(0, diff + 1);
-          const dates = [];
+      getDatesForMonth(month){
+          const startDate = moment(month).date(1)
+          const monthDays = startDate.daysInMonth()
+
+          const diffRange = range(0, monthDays - 1)
+          const dates = []
           diffRange.forEach((offset) => {
-              const date = moment(startDate).add(offset, 'days');
-              dates.push({ date, attendance: 0 });
+              const date = moment(startDate).add(offset, 'days')
+              dates.push({ date, attendance: 0 })
               return dates;
           });
 
           return dates;
+
+      },
+
+      getMonthFromAggregate() {
+          return !isEmpty(this.aggregates) ? moment(Object.keys(this.aggregates)[0]).format('M') : 0
       },
 
       formatDataForChart(dates){
@@ -145,7 +150,7 @@ export default {
       },
 
       async loadAggregates() {
-          const params = (this.semester || this.course) ? { semester: this.semester, course: this.course} : {};
+          const params = (this.semester || this.course) ? { semester: this.semester, course: this.course, month: this.month} : {};
 
           const { attendances } = await this.getAggregates(params);
           this.aggregates = attendances || {};

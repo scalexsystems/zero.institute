@@ -57,22 +57,29 @@ class AttendanceRepository extends Repository
         $attendance->save();
     }
 
-    public function getAttendanceAggregate(User $user, $semester = null, $course= null )
+    public function getAttendanceAggregate(User $user, $semester = null, $course= null, $month = 1 )
     {
+        $offsetSessionDate = $user->school->session->started_on->addMonth($month - 1);
+        $startDate = Carbon::createFromDate($offsetSessionDate->year, $offsetSessionDate->month, 1);
+        $endDate = (clone $startDate)->addMonth()->subDay();
+
+
         $query = Attendance::whereHas('course_session.course', function ($query) use ($user) {
             return $query->where('school_id', $user->school->id);
-        })->orderBy('date');
+        })->whereBetween('date', [$startDate, $endDate])->orderBy('date');
+
+
         if ($semester) {
             $query->whereHas('course_session.course.semester', function ($q) use ($semester) {
                 return $q->where('id', $semester);
             });
         }
 
-        if ($course) {
-            $query->whereHas('course_session.course', function ($q) use ($course) {
-                return $q->where('id', $course);
-            });
-        }
+//        if ($course) {
+//            $query->whereHas('course_session.course', function ($q) use ($course) {
+//                return $q->where('id', $course);
+//            });
+//        }
 
         $attendance = $query->get();
 
