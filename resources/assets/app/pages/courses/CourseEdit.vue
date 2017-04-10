@@ -32,7 +32,7 @@
 
           <div class="col-12 col-lg-6">
             <input-typeahead title="Instructor" v-model="attributes.instructor" v-bind="{ suggestions: instructors }"
-                             @select="onInstructorSelect" component="SelectOptionUser"
+                             @select="onInstructorSelect" component="SelectOption User"
                              @search="onInstructorSearch"/>
           </div>
 

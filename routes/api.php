@@ -131,3 +131,4 @@ Route::post('sessions/{session}/attendances', 'Api\Attendance\SessionController@
 Route::get('me/semesters/{semester}/students/{student}/sessions', 'Api\Attendance\CurrentUserController@index');
 
 Route::get('attendances', 'Api\Attendance\StatisticsController@index');
+Route::get('attendances/{course}', 'Api\Attendance\StatisticsController@show');

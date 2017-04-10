@@ -4,6 +4,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Scalex\Zero\Criteria\Attendance\OfCourseSession;
 use Scalex\Zero\Models\Attendance;
+use Scalex\Zero\Models\Course;
 use Scalex\Zero\Models\CourseSession;
 use Scalex\Zero\Models\Student;
 use Scalex\Zero\User;
@@ -83,18 +84,37 @@ class AttendanceRepository extends Repository
 
         $attendance = $query->get();
 
-        return $attendance->reduce(function ($attendanceStats, $dailySession) {
-
-            $attendance = array_values($dailySession->attendance);
-            $date = (string) Carbon::parse($dailySession->date)->format('Y-m-d');
-            if (isset($attendanceStats[$date])) {
-                $attendanceStats[$date] += array_sum($attendance) / count($attendance) * 100;
-            } else {
-                $attendanceStats[$date] = array_sum($attendance) / count($attendance) * 100;
-            }
-            return $attendanceStats;
-
-        });
+        return $this->getStatisticsForAttendance($attendance);
     }
 
+    public function getAttendanceAggregateForCourse(Course $course)
+    {
+        $attendance = Attendance::whereHas('course_session.course', function ($query) use ($course) {
+            return $query->where('id', $course->id);
+        })
+            ->orderBy('date')
+            ->get();
+
+
+        return $this->getStatisticsForAttendance($attendance);
+
+    }
+
+    public function getStatisticsForAttendance($attendance)
+    {
+            return !empty($attendance) ?
+                $attendance->reduce(function ($attendanceStats, $dailySession) {
+
+                $attendance = array_values($dailySession->attendance);
+
+                $date = (string)Carbon::parse($dailySession->date)->format('Y-m-d');
+                if (isset($attendanceStats[$date])) {
+                    $attendanceStats[$date] += array_sum($attendance) / count($attendance) * 100;
+                } else {
+                    $attendanceStats[$date] = array_sum($attendance) / count($attendance) * 100;
+                }
+                return $attendanceStats;
+
+            }) : [];
+    }
 }

@@ -80,7 +80,7 @@ export default {
       },
 
       courseChosen() {
-          this.loadAggregates();
+          this.loadCourseAggregates();
           this.courseName = this.courseById(this.course).name || '';
       },
 
@@ -157,7 +157,17 @@ export default {
           this.chartData = this.prepareDatesWithData();
       },
 
-     ...mapActions('attendance', ['getAggregates'])
+     async loadCourseAggregates() {
+          const course = this.course;
+
+          const { attendances } = await this.getCourseAggregates(course);
+
+          this.aggregates = attendances || {};
+
+     },
+
+     ...mapActions('attendance', ['getAggregates']),
+    ...mapActions('attendance', ['getCourseAggregates'])
     },
 
     created() {

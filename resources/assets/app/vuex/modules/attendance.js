@@ -25,10 +25,15 @@ const actions = {
         const { attendances } = await http.get(`attendances`, { params })
         return { attendances }
     },
+
+    async getCourseAggregates ({ dispatch }, courseId){
+        const { attendances } = await http.get(`attendances/${courseId}`);
+        return { attendances }
+    },
 }
 
 export default {
     namespaced: true,
     actions,
     state: state()
-}
+};
