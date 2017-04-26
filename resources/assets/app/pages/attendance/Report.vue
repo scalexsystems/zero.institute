@@ -26,9 +26,6 @@
                             </bar-chart>
                         </div>
 
-                        <input-button value="<" @click.native="moveLeft"></input-button>
-                        <input-button value=">" @click.native="moveRight"></input-button>
-
 
                     </div>
                 </div>
@@ -116,6 +113,14 @@ export default {
           return this.formatDataForChart(mergedDates);
       },
 
+      prepareCourseChartData() {
+        return Object.values(this.aggregates).map((value, index) => ({
+                date: index,
+                attendance: value
+            }))
+
+      },
+
       getDatesForMonth(month){
           const startDate = moment(month).date(1)
           const monthDays = startDate.daysInMonth()
@@ -163,6 +168,7 @@ export default {
           const { attendances } = await this.getCourseAggregates(course);
 
           this.aggregates = attendances || {};
+         this.chartData = this.prepareCourseChartData();
 
      },
 
