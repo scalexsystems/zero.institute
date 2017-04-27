@@ -65,16 +65,19 @@ class AttendanceRepository extends Repository
         $endDate = (clone $startDate)->addMonth()->subDay();
 
 
-        $query = Attendance::whereHas('course_session.course', function ($query) use ($user) {
+        $query = Attendance::whereHas('course_session.course', function ($query) use ($user, $semester) {
+            if ($semester) {
+                $query->whereHas('semester', function ($q) use ($semester) {
+                    return $q->where('id', $semester);
+                });
+            }
             return $query->where('school_id', $user->school->id);
-        })->whereBetween('date', [$startDate, $endDate])->orderBy('date');
+        });
+
+//            ->whereBetween('date', [$startDate, $endDate])->orderBy('date');
 
 
-        if ($semester) {
-            $query->whereHas('course_session.course.semester', function ($q) use ($semester) {
-                return $q->where('id', $semester);
-            });
-        }
+
 
 //        if ($course) {
 //            $query->whereHas('course_session.course', function ($q) use ($course) {

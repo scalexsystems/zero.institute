@@ -10,6 +10,7 @@
                     <div class="card-header row mx-0">
 
                         <input-select title="Semester" class="col-lg-4" v-model.number="semester" :options="semesters" @input="semesterChosen"/>
+                        <input-select title="Month" class="col-lg-4" v-model.number="month" :options="months" @input="monthChosen" />
                         <input-select title="Courses" class="col-lg-4" v-model.number="course" :options="courses" @input="courseChosen" />
 
                     </div>
@@ -41,7 +42,7 @@ import Raphael from 'raphael/raphael'
 import { mapGetters, mapActions } from 'vuex'
 import moment from 'moment'
 import { BarChart } from 'vue-morris'
-import { isEmpty, map, range, sortBy, uniqBy } from 'lodash'
+import { isEmpty, flatten, map, range, sortBy, uniqBy } from 'lodash'
 global.Raphael = Raphael
 
 export default {
@@ -54,7 +55,7 @@ export default {
         chartData: [],
         semesterName: '',
         courseName: '',
-        month: 1,
+        month: 0,
 
     }),
     props: {},
@@ -63,10 +64,12 @@ export default {
         session(){
             return this.sessionById();
         },
+        months(){
+            return this.getMonthsFromSessions();
+        },
         ...mapGetters('semesters', ['semesters', 'semesterById' ]),
         ...mapGetters('courses', ['courses', 'courseById']),
         ...mapGetters('sessions', ['sessionById']),
-
     },
     methods: {
       semesterChosen() {
@@ -79,6 +82,10 @@ export default {
       courseChosen() {
           this.loadCourseAggregates();
           this.courseName = this.courseById(this.course).name || '';
+      },
+
+      monthChosen(){
+          this.loadAggregates();
       },
 
       getFirstOrLast(end = false) {
@@ -115,7 +122,7 @@ export default {
 
       prepareCourseChartData() {
         return Object.values(this.aggregates).map((value, index) => ({
-                date: index,
+                date: index + 1,
                 attendance: value
             }))
 
@@ -154,8 +161,29 @@ export default {
 
       },
 
+      getMonthsFromSessions(){
+          const sessions = flatten(this.courses.map(course => course.sessions));
+          const startingMonth = sessions.map(session => moment(session.startedOn))[0];
+          return this.getMonthsFrom(startingMonth);
+      },
+
+      getMonthsFrom(start){
+          const diff = moment.duration(moment().diff(start)).months();
+
+          const diffRange = range(0, diff - 1)
+          const dates = []
+          diffRange.forEach((offset) => {
+              const date = moment(start).add(offset, 'months').format('MMMM YYYY')
+              dates.push({ name: date })
+              return dates;
+          });
+
+          return dates;
+
+      },
+
       async loadAggregates() {
-          const params = (this.semester || this.course) ? { semester: this.semester, course: this.course, month: this.month} : {};
+          const params = this.semester ? { semester: this.semester, month: this.month + 1} : {};
 
           const { attendances } = await this.getAggregates(params);
           this.aggregates = attendances || {};
