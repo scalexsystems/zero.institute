@@ -18,6 +18,12 @@ export default [
     props: route => ({
       session_id: toInt(route.params.id)
     })
+  },
+
+  {
+    name: 'payment.checkout',
+    path: '/payment',
+    component: () => import('../pages/payment/Checkout.vue'),
   }
 
 ]

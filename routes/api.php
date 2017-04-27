@@ -120,6 +120,8 @@ Route::resource('finance/fee/sessions', 'Api\Finance\FeeSessionsController', $re
 
 Route::get('me/fee/payments', 'Api\Finance\FeePaymentsController@index');
 
+Route::post('payments', 'Api\Finance\PaymentController@store');
+
 //======================================================================================//
 //                                  Attendance                                          //
 //======================================================================================//

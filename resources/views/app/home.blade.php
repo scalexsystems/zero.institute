@@ -17,6 +17,7 @@
     <script src="{{ mix('/vendor/components.js') }}" defer></script>
     <script src="{{ mix('/vendor/echo.js') }}" defer></script>
     <script src="{{ mix('/main.js') }}" defer></script>
+    <script src="//checkout.razorpay.com/v1/checkout.js" async></script>
 @endsection
 
 @section('snippets')
