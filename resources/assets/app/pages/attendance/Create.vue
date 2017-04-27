@@ -25,7 +25,9 @@
                     Attendance: {{ aggregate.percent }}% | {{ aggregate.total }} Students - {{ aggregate.absent }} Absent
                 </div>
                 <div class="py-4">
-                    <attendance-card :student="student" v-for="student in students" @toggle="toggleAttendance" :disabled="!enabled"></attendance-card>
+                    <attendance-card :student="student" v-for="student in students" :key="student.id"
+                                     @toggle="toggleAttendance" :disabled="!enabled"></attendance-card>
+
                 </div>
             </div>
         </div>
@@ -42,7 +44,7 @@
         components: { DateSelector, AttendanceCard },
         data: () => ({
           students: [],
-          attendance: [],
+          attendance: {},
           startedOn: '',
           enabled: false,
           date: new Date().toDateString(),
@@ -64,7 +66,7 @@
           },
           aggregate() {
               const total = this.students.length
-              const absent = this.attendance.length
+              const absent = Object.keys(this.attendance).length;
               const  percent = (1 - absent / total) * 100
               return {
                   total, absent, percent
@@ -88,12 +90,14 @@
           },
           toggleAttendance(value, studentId){
             if(value) {
-                const index = this.attendance.indexOf(studentId);
+                const index = this.attendance[studentId];
                 if(index >= 0) {
-                    this.attendance.splice(index, 1);
+                    delete this.attendance[studentId];
                 }
              } else {
-              this.attendance.push(studentId);
+                Object.assign(this.attendance, {
+                    [studentId] : false
+                });
              }
             },
 

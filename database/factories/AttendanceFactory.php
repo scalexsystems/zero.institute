@@ -13,6 +13,6 @@ $factory->define(Attendance::class, function (Generator $f, array $attributes) {
     return [
         'course_session_id' => $attributes['course_session_id'],
         'date' => $f->date(),
-        'student_id' => $attributes['student_id']
+        'attendance' => json_encode([$attributes['student_id'] => false]),
     ];
 });

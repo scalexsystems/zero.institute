@@ -1,5 +1,7 @@
 import http from '../api';
 
+const state = () => {}
+
 const actions = {
     async index(_, { session }){
       const {attendances} = await http.get(`sessions/${session.id}/attendances`);
@@ -9,8 +11,7 @@ const actions = {
     },
 
     async find (_, { sessionId, student }){
-      const { attendances } = await http.get(`sessions/${sessionId}/students/${student.person.uid}/attendances`);
-
+      const { attendances } = await http.get(true, `sessions/${sessionId}/students/${student.person.uid}/attendances`);
       return { attendances };
     },
 
@@ -18,12 +19,21 @@ const actions = {
 
         await http.post(`sessions/${session.id}/attendances`, attendance);
 
-    }
+    },
 
+    async getAggregates ({ dispatch },  params = {}) {
+        const { attendances } = await http.get(`attendances`, { params })
+        return { attendances }
+    },
+
+    async getCourseAggregates ({ dispatch }, courseId){
+        const { attendances } = await http.get(`attendances/${courseId}`);
+        return { attendances }
+    },
 }
 
-// THE STORE!
 export default {
     namespaced: true,
     actions,
-}
+    state: state()
+};

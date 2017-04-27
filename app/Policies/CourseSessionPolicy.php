@@ -2,14 +2,15 @@
 
 namespace Scalex\Zero\Policies;
 
+use Scalex\Zero\Policies\Traits\VerifiesSchool;
 use Scalex\Zero\User;
 use Scalex\Zero\Models\CourseSession;
 use Scalex\Zero\Models\Teacher;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class CourseSessionPolicy
+class CourseSessionPolicy extends AbstractPolicy
 {
-    use HandlesAuthorization;
+    use VerifiesSchool;
 
     protected function isInstructor($instructor, CourseSession $session)
     {
@@ -74,5 +75,10 @@ class CourseSessionPolicy
     public function viewSession(User $user, CourseSession $session)
     {
         return $this->isInstructor($user->person, $session) or $session->group->isMember($user);
+    }
+
+    public function viewAttendanceReport(User $user)
+    {
+        return trust($user)->is('admin');
     }
 }

@@ -16,14 +16,13 @@ class CreateAttendancesTable extends Migration
         Schema::create('attendances', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('course_session_id');
-            $table->unsignedInteger('student_id');
             $table->date('date');
+            $table->json('attendance')->default('[]');
             $table->json('additional')->default('[]');
             $table->timestamps();
             $table->softDeletes();
 
             $table->foreign('course_session_id')->references('id')->on('course_sessions')->onDelete('cascade');
-            $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
         });
     }
 
